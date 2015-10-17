@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use URL;
+use Validator;
 
 class AuthController extends Controller
 {
@@ -22,6 +23,10 @@ class AuthController extends Controller
     */
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+
+
+    protected $loginPath = '/login';
+    protected $redirectPath = '/';
 
     /**
      * Create a new authentication controller instance.
@@ -46,6 +51,11 @@ class AuthController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
+    }
+
+    protected function authenticated($request, $user)
+    {
+        return redirect()->intended();
     }
 
     /**

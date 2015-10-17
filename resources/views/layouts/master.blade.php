@@ -20,7 +20,7 @@
 
             @else
 
-                <a href="{{ action('Auth\AuthController@getLogin') }}">Logg på</a>
+                <a href="{{ URL::current() }}?login=true">Logg på</a>
 
             @endif
 
