@@ -2,6 +2,14 @@
 
 @section('content')
 
+@if ($errors->count())
+<p class="errors">
+    @foreach ($errors->all() as $error)
+        {{ $error }}
+    @endforeach
+</p>
+@endif
+
 <form method="POST" action="/auth/register">
     {!! csrf_field() !!}
 

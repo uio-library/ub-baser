@@ -7,6 +7,14 @@
     <a href="{{ action('Auth\AuthController@getRegister') }}">Registrer deg</a>
 </p>
 
+@if ($errors->count())
+<p class="errors">
+    @foreach ($errors->all() as $error)
+        {{ $error }}
+    @endforeach
+</p>
+@endif
+
 <form method="POST" action="{{ action('Auth\AuthController@postLogin') }}">
     {!! csrf_field() !!}
 
