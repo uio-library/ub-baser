@@ -6,6 +6,12 @@
 	index.blade.php
 </h2>
 
+@if (Auth::check())
+	<p>
+		<a href="{{ action('DommerController@create') }}">Opprett ny post</a>
+	</p>
+@endif
+
 <table>
 <tr>
 	@foreach ($columns as $column)

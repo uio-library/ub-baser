@@ -41,7 +41,10 @@ class DommerController extends RecordController
      */
     public function create()
     {
-        //
+        $data = [
+            'columns' => DommerRecord::$columns,
+        ];
+        return response()->view('dommer.create', $data);
     }
 
     /**
