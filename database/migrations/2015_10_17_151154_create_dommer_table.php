@@ -14,6 +14,11 @@ class CreateDommerTable extends Migration
     {
         Schema::create('dommer', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('navn');
+            $table->string('aar');
+            $table->integer('kilde');
+            $table->string('side');
+            $table->string('note');
             $table->timestamps();
         });
     }
