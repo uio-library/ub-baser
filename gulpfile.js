@@ -1,16 +1,28 @@
 var elixir = require('laravel-elixir');
 
+require('laravel-elixir-bower');
+
 /*
  |--------------------------------------------------------------------------
- | Elixir Asset Management
+ | Compile Sass
+ |--------------------------------------------------------------------------
+ */
+
+// elixir(function(mix) {
+//     mix.sass('app.scss');
+// });
+
+/*
+ |--------------------------------------------------------------------------
+ | Concat Bower files
  |--------------------------------------------------------------------------
  |
- | Elixir provides a clean, fluent API for defining some basic Gulp tasks
- | for your Laravel application. By default, we are compiling the Sass
- | file for our application, as well as publishing vendor resources.
+ | This will scan your bower files and concat all css files in a
+ | styles/vendor.css file, and all js files in a scripts/vendor.js file.
  |
  */
 
+
 elixir(function(mix) {
-    mix.sass('app.scss');
+    mix.bower();
 });

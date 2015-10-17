@@ -34,6 +34,7 @@
         @yield('content')
     </div>
 
+    <script src="{{ URL::to('js/vendor.js') }}"></script>
     <script src="{{ URL::to('js/app.js') }}"></script>
 </body>
 </html>

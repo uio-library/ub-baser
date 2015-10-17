@@ -1,0 +1,24 @@
+{
+  "name": "ub-baser",
+  "description": "Felles grensesnitt for basene OPES, Letras, Beyer og Dommers populærnavn.",
+  "main": "",
+  "authors": [
+    "Dan Michael O. Heggø <d.m.heggo@ub.uio.no>",
+    "Ahmed Abdi Mohammed <a.a.mohammed@ub.uio.no>",
+    "Andrea A. Gasparini <a.a.gasparini@ub.uio.no>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4"
+  }
+}
