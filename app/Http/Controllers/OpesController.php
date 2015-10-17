@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
-class OpesController extends Controller
+class OpesController extends RecordController
 {
     /**
      * Display a listing of the resource.

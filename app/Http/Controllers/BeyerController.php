@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
-class BeyerController extends Controller
+class BeyerController extends RecordController
 {
     /**
      * Display a listing of the resource.

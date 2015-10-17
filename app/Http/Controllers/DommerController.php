@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\DommerRecord;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
-class DommerController extends Controller
+class DommerController extends RecordController
 {
+
     /**
      * Display a listing of the resource.
      *
