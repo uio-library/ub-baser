@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 class RecordController extends Controller
 {
-
     /**
      * Instantiate a new RecordController instance.
      *
@@ -14,5 +13,4 @@ class RecordController extends Controller
     {
         $this->middleware('auth', ['only' => ['create', 'edit', 'store', 'update', 'destroy']]);
     }
-
 }

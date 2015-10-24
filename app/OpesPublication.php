@@ -12,5 +12,4 @@ class OpesPublication extends Model
      * @var string
      */
     protected $table = 'opes_pub';
-
 }

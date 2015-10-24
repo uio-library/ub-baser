@@ -4,7 +4,6 @@ namespace App;
 
 class DommerRecord extends Record
 {
-
     /**
      * The table associated with the model.
      *
@@ -23,5 +22,4 @@ class DommerRecord extends Record
         ['field' => 'kilde', 'label' => 'Kilde'],
         ['field' => 'side', 'label' => 'Side'],
     ];
-
 }
