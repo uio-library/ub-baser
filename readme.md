@@ -9,16 +9,21 @@ Nytt, felles grensesnitt for basene OPES, Letras, Beyer og Dommers populærnavn.
 2. `git clone git@github.com:scriptotek/ub-baser.git`
 3. `composer install`
 4. Legg inn databasekonfigurasjon i `.env`
-5. `php artisan migrate` for å migrere databasen (ikke på prod)
-6. `sudo chown -R apache:ub-minus storage`
-7. `php artisan key:generate`
-8. `setsebool -P httpd_can_network_connect_db 1`
+5. `sudo chown -R $WWWGROUP:$USERGROUP storage`, der `WWWGROUP` er brukeren
+   til webserveren, f.eks. `apache` på Redhat, eller `www-data` på Ubuntu,
+   og `USERGROUP` er en gruppe du er medlem av.
+6. `php artisan key:generate`
 
-#### Utviklingsmaskin?
+Eventuelt:
 
-På en utviklingsmaskin trengs også Node, NPM, Gulp og Bower. Kjør `npm install` og `bower install`. `gulp` brukes for å bygge css og js.
+* Hvis SELinux: `setsebool -P httpd_can_network_connect_db 1`
+* Migrere og seede databasen: `php artisan migrate --seed`
 
-Kjør `php artisan serve` for å starte en lokal utviklingsserver.
+### Tips og triks
+
+* `php artisan serve` for å starte en lokal utviklingsserver på port 8080.
+* `php-cs-fixer fix` for å tilpasse koden til gjeldende kodestandard ved hjelp av [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Lurt å kjøre før commit.
+* `gulp` for å bygge css og js. For å kjøre gulp, sjekk at [Node og NPM](https://docs.npmjs.com/getting-started/installing-node) er installert, og kjør så `npm install` og `bower install`.
 
 ### Todo
 
