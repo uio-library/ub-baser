@@ -1930,6 +1930,12 @@ class DommerTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('dommer')->insert($this->data);
+    	$data = [];
+    	foreach ($this->data as $row) {
+    		$row['created_at'] = new \DateTime();
+    		$row['updated_at'] = new \DateTime();
+    		$data[] = $row;
+    	}
+        DB::table('dommer')->insert($data);
     }
 }
