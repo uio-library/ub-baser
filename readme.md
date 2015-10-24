@@ -6,9 +6,13 @@ Nytt, felles grensesnitt for basene OPES, Letras, Beyer og Dommers populærnavn.
 ### Installasjon
 
 1. Sjekk at maskinen har PHP >= 5.5.9 og Composer, samt nødvendige PHP-tillegg (se http://laravel.com/docs/5.1#installation).
-2. `git clone ...`
+2. `git clone git@github.com:scriptotek/ub-baser.git`
 3. `composer install`
 4. Legg inn databasekonfigurasjon i `.env`
+5. `php artisan migrate` for å migrere databasen (ikke på prod)
+6. `sudo chown -R apache:ub-minus storage`
+7. `php artisan key:generate`
+8. `setsebool -P httpd_can_network_connect_db 1`
 
 #### Utviklingsmaskin?
 
