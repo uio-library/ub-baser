@@ -2,9 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class OpesPublication extends Model
+class OpesPublication extends \Eloquent
 {
     /**
      * The table associated with the model.
