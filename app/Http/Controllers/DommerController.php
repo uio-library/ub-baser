@@ -52,7 +52,11 @@ class DommerController extends RecordController
      */
     public function show($id)
     {
-        //
+        $data = [
+            'record' => DommerRecord::findOrFail($id),
+        ];
+
+        return response()->view('dommer.show', $data);
     }
 
     /**

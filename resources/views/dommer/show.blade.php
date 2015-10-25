@@ -2,11 +2,17 @@
 
 @section('content')
 
-<h2>
+<tt>
 	show.blade.php
+</tt>
+
+<h2>
+	#{{ $record->id }}
 </h2>
+
 <p>
-	Visning av post {{ $id }} kommer her.
+	Navn: {{ $record->navn }}
+	Ref: {{ $record->kilde }}, {{ $record->side }}
 </p>
 
 @endsection
