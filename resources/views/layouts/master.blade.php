@@ -31,7 +31,7 @@
 
         </div>
 
-        <h1>@yield('db-title', 'UB-baser')</h1>
+        <h1><a href="@yield('db-url', '/')">@yield('db-title', 'UB-baser')</a></h1>
 
     </header>
 
