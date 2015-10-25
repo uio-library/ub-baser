@@ -54,7 +54,10 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+    'from' => [
+        'address' => env('MAIL_SENDER_ADDRESS', 'baser@ub.uio.no'),
+        'name' => env('MAIL_SENDER_NAME', 'UB-baser')
+    ],
 
     /*
     |--------------------------------------------------------------------------

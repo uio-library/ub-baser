@@ -5,7 +5,7 @@ header #user {
 	float:right;
 }
 
-.errors {
+.alert-danger {
 	background: red;
 	color: white;
 	padding: .4em 1.2em;
