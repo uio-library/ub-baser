@@ -16,7 +16,8 @@
         <div id="user">
             @if (Auth::check())
 
-                Innlogget som {{ Auth::user()->name }}.
+                Innlogget som
+                <a href="{{ action('AccountController@index') }}">{{ Auth::user()->name }}</a>.
                 @can('admin')
                 <a href="{{ action('Admin\AdminController@index') }}">Admin</a>
                 @endcan

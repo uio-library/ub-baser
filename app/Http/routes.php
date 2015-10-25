@@ -33,6 +33,10 @@ Route::resource('dommer', 'DommerController');
 Route::resource('letras', 'LetrasController');
 Route::resource('opes', 'OpesController');
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('account', 'AccountController@index');
+});
+
 // Admin routes...
 Route::group(['middleware' => 'admin'], function () {
 
