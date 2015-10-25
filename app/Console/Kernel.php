@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\CreateUserCommand::class,
+        \App\Console\Commands\DatabaseDumpCommand::class,
     ];
 
     /**
