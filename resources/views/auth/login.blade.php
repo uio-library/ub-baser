@@ -2,18 +2,15 @@
 
 @section('content')
 
+<h2>Logg inn</h2>
+
 <p>
-    Ingen konto?
-    <a href="{{ action('Auth\AuthController@getRegister') }}">Registrer deg</a>
+    <a href="{{ action('Auth\PasswordController@getEmail') }}">Glemt passord?</a>
+
+    Ingen konto? Send en epost til xx@ub.uio.no
 </p>
 
-@if ($errors->count())
-<p class="errors">
-    @foreach ($errors->all() as $error)
-        {{ $error }}
-    @endforeach
-</p>
-@endif
+@include('shared.errors')
 
 <form method="POST" action="{{ action('Auth\AuthController@postLogin') }}">
     {!! csrf_field() !!}
@@ -29,7 +26,9 @@
     </div>
 
     <div>
-        <input type="checkbox" name="remember"> Remember Me
+        <label>
+            <input type="checkbox" name="remember"> Remember Me
+        </label>
     </div>
 
     <div>
