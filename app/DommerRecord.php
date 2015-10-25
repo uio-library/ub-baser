@@ -22,4 +22,9 @@ class DommerRecord extends Record
         ['field' => 'kilde', 'label' => 'Kilde'],
         ['field' => 'side', 'label' => 'Side'],
     ];
+
+    public function link()
+    {
+        return action('DommerController@show', $this->id);
+    }
 }

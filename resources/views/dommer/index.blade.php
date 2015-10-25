@@ -2,8 +2,10 @@
 
 @section('content')
 
+<tt>index.blade.php</tt>
+
 <h2>
-	index.blade.php
+	Oversikt
 </h2>
 
 @if (Auth::check())
@@ -12,27 +14,8 @@
 	</p>
 @endif
 
-<table>
-<tr>
-	@foreach ($columns as $column)
-	<th>
-		<a href="{{ $column['link'] }}">{{ $column['label'] }}</a>
-	</th>
-	@endforeach
-</tr>
-@foreach ($records as $record)
-	<tr>
-		@foreach ($columns as $column)
-		<td>
-			{{ $record->{$column['field']} }}
-		</td>
-		@endforeach
-	</tr>
-@endforeach
 
-</table>
-
-{!! $records->appends(['sort' => $sortColumn, 'order' => $sortOrder])->render() !!}
+@include('shared.sortable-table')
 
 
 @endsection
