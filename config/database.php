@@ -75,6 +75,17 @@ return [
             'schema'   => 'public',
         ],
 
+        'pgsql_test' => [
+            'driver'   => 'pgsql',
+            'host'     => 'localhost',
+            'database' => 'ub_baser_test',
+            'username' => 'postgres',
+            'password' => '',
+            'charset'  => 'utf8',
+            'prefix'   => '',
+            'schema'   => 'public',
+        ],
+
         'sqlsrv' => [
             'driver'   => 'sqlsrv',
             'host'     => env('DB_HOST', 'localhost'),

@@ -26,6 +26,16 @@ Eventuelt:
 * `php-cs-fixer fix` for å tilpasse koden til gjeldende kodestandard ved hjelp av [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Lurt å kjøre før commit.
 * `gulp` for å bygge css og js. For å kjøre gulp, sjekk at [Node og NPM](https://docs.npmjs.com/getting-started/installing-node) er installert, og kjør så `npm install` og `bower install`.
 
+### Automatisk testing
+
+```
+psql -c 'CREATE DATABASE ub_baser_test;' -U postgres
+php artisan migrate:refresh --database=pgsql_test --seed
+php artisan db:dump --database pgsql_test
+vendor/bin/codecept build
+vendor/bin/codecept run functional
+```
+
 ### Todo
 
 * Sjekk om https://github.com/Crinsane/laravel-elixir-bower/pull/8 blir akseptert
