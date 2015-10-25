@@ -7,5 +7,4 @@ Homestead.json
 composer.lock
 _ide_helper*
 tests/_output/*
-tests/_data/*
 tests/_support/_generated/*
