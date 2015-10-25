@@ -13,7 +13,20 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        // User::class => UserPolicy::class,
+    ];
+
+    /**
+     * List of all user rights.
+     *
+     * @var array
+     */
+    public static $rights = [
+        'admin',
+        'beyer',
+        'letras',
+        'opes',
+        'dommer',
     ];
 
     /**
@@ -27,6 +40,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         parent::registerPolicies($gate);
 
-        //
+        foreach (self::$rights as $right) {
+            $gate->define($right, function ($user) use ($right) {
+                return in_array($right, $user->rights);
+            });
+        }
     }
 }

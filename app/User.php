@@ -36,4 +36,18 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'rights' => 'array',
+    ];
+
+    public function admin()
+    {
+        return in_array('admin', $this->rights);
+    }
 }
