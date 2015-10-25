@@ -6,7 +6,9 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.1.*"
+        "laravel/framework": "5.1.*",
+        "barryvdh/laravel-ide-helper": "~2.1",
+        "doctrine/dbal": "~2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -34,9 +36,9 @@
             "php artisan optimize"
         ],
         "pre-update-cmd": [
-            "php artisan clear-compiled"
-        ],
-        "post-update-cmd": [
+            "php artisan clear-compiled",
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:models --dir=app -N",
             "php artisan optimize"
         ],
         "post-root-package-install": [
