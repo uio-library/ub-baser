@@ -12,6 +12,7 @@ install:
   # - ./node_modules/.bin/bower install
 
 before_script:
+  - cp .env.testing .env
   - vendor/bin/codecept build
   - psql -c 'CREATE DATABASE ub_baser_test;' -U postgres
   - php artisan --database=pgsql_test --seed migrate
