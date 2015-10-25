@@ -33,8 +33,6 @@ Route::resource('dommer', 'DommerController');
 Route::resource('letras', 'LetrasController');
 Route::resource('opes', 'OpesController');
 
-Route::resource('opes', 'OpesController');
-
 // Admin routes...
 Route::group(['middleware' => 'admin'], function () {
 
