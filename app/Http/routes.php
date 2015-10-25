@@ -34,3 +34,16 @@ Route::resource('letras', 'LetrasController');
 Route::resource('opes', 'OpesController');
 
 Route::resource('opes', 'OpesController');
+
+// Admin routes...
+Route::group(['middleware' => 'admin'], function () {
+
+    Route::get('admin', 'Admin\AdminController@index');
+    Route::get('admin/users', 'Admin\UserController@index');
+    Route::get('admin/users/create', 'Admin\UserController@create');
+    Route::get('admin/users/{id}', 'Admin\UserController@edit');
+    Route::post('admin/users/{id}', 'Admin\UserController@update');
+    Route::post('admin/users', 'Admin\UserController@store');
+    Route::post('admin/users/delete/{id}', 'Admin\UserController@destroy');
+
+});

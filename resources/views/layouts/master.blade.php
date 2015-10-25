@@ -16,6 +16,9 @@
             @if (Auth::check())
 
                 Innlogget som {{ Auth::user()->name }}.
+                @can('admin')
+                <a href="{{ action('Admin\AdminController@index') }}">Admin</a>
+                @endcan
                 <a href="{{ action('Auth\AuthController@getLogout') }}">Logg ut</a>
 
             @else

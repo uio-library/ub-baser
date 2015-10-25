@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->json('rights');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
