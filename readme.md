@@ -18,6 +18,7 @@ Eventuelt:
 
 * Hvis SELinux: `setsebool -P httpd_can_network_connect_db 1`
 * Migrere og seede databasen: `php artisan migrate --seed`
+* Opprett en admin-bruker: `php artisan create:user g.sverdrup@ub.uio.no "Georg Sverdrup" --admin`
 
 ### Tips og triks
 
