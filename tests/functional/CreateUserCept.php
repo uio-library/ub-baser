@@ -13,5 +13,5 @@ $I->submitForm('//form', [
 ]);
 
 $I->see('En epost er sendt');
-$I->seeInDatabase('users', ['email' => 'tom@email.com']);
+$I->seeInDatabase('users', ['email' => 'tom@email.com', 'rights' => '[]']);
 
