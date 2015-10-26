@@ -15,17 +15,17 @@
     <header>
         <div id="user">
             @if (Auth::check())
-
-                Innlogget som
-                <a href="{{ action('AccountController@index') }}">{{ Auth::user()->name }}</a>.
+                {!! trans('messages.loggedinas', [
+                    'user' => '<a href="' . action('AccountController@index') . '">' . Auth::user()->name . '</a>'
+                ]) !!}.
                 @can('admin')
-                <a href="{{ action('Admin\AdminController@index') }}">Admin</a>
+                <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a>
                 @endcan
-                <a href="{{ action('Auth\AuthController@getLogout') }}">Logg ut</a>
+                <a href="{{ action('Auth\AuthController@getLogout') }}">{{ trans('messages.logout') }}</a>
 
             @else
 
-                <a href="{{ URL::current() }}?login=true">Logg på</a>
+                <a href="{{ URL::current() }}?login=true">{{ trans('messages.login') }}</a>
 
             @endif
 

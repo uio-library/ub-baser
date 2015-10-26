@@ -19,5 +19,10 @@ return [
     'password' => 'Passord',
     'confirmpassword' => 'Bekreft passord',
     'sendpasswordresetlink' => 'Send lenke for passordtilbakestilling',
+    'rememberme' => 'Husk meg',
+    'login' => 'Logg på',
+    'logout' => 'Logg ut',
+    'loggedinas' => 'Innlogget som :user',
+    'forgotpassword' => 'Glemt passord?',
 
 ];
