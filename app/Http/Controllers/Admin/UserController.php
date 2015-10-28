@@ -65,7 +65,7 @@ class UserController extends Controller
      *
      * @return User
      */
-    protected function updateOrCreateUser(Request $request, $id = null)
+    protected function updateOrCreate(Request $request, $id = null)
     {
         $user = is_null($id) ? new User() : User::findOrFail($id);
 
@@ -92,7 +92,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $this->updateOrCreateUser($request);
+        $user = $this->updateOrCreate($request);
 
         \Password::sendResetLink(['email' => $user->email], function (Message $message) {
             $message->subject('Velkommen til ub-baser');
@@ -131,7 +131,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->updateOrCreateUser($request, $id);
+        $this->updateOrCreate($request, $id);
 
         return redirect()->action('Admin\UserController@index')
             ->with('status', 'Brukeren ble lagret');
