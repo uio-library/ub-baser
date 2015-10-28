@@ -22,6 +22,10 @@ class DommerRecord extends Record
         ['field' => 'kilde', 'label' => 'Kilde'],
         ['field' => 'side', 'label' => 'Side'],
     ];
+    public function kilde()
+    {
+        return $this->belongsTo('App\DommerKilde');
+    }
 
     public function link()
     {

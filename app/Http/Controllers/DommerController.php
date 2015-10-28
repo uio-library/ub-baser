@@ -2,11 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\DommerKilde;
 use App\DommerRecord;
 use Illuminate\Http\Request;
 
 class DommerController extends RecordController
 {
+    protected function getKilder()
+    {
+        $kilder = [];
+        foreach (DommerKilde::all() as $kilde) {
+            $kilder[$kilde->id] = $kilde->navn;
+        }
+
+        return $kilder;
+    }
+
     /**
      * Display a listing of the resource.
      *
