@@ -2,13 +2,13 @@
 
 return [
 
-	'admin' => 'Admin',
+    'admin' => 'Admin',
     'confirm-deleteuser' => 'Jeg er sikker på at jeg ønsker å slette denne brukeren',
     'deleteuser' => 'Slett bruker',
-	'edit' => 'Rediger',
-	'save' => 'Lagre',
-	'manageusers' => 'Behandle brukere',
-	'users' => 'Brukere',
+    'edit' => 'Rediger',
+    'save' => 'Lagre',
+    'manageusers' => 'Behandle brukere',
+    'users' => 'Brukere',
     'create' => 'Opprett',
     'createuser' => 'Opprett ny bruker',
     'name' => 'Navn',
@@ -24,5 +24,7 @@ return [
     'logout' => 'Logg ut',
     'loggedinas' => 'Innlogget som :user',
     'forgotpassword' => 'Glemt passord?',
+    'search' => 'Søk',
+    'choose' => 'Velg...',
 
 ];

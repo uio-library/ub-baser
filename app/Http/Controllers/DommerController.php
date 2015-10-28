@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DommerKilde;
 use App\DommerRecord;
+use App\RecordQueryBuilder;
 use Illuminate\Http\Request;
 
 class DommerController extends RecordController
@@ -25,7 +26,52 @@ class DommerController extends RecordController
      */
     public function index(Request $request)
     {
-        return response()->view('dommer.index', parent::getIndexData($request, DommerRecord::class));
+        $q = new RecordQueryBuilder($request, 'dommer', DommerRecord::class);
+        $q->make();
+
+        $data['prefix'] = 'dommer';
+        $data['query'] = $request->all();
+        $data['columns'] = $q->getColumns();
+        $data['sortColumn'] = $q->sortColumn;
+        $data['sortOrder'] = $q->sortOrder;
+
+        $data['records'] = $q->query
+            ->join('dommer_kilder', 'dommer.kilde_id', '=', 'dommer_kilder.id')
+            ->select('dommer.*', 'dommer_kilder.navn AS kilde_navn')
+            ->paginate(50);
+
+        $data['kilder'] = $this->getKilder();
+
+        return response()->view('dommer.index', $data);
+    }
+
+    /**
+     * Store a newly created record, or update an existing one.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
+     * @return DommerRecord
+     */
+    protected function updateOrCreate(Request $request, $id = null)
+    {
+        $record = is_null($id) ? new DommerRecord() : DommerRecord::findOrFail($id);
+
+        $this->validate($request, [
+            'navn'     => 'required|unique:dommer,navn' . (is_null($id) ? '' : ',' . $id) . '|max:255',
+            'aar'      => 'required|digits:4',
+            'side'     => 'required|numeric|min:1|max:9999',
+            'kilde_id' => 'required',
+        ]);
+
+        $record->navn = $request->get('navn');
+        $record->aar = $request->get('aar');
+        $record->side = $request->get('side');
+        $record->kilde_id = $request->get('kilde_id');
+
+        $record->save();
+
+        return $record;
     }
 
     /**

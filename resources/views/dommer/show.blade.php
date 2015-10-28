@@ -7,12 +7,17 @@
 </tt>
 
 <h2>
-	#{{ $record->id }}
+	«{{ $record->navn }}»
 </h2>
 
+@can('dommer')
 <p>
-	Navn: {{ $record->navn }}
-	Ref: {{ $record->kilde }}, {{ $record->side }}
+	<a href="{{ action('DommerController@edit', $record->id) }}">Rediger</a>
+</p>
+@endcan
+
+<p>
+	Referanse: {{ $record->kilde }} {{ $record->aar }}, side {{ $record->side }}
 </p>
 
 @endsection

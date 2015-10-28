@@ -2,9 +2,9 @@
 	<thead>
 		<tr>
 			@foreach ($columns as $column)
-			<th>
+			<th style="{{ isset($column['width']) ? 'width: ' . $column['width'] . ';' : '' }}">
 				<a href="{{ $column['link'] }}">
-					{{ $column['label'] }}
+					{{ trans($prefix . '.' . $column['field']) }}
 					@if ($sortColumn == $column['field'])
 						@if ($sortOrder == 'asc')
 							<i class="zmdi zmdi-sort-amount-asc"></i>

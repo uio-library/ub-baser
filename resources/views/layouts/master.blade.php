@@ -49,5 +49,6 @@
 
     <script src="{{ URL::to('js/vendor.js') }}"></script>
     <script src="{{ URL::to('js/app.js') }}"></script>
+    @yield('script')
 </body>
 </html>
