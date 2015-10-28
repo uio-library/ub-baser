@@ -1419,7 +1419,7 @@ class DommerTableSeeder extends Seeder
         ["navn" => "Sjokolademordsaken", "aar" => "1951", "side" => "498", "note" => "", "kilde_id" => "2", "id" => "1411"],
         ["navn" => "Sjødal-saken", "aar" => "1993", "side" => "20", "note" => "", "kilde_id" => "2", "id" => "1412"],
         ["navn" => "Sjøen AS-dommen", "aar" => "1992", "side" => "1222", "note" => "", "kilde_id" => "2", "id" => "1413"],
-        ["navn" => "Sjøgrunndommen", "aar" => "1923 II", "side" => "48", "note" => "", "kilde_id" => "2", "id" => "1414"],
+        ["navn" => "Sjøgrunndommen", "aar" => "1923", "side" => "48", "note" => "", "kilde_id" => "2", "id" => "1414"],
         ["navn" => "Sjøkartdommen", "aar" => "1966", "side" => "351", "note" => "", "kilde_id" => "2", "id" => "1415"],
         ["navn" => "Skandia Lloyd", "aar" => "1987", "side" => "1184", "note" => "", "kilde_id" => "2", "id" => "1416"],
         ["navn" => "Skatteadvokat-dommen", "aar" => "1996", "side" => "391", "note" => "", "kilde_id" => "2", "id" => "1417"],
