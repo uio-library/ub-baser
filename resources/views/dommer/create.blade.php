@@ -2,32 +2,50 @@
 
 @section('content')
 
-		<h2>
-			Opprett ny post
-		</h2>
+        <h2>
+            Opprett ny post
+        </h2>
 
-		@if ($errors->count())
-		<p class="errors">
-		    @foreach ($errors->all() as $error)
-		        {{ $error }}
-		    @endforeach
-		</p>
-		@endif
+        @include('shared.errors')
 
-		<form method="POST" action="{{ action('DommerController@store') }}">
-		    {!! csrf_field() !!}
+        <div class="panel panel-default">
+            <div class="panel-body">
 
-			<table>
-				@foreach ($columns as $column)
-					<tr>
-						<td>{{ $column['label'] }}</td>
-						<td><input type="text"></td>
-					</tr>
-				@endforeach
-			</table>
+                <form method="POST" action="{{ action('DommerController@store') }}" class="form-horizontal">
+                    {!! csrf_field() !!}
 
-			<button type="submit">Lagre</button>
-		</form>
+                    <div class="form-group">
+                        <label for="navn" class="col-sm-2 control-label">{{ trans('dommer.navn') }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="navn" name="navn" value="{{ old('navn') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kilde_id" class="col-sm-2 control-label">{{ trans('dommer.kilde_navn') }}</label>
+                        <div class="col-sm-4">
+                            {!! Form::select('kilde_id', $kilder, old('kilde_id'), ['placeholder' => trans('messages.choose'), 'class' => 'form-control']) !!}
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="control-label sr-only" for="aar">{{ trans('dommer.aar') }}</label>
+                            <input type="number" class="form-control" id="aar" name="aar" placeholder="{{ trans('dommer.aar') }}" value="{{ old('aar') }}">
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="control-label sr-only" for="side">{{ trans('dommer.side') }}</label>
+                            <input type="number" class="form-control" id="side" name="side" placeholder="{{ trans('dommer.side') }}" value="{{ old('side') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary">{{ trans('messages.create') }}</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
 
 
 @endsection

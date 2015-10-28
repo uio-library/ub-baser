@@ -35,13 +35,15 @@ class DommerController extends RecordController
      */
     public function create()
     {
+        $this->authorize('dommer');
+
         $data = [
-            'columns' => DommerRecord::$columns,
+            'columns' => config('baser.dommer.columns'),
+            'kilder'  => $this->getKilder(),
         ];
 
         return response()->view('dommer.create', $data);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -51,7 +53,12 @@ class DommerController extends RecordController
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('dommer');
+
+        $record = $this->updateOrCreate($request);
+
+        return redirect()->action('DommerController@show', $record->id)
+            ->with('status', 'Posten ble opprettet.');
     }
 
     /**
@@ -79,7 +86,16 @@ class DommerController extends RecordController
      */
     public function edit($id)
     {
-        //
+        $this->authorize('dommer');
+
+        $record = DommerRecord::findOrFail($id);
+
+        $data = [
+            'record'   => $record,
+            'kilder'   => $this->getKilder(),
+        ];
+
+        return response()->view('dommer.edit', $data);
     }
 
     /**
@@ -92,7 +108,12 @@ class DommerController extends RecordController
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->authorize('dommer');
+
+        $this->updateOrCreate($request, $id);
+
+        return redirect()->action('DommerController@show', $id)
+            ->with('status', 'Posten ble lagret');
     }
 
     /**
@@ -104,6 +125,8 @@ class DommerController extends RecordController
      */
     public function destroy($id)
     {
+        $this->authorize('dommer');
+
         //
     }
 }
