@@ -17,7 +17,8 @@ Nytt, felles grensesnitt for basene OPES, Letras, Beyer og Dommers populærnavn.
 5. `sudo chown -R $WWWGROUP:$USERGROUP storage`, der `WWWGROUP` er brukeren
    til webserveren, f.eks. `apache` på Redhat, eller `www-data` på Ubuntu,
    og `USERGROUP` er en gruppe du er medlem av.
-6. `php artisan key:generate`
+6. `chmod g+s storage`
+7. `php artisan key:generate`
 
 Eventuelt:
 
