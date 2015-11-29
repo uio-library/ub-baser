@@ -66,6 +66,17 @@ class CreateBeyerTable extends Migration
             $table->index('kritiker_pseudonym');
 
         });
+
+        DB::unprepared("
+            CREATE VIEW beyer_view AS
+                SELECT
+                    beyer.*,
+                    (beyer.forfatter_fornavn::text || ' '::text || beyer.forfatter_etternavn::text) AS forfatter_fornavn_etternavn,
+                    (beyer.forfatter_etternavn::text || ' '::text || beyer.forfatter_fornavn::text) AS forfatter_etternavn_fornavn,
+                    (beyer.kritiker_fornavn::text || ' '::text || beyer.kritiker_etternavn::text) AS kritiker_fornavn_etternavn,
+                    (beyer.kritiker_etternavn::text || ' '::text || beyer.kritiker_fornavn::text) AS kritiker_etternavn_fornavn
+                FROM beyer;
+        ");
     }
 
     /**
@@ -75,6 +86,7 @@ class CreateBeyerTable extends Migration
      */
     public function down()
     {
+        DB::unprepared('DROP VIEW beyer_view;');
         Schema::drop('beyer');
         Schema::drop('beyer_kritikktyper');
     }

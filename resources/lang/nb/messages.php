@@ -25,6 +25,7 @@ return [
     'loggedinas' => 'Innlogget som :user',
     'forgotpassword' => 'Glemt passord?',
     'search' => 'Søk',
+    'clear' => 'Nullstill',
     'choose' => 'Velg...',
 
 ];
