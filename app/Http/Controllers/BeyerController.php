@@ -74,6 +74,13 @@ class BeyerController extends RecordController
 
         $records = BeyerRecordView::query();
 
+        if (array_has($fields, 'q')) {
+            $term = $fields['q'];
+            $records->where(function($query) use ($term) {
+                $query->whereRaw("tsv @@ plainto_tsquery('simple', '". $term . "')");
+            });
+        }
+
         if (array_has($fields, 'forfatter')) {
             $term = preg_replace('/,/', '', $fields['forfatter']) . '%';
             $records->where(function($query) use ($term) {
@@ -91,13 +98,14 @@ class BeyerController extends RecordController
         }
 
         $selectOptions = [
+            ['id' => 'q', 'label' => 'Fritekst', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...'],
             ['id' => 'forfatter', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn'],
             ['id' => 'verk', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel'],
         ];
 
         // Make sure there's always at least one input field visible
         if (!count($fieldPairs)) {
-            $fieldPairs[] = ['forfatter', ''];
+            $fieldPairs[] = ['q', ''];
         }
 
         $data = [

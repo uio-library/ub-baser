@@ -64,8 +64,18 @@ class CreateBeyerTable extends Migration
             $table->index('kritiker_etternavn');
             $table->index('kritiker_fornavn');
             $table->index('kritiker_pseudonym');
-
         });
+
+        // Add column for search index
+        DB::unprepared('
+            ALTER TABLE beyer ADD COLUMN tsv tsvector;
+
+            CREATE INDEX beyer_tsv_idx ON beyer USING gin(tsv);
+
+            CREATE TRIGGER update_search_fields BEFORE INSERT OR UPDATE
+                ON beyer FOR EACH ROW EXECUTE PROCEDURE
+                tsvector_update_trigger(tsv, "pg_catalog.simple", verk_tittel, tittel, forfatter_etternavn, forfatter_fornavn, kritiker_etternavn, kritiker_fornavn);
+        ');
 
         DB::unprepared("
             CREATE VIEW beyer_view AS
@@ -86,7 +96,9 @@ class CreateBeyerTable extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP VIEW beyer_view;');
+        DB::unprepared('DROP TRIGGER update_search_fields ON beyer');
+        DB::unprepared('DROP INDEX beyer_tsv_idx');
+        DB::unprepared('DROP VIEW beyer_view');
         Schema::drop('beyer');
         Schema::drop('beyer_kritikktyper');
     }
