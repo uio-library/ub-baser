@@ -41,12 +41,17 @@ class BeyerRecord extends Record
             $repr .= ' Forfatterportrett';
         } elseif (in_array('dagskritikk', $this->kritikktype)) {
             $repr .= ' Dagskritikk';
+        } elseif (in_array('teaterkritikk', $this->kritikktype)) {
+            $repr .= ' Teaterkritikk';
         } elseif (in_array('debatt', $this->kritikktype)) {
             $repr .= ' Debattinnlegg';
         } elseif (in_array('artikkel', $this->kritikktype)) {
             $repr .= ' Artikkel';
         } else {
             $repr .= ' Kritikk';
+        }
+        if ($this->tittel) {
+            $repr .= ' «' . $this->tittel . '»';
         }
         if ($this->kritiker_fornavn) {
             $repr .= ' av ' . ($this->kritiker_fornavn ? $this->kritiker_fornavn . ' ' . $this->kritiker_etternavn : '<em>ukjent kritiker</em>');
