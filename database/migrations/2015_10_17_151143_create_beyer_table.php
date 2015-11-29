@@ -64,6 +64,7 @@ class CreateBeyerTable extends Migration
             $table->index('kritiker_etternavn');
             $table->index('kritiker_fornavn');
             $table->index('kritiker_pseudonym');
+            $table->index('publikasjon');
         });
 
         // Add column for search index

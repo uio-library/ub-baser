@@ -28,6 +28,7 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 
+Route::get('norsk-litteraturkritikk/search', 'BeyerController@search');
 Route::resource('norsk-litteraturkritikk', 'BeyerController');
 Route::resource('dommer', 'DommerController');
 Route::resource('letras', 'LetrasController');

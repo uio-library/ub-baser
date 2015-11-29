@@ -44,16 +44,18 @@ $(function() {
 
     var fields = [
     @foreach ($selectOptions as $option)
-        {placeholder: '{{ $option['placeholder'] }}'},
+        {id: '{{ $option['id'] }}', placeholder: '{{ $option['placeholder'] }}', type: '{{ $option['type'] }}'},
     @endforeach
     ];
 
+    var fieldSetTemplate = $( ".field-set" ).last().clone();
+
     function addField(n) {
         var lastSet = $( ".field-set" ).last(),
-            newSet = lastSet.clone(true),  // include event handlers
-            currentIdx = parseInt(newSet.data('index'), 10),
-            fieldSelect = newSet.find('#input' + currentIdx + 'field'),
-            fieldValue = newSet.find('#input' + currentIdx + 'value'),
+            newSet = fieldSetTemplate.clone(),
+            currentIdx = parseInt(lastSet.data('index'), 10),
+            fieldSelect = newSet.find('select'),
+            fieldValue = newSet.find('input[type="text"]'),
             newIdx = currentIdx + 1;
 
         newSet.data('index', newIdx);
@@ -77,7 +79,11 @@ $(function() {
         $('.field-select').trigger('change');
 
         // Remove add button from last set
-        lastSet.find('#addFieldButtonContainer').off('click').replaceWith('<div class="col-sm-1 help-block">og</div>');
+        lastSet.find('#addFieldButtonContainer').off('click')
+            .replaceWith('<div class="col-sm-1 help-block">og</div>');
+
+        // Add event handlers
+        activate();
     }
 
     function onFieldSelect(evt) {
@@ -85,7 +91,52 @@ $(function() {
             selIdx = this.selectedIndex,
             textField = $('#input' + fieldId + 'value');
 
-        textField.attr('placeholder', fields[selIdx].placeholder);
+        textField.val('').attr('placeholder', fields[selIdx].placeholder);
+
+        var s = textField[0].selectize;
+        if (s) {
+            console.log('Removing selectize');
+            s.destroy();
+        }
+        textField.addClass('form-control');
+
+        if (fields[selIdx].type == 'select') {
+            setTimeout(function() {
+                console.log('Adding selectize');
+                addSelectize(fields[selIdx], textField);
+            }, 0);
+        }
+    }
+
+    function addSelectize(fieldDef, fieldEl) {
+        fieldEl.removeClass('form-control').selectize({
+            valueField: 'value',
+            labelField: 'value',
+            searchField: 'value',
+            maxItems: 1,
+            closeAfterSelect: true,
+            selectOnTab: true,
+            options: [],
+            create: false,
+            load: function(query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: '{{ action("BeyerController@search") }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        field: fieldDef.id,
+                        q: query,
+                    },
+                    error: function() {
+                        callback();
+                    },
+                    success: function(res) {
+                        callback(res);
+                    }
+                });
+            }
+        });
     }
 
     function activate() {

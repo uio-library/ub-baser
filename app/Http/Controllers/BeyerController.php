@@ -93,14 +93,20 @@ class BeyerController extends RecordController
 
         if (array_has($fields, 'verk')) {
             $q = $fields['verk'] . '%';
-
             $records->where('verk_tittel', 'ilike', $q);
         }
 
+        if (array_has($fields, 'publikasjon')) {
+            $q = $fields['publikasjon'];
+            $records->where('publikasjon', '=', $q);
+        }
+
         $selectOptions = [
-            ['id' => 'q', 'label' => 'Fritekst', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...'],
-            ['id' => 'forfatter', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn'],
-            ['id' => 'verk', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel'],
+            ['id' => 'q', 'type' => 'text', 'label' => 'Fritekst', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...'],
+            ['id' => 'forfatter', 'type' => 'text', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn'],
+            ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel'],
+            ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon'],
+            ['id' => 'kritikktype', 'type' => 'text', 'label' => 'Kritikktype', 'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...'],
         ];
 
         // Make sure there's always at least one input field visible
@@ -115,6 +121,18 @@ class BeyerController extends RecordController
         ];
 
         return response()->view('beyer.index', $data);
+    }
+
+    function search(Request $request) {
+
+        $field = $request->get('field');
+        $term = $request->get('q') . '%';
+        $data = [];
+        foreach (BeyerRecordView::where($field, 'ilike', $term)->limit(25)->select($field)->get() as $res) {
+            $data[] = ['value' => $res[$field]];
+        }
+
+        return response()->json($data);
     }
 
     /**
