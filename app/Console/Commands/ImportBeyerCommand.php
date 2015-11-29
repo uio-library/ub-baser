@@ -3,10 +3,8 @@
 namespace App\Console\Commands;
 
 use App\BeyerKritikkType;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Mail\Message;
 use Punic\Language;
 
 class ImportBeyerCommand extends Command
@@ -71,10 +69,11 @@ class ImportBeyerCommand extends Command
         }
 
         $this->info('Importing Beyer');
-        $data = require(storage_path('beyer.data.php'));
+        $data = require storage_path('beyer.data.php');
         $this->comment('Loaded ' . count($data) . ' records into memory.');
         if (count($fields) != count($data[0])) {
             $this->error('Expected ' . count($fields) . ' fields, got ' . count($data[0]) . ' fields.');
+
             return;
         }
 
@@ -93,12 +92,11 @@ class ImportBeyerCommand extends Command
         $allespraak['bokmål (innslag av nynorsk)'] = 'nb';
 
         foreach ($data as &$row) {
-
             $typer = trim($row['kritikktype']);
             if (empty($typer)) {
                 $typer = [];
             } else {
-                $typer = array_map(function($t) {
+                $typer = array_map(function ($t) {
                     return mb_strtolower(trim($t));
                 }, explode(',', $typer));
             }
@@ -109,7 +107,6 @@ class ImportBeyerCommand extends Command
             // }
             $row['kritikktype'] = json_encode($typer);
 
-
             $lang = mb_strtolower($row['spraak']);
             $row['spraak'] = empty($lang) ? null : $allespraak[$lang];
 
@@ -117,17 +114,18 @@ class ImportBeyerCommand extends Command
             if (empty($verk_spraak)) {
                 $verk_spraak = [];
             } else {
-                $verk_spraak = array_map(function($t) {
+                $verk_spraak = array_map(function ($t) {
                     return mb_strtolower(trim($t, '. ?()'));
                 }, preg_split('/[,\/]/', $verk_spraak));
             }
 
-            $verk_spraak = array_map(function($lang) use ($allespraak, $row) {
+            $verk_spraak = array_map(function ($lang) use ($allespraak, $row) {
                 try {
                     return $allespraak[$lang];
                 } catch (\Exception $e) {
                     $this->error('Unknown language: ' . $lang);
                     print_r($row);
+
                     return '??';
                 }
             }, $verk_spraak);
