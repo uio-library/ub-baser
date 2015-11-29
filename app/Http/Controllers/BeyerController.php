@@ -72,7 +72,22 @@ class BeyerController extends RecordController
     {
         list($fields, $fieldPairs) = $this->parseFields($request);
 
+        $minYear = '1789';
+        $maxYear = strftime('%Y');
+        $dateRange = [$minYear, $maxYear];
+
+        $inputDateRange = preg_split('/[-:,]/', $request->get('date', ''));
+        if (count($inputDateRange) == 2 && strlen($inputDateRange[0]) == 4 && strlen($inputDateRange[1]) == 4) {
+            $dateRange = $inputDateRange;
+        }
+
         $records = BeyerRecordView::query();
+
+        if ($dateRange[0] != $minYear || $dateRange[1] != $maxYear) {
+            $records->where('aar_numeric', '>=', intval($dateRange[0]))
+                ->where('aar_numeric', '<=', intval($dateRange[1]));
+        }
+
 
         if (array_has($fields, 'q')) {
             $term = $fields['q'];
@@ -118,6 +133,9 @@ class BeyerController extends RecordController
             'records' => $records->paginate(200),
             'fields' => $fieldPairs,
             'selectOptions' => $selectOptions,
+            'date' => $dateRange,
+            'minDate' => $minYear,
+            'maxDate' => $maxYear,
         ];
 
         return response()->view('beyer.index', $data);

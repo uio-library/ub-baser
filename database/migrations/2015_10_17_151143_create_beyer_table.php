@@ -85,7 +85,8 @@ class CreateBeyerTable extends Migration
                     (beyer.forfatter_fornavn::text || ' '::text || beyer.forfatter_etternavn::text) AS forfatter_fornavn_etternavn,
                     (beyer.forfatter_etternavn::text || ' '::text || beyer.forfatter_fornavn::text) AS forfatter_etternavn_fornavn,
                     (beyer.kritiker_fornavn::text || ' '::text || beyer.kritiker_etternavn::text) AS kritiker_fornavn_etternavn,
-                    (beyer.kritiker_etternavn::text || ' '::text || beyer.kritiker_fornavn::text) AS kritiker_etternavn_fornavn
+                    (beyer.kritiker_etternavn::text || ' '::text || beyer.kritiker_fornavn::text) AS kritiker_etternavn_fornavn,
+                    substr(trim(aar),1,4) AS aar_numeric
                 FROM beyer;
         ");
     }

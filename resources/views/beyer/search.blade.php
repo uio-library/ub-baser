@@ -26,12 +26,24 @@
 
         @endforeach
 
+        <div class="form-group"id="yearRangeContainer">
+            <div class="checkbox">
+                <label for="yearRange">
+                    Utgivelsesår for kritikken:
+                </label>
+                {{ $minDate}} &nbsp; <input id="yearRange" name="date" type="text" class="span2" value="{{ $date[0] . '-' . $date[1] }}"
+                                    data-slider-min="{{ $minDate }}" data-slider-max="{{ $maxDate }}" data-slider-step="1"
+                                    data-slider-value="[{{ $date[0] }},{{ $date[1] }}]"/>
+                &nbsp; {{ $maxDate }}
+            </div>
+        </div>
+
         <div class="form-group" id="searchButtonContainer">
             <div class="col-sm-2">
                 <button type="submit" class="btn btn-primary btn-block">{{ trans('messages.search') }}</button>
             </div>
             <div class="col-sm-2">
-                <a href="{{ action('BeyerController@index') }}" class="btn btn-default btn-block">{{ trans('messages.clear') }}</a>
+                <a href="{{ action('BeyerController@index') }}" class="btn btn-default">{{ trans('messages.clear') }}</a>
             </div>
         </div>
     </form>
@@ -73,7 +85,7 @@ $(function() {
         }
 
         // Add to DOM
-        $('#searchButtonContainer').before(newSet);
+        $('#yearRangeContainer').before(newSet);
 
         // Update placeholder text
         $('.field-select').trigger('change');
@@ -91,7 +103,9 @@ $(function() {
             selIdx = this.selectedIndex,
             textField = $('#input' + fieldId + 'value');
 
-        textField.val('').attr('placeholder', fields[selIdx].placeholder);
+        // TODO: Empty val() if select actually changed?
+
+        textField.attr('placeholder', fields[selIdx].placeholder);
 
         var s = textField[0].selectize;
         if (s) {
@@ -146,6 +160,9 @@ $(function() {
     }
 
     activate();
+    $("#yearRange").slider({formatter:function(val) {
+        return val[0] + '-' + val[1];
+    }});
 
 });
 
