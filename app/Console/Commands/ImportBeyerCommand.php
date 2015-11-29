@@ -69,7 +69,7 @@ class ImportBeyerCommand extends Command
         }
 
         $this->info('Importing Beyer');
-        $data = require storage_path('beyer.data.php');
+        $data = require storage_path('import/beyer.data.php');
         $this->comment('Loaded ' . count($data) . ' records into memory.');
         if (count($fields) != count($data[0])) {
             $this->error('Expected ' . count($fields) . ' fields, got ' . count($data[0]) . ' fields.');

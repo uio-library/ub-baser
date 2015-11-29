@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\CreateUserCommand::class,
         \App\Console\Commands\DatabaseDumpCommand::class,
         \App\Console\Commands\ImportBeyerCommand::class,
+        \App\Console\Commands\ImportDommerCommand::class,
     ];
 
     /**
