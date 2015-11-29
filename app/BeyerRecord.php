@@ -63,7 +63,7 @@ class BeyerRecord extends Record
         if ($this->bind) {
             $repr .= ' bd. ' . $this->bind . '';
         }
-       if ($this->nummer) {
+        if ($this->nummer) {
             $repr .= ' nr. ' . $this->nummer . '';
         }
 

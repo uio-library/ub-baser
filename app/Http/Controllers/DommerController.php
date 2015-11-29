@@ -90,6 +90,7 @@ class DommerController extends RecordController
 
         return response()->view('dommer.create', $data);
     }
+
     /**
      * Store a newly created resource in storage.
      *

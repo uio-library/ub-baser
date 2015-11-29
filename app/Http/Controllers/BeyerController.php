@@ -10,7 +10,6 @@ use Punic\Language;
 
 class BeyerController extends RecordController
 {
-
     public function getKritikkTyper()
     {
         $kritikktyper = [];
@@ -38,13 +37,13 @@ class BeyerController extends RecordController
 
     /**
      * Turns ['input1field' => 'A', 'input1value' => 'B', 'input2field' => 'C', 'input2value' => 'D', ...]
-     * into ['A' => 'B', 'C' => 'D', ...] and [['A', 'B'], ['C', 'D']]
+     * into ['A' => 'B', 'C' => 'D', ...] and [['A', 'B'], ['C', 'D']].
      *
      * @param \Illuminate\Http\Request $request
      *
      * @return array
      */
-    function parseFields(Request $request)
+    public function parseFields(Request $request)
     {
         $fields = [];
         $fieldPairs = [];
@@ -58,6 +57,7 @@ class BeyerController extends RecordController
                 }
             }
         }
+
         return [$fields, $fieldPairs];
     }
 
@@ -88,17 +88,16 @@ class BeyerController extends RecordController
                 ->where('aar_numeric', '<=', intval($dateRange[1]));
         }
 
-
         if (array_has($fields, 'q')) {
             $term = $fields['q'];
-            $records->where(function($query) use ($term) {
-                $query->whereRaw("tsv @@ plainto_tsquery('simple', '". $term . "')");
+            $records->where(function ($query) use ($term) {
+                $query->whereRaw("tsv @@ plainto_tsquery('simple', '" . $term . "')");
             });
         }
 
         if (array_has($fields, 'forfatter')) {
             $term = preg_replace('/,/', '', $fields['forfatter']) . '%';
-            $records->where(function($query) use ($term) {
+            $records->where(function ($query) use ($term) {
                 $query->where('forfatter_fornavn_etternavn', 'ilike', $term)
                   ->orWhere('forfatter_etternavn_fornavn', 'ilike', $term)
                   ->orWhere('kritiker_fornavn_etternavn', 'ilike', $term)
@@ -130,19 +129,19 @@ class BeyerController extends RecordController
         }
 
         $data = [
-            'records' => $records->paginate(200),
-            'fields' => $fieldPairs,
+            'records'       => $records->paginate(200),
+            'fields'        => $fieldPairs,
             'selectOptions' => $selectOptions,
-            'date' => $dateRange,
-            'minDate' => $minYear,
-            'maxDate' => $maxYear,
+            'date'          => $dateRange,
+            'minDate'       => $minYear,
+            'maxDate'       => $maxYear,
         ];
 
         return response()->view('beyer.index', $data);
     }
 
-    function search(Request $request) {
-
+    public function search(Request $request)
+    {
         $field = $request->get('field');
         $term = $request->get('q') . '%';
         $data = [];
@@ -166,7 +165,7 @@ class BeyerController extends RecordController
         $record = is_null($id) ? new BeyerRecord() : BeyerRecord::findOrFail($id);
 
         $this->validate($request, [
-            'kritikktype' => 'required',
+            'kritikktype'    => 'required',
             'kommentar'      => '',
             'spraak'         => 'required|in:' . implode(',', array_keys($this->getLanguageList())),
             'tittel'         => 'max:255',
@@ -187,11 +186,11 @@ class BeyerController extends RecordController
     protected function formArguments($record)
     {
         return [
-            'columns' => config('baser.beyer.columns'),
+            'columns'       => config('baser.beyer.columns'),
             'kritikktyper'  => $this->getkritikktyper(),
-            'kjonnstyper'  => $this->getKjonnstyper(),
-            'spraakliste' => $this->getLanguageList(),
-            'record' => $record,
+            'kjonnstyper'   => $this->getKjonnstyper(),
+            'spraakliste'   => $this->getLanguageList(),
+            'record'        => $record,
         ];
     }
 
@@ -256,7 +255,7 @@ class BeyerController extends RecordController
 
         $data = [
             'columns' => config('baser.beyer.columns'),
-            'record' => BeyerRecord::findOrFail($id),
+            'record'  => BeyerRecord::findOrFail($id),
         ];
 
         return response()->view('beyer.show', $data);
