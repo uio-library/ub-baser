@@ -2,10 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\BeyerKritikkType;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Punic\Language;
 
 class ImportDommerCommand extends Command
 {
@@ -23,12 +21,14 @@ class ImportDommerCommand extends Command
      */
     protected $description = 'Import Dommer data';
 
-    protected function clearData() {
+    protected function clearData()
+    {
         \DB::delete('delete from dommer');
         \DB::delete('delete from dommer_kilder');
     }
 
-    protected function fillDommerKilderTable() {
+    protected function fillDommerKilderTable()
+    {
         $data = [
             ['id' => '1', 'navn' => 'Rettens gang'],
             ['id' => '2', 'navn' => 'Norsk retstidende'],
@@ -37,7 +37,8 @@ class ImportDommerCommand extends Command
         \DB::table('dommer_kilder')->insert($data);
     }
 
-    protected function fillDommerTable() {
+    protected function fillDommerTable()
+    {
         $data = require storage_path('import/dommer.data.php');
 
         foreach ($data as &$row) {
