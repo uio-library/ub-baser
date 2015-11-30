@@ -70,12 +70,16 @@ class CreateBeyerTable extends Migration
         // Add column for search index
         DB::unprepared('
             ALTER TABLE beyer ADD COLUMN tsv tsvector;
-
             CREATE INDEX beyer_tsv_idx ON beyer USING gin(tsv);
-
-            CREATE TRIGGER update_search_fields BEFORE INSERT OR UPDATE
+            CREATE TRIGGER update_tsv BEFORE INSERT OR UPDATE
                 ON beyer FOR EACH ROW EXECUTE PROCEDURE
                 tsvector_update_trigger(tsv, "pg_catalog.simple", verk_tittel, tittel, forfatter_etternavn, forfatter_fornavn, kritiker_etternavn, kritiker_fornavn);
+
+            ALTER TABLE beyer ADD COLUMN tsv_person tsvector;
+            CREATE INDEX beyer_tsv_person_idx ON beyer USING gin(tsv_person);
+            CREATE TRIGGER update_tsv_person BEFORE INSERT OR UPDATE
+                ON beyer FOR EACH ROW EXECUTE PROCEDURE
+                tsvector_update_trigger(tsv_person, "pg_catalog.simple", forfatter_etternavn, forfatter_fornavn, kritiker_etternavn, kritiker_fornavn);
         ');
 
         DB::unprepared("
@@ -98,7 +102,9 @@ class CreateBeyerTable extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP TRIGGER update_search_fields ON beyer');
+        DB::unprepared('DROP TRIGGER update_tsv_person ON beyer');
+        DB::unprepared('DROP INDEX beyer_tsv_person_idx');
+        DB::unprepared('DROP TRIGGER update_tsv ON beyer');
         DB::unprepared('DROP INDEX beyer_tsv_idx');
         DB::unprepared('DROP VIEW beyer_view');
         Schema::drop('beyer');

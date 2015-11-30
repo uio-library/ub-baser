@@ -90,19 +90,12 @@ class BeyerController extends RecordController
 
         if (array_has($fields, 'q')) {
             $term = $fields['q'];
-            $records->where(function ($query) use ($term) {
-                $query->whereRaw("tsv @@ plainto_tsquery('simple', '" . $term . "')");
-            });
+            $records->whereRaw("tsv @@ plainto_tsquery('simple', '" . pg_escape_string($term) . "')");
         }
 
-        if (array_has($fields, 'forfatter')) {
-            $term = preg_replace('/,/', '', $fields['forfatter']) . '%';
-            $records->where(function ($query) use ($term) {
-                $query->where('forfatter_fornavn_etternavn', 'ilike', $term)
-                  ->orWhere('forfatter_etternavn_fornavn', 'ilike', $term)
-                  ->orWhere('kritiker_fornavn_etternavn', 'ilike', $term)
-                  ->orWhere('kritiker_etternavn_fornavn', 'ilike', $term);
-            });
+        if (array_has($fields, 'person')) {
+            $term = preg_replace('/,/', '', $fields['person']) . '%';
+            $records->whereRaw("tsv_person @@ plainto_tsquery('simple', '" . pg_escape_string($term) . "')");
         }
 
         if (array_has($fields, 'verk')) {
@@ -117,7 +110,7 @@ class BeyerController extends RecordController
 
         $selectOptions = [
             ['id' => 'q', 'type' => 'text', 'label' => 'Fritekst', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...'],
-            ['id' => 'forfatter', 'type' => 'text', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn'],
+            ['id' => 'person', 'type' => 'text', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn'],
             ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel'],
             ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon'],
             ['id' => 'kritikktype', 'type' => 'text', 'label' => 'Kritikktype', 'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...'],
