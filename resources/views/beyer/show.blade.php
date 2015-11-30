@@ -14,18 +14,20 @@
 
             <table class="table">
                 @foreach ($columns as $column)
-                <tr>
-                    <th>
-                        {{ $column['field'] }}
-                    </th>
-                    <td>
-                        @if ($column['type'] == 'array')
-                            {{ implode(', ', $record->{$column['field']}) }}
-                        @else
-                            {{ $record->{$column['field']} }}
-                        @endif
-                    </td>
-                </tr>
+                    @if (!empty($record->{$column['field']}))
+                    <tr>
+                        <th>
+                            {{ trans('beyer.' . $column['field']) }}
+                        </th>
+                        <td>
+                            @if ($column['type'] == 'array')
+                                {{ implode(', ', $record->{$column['field']}) }}
+                            @else
+                                {{ $record->{$column['field']} }}
+                            @endif
+                        </td>
+                    </tr>
+                    @endif
                 @endforeach
             </table>
 

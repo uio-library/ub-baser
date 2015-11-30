@@ -21,51 +21,122 @@ class BeyerRecord extends Record
         'verk_spraak' => 'array',
     ];
 
-    public function representation()
+    public function formatKritikktype($x)
+    {
+        if (in_array('forfatterportrett', $x)) {
+            return 'Forfatterportrett';
+        } elseif (in_array('dagskritikk', $x)) {
+            return 'Dagskritikk';
+        } elseif (in_array('teaterkritikk', $x)) {
+            return 'Teaterkritikk';
+        } elseif (in_array('debatt', $x)) {
+            return 'Debattinnlegg';
+        } elseif (in_array('artikkel', $x)) {
+            return 'Artikkel';
+        }
+        return 'Kritikk';
+    }
+
+    public function formatKritikktypeSkilleord($x)
+    {
+        if (in_array('forfatterportrett', $x)) {
+            return 'av';
+        } elseif (in_array('dagskritikk', $x)) {
+            return 'av';
+        } elseif (in_array('teaterkritikk', $x)) {
+            return 'av';
+        } elseif (in_array('debatt', $x)) {
+            return 'om';
+        } elseif (in_array('artikkel', $x)) {
+            return 'om';
+        }
+        return 'av';
+    }
+
+    public function formatForfatter($etternavn, $fornavn, $kommentar)
     {
         $repr = '';
-        if ($this->forfatter_etternavn) {
-            $repr .= $this->forfatter_fornavn . ' ' . $this->forfatter_etternavn;
+        if ($etternavn) {
+            $repr .= $fornavn . ' ' . $etternavn;
+            if ($kommentar) {
+                $repr .= ' (' . $kommentar . ')';
+            }
+        }
+
+        return $repr;
+    }
+
+    public function formatVerk()
+    {
+        $repr = '';
+
+        $forfatter = $this->formatForfatter($this->forfatter_etternavn, $this->forfatter_fornavn, $this->forfatter_kommentar);
+        $repr .= $forfatter;
+        if ($forfatter && $this->verk_tittel) {
+            $repr .= ': ';
         }
         if ($this->verk_tittel) {
-            $repr .= ': «' . $this->verk_tittel . '»';
+            $repr .= '«' . $this->verk_tittel . '»';
         }
         if ($this->verk_aar) {
             $repr .= ' (' . $this->verk_aar . ')';
         }
-        if (strlen($repr)) {
-            $repr .= '.';
+
+        return $repr;
+    }
+
+    public function formatKritikk()
+    {
+        $repr = '';
+        $kritiker = $this->formatForfatter($this->kritiker_etternavn, $this->kritiker_fornavn, '');
+        $repr .= $kritiker ?: 'ukjent';
+
+        if ($this->aar) {
+            $repr .= ' (' . $this->aar . ')';
         }
 
-        if (in_array('forfatterportrett', $this->kritikktype)) {
-            $repr .= ' Forfatterportrett';
-        } elseif (in_array('dagskritikk', $this->kritikktype)) {
-            $repr .= ' Dagskritikk';
-        } elseif (in_array('teaterkritikk', $this->kritikktype)) {
-            $repr .= ' Teaterkritikk';
-        } elseif (in_array('debatt', $this->kritikktype)) {
-            $repr .= ' Debattinnlegg';
-        } elseif (in_array('artikkel', $this->kritikktype)) {
-            $repr .= ' Artikkel';
-        } else {
-            $repr .= ' Kritikk';
+        if (strlen($repr) && $this->tittel) {
+            $repr .= '. ';
         }
+
         if ($this->tittel) {
-            $repr .= ' «' . $this->tittel . '»';
+            $repr .= '«' . $this->tittel . '»';
         }
-        if ($this->kritiker_fornavn) {
-            $repr .= ' av ' . ($this->kritiker_fornavn ? $this->kritiker_fornavn . ' ' . $this->kritiker_etternavn : '<em>ukjent kritiker</em>');
+
+        if (strlen($repr) && $this->publikasjon) {
+            $repr .= '. ';
         }
+
         if ($this->publikasjon) {
-            $repr .= ' i  <em>' . $this->publikasjon . '</em>';
+            $repr .= '<em>' . $this->publikasjon . '</em>';
         }
-        $repr .= $this->aar ? ' (' . $this->aar . ')' : '';
         if ($this->bind) {
             $repr .= ' bd. ' . $this->bind . '';
         }
         if ($this->nummer) {
             $repr .= ' nr. ' . $this->nummer . '';
         }
+
+        if (strlen($repr)) {
+            $repr .= '.';
+        }
+
+        return $repr;
+    }
+
+    public function representation()
+    {
+        $repr = $this->formatKritikk();
+        $kritikktype = $this->formatKritikktype($this->kritikktype);
+        $verk = $this->formatVerk();
+
+        $repr .= ' ' . $kritikktype;
+
+        if ($kritikktype && $verk) {
+            $repr .= ' ' . $this->formatKritikktypeSkilleord($this->kritikktype) . ': ';
+        }
+
+        $repr .= $verk;
 
         return $repr;
     }
