@@ -6,7 +6,7 @@
 
         <ul>
             <li>
-                <a href="{{ action('BeyerController@index') }}"><strong>Norsk litteraturkritikk / Beyer</strong></a>
+                <a href="{{ action('BeyerController@index') }}">Norsk litteraturkritikk</a>
             </li>
             <li>
                 <a href="{{ action('OpesController@index') }}">OPES</a>

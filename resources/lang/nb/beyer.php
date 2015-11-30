@@ -2,14 +2,14 @@
 
 return [
 
-    'type' => 'Type',
+    'kritikktype' => 'Type',
     'utgivelsessted' => 'Utgivelsessted',
     'spraak' => 'Språk',
 
     'tittel' => 'Tittel',
     'kommentar' => 'Kommentar',
     'publikasjon' => 'Publikasjon',
-    'aar' => 'År',
+    'aar' => 'Utgivelsesår',
     'utgivelsessted' => 'Sted',
     'aargang' => 'Årgang',
     'dato' => 'Dato',
@@ -19,17 +19,23 @@ return [
     'sidetall' => 'Sidetall',
     'utgivelseskommentar' => 'Utgivelseskommentar',
 
-    'kritiker_etternavn' => 'Etternavn',
-    'kritiker_fornavn' => 'Fornavn',
-    'kritiker_pseudonym' => 'Pseudonym',
-    'kritiker_kjonn' => 'Kjønn',
-    'kritiker_kommentar' => 'Kommentar',
+    'kritiker_etternavn' => 'Kritiker: Etternavn',
+    'kritiker_fornavn' => 'Kritiker: Fornavn',
+    'kritiker_pseudonym' => 'Kritiker: Pseudonym',
+    'kritiker_kjonn' => 'Kritiker: Kjønn',
+    'kritiker_kommentar' => 'Kritiker: Kommentar',
 
-    'verk_tittel' => 'Tittel',
-    'verk_aar' => 'År',
-    'verk_sjanger' => 'Sjanger',
-    'verk_spraak' => 'Språk',
-    'verk_kommentar' => 'Kommentar',
-    'verk_utgivelsessted' => 'Utgivelsessted',
+    'forfatter_etternavn' => 'Forfatter: Etternavn',
+    'forfatter_fornavn' => 'Forfatter: Fornavn',
+    'forfatter_pseudonym' => 'Forfatter: Pseudonym',
+    'forfatter_kjonn' => 'Forfatter: Kjønn',
+    'forfatter_kommentar' => 'Forfatter: Kommentar',
+
+    'verk_tittel' => 'Omtalt verk: Tittel',
+    'verk_aar' => 'Omtalt verk: Utgivelsesår',
+    'verk_sjanger' => 'Omtalt verk: Sjanger',
+    'verk_spraak' => 'Omtalt verk: Språk',
+    'verk_kommentar' => 'Omtalt verk: Kommentar',
+    'verk_utgivelsessted' => 'Omtalt verk: Utgivelsessted',
 
 ];
