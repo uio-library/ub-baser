@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class BeyerTableSeeder extends Seeder
+class LitteraturkritikkTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,7 @@ class BeyerTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('beyer_kritikktyper')->insert([
+        DB::table('litteraturkritikk_kritikktyper')->insert([
             ['navn' => 'avhandling'],
             ['navn' => 'bloggpost'],
             ['navn' => 'bokanmeldelse'],

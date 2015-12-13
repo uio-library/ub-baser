@@ -1,4 +1,4 @@
-@extends('layouts.beyer')
+@extends('layouts.litteraturkritikk')
 
 @section('content')
 
@@ -6,7 +6,7 @@
             Norsk litteraturkritikk
         </h2>
 
-        @can('beyer')
+        @can('litteraturkritikk')
             <p>
                 <a href="{{ action('BeyerController@create') }}">+ Opprett ny post</a>
             </p>
@@ -15,7 +15,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
 
-                @include('beyer.search')
+                @include('litteraturkritikk.search')
 
             </div>
         </div>

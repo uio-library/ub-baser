@@ -1,4 +1,4 @@
-@extends('layouts.beyer')
+@extends('layouts.litteraturkritikk')
 
 @section('content')
 
@@ -11,7 +11,7 @@
     <form method="POST" action="{{ action('BeyerController@store') }}" class="form-horizontal">
         {!! csrf_field() !!}
 
-        @include('beyer.form')
+        @include('litteraturkritikk.form')
 
         <div class="form-group">
             <div class="col-sm-10">

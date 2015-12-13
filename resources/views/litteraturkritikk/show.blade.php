@@ -1,11 +1,11 @@
-@extends('layouts.beyer')
+@extends('layouts.litteraturkritikk')
 
 @section('content')
 
         <h2>
             Post {{ $record->id }}
         </h2>
-        @can('beyer')
+        @can('litteraturkritikk')
             <p>
                 <a href="{{ action('BeyerController@edit', $record->id) }}">[Rediger]</a>
             </p>
@@ -17,7 +17,7 @@
                     @if (!empty($record->{$column['field']}))
                     <tr>
                         <th>
-                            {{ trans('beyer.' . $column['field']) }}
+                            {{ trans('litteraturkritikk.' . $column['field']) }}
                         </th>
                         <td>
                             @if ($column['type'] == 'array')

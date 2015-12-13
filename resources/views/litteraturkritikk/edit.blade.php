@@ -1,4 +1,4 @@
-@extends('layouts.beyer')
+@extends('layouts.litteraturkritikk')
 
 @section('content')
 
@@ -12,7 +12,7 @@
         {!! csrf_field() !!}
         <input type="hidden" name="_method" value="PUT">
 
-        @include('beyer.form')
+        @include('litteraturkritikk.form')
 
         <div class="form-group">
             <div class="col-sm-10">

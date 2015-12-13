@@ -7,21 +7,21 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Punic\Language;
 
-class ImportBeyerCommand extends Command
+class ImportLitteraturkritikkCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:beyer';
+    protected $signature = 'import:litteraturkritikk';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import Beyer data';
+    protected $description = 'Import data for Norsk litteraturkritikk';
 
     /**
      * Execute the console command.
@@ -74,8 +74,8 @@ class ImportBeyerCommand extends Command
             return;
         }
 
-        $this->info('Importing Beyer');
-        $data = require storage_path('import/beyer.data.php');
+        $this->info('Importing Norsk litteraturkritikk');
+        $data = require storage_path('import/litteraturkritikk.data.php');
         $this->comment('Loaded ' . count($data) . ' records into memory.');
         if (count($fields) != count($data[0])) {
             $this->error('Expected ' . count($fields) . ' fields, got ' . count($data[0]) . ' fields.');
@@ -145,11 +145,11 @@ class ImportBeyerCommand extends Command
         $chunks = array_chunk($data, 100);
 
         $this->comment('Clearing DB');
-        \DB::delete('delete from beyer');
+        \DB::delete('delete from litteraturkritikk');
 
         $this->comment('Inserting rows');
         foreach ($chunks as $chunk) {
-            \DB::table('beyer')->insert($chunk);
+            \DB::table('litteraturkritikk')->insert($chunk);
         }
         $this->info('Done');
     }

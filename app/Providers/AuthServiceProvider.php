@@ -23,7 +23,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public static $rights = [
         'admin',
-        'beyer',
+        'litteraturkritikk',
         'letras',
         'opes',
         'dommer',

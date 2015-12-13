@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBeyerTable extends Migration
+class CreateLitteraturkritikkTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreateBeyerTable extends Migration
      */
     public function up()
     {
-        Schema::create('beyer_kritikktyper', function (Blueprint $table) {
+        Schema::create('litteraturkritikk_kritikktyper', function (Blueprint $table) {
             $table->increments('id');
             $table->string('navn');
         });
 
-        Schema::create('beyer', function (Blueprint $table) {
+        Schema::create('litteraturkritikk', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
 
@@ -69,29 +69,29 @@ class CreateBeyerTable extends Migration
 
         // Add column for search index
         DB::unprepared('
-            ALTER TABLE beyer ADD COLUMN tsv tsvector;
-            CREATE INDEX beyer_tsv_idx ON beyer USING gin(tsv);
+            ALTER TABLE litteraturkritikk ADD COLUMN tsv tsvector;
+            CREATE INDEX litteraturkritikk_tsv_idx ON litteraturkritikk USING gin(tsv);
             CREATE TRIGGER update_tsv BEFORE INSERT OR UPDATE
-                ON beyer FOR EACH ROW EXECUTE PROCEDURE
+                ON litteraturkritikk FOR EACH ROW EXECUTE PROCEDURE
                 tsvector_update_trigger(tsv, "pg_catalog.simple", verk_tittel, tittel, forfatter_etternavn, forfatter_fornavn, kritiker_etternavn, kritiker_fornavn);
 
-            ALTER TABLE beyer ADD COLUMN tsv_person tsvector;
-            CREATE INDEX beyer_tsv_person_idx ON beyer USING gin(tsv_person);
+            ALTER TABLE litteraturkritikk ADD COLUMN tsv_person tsvector;
+            CREATE INDEX litteraturkritikk_tsv_person_idx ON litteraturkritikk USING gin(tsv_person);
             CREATE TRIGGER update_tsv_person BEFORE INSERT OR UPDATE
-                ON beyer FOR EACH ROW EXECUTE PROCEDURE
+                ON litteraturkritikk FOR EACH ROW EXECUTE PROCEDURE
                 tsvector_update_trigger(tsv_person, "pg_catalog.simple", forfatter_etternavn, forfatter_fornavn, kritiker_etternavn, kritiker_fornavn);
         ');
 
         DB::unprepared("
-            CREATE VIEW beyer_view AS
+            CREATE VIEW litteraturkritikk_view AS
                 SELECT
-                    beyer.*,
-                    (beyer.forfatter_fornavn::text || ' '::text || beyer.forfatter_etternavn::text) AS forfatter_fornavn_etternavn,
-                    (beyer.forfatter_etternavn::text || ' '::text || beyer.forfatter_fornavn::text) AS forfatter_etternavn_fornavn,
-                    (beyer.kritiker_fornavn::text || ' '::text || beyer.kritiker_etternavn::text) AS kritiker_fornavn_etternavn,
-                    (beyer.kritiker_etternavn::text || ' '::text || beyer.kritiker_fornavn::text) AS kritiker_etternavn_fornavn,
+                    litteraturkritikk.*,
+                    (litteraturkritikk.forfatter_fornavn::text || ' '::text || litteraturkritikk.forfatter_etternavn::text) AS forfatter_fornavn_etternavn,
+                    (litteraturkritikk.forfatter_etternavn::text || ' '::text || litteraturkritikk.forfatter_fornavn::text) AS forfatter_etternavn_fornavn,
+                    (litteraturkritikk.kritiker_fornavn::text || ' '::text || litteraturkritikk.kritiker_etternavn::text) AS kritiker_fornavn_etternavn,
+                    (litteraturkritikk.kritiker_etternavn::text || ' '::text || litteraturkritikk.kritiker_fornavn::text) AS kritiker_etternavn_fornavn,
                     substr(trim(aar),1,4) AS aar_numeric
-                FROM beyer;
+                FROM litteraturkritikk;
         ");
     }
 
@@ -102,12 +102,12 @@ class CreateBeyerTable extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP TRIGGER update_tsv_person ON beyer');
-        DB::unprepared('DROP INDEX beyer_tsv_person_idx');
-        DB::unprepared('DROP TRIGGER update_tsv ON beyer');
-        DB::unprepared('DROP INDEX beyer_tsv_idx');
-        DB::unprepared('DROP VIEW beyer_view');
-        Schema::drop('beyer');
-        Schema::drop('beyer_kritikktyper');
+        DB::unprepared('DROP TRIGGER update_tsv_person ON litteraturkritikk');
+        DB::unprepared('DROP INDEX litteraturkritikk_tsv_person_idx');
+        DB::unprepared('DROP TRIGGER update_tsv ON litteraturkritikk');
+        DB::unprepared('DROP INDEX litteraturkritikk_tsv_idx');
+        DB::unprepared('DROP VIEW litteraturkritikk_view');
+        Schema::drop('litteraturkritikk');
+        Schema::drop('litteraturkritikk_kritikktyper');
     }
 }

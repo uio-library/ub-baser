@@ -136,7 +136,7 @@ class BeyerController extends RecordController
             'maxDate'       => $maxYear,
         ];
 
-        return response()->view('beyer.index', $data);
+        return response()->view('litteraturkritikk.index', $data);
     }
 
     public function search(Request $request)
@@ -208,11 +208,11 @@ class BeyerController extends RecordController
      */
     public function create()
     {
-        $this->authorize('beyer');
+        $this->authorize('litteraturkritikk');
 
         $data = $this->formArguments(new BeyerRecord());
 
-        return response()->view('beyer.create', $data);
+        return response()->view('litteraturkritikk.create', $data);
     }
 
     /**
@@ -224,12 +224,12 @@ class BeyerController extends RecordController
      */
     public function edit($id)
     {
-        $this->authorize('beyer');
+        $this->authorize('litteraturkritikk');
 
         $record = BeyerRecord::findOrFail($id);
         $data = $this->formArguments($record);
 
-        return response()->view('beyer.edit', $data);
+        return response()->view('litteraturkritikk.edit', $data);
     }
 
     /**
@@ -241,7 +241,7 @@ class BeyerController extends RecordController
      */
     public function store(Request $request)
     {
-        $this->authorize('beyer');
+        $this->authorize('litteraturkritikk');
 
         $record = $this->updateOrCreate($request);
 
@@ -265,7 +265,7 @@ class BeyerController extends RecordController
             'record'  => BeyerRecord::findOrFail($id),
         ];
 
-        return response()->view('beyer.show', $data);
+        return response()->view('litteraturkritikk.show', $data);
     }
 
     /**
@@ -278,7 +278,7 @@ class BeyerController extends RecordController
      */
     public function update(Request $request, $id)
     {
-        $this->authorize('beyer');
+        $this->authorize('litteraturkritikk');
 
         $this->updateOrCreate($request, $id);
 
