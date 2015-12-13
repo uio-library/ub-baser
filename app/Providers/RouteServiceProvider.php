@@ -4,10 +4,10 @@ namespace App\Providers;
 
 use App\Http\Controllers\PageController;
 use App\Page;
-use PDOException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
+use PDOException;
 
 class RouteServiceProvider extends ServiceProvider
 {

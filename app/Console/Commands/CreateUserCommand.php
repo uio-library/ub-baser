@@ -35,18 +35,20 @@ class CreateUserCommand extends Command
         $credentials = ['email' => $this->argument('email')];
 
         $user = User::firstOrNew($credentials);
-        if ($user->isDirty()) {
-            $user->name = $this->argument('name');
-            $user->rights = $this->option('admin') ? ['admin'] : [];
-            $user->save();
-
-            \Password::sendResetLink($credentials, function (Message $message) {
-                $message->subject('Velkommen til ub-baser');
-            });
-
-            $this->info('User created, email sent to ' . $user->email . '.');
-        } else {
+        if (!$user->isDirty()) {
             $this->info('User already exists');
+
+            return;
         }
+
+        $user->name = $this->argument('name');
+        $user->rights = $this->option('admin') ? ['admin'] : [];
+        $user->save();
+
+        \Password::sendResetLink($credentials, function (Message $message) {
+            $message->subject('Velkommen til ub-baser');
+        });
+
+        $this->info('User created, email sent to ' . $user->email . '.');
     }
 }

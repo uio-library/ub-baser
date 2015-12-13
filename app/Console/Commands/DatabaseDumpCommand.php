@@ -101,13 +101,14 @@ class DatabaseDumpCommand extends Command
         $process = new Process($command);
         $process->setTimeout(60);
         $process->run();
-        if ($process->isSuccessful()) {
-            $this->info('Database dumped successfully to ' . $destinationFile);
-        } else {
+        if (!$process->isSuccessful()) {
             $this->error('Could not dump database to ' . $destinationFile);
             $this->error($process->getErrorOutput());
+
+            return;
         }
 
         $this->filterOutOperatorDefinitions($destinationFile);
+        $this->info('Database dumped successfully to ' . $destinationFile);
     }
 }

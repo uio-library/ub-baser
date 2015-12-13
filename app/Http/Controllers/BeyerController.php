@@ -266,7 +266,7 @@ class BeyerController extends RecordController
 
         $data = [
             'columns' => config('baser.beyer.columns'),
-            'record'  => BeyerRecord::findOrFail($id),
+            'record'  => $record,
         ];
 
         return response()->view('litteraturkritikk.show', $data);

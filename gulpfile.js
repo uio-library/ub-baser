@@ -1,5 +1,4 @@
 var elixir = require('laravel-elixir');
-var runSequence = require('run-sequence');
 
 require('laravel-elixir-bower');
 
