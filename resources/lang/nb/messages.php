@@ -7,6 +7,7 @@ return [
     'deleteuser' => 'Slett bruker',
     'edit' => 'Rediger',
     'save' => 'Lagre',
+    'update' => 'Lagre',
     'manageusers' => 'Behandle brukere',
     'users' => 'Brukere',
     'create' => 'Opprett',

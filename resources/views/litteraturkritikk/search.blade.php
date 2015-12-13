@@ -40,7 +40,7 @@
 
         <div class="form-group" id="searchButtonContainer">
             <div class="col-sm-2">
-                <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-search"></i> {{ trans('messages.search') }}</button>
+                <button type="submit" class="btn btn-primary btn-block"><i class="zmdi zmdi-search"></i> {{ trans('messages.search') }}</button>
             </div>
             <div class="col-sm-2">
                 <a href="{{ action('BeyerController@index') }}" class="btn btn-default">{{ trans('messages.clear') }}</a>
