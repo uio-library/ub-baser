@@ -63,6 +63,13 @@ class ImportDommerCommand extends Command
      */
     public function handle()
     {
+
+        $this->info('');
+        $this->warn(' This will re-populate the table from scratch. Any user contributed data will be lost!');
+        if (!$this->confirm('Are you sure you want to continue? [y|N]')) {
+            return;
+        }
+
         $this->comment('Clearing tables');
         $this->clearData();
 

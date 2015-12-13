@@ -68,6 +68,12 @@ class ImportBeyerCommand extends Command
             $kritikktyper[mb_strtolower($kilde->navn)] = $kilde->id;
         }
 
+        $this->info('');
+        $this->warn(' This will re-populate the table from scratch. Any user contributed data will be lost!');
+        if (!$this->confirm('Are you sure you want to continue? [y|N]')) {
+            return;
+        }
+
         $this->info('Importing Beyer');
         $data = require storage_path('import/beyer.data.php');
         $this->comment('Loaded ' . count($data) . ' records into memory.');
