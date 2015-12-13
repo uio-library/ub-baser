@@ -14,10 +14,8 @@ class PageController extends Controller
      */
     public function index()
     {
-        $pages = Page::query();
-
         $data = [
-            'records'       => $records->paginate(200),
+            'pages' => Page::get(),
         ];
 
         return response()->view('pages.index', $data);

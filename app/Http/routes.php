@@ -49,4 +49,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('admin/users', 'Admin\UserController@store');
     Route::post('admin/users/delete/{id}', 'Admin\UserController@destroy');
 
+    Route::get('admin/pages', 'PageController@index');
+
 });

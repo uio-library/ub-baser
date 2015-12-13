@@ -9,6 +9,7 @@ return [
     'save' => 'Lagre',
     'update' => 'Lagre',
     'manageusers' => 'Behandle brukere',
+    'managepages' => 'Behandle sider',
     'users' => 'Brukere',
     'create' => 'Opprett',
     'createuser' => 'Opprett ny bruker',
