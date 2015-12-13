@@ -2,6 +2,8 @@
 [![StyleCI](https://styleci.io/repos/44453446/shield)](https://styleci.io/repos/44453446)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/scriptotek/ub-baser.svg?style=flat-square)](https://scrutinizer-ci.com/g/scriptotek/ub-baser/?branch=master)
 [![Code Climate](https://img.shields.io/codeclimate/github/scriptotek/ub-baser.svg?style=flat-square)](https://codeclimate.com/github/scriptotek/ub-baser)
+[![Codacy](https://img.shields.io/codacy/917a1e933d9044c0ba899514b59f29d2.svg?style=flat-square)](https://www.codacy.com/app/danmichaelo/ub-baser)
+
 
 ## UB-baser
 
