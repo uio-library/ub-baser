@@ -27,4 +27,19 @@ class ImportCommand extends Command
         }
         return $data;
     }
+
+    public function getData($filename)
+    {
+        $data = json_decode(file_get_contents(storage_path($filename), true));
+        $this->comment('Loaded ' . count($data) . ' records into memory.');
+
+        $data = $this->mapToFields($data);
+
+        foreach ($data as &$row) {
+            $row['created_at'] = Carbon::now();
+            $row['updated_at'] = Carbon::now();
+        }
+
+        return $data;
+    }
 }

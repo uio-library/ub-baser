@@ -47,18 +47,7 @@ class ImportDommerCommand extends ImportCommand
 
     protected function fillDommerTable()
     {
-        $this->info('Importing Dommer');
-
-        $data = json_decode(file_get_contents(storage_path('import/dommer.json'), true));
-        $this->comment('Loaded ' . count($data) . ' records into memory.');
-
-        $data = $this->mapToFields($data);
-
-        foreach ($data as &$row) {
-            $row['created_at'] = Carbon::now();
-            $row['updated_at'] = Carbon::now();
-        }
-
+        $data = $this->getData('import/dommer.json');
         \DB::table('dommer')->insert($data);
     }
 

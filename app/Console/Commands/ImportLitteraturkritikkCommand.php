@@ -74,12 +74,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             return;
         }
 
-        $this->info('Importing Norsk litteraturkritikk');
-
-        $data = json_decode(file_get_contents(storage_path('import/litteraturkritikk.json'), true));
-        $this->comment('Loaded ' . count($data) . ' records into memory.');
-
-        $data = $this->mapToFields($data);
+        $data = $this->getData('import/litteraturkritikk.json');
 
         $allespraak = array_flip(Language::getAll(true, true, 'nb'));
         $allespraak['finsk-svensk'] = 'sv';
@@ -127,9 +122,6 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             }, $verk_spraak);
 
             $row['verk_spraak'] = json_encode($verk_spraak);
-
-            $row['created_at'] = Carbon::now();
-            $row['updated_at'] = Carbon::now();
         }
 
         $chunks = array_chunk($data, 100);

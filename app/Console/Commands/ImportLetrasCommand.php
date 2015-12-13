@@ -44,16 +44,7 @@ class ImportLetrasCommand extends ImportCommand
 
     protected function fillTable()
     {
-        $data = json_decode(file_get_contents(storage_path('import/letras.json'), true));
-        $this->comment('Loaded ' . count($data) . ' records into memory.');
-
-        $data = $this->mapToFields($data);
-
-        foreach ($data as &$row) {
-            $row['created_at'] = Carbon::now();
-            $row['updated_at'] = Carbon::now();
-        }
-
+        $data = $this->getData('import/letras.json');
         \DB::table('letras')->insert($data);
     }
 
