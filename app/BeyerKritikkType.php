@@ -9,7 +9,7 @@ class BeyerKritikkType extends \Eloquent
      *
      * @var string
      */
-    protected $table = 'beyer_kritikktyper';
+    protected $table = 'litteraturkritikk_kritikktyper';
 
     public function __toString()
     {
