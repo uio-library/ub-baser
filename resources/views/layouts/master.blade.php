@@ -5,14 +5,14 @@
     <title>{{ isset($title) ? $title . ' - ' : '' }}@yield('db-title')</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ elixir('css/app.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/vendor.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ elixir('css/app.css') }}">
     @yield('head')
 
 </head>
 <body>
 
-    <header>
+    <header class="container">
         <div id="user">
             @if (Auth::check())
                 {!! trans('messages.loggedinas', [
@@ -31,7 +31,10 @@
 
         </div>
 
-        <h1><a href="@yield('db-url', '/')">@yield('db-title', 'UB-baser')</a></h1>
+        <h1>
+            <a href="/">UB-baser</a>
+            @yield('header-part', '')
+        </h1>
 
     </header>
 

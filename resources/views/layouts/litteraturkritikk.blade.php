@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-@section('db-url', '/norsk-litteraturkritikk')
-@section('db-title', 'Norsk litteraturkritikk')
+@section('header-part', ': <a href="/norsk-litteraturkritikk">Norsk litteraturkritikk</a>')
+
 
 @section('head')
 

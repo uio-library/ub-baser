@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
-@section('db-url', '/dommer')
-@section('db-title', 'Dommers populærnavn')
+@section('header-part', ': <a href="/dommer">Dommers populærnavn</a>')
 
 @section('head')
 
