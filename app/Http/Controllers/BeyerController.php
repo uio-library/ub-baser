@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BeyerKritikkType;
 use App\BeyerRecord;
 use App\BeyerRecordView;
+use App\Page;
 use Illuminate\Http\Request;
 use Punic\Language;
 
@@ -127,7 +128,10 @@ class BeyerController extends RecordController
             $fieldPairs[] = ['q', ''];
         }
 
+        $intro = Page::where('name', '=', 'litteraturkritikk.intro')->first();
+
         $data = [
+            'intro'         => $intro->body,
             'records'       => $records->paginate(200),
             'fields'        => $fieldPairs,
             'selectOptions' => $selectOptions,

@@ -2,15 +2,17 @@
 
 @section('content')
 
-        <h2>
-            Norsk litteraturkritikk
-        </h2>
-
         @can('litteraturkritikk')
             <p>
-                <a href="{{ action('BeyerController@create') }}">+ Opprett ny post</a>
+                <a href="{{ action('BeyerController@create') }}"><i class="fa fa-plus-circle"></i> Opprett ny post</a>
+                &nbsp;
+                <a href="{{ route('litteraturkritikk.intro.edit') }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
             </p>
         @endif
+
+        <p>
+            {!! $intro !!}
+        </p>
 
         <div class="panel panel-default">
             <div class="panel-body">
