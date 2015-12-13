@@ -30,8 +30,8 @@ class AddExtraOperators extends Migration
      */
     public function down()
     {
-        DB::statement('DROP OPERATOR ~@& (jsonb, text[])');
-        DB::statement('DROP OPERATOR ~@| (jsonb, text[])');
-        DB::statement('DROP OPERATOR ~@ (jsonb, text)');
+        DB::statement('DROP OPERATOR IF EXISTS ~@& (jsonb, text[])');
+        DB::statement('DROP OPERATOR IF EXISTS ~@| (jsonb, text[])');
+        DB::statement('DROP OPERATOR IF EXISTS ~@ (jsonb, text)');
     }
 }

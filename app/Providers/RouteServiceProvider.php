@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Http\Controllers\PageController;
 use App\Page;
-use Illuminate\Database\DatabaseManager as DB;
+use PDOException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
@@ -34,6 +34,34 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot($router);
     }
 
+    public function mapPage(Router $router, Page $page)
+    {
+        $router->get($page->route, ['as' => $page->name, function () use ($page) {
+            $c = new PageController();
+
+            return $c->show($page);
+        }]);
+
+        $router->get($page->route . '/edit', ['as' => $page->name . '.edit', function () use ($page) {
+            $c = new PageController();
+
+            return $c->edit($page);
+        }]);
+
+        $router->post($page->route . '/update', ['as' => $page->name . '.update', function (Request $request) use ($page) {
+            $c = new PageController();
+
+            return $c->update($request, $page);
+        }]);
+    }
+
+    public function mapPages(Router $router)
+    {
+        foreach (Page::all() as $page) {
+            $this->mapPage($router, $page);
+        }
+    }
+
     /**
      * Define the routes for the application.
      *
@@ -41,26 +69,12 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function map(DB $db, Router $router)
+    public function map(Router $router)
     {
-        foreach (Page::all() as $page) {
-            $router->get($page->route, ['as' => $page->name, function () use ($page) {
-                $c = new PageController();
-
-                return $c->show($page);
-            }]);
-
-            $router->get($page->route . '/edit', ['as' => $page->name . '.edit', function () use ($page) {
-                $c = new PageController();
-
-                return $c->edit($page);
-            }]);
-
-            $router->post($page->route . '/update', ['as' => $page->name . '.update', function (Request $request) use ($page) {
-                $c = new PageController();
-
-                return $c->update($request, $page);
-            }]);
+        try {
+            $this->mapPages($router);
+        } catch (PDOException $e) {
+            // Database offline or not created/migrated yet. Ignore.
         }
 
         $router->group(['namespace' => $this->namespace], function ($router) {

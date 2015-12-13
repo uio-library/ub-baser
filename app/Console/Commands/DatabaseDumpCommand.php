@@ -77,6 +77,17 @@ class DatabaseDumpCommand extends Command
     }
 
     /**
+     * The cleanup() method in codeception/src/Codeception/Lib/Driver/PostgreSql.php
+     * won't cleanup custom operators, so we need to filter those out from the dump file.
+     */
+    public function filterOutOperatorDefinitions($filename)
+    {
+        $data = file_get_contents($filename);
+        $data = preg_replace('/CREATE OPERATOR .*?;/s', '', $data);
+        file_put_contents($filename, $data);
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -96,5 +107,7 @@ class DatabaseDumpCommand extends Command
             $this->error('Could not dump database to ' . $destinationFile);
             $this->error($process->getErrorOutput());
         }
+
+        $this->filterOutOperatorDefinitions($destinationFile);
     }
 }
