@@ -5,10 +5,8 @@
     <title>{{ isset($title) ? $title . ' - ' : '' }}@yield('db-title')</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ URL::to('css/app.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ URL::to('css/vendor.css') }}">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.1.2/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ elixir('css/app.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ elixir('css/vendor.css') }}">
     @yield('head')
 
 </head>
@@ -48,8 +46,11 @@
         @yield('content')
     </div>
 
-    <script src="{{ URL::to('js/vendor.js') }}"></script>
-    <script src="{{ URL::to('js/app.js') }}"></script>
+    <script src="{{ elixir('js/vendor.js') }}"></script>
+    @if (Auth::check())
+        <script src="{{ elixir('js/editing.js') }}"></script>
+    @endif
+
     @yield('script')
 </body>
 </html>
