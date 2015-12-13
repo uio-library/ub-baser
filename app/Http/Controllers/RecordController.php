@@ -6,8 +6,6 @@ class RecordController extends Controller
 {
     /**
      * Instantiate a new RecordController instance.
-     *
-     * @return void
      */
     public function __construct()
     {

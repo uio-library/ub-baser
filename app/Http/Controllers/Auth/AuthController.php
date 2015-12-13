@@ -50,7 +50,7 @@ class AuthController extends Controller
         ]);
     }
 
-    protected function authenticated($request, $user)
+    protected function authenticated()
     {
         return redirect()->intended();
     }

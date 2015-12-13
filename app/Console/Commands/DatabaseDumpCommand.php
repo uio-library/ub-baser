@@ -25,11 +25,6 @@ class DatabaseDumpCommand extends Command
      */
     protected $description = 'Dump database for codeception testing';
 
-    // protected function getDumpCommand()
-    // {
-    //     return config('backup::mysql.dump_command_path', 'mysqldump');
-    // }
-
     public function getMysqlCommand($config, $destinationFile)
     {
         $dumpCommand = 'mysqldump';
@@ -67,10 +62,8 @@ class DatabaseDumpCommand extends Command
         switch ($config['driver']) {
             case 'mysql':
                 return $this->getMysqlCommand($config, $destinationFile);
-                break;
             case 'pgsql':
                 return $this->getPostgresCommand($config, $destinationFile);
-                break;
             default:
                 throw new \Exception('Unsupported database: ' . $conn);
         }

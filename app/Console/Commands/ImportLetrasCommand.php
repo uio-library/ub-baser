@@ -46,16 +46,18 @@ class ImportLetrasCommand extends Command
 
         $this->info('Importing Letras');
         $data = require storage_path('import/letras.data.php');
-        $this->comment('Loaded ' . count($data) . ' records into memory.');
-        if (count($fields) != count($data[0])) {
-            $this->error('Expected ' . count($fields) . ' fields, got ' . count($data[0]) . ' fields.');
+        $nRecords = count($data);
+        $nFields = count($fields);
+        $this->comment('Loaded ' . $nRecords . ' records into memory.');
+        if ($nFields != count($data[0])) {
+            $this->error('Expected ' . $nFields . ' fields, got ' . count($data[0]) . ' fields.');
 
             return;
         }
 
-        for ($i = 0; $i < count($data); $i++) {
+        for ($i = 0; $i < $nRecords; $i++) {
             $row = [];
-            for ($j = 0; $j < count($fields); $j++) {
+            for ($j = 0; $j < $nFields; $j++) {
                 $row[$fields[$j]] = $data[$i][$j];
             }
             $data[$i] = $row;

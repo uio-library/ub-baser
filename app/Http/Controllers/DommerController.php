@@ -30,12 +30,14 @@ class DommerController extends RecordController
         $q = new RecordQueryBuilder($request, 'dommer', DommerRecord::class);
         $q->make();
 
-        $data['prefix'] = 'dommer';
-        $data['query'] = $request->all();
-        $data['columns'] = $q->getColumns();
-        $data['sortColumn'] = $q->sortColumn;
-        $data['sortOrder'] = $q->sortOrder;
-        $data['intro'] = Page::where('name', '=', 'dommer.intro')->first()->body;
+        $data = [
+            'prefix' => 'dommer',
+            'query' => $request->all(),
+            'columns' => $q->getColumns(),
+            'sortColumn' => $q->sortColumn,
+            'sortOrder' => $q->sortOrder,
+            'intro' => Page::where('name', '=', 'dommer.intro')->first()->body,
+        ];
 
         $data['records'] = $q->query
             ->join('dommer_kilder', 'dommer.kilde_id', '=', 'dommer_kilder.id')
