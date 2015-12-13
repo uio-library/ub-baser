@@ -2,23 +2,16 @@
 
 @section('content')
 
-        <tt>index.blade.php</tt>
-
-        <h2>
-            Dommers populærnavn
-        </h2>
-
         @can('dommer')
             <p>
-                <a href="{{ action('DommerController@create') }}">+ Opprett ny post</a>
+                <a href="{{ action('DommerController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
+                &nbsp;
+                <a href="{{ route('dommer.intro.edit') }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
             </p>
         @endif
 
         <p>
-            Dommenes populærnavn eller kallenavn er funnet i den juridiske litteraturen og i domsavsigelser hvor avgjørelsene er omtalt. Enkelte avgjørelser er oppført med flere populærnavn. Basen gir referanser til Norsk retstidende (Rt.), Rettens gang (RG) og Nordiske domme i sjøfartanliggende (ND). Basen utvikles av Juridisk bibliotek, Universitetet i Oslo
-        </p>
-        <p>
-            Forslag til dommer som du mener burde være med i basen, kan sendes til ujur@ub.uio.no med angivelse av i hvilken sammenheng det aktuelle populærnavnet har vært eller vil bli brukt.
+            {!! $intro !!}
         </p>
 
         <div class="panel panel-default">
@@ -49,7 +42,7 @@
                             <input type="number" class="form-control" id="side" name="side" placeholder="{{ trans('dommer.side') }}" value="{{ array_get($query, 'side') }}">
                         </div>
                         <div class="col-sm-2">
-                            <button type="submit" class="btn btn-primary btn-block">{{ trans('messages.search') }}</button>
+                            <button type="submit" class="btn btn-primary btn-block"><i class="zmdi zmdi-search"></i> {{ trans('messages.search') }}</button>
                         </div>
                     </div>
 

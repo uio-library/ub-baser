@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DommerKilde;
 use App\DommerRecord;
+use App\Page;
 use App\RecordQueryBuilder;
 use Illuminate\Http\Request;
 
@@ -34,6 +35,7 @@ class DommerController extends RecordController
         $data['columns'] = $q->getColumns();
         $data['sortColumn'] = $q->sortColumn;
         $data['sortOrder'] = $q->sortOrder;
+        $data['intro'] = Page::where('name', '=', 'dommer.intro')->first()->body;
 
         $data['records'] = $q->query
             ->join('dommer_kilder', 'dommer.kilde_id', '=', 'dommer_kilder.id')
