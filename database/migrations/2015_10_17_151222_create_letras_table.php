@@ -14,26 +14,25 @@ class CreateLetrasTable extends Migration
     {
         Schema::create('letras', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('author');
-            $table->string('contributor');
-            $table->string('translator');
-            $table->string('country');
-            $table->string('title');
-            $table->string('title2');
-            $table->string('pubYear');
-            $table->string('pubPlace');
-            $table->string('Genre');
-            $table->string('pubYear2');
-            $table->string('publisher');
-
+            $table->string('forfatter');
+            $table->string('land');
+            $table->string('utgivelsesaar');
+            $table->string('sjanger');
+            $table->string('oversetter');
+            $table->string('tittel2');
+            $table->string('utgivelsessted');
+            $table->string('utgivelsesaar2');
+            $table->string('forlag');
+            $table->string('foretterord');
+            $table->string('spraak')
             
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('author');
+            $table->index('forfatter');
             $table->index('title');
 
-            $table->unique(['title', 'pubYear']);
+            $table->unique(['title', 'utgivelsesaar']);
         });
     }
 
