@@ -28,7 +28,6 @@ class ImportLetrasCommand extends Command
 
     protected function fillLetrasTable()
     {
-
         $fields = [
             'id',
             'forfatter',
@@ -62,7 +61,6 @@ class ImportLetrasCommand extends Command
             $data[$i] = $row;
         }
 
-
         foreach ($data as &$row) {
             $row['created_at'] = Carbon::now();
             $row['updated_at'] = Carbon::now();
@@ -77,7 +75,6 @@ class ImportLetrasCommand extends Command
      */
     public function handle()
     {
-
         $this->info('');
         $this->warn(' This will re-populate the table from scratch. Any user contributed data will be lost!');
         if (!$this->confirm('Are you sure you want to continue? [y|N]')) {

@@ -34,6 +34,7 @@ class BeyerRecord extends Record
         } elseif (in_array('artikkel', $x)) {
             return 'Artikkel';
         }
+
         return 'Kritikk';
     }
 
@@ -50,6 +51,7 @@ class BeyerRecord extends Record
         } elseif (in_array('artikkel', $x)) {
             return 'om';
         }
+
         return 'av';
     }
 
