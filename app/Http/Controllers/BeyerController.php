@@ -98,6 +98,12 @@ class BeyerController extends RecordController
             $records->whereRaw("tsv_person @@ plainto_tsquery('simple', '" . pg_escape_string($term) . "')");
         }
 
+        if (array_has($fields, 'kritikktype')) {
+            $q = $fields['kritikktype'];
+            // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
+            $records->whereRaw('kritikktype ~@ \'' . pg_escape_string($q) . '\'');
+        }
+
         if (array_has($fields, 'verk')) {
             $q = $fields['verk'] . '%';
             $records->where('verk_tittel', 'ilike', $q);
@@ -113,7 +119,7 @@ class BeyerController extends RecordController
             ['id' => 'person', 'type' => 'text', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn'],
             ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel'],
             ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon'],
-            ['id' => 'kritikktype', 'type' => 'text', 'label' => 'Kritikktype', 'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...'],
+            ['id' => 'kritikktype', 'type' => 'select', 'label' => 'Kritikktype', 'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...'],
         ];
 
         // Make sure there's always at least one input field visible
@@ -138,8 +144,16 @@ class BeyerController extends RecordController
         $field = $request->get('field');
         $term = $request->get('q') . '%';
         $data = [];
-        foreach (BeyerRecordView::where($field, 'ilike', $term)->limit(25)->select($field)->get() as $res) {
-            $data[] = ['value' => $res[$field]];
+        if (in_array($field, ['publikasjon'])) {
+            foreach (BeyerRecordView::where($field, 'ilike', $term)->limit(25)->select($field)->get() as $res) {
+                $data[] = ['value' => $res[$field]];
+            }
+        } elseif ($field == 'kritikktype') {
+            foreach (BeyerKritikkType::where('navn', 'ilike', $term)->limit(25)->select('navn')->get() as $res) {
+                $data[] = ['value' => $res->navn];
+            }
+        } else {
+            throw new \ErrorException('Unknown search field');
         }
 
         return response()->json($data);
