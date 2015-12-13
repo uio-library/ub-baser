@@ -9,5 +9,5 @@ class BeyerRecordView extends BeyerRecord
      *
      * @var string
      */
-    protected $table = 'beyer_view';
+    protected $table = 'litteraturkritikk_view';
 }

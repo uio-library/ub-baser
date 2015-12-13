@@ -3,7 +3,7 @@
 return [
 
     'admin'  => 'Kan administrere brukere',
-    'beyer'  => 'Kan redigere Beyer',
+    'litteraturkritikk' => 'Kan redigere Norsk litteraturkritikk',
     'letras' => 'Kan redigere Letras',
     'opes'   => 'Kan redigere Opes',
     'dommer' => 'Kan redigere Dommers populærnavn',

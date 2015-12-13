@@ -12,10 +12,12 @@ class CreateLetrasTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('letras');
         Schema::create('letras', function (Blueprint $table) {
             $table->increments('id');
             $table->string('forfatter');
             $table->string('land');
+            $table->string('tittel');
             $table->string('utgivelsesaar');
             $table->string('sjanger');
             $table->string('oversetter');
@@ -24,15 +26,13 @@ class CreateLetrasTable extends Migration
             $table->string('utgivelsesaar2');
             $table->string('forlag');
             $table->string('foretterord');
-            $table->string('spraak')
+            $table->string('spraak');
             
             $table->timestamps();
             $table->softDeletes();
 
             $table->index('forfatter');
-            $table->index('title');
-
-            $table->unique(['title', 'utgivelsesaar']);
+            $table->index('tittel');
         });
     }
 

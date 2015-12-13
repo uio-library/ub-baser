@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Georg Sverdrup',
             'email' => 'admin@example.org',
             'password' => bcrypt('secret'),
-            'rights' => '["admin","beyer","letras","dommer"]',
+            'rights' => '["admin","litteraturkritikk","letras","dommer"]',
             'created_at' => '2015-11-28 11:49:23',
             'updated_at' => '2015-11-28 11:49:23',
         ]);

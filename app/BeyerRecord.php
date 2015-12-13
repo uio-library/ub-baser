@@ -9,7 +9,7 @@ class BeyerRecord extends Record
      *
      * @var string
      */
-    protected $table = 'beyer';
+    protected $table = 'litteraturkritikk';
 
     /**
      * The attributes that should be casted to native types.
