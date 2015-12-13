@@ -3,10 +3,26 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
-use Illuminate\Console\Command;
 
-class ImportLetrasCommand extends Command
+class ImportLetrasCommand extends ImportCommand
 {
+
+    protected $fields = [
+        'id',
+        'forfatter',
+        'land',
+        'tittel',
+        'utgivelsesaar',
+        'sjanger',
+        'oversetter',
+        'tittel2',
+        'utgivelsessted',
+        'utgivelsesaar2',
+        'forlag',
+        'foretterord',
+        'spraak',
+    ];
+
     /**
      * The name and signature of the console command.
      *
@@ -21,52 +37,23 @@ class ImportLetrasCommand extends Command
      */
     protected $description = 'Import Letras data';
 
-    protected function clearData()
+    protected function clearTable()
     {
         \DB::delete('delete from letras');
     }
 
-    protected function fillLetrasTable()
+    protected function fillTable()
     {
-        $fields = [
-            'id',
-            'forfatter',
-            'land',
-            'tittel',
-            'utgivelsesaar',
-            'sjanger',
-            'oversetter',
-            'tittel2',
-            'utgivelsessted',
-            'utgivelsesaar2',
-            'forlag',
-            'foretterord',
-            'spraak',
-        ];
+        $data = json_decode(file_get_contents(storage_path('import/letras.json'), true));
+        $this->comment('Loaded ' . count($data) . ' records into memory.');
 
-        $this->info('Importing Letras');
-        $data = require storage_path('import/letras.data.php');
-        $nRecords = count($data);
-        $nFields = count($fields);
-        $this->comment('Loaded ' . $nRecords . ' records into memory.');
-        if ($nFields != count($data[0])) {
-            $this->error('Expected ' . $nFields . ' fields, got ' . count($data[0]) . ' fields.');
-
-            return;
-        }
-
-        for ($i = 0; $i < $nRecords; $i++) {
-            $row = [];
-            for ($j = 0; $j < $nFields; $j++) {
-                $row[$fields[$j]] = $data[$i][$j];
-            }
-            $data[$i] = $row;
-        }
+        $data = $this->mapToFields($data);
 
         foreach ($data as &$row) {
             $row['created_at'] = Carbon::now();
             $row['updated_at'] = Carbon::now();
         }
+
         \DB::table('letras')->insert($data);
     }
 
@@ -84,10 +71,10 @@ class ImportLetrasCommand extends Command
         }
 
         $this->comment('Clearing tables');
-        $this->clearData();
+        $this->clearTable();
 
         $this->comment('Filling letras');
-        $this->fillLetrasTable();
+        $this->fillTable();
 
         $this->info('Done');
     }

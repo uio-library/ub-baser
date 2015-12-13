@@ -4,11 +4,44 @@ namespace App\Console\Commands;
 
 use App\BeyerKritikkType;
 use Carbon\Carbon;
-use Illuminate\Console\Command;
 use Punic\Language;
 
-class ImportLitteraturkritikkCommand extends Command
+class ImportLitteraturkritikkCommand extends ImportCommand
 {
+
+    protected $fields = [
+        'id',
+        'kritiker_etternavn',
+        'kritiker_fornavn',
+        'kritiker_kjonn',
+        'kritiker_pseudonym',
+        'kritiker_kommentar',
+        'kritikktype',
+        'publikasjon',
+        'utgivelsessted',
+        'aar',
+        'dato',
+        'aargang',
+        'nummer',
+        'bind',
+        'hefte',
+        'sidetall',
+        'utgivelseskommentar',
+        'tittel',
+        'spraak',
+        'kommentar',
+        'forfatter_etternavn',
+        'forfatter_fornavn',
+        'forfatter_kommentar',
+        'forfatter_kjonn',
+        'verk_tittel',
+        'verk_utgivelsessted',
+        'verk_aar',
+        'verk_sjanger',
+        'verk_spraak',
+        'verk_kommentar',
+    ];
+
     /**
      * The name and signature of the console command.
      *
@@ -30,39 +63,6 @@ class ImportLitteraturkritikkCommand extends Command
      */
     public function handle()
     {
-        $fields = [
-            'id',
-            'kritiker_etternavn',
-            'kritiker_fornavn',
-            'kritiker_kjonn',
-            'kritiker_pseudonym',
-            'kritiker_kommentar',
-            'kritikktype',
-            'publikasjon',
-            'utgivelsessted',
-            'aar',
-            'dato',
-            'aargang',
-            'nummer',
-            'bind',
-            'hefte',
-            'sidetall',
-            'utgivelseskommentar',
-            'tittel',
-            'spraak',
-            'kommentar',
-            'forfatter_etternavn',
-            'forfatter_fornavn',
-            'forfatter_kommentar',
-            'forfatter_kjonn',
-            'verk_tittel',
-            'verk_utgivelsessted',
-            'verk_aar',
-            'verk_sjanger',
-            'verk_spraak',
-            'verk_kommentar',
-        ];
-
         $kritikktyper = [];
         foreach (BeyerKritikkType::all() as $kilde) {
             $kritikktyper[mb_strtolower($kilde->navn)] = $kilde->id;
@@ -75,21 +75,11 @@ class ImportLitteraturkritikkCommand extends Command
         }
 
         $this->info('Importing Norsk litteraturkritikk');
-        $data = require storage_path('import/litteraturkritikk.data.php');
+
+        $data = json_decode(file_get_contents(storage_path('import/litteraturkritikk.json'), true));
         $this->comment('Loaded ' . count($data) . ' records into memory.');
-        if (count($fields) != count($data[0])) {
-            $this->error('Expected ' . count($fields) . ' fields, got ' . count($data[0]) . ' fields.');
 
-            return;
-        }
-
-        for ($i = 0; $i < count($data); $i++) {
-            $row = [];
-            for ($j = 0; $j < count($fields); $j++) {
-                $row[$fields[$j]] = $data[$i][$j];
-            }
-            $data[$i] = $row;
-        }
+        $data = $this->mapToFields($data);
 
         $allespraak = array_flip(Language::getAll(true, true, 'nb'));
         $allespraak['finsk-svensk'] = 'sv';

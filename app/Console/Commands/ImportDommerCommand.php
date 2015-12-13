@@ -3,10 +3,18 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
-use Illuminate\Console\Command;
 
-class ImportDommerCommand extends Command
+class ImportDommerCommand extends ImportCommand
 {
+    protected $fields = [
+        'navn',
+        'aar',
+        'side',
+        'note',
+        'kilde_id',
+        'id',
+    ];
+
     /**
      * The name and signature of the console command.
      *
@@ -39,20 +47,18 @@ class ImportDommerCommand extends Command
 
     protected function fillDommerTable()
     {
-        $data = require storage_path('import/dommer.data.php');
+        $this->info('Importing Dommer');
+
+        $data = json_decode(file_get_contents(storage_path('import/dommer.json'), true));
+        $this->comment('Loaded ' . count($data) . ' records into memory.');
+
+        $data = $this->mapToFields($data);
 
         foreach ($data as &$row) {
             $row['created_at'] = Carbon::now();
             $row['updated_at'] = Carbon::now();
-
-            // $qq = $row['aar'] . '-' . $row['side'] . '-' . $row['kilde_id'];
-            $qq = $row['navn'];
-
-            if (isset($tmp[$qq])) {
-                echo $qq . ' : ' . $tmp[$qq][0] . ', ' . $row['navn'] . "\n";
-            }
-            // $tmp[$qq] = [$row['navn']];
         }
+
         \DB::table('dommer')->insert($data);
     }
 
