@@ -17,7 +17,7 @@
 
             @if ($fieldIndex == count($fields) - 1)
             <div class="col-sm-1" id="addFieldButtonContainer">
-              <button type="button" class="btn btn-info" id="addFieldButton">+</button>
+              <button type="button" class="btn btn-info" id="addFieldButton"><i class="fa fa-plus"></i></button>
             </div>
             @else
                 <div class="col-sm-1 help-block">og</div>
@@ -40,7 +40,7 @@
 
         <div class="form-group" id="searchButtonContainer">
             <div class="col-sm-2">
-                <button type="submit" class="btn btn-primary btn-block">{{ trans('messages.search') }}</button>
+                <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-search"></i> {{ trans('messages.search') }}</button>
             </div>
             <div class="col-sm-2">
                 <a href="{{ action('BeyerController@index') }}" class="btn btn-default">{{ trans('messages.clear') }}</a>
