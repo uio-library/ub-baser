@@ -49,7 +49,7 @@ class ImportDommerCommand extends Command
             $qq = $row['navn'];
 
             if (isset($tmp[$qq])) {
-                print $qq . ' : ' . $tmp[$qq][0] . ', ' . $row['navn'] . "\n";
+                echo $qq . ' : ' . $tmp[$qq][0] . ', ' . $row['navn'] . "\n";
             }
             // $tmp[$qq] = [$row['navn']];
         }
