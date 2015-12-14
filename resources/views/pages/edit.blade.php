@@ -12,6 +12,8 @@
 
         <button type="submit" class="btn btn-primary">{{ trans('messages.update') }}</button>
 
+        <a href="{{ route($page->name) }}" class="btn btn-default">{{ trans('messages.cancel') }}</a>
+
     </form>
 
 @endsection
@@ -24,7 +26,9 @@
     $('textarea#froala-editor').froalaEditor({
       linkAutoPrefix: '',
       linkEditButtons: ['linkEdit', 'linkRemove'],
-      linkInsertButtons: ['linkBack']
+      linkInsertButtons: ['linkBack'],
+      toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', 'insertLink', 'insertImage', 'insertTable', 'undo', 'redo', 'clearFormatting', 'html']
+
     });
   });
 
