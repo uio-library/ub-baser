@@ -1,7 +1,5 @@
 var elixir = require('laravel-elixir');
 
-require('laravel-elixir-bower');
-
 elixir(function(mix) {
 
     mix
