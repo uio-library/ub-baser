@@ -21,6 +21,8 @@ Nytt, felles grensesnitt for basene OPES, Letras, Beyer og Dommers populærnavn.
    og `USERGROUP` er en gruppe du er medlem av.
 6. `chmod g+s storage`
 7. `php artisan key:generate`
+8. `npm install`
+9. `gulp` for å bygge JavaScript og CSS i `public/build`
 
 Eventuelt:
 
