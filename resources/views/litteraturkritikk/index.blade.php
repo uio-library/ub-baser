@@ -10,9 +10,9 @@
             </p>
         @endif
 
-        <p>
+        <div class="lead">
             {!! $intro !!}
-        </p>
+        </div>
 
         <div class="panel panel-default">
             <div class="panel-body">
@@ -31,11 +31,8 @@
         @foreach ($records as $record)
             <tr>
                 <td>
-                    <a href="{{ action('BeyerController@show', $record->id) }}">
-                        {!! $record->representation() !!}
-                    </a>
+                    {!! $record->representation() !!}
                 </td>
-
             </tr>
         @endforeach
         </table>

@@ -4,11 +4,19 @@
 
     @can($page->permission)
         <p>
-            <a href="{{ route($editRoute) }}">[Rediger]</a>
+            <a href="{{ route($editRoute) }}"><i class="fa fa-edit"></i> Rediger tekst</a>
         </p>
     @endif
-    <p>
+    <div class="fr-view">
         {!! $page->body !!}
+    </div>
+
+
+    <hr>
+    <p class="text-muted text-right">
+        <small>
+            Sist endret av {{ $page->updatedBy->name }} {{ $page->updated_at }}
+        </small>
     </p>
 
 @endsection

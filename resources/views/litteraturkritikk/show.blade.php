@@ -2,14 +2,17 @@
 
 @section('content')
 
+        <p>
+            <a href="{{ URL::previous() }}"><i class="fa fa-arrow-circle-left"></i> Tilbake</a>
+            @can('litteraturkritikk')
+            &nbsp;
+            <a href="{{ action('BeyerController@edit', $record->id) }}"><i class="fa fa-edit"></i> Rediger post</a>
+            @endif
+        </p>
+
         <h2>
             Post {{ $record->id }}
         </h2>
-        @can('litteraturkritikk')
-            <p>
-                <a href="{{ action('BeyerController@edit', $record->id) }}">[Rediger]</a>
-            </p>
-        @endif
         <p>
 
             <table class="table">

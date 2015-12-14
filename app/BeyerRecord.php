@@ -21,38 +21,53 @@ class BeyerRecord extends Record
         'verk_spraak' => 'array',
     ];
 
-    public function formatKritikktype($x)
+    public function formatKritikkType($name)
     {
-        if (in_array('forfatterportrett', $x)) {
-            return 'Forfatterportrett';
-        } elseif (in_array('dagskritikk', $x)) {
-            return 'Dagskritikk';
-        } elseif (in_array('teaterkritikk', $x)) {
-            return 'Teaterkritikk';
-        } elseif (in_array('debatt', $x)) {
-            return 'Debattinnlegg';
-        } elseif (in_array('artikkel', $x)) {
-            return 'Artikkel';
+        if ($name == 'debatt') {
+            $name = 'Debatt';
         }
-
-        return 'Kritikk';
+        return ucfirst($name);
     }
 
-    public function formatKritikktypeSkilleord($x)
+    public function preferredKritikktype($types)
     {
-        if (in_array('forfatterportrett', $x)) {
-            return 'av';
-        } elseif (in_array('dagskritikk', $x)) {
-            return 'av';
-        } elseif (in_array('teaterkritikk', $x)) {
-            return 'av';
-        } elseif (in_array('debatt', $x)) {
-            return 'om';
-        } elseif (in_array('artikkel', $x)) {
-            return 'om';
+        $preferredTypes = [
+            'forfatterportrett',
+            'dagskritikk',
+            'teaterkritikk',
+            'debatt',
+            'essay',
+            'bokanmeldelse',
+            'artikkel',
+            'vitenskapelig artikkel',
+            'oversiktsartikkel',
+            'samtaleprogram',
+        ];
+        foreach ($preferredTypes as $key) {
+            if (in_array($key, $types)) {
+                return $key;
+            }
         }
 
-        return 'av';
+        return '';
+    }
+
+    public function kritikktypeSkilleord($preferredType)
+    {
+        $separators = [
+            'forfatterportrett' => 'av',
+            'dagskritikk' => 'av',
+            'teaterkritikk' => 'av',
+            'bokanmeldelse' => 'av',
+            'debatt' => 'om',
+            'artikkel' => 'om',
+            'oversiktsartikkel' => 'om',
+            'vitenskapelig artikkel' => 'om',
+            'essay' => 'om',
+            'samtaleprogram' => 'om',
+        ];
+
+        return isset($separators[$preferredType]) ? $separators[$preferredType] : 'av/om';
     }
 
     public function formatForfatter($etternavn, $fornavn, $kommentar)
@@ -128,14 +143,20 @@ class BeyerRecord extends Record
 
     public function representation()
     {
-        $repr = $this->formatKritikk();
-        $kritikktype = $this->formatKritikktype($this->kritikktype);
+        $repr = '<a href="' . action('BeyerController@show', $this->id) . '">';
+
+        $repr .= $this->formatKritikk();
+        $kritikktype = $this->preferredKritikktype($this->kritikktype);
         $verk = $this->formatVerk();
 
-        $repr .= ' ' . $kritikktype;
+        $repr .= '</a><br>';
+
+        $repr .= ' ' . $this->formatKritikkType($kritikktype);
 
         if ($kritikktype && $verk) {
-            $repr .= ' ' . $this->formatKritikktypeSkilleord($this->kritikktype) . ': ';
+            $repr .= ' ' . $this->kritikktypeSkilleord($kritikktype) . ': ';
+        } elseif ($verk) {
+            $repr .= 'Om: ';
         }
 
         $repr .= $verk;

@@ -20,7 +20,7 @@ class PagesTableSeeder extends Seeder
                 'permission' => 'litteraturkritikk',
 
                 'title' => '',
-                'body' => '<p><em>Norsk litteraturkritikk</em>, tidligere kjent som <em>Beyerbasen</em>, er en bibliografi med over 20 000 innførsler som vedlikeholdes av Universitetsbiblioteket i Oslo. <a href="/om">Les mer om bibliografien</a>.</p>',
+                'body' => '<p><em>Norsk litteraturkritikk</em>, tidligere kjent som <em>Beyerbasen</em>, er en bibliografi med over 20 000 innførsler som vedlikeholdes av Universitetsbiblioteket i Oslo. <a href="/norsk-litteraturkritikk/om">Les mer om bibliografien</a></p>',
 
                 'updated_by' => 1,
                 'created_at' => '2015-12-13 13:32:23',

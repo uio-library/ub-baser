@@ -130,6 +130,8 @@ class BeyerController extends RecordController
 
         $intro = Page::where('name', '=', 'litteraturkritikk.intro')->first();
 
+        $records->orderBy('aar_numeric', 'desc');
+
         $data = [
             'intro'         => $intro->body,
             'records'       => $records->paginate(200),

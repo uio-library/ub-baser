@@ -27,6 +27,10 @@ header a:hover {
 }
 */
 
+header, .container {
+	padding: 20px 0;
+}
+
 header #user {
   float:right;
 }

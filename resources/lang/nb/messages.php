@@ -8,6 +8,7 @@ return [
     'edit' => 'Rediger',
     'save' => 'Lagre',
     'update' => 'Lagre',
+    'cancel' => 'Avbryt',
     'manageusers' => 'Behandle brukere',
     'managepages' => 'Behandle sider',
     'users' => 'Brukere',
