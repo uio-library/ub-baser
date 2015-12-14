@@ -13,8 +13,8 @@ install:
   - node -v
   - npm version
   - composer install
-  # - npm install bower
-  # - ./node_modules/.bin/bower install
+  - npm install
+  - node_modules/.bin/gulp
 
 before_script:
   - cp .env.testing .env
