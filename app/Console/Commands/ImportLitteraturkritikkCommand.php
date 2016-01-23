@@ -56,6 +56,61 @@ class ImportLitteraturkritikkCommand extends ImportCommand
      */
     protected $description = 'Import data for Norsk litteraturkritikk';
 
+    public function normalizeVerkSpraak($value, $langCodes) {
+
+        // Split by , or /
+        $value = preg_split('/[,\/]/', $value);
+
+        // Lowercase and trim .?()
+        $value = array_map(function ($t) {
+            return mb_strtolower(trim($t, '. ?()'));
+        }, $value);
+
+        // Filter out empty values
+        $value = array_values(array_filter($value, function($x) {
+            return !empty($x);
+        }));
+
+        // Map to language codes
+        $value = array_map(function ($lang) use ($langCodes) {
+            try {
+                return $langCodes[$lang];
+            } catch (\Exception $e) {
+                $this->error('Unknown language code: ' . $lang);
+
+                return '??';
+            }
+        }, $value);
+
+        return json_encode($value);
+    }
+
+
+    function processRow(&$row, $kritikktyper, $allespraak)
+    {
+        $typer = trim($row['kritikktype']);
+        if (empty($typer)) {
+            $typer = [];
+        } else {
+            $typer = array_map(function ($t) {
+                return mb_strtolower(trim($t));
+            }, explode(',', $typer));
+        }
+        // foreach ($typer as $t) {
+        //     if (!isset($kritikktyper[$t])) {
+        //         $this->warn('Unknown kritikktype: ' . $t);
+        //     }
+        // }
+        $row['kritikktype'] = json_encode($typer);
+
+        // Normalize 'spraak' as valid ISO639 language code
+        $lang = mb_strtolower($row['spraak']);
+        $row['spraak'] = empty($lang) ? null : $allespraak[$lang];
+
+        // Normalize 'verk_spraak' as array of valid ISO639 language codes
+        $row['verk_spraak'] = $this->normalizeVerkSpraak($row['verk_spraak'], $allespraak);
+    }
+
     /**
      * Execute the console command.
      *
@@ -83,45 +138,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         $allespraak['bokmål (innslag av nynorsk)'] = 'nb';
 
         foreach ($data as &$row) {
-            $typer = trim($row['kritikktype']);
-            if (empty($typer)) {
-                $typer = [];
-            } else {
-                $typer = array_map(function ($t) {
-                    return mb_strtolower(trim($t));
-                }, explode(',', $typer));
-            }
-            // foreach ($typer as $t) {
-            //     if (!isset($kritikktyper[$t])) {
-            //         $this->warn('Unknown kritikktype: ' . $t);
-            //     }
-            // }
-            $row['kritikktype'] = json_encode($typer);
-
-            $lang = mb_strtolower($row['spraak']);
-            $row['spraak'] = empty($lang) ? null : $allespraak[$lang];
-
-            $verk_spraak = trim($row['verk_spraak']);
-            if (empty($verk_spraak)) {
-                $verk_spraak = [];
-            } else {
-                $verk_spraak = array_map(function ($t) {
-                    return mb_strtolower(trim($t, '. ?()'));
-                }, preg_split('/[,\/]/', $verk_spraak));
-            }
-
-            $verk_spraak = array_map(function ($lang) use ($allespraak, $row) {
-                try {
-                    return $allespraak[$lang];
-                } catch (\Exception $e) {
-                    $this->error('Unknown language: ' . $lang);
-                    print_r($row);
-
-                    return '??';
-                }
-            }, $verk_spraak);
-
-            $row['verk_spraak'] = json_encode($verk_spraak);
+            $this->processRow($row, $kritikktyper, $allespraak);
         }
 
         $chunks = array_chunk($data, 100);
