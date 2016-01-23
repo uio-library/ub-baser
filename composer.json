@@ -12,7 +12,8 @@
         "doctrine/dbal": "~2.5",
         "laravelcollective/html": "~5.1",
         "barryvdh/laravel-debugbar": "~2.0",
-        "punic/punic": "^1.6"
+        "punic/punic": "^1.6",
+        "stevenmaguire/laravel-middleware-csp": "^0.1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
