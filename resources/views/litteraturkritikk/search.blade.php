@@ -1,4 +1,4 @@
-    <form class="form-horizontal" id="searchForm" method="GET" action="{{ action('BeyerController@index') }}">
+    <form class="form-horizontal" id="searchForm" method="GET" action="{{ action('LitteraturkritikkController@index') }}">
         <input type="hidden" name="search" value="true">
 
         @foreach ($fields as $fieldIndex => $field)
@@ -43,7 +43,7 @@
                 <button type="submit" class="btn btn-primary btn-block"><i class="zmdi zmdi-search"></i> {{ trans('messages.search') }}</button>
             </div>
             <div class="col-sm-2">
-                <a href="{{ action('BeyerController@index') }}" class="btn btn-default">{{ trans('messages.clear') }}</a>
+                <a href="{{ action('LitteraturkritikkController@index') }}" class="btn btn-default">{{ trans('messages.clear') }}</a>
             </div>
         </div>
     </form>
@@ -127,6 +127,7 @@ $(function() {
             valueField: 'value',
             labelField: 'value',
             searchField: 'value',
+            delimiter: null,
             maxItems: 1,
             closeAfterSelect: true,
             selectOnTab: true,
@@ -135,7 +136,7 @@ $(function() {
             load: function(query, callback) {
                 if (!query.length) return callback();
                 $.ajax({
-                    url: '{{ action("BeyerController@search") }}',
+                    url: '{{ action("LitteraturkritikkController@search") }}',
                     type: 'GET',
                     dataType: 'json',
                     data: {

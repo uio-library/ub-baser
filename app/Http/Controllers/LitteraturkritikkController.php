@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\BeyerKritikkType;
-use App\BeyerRecord;
-use App\BeyerRecordView;
+use App\Litteraturkritikk\KritikkType;
+use App\Litteraturkritikk\Person;
+use App\Litteraturkritikk\PersonView;
+use App\Litteraturkritikk\Record;
+use App\Litteraturkritikk\RecordView;
 use App\Page;
 use Illuminate\Http\Request;
 use Punic\Language;
 
-class BeyerController extends RecordController
+class LitteraturkritikkController extends RecordController
 {
     public function getKritikkTyper()
     {
         $kritikktyper = [];
-        foreach (BeyerKritikkType::all() as $kilde) {
+        foreach (KritikkType::all() as $kilde) {
             $kritikktyper[$kilde->navn] = $kilde->navn;
         }
 
@@ -24,16 +26,6 @@ class BeyerController extends RecordController
     public function getLanguageList()
     {
         return Language::getAll(true, true, 'nb');
-    }
-
-    public function getKjonnstyper()
-    {
-        return [
-            'f'  => 'Kvinne',
-            'm'  => 'Mann',
-            'u'  => 'Ukjent',
-            // etc...
-        ];
     }
 
     /**
@@ -82,7 +74,8 @@ class BeyerController extends RecordController
             $dateRange = $inputDateRange;
         }
 
-        $records = BeyerRecordView::query();
+        // Create an instances of \Illuminate\Database\Eloquent\Builder
+        $records = RecordView::query();
 
         if ($dateRange[0] != $minYear || $dateRange[1] != $maxYear) {
             $records->where('aar_numeric', '>=', intval($dateRange[0]))
@@ -91,12 +84,19 @@ class BeyerController extends RecordController
 
         if (array_has($fields, 'q')) {
             $term = $fields['q'];
-            $records->whereRaw("tsv @@ plainto_tsquery('simple', '" . pg_escape_string($term) . "')");
+            $records->whereRaw("document @@ plainto_tsquery('simple', '" . pg_escape_string($term) . "')");
         }
 
         if (array_has($fields, 'person')) {
-            $term = preg_replace('/,/', '', $fields['person']) . '%';
-            $records->whereRaw("tsv_person @@ plainto_tsquery('simple', '" . pg_escape_string($term) . "')");
+            $records->whereIn('id', function($query) use ($fields) {
+                $query
+                    ->select('litteraturkritikk_record_person.record_id')
+                    ->from('litteraturkritikk_personer_view AS litteraturkritikk_personer')
+                    ->join('litteraturkritikk_record_person', 'litteraturkritikk_record_person.person_id', '=', 'litteraturkritikk_personer.id')
+                    ->where('etternavn_fornavn', '=', $fields['person'])
+                    ->orWhere('fornavn_etternavn', '=', $fields['person'])
+                ;
+            });
         }
 
         if (array_has($fields, 'kritikktype')) {
@@ -117,7 +117,7 @@ class BeyerController extends RecordController
 
         $selectOptions = [
             ['id' => 'q', 'type' => 'text', 'label' => 'Fritekst', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...'],
-            ['id' => 'person', 'type' => 'text', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn'],
+            ['id' => 'person', 'type' => 'select', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn'],
             ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel'],
             ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon'],
             ['id' => 'kritikktype', 'type' => 'select', 'label' => 'Kritikktype', 'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...'],
@@ -130,7 +130,9 @@ class BeyerController extends RecordController
 
         $intro = Page::where('name', '=', 'litteraturkritikk.intro')->first();
 
-        $records->orderBy('aar_numeric', 'desc');
+        $records
+            ->with('forfattere', 'kritikere')
+            ->orderBy('aar_numeric', 'desc');
 
         $data = [
             'intro'         => $intro->body,
@@ -150,13 +152,28 @@ class BeyerController extends RecordController
         $field = $request->get('field');
         $term = $request->get('q') . '%';
         $data = [];
-        if (in_array($field, ['publikasjon'])) {
-            foreach (BeyerRecordView::where($field, 'ilike', $term)->limit(25)->select($field)->get() as $res) {
-                $data[] = ['value' => $res[$field]];
+        if ($field == 'publikasjon') {
+            foreach (RecordView::where($field, 'ilike', $term)->limit(25)->select($field)->get() as $res) {
+                $data[] = [
+                    'value' => $res[$field]
+                ];
             }
         } elseif ($field == 'kritikktype') {
-            foreach (BeyerKritikkType::where('navn', 'ilike', $term)->limit(25)->select('navn')->get() as $res) {
-                $data[] = ['value' => $res->navn];
+            foreach (KritikkType::where('navn', 'ilike', $term)->limit(25)->select('navn')->get() as $res) {
+                $data[] = [
+                    'value' => $res->navn
+                ];
+            }
+        } elseif ($field == 'person') {
+            foreach (PersonView::where('etternavn_fornavn', 'ilike', $term)
+                     ->orWhere('fornavn_etternavn', 'ilike', $term)
+                     ->limit(25)->select('id', 'etternavn_fornavn', 'bibsys_id', 'birth_year')->get() as $res) {
+                $data[] = [
+                    'id' => $res->id,
+                    'bibsys_id' => $res->bibsys_id,
+                    'birth_year' => $res->birth_year,
+                    'value' => $res->etternavn_fornavn,
+                ];
             }
         } else {
             throw new \ErrorException('Unknown search field');
@@ -171,11 +188,12 @@ class BeyerController extends RecordController
      * @param \Illuminate\Http\Request $request
      * @param int                      $id
      *
-     * @return BeyerRecord
+     * @return Record
      */
     protected function updateOrCreate(Request $request, $id = null)
     {
-        $record = is_null($id) ? new BeyerRecord() : BeyerRecord::findOrFail($id);
+        $isNew = is_null($id);
+        $record = $isNew ? new Record() : Record::findOrFail($id);
 
         $this->validate($request, [
             'kritikktype'    => 'required',
@@ -186,14 +204,65 @@ class BeyerController extends RecordController
         ]);
 
         $record->kritikktype = $request->get('kritikktype');
-        $record->kommentar = $request->get('kommentar');
         $record->spraak = $request->get('spraak');
         $record->tittel = $request->get('tittel');
         $record->publikasjon = $request->get('publikasjon');
+        $record->utgivelsessted = $request->get('utgivelsessted');
+        $record->aar = $request->get('aar');
+
+        $record->dato = $request->get('dato');
+        $record->aargang = $request->get('aargang');
+        $record->bind = $request->get('bind');
+        $record->hefte = $request->get('hefte');
+        $record->nummer = $request->get('nummer');
+        $record->sidetall = $request->get('sidetall');
+
+        $record->kommentar = $request->get('kommentar');
+        $record->utgivelseskommentar = $request->get('utgivelseskommentar');
+
+        $record->verk_tittel = $request->get('verk_tittel');
+        $record->verk_aar = $request->get('verk_aar');
+        $record->verk_sjanger = $request->get('verk_sjanger');
+        $record->verk_spraak = $request->get('verk_spraak');
+        $record->verk_kommentar = $request->get('verk_kommentar');
+        $record->verk_utgivelsessted = $request->get('verk_utgivelsessted');
+
+        $record->forfatter_mfl = $request->get('forfatter_mfl') ? true : false;
+        $record->kritiker_mfl = $request->get('kritiker_mfl') ? true : false;
+
+        $record->updated_by = $request->user()->id;
+        if ($isNew) {
+            $record->created_by = $request->user()->id;
+        }
 
         $record->save();
 
+        $is_edited = $request->get('is_edited');
+
+        $persons = [];
+        foreach ( $this->parsePersons($request->get('forfattere', [])) as $id) {
+            $persons[$id] = ['person_role' => $is_edited ? 'redaktør' : 'forfatter'];
+        }
+        foreach ( $this->parsePersons($request->get('kritikere', [])) as $id) {
+            $persons[$id] = ['person_role' => 'kritiker'];
+        }
+
+        $record->persons()->sync($persons);
+
+        \DB::unprepared('REFRESH MATERIALIZED VIEW litteraturkritikk_records_search');
+
         return $record;
+    }
+
+    protected function isEdited($record)
+    {
+        foreach ($record->forfattere as $person) {
+            if ($person->person_role == 'redaktør') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function formArguments($record)
@@ -204,6 +273,7 @@ class BeyerController extends RecordController
             'kjonnstyper'   => $this->getKjonnstyper(),
             'spraakliste'   => $this->getLanguageList(),
             'record'        => $record,
+            'is_edited'     => $this->isEdited($record),
         ];
     }
 
@@ -216,7 +286,7 @@ class BeyerController extends RecordController
     {
         $this->authorize('litteraturkritikk');
 
-        $data = $this->formArguments(new BeyerRecord());
+        $data = $this->formArguments(new Record());
 
         return response()->view('litteraturkritikk.create', $data);
     }
@@ -232,7 +302,7 @@ class BeyerController extends RecordController
     {
         $this->authorize('litteraturkritikk');
 
-        $record = BeyerRecord::findOrFail($id);
+        $record = Record::with('forfattere', 'kritikere')->findOrFail($id);
         $data = $this->formArguments($record);
 
         return response()->view('litteraturkritikk.edit', $data);
@@ -251,7 +321,7 @@ class BeyerController extends RecordController
 
         $record = $this->updateOrCreate($request);
 
-        return redirect()->action('BeyerController@show', $record->id)
+        return redirect()->action('LitteraturkritikkController@show', $record->id)
             ->with('status', 'Posten ble opprettet.');
     }
 
@@ -264,7 +334,7 @@ class BeyerController extends RecordController
      */
     public function show($id)
     {
-        $record = BeyerRecord::findOrFail($id);
+        $record = Record::findOrFail($id);
 
         $data = [
             'columns' => config('baser.beyer.columns'),
@@ -288,7 +358,7 @@ class BeyerController extends RecordController
 
         $this->updateOrCreate($request, $id);
 
-        return redirect()->action('BeyerController@show', $id)
+        return redirect()->action('LitteraturkritikkController@show', $id)
             ->with('status', 'Posten ble lagret');
     }
 
@@ -302,5 +372,29 @@ class BeyerController extends RecordController
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Looks up IDs of persons from names, creates new person when not found.
+     * @param $names
+     * @return array
+     */
+    protected function parsePersons($names)
+    {
+        $ids = [];
+        foreach ($names as $name) {
+            preg_match('/^(.+?)(, ([^(]+))?( \((.+?)\-\))?$/', $name, $matches);
+
+            $args = [
+                'etternavn' => $matches[1],
+                'fornavn' => array_get($matches, 3, null),
+                'birth_year' => array_get($matches, 5, null),
+            ];
+
+            $person = Person::firstOrCreate($args);
+
+            $ids[] = $person->id;
+        }
+        return $ids;
     }
 }

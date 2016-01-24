@@ -26,16 +26,10 @@
             </div>
 
             <div class="form-group">
-                <label for="kommentar" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kommentar') }}</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="kommentar" name="kommentar" value="{{ old('kommentar') ?: $record->kommentar }}">
-                </div>
-            </div>
-
-            <div class="form-group">
                 <label for="publikasjon" class="col-sm-2 control-label">{{ trans('litteraturkritikk.publikasjon') }}</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" id="publikasjon" name="publikasjon" value="{{ old('publikasjon') ?: $record->publikasjon }}">
+                    {!! Form::select('publikasjon', [], old('publikasjon') ?: $record->publikasjon, ['id' => 'publikasjon', 'placeholder' =>  trans('messages.choose')]) !!}
+
                 </div>
                 <label for="utgivelsessted" class="col-sm-1 control-label">{{ trans('litteraturkritikk.utgivelsessted') }}</label>
                 <div class="col-sm-3">
@@ -78,9 +72,16 @@
             </div>
 
             <div class="form-group">
+                <label for="kommentar" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kommentar') }}</label>
+                <div class="col-sm-10">
+                    <input placeholder="Merknad om innholdet i kritikken." type="text" class="form-control" id="kommentar" name="kommentar" value="{{ old('kommentar') ?: $record->kommentar }}">
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="utgivelseskommentar" class="col-sm-2 control-label">{{ trans('litteraturkritikk.utgivelseskommentar') }}</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="utgivelseskommentar" name="utgivelseskommentar" value="{{ old('utgivelseskommentar') }}">
+                    <input placeholder="Merknad om utgivelsen (f.eks. 'innledning', 'egenpublisert', usikker info)." type="text" class="form-control" id="utgivelseskommentar" name="utgivelseskommentar" value="{{ old('utgivelseskommentar') }}">
                 </div>
             </div>
 
@@ -88,32 +89,21 @@
 
             <ul class="list-group">
                 <li class="list-group-item">
-                <h4 class="list-group-item-heading">Kritikeren:</h4>
+                <h4 class="list-group-item-heading">Forfatter(e) av kritikken:</h4>
 
-                <div class="form-group">
-                    <label for="kritiker_etternavn" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kritiker_etternavn') }}</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="kritiker_etternavn" name="kritiker_etternavn" value="{{ old('kritiker_etternavn') ?: $record->kritiker_etternavn }}">
+                    <div class="control-group">
+                        <label for="kritikere" class="sr-only">Personer:</label>
+                        <select id="kritikere" name="kritikere[]" placeholder="Etternavn, Fornavn" multiple>
+                            @foreach (old('kritikere') ?: $record->kritikere as $person)
+                            <option value="{{ strval($person) }}" selected>{{ strval($person) }}</option>
+                            @endforeach
+                        </select>
+                        <label>
+                            {!! Form::checkbox('kritiker_mfl', 'kritiker_mfl', $record->kritiker_mfl) !!}
+                            m. fl.
+                        </label>
                     </div>
-                    <label for="kritiker_fornavn" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kritiker_fornavn') }}</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="kritiker_fornavn" name="kritiker_fornavn" value="{{ old('kritiker_fornavn') ?: $record->kritiker_fornavn }}">
-                    </div>
-                    <div class="col-sm-2">
-                        {!! Form::select('kjonn', $kjonnstyper, old('kjonn') ?: $record->kjonn, ['id' => 'kjonn', 'placeholder' => 'Kjønn']) !!}
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="kritiker_pseudonym" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kritiker_pseudonym') }}</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="kritiker_pseudonym" name="kritiker_pseudonym" value="{{ old('kritiker_pseudonym') ?: $record->kritiker_pseudonym }}">
-                    </div>
-                    <label for="kritiker_kommentar" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kritiker_kommentar') }}</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="kritiker_kommentar" name="kritiker_kommentar" value="{{ old('kritiker_kommentar') ?: $record->kritiker_kommentar }}">
-                    </div>
-                </div>
                 </li>
             </ul>
 
@@ -131,33 +121,33 @@
                 <h4 class="list-group-item-heading">Verket:</h4>
 
                 <div class="form-group">
-                    <label for="verk_tittel" class="col-sm-2 control-label">{{ trans('litteraturkritikk.verk_tittel') }}</label>
+                    <label for="verk_tittel" class="col-sm-2 control-label">{{ trans('litteraturkritikk.tittel') }}</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" id="verk_tittel" name="verk_tittel" value="{{ old('verk_tittel') ?: $record->verk_tittel }}">
                     </div>
-                    <label for="verk_aar" class="col-sm-1 control-label">{{ trans('litteraturkritikk.verk_aar') }}</label>
+                    <label for="verk_aar" class="col-sm-1 control-label">{{ trans('litteraturkritikk.aar') }}</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control" id="verk_aar" name="verk_aar" value="{{ old('verk_aar') ?: $record->verk_aar }}">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="verk_sjanger" class="col-sm-2 control-label">{{ trans('litteraturkritikk.verk_sjanger') }}</label>
+                    <label for="verk_sjanger" class="col-sm-2 control-label">{{ trans('litteraturkritikk.sjanger') }}</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" id="verk_sjanger" name="verk_sjanger" value="{{ old('verk_sjanger') ?: $record->verk_sjanger }}">
                     </div>
-                    <label for="verk_spraak" class="col-sm-1 control-label">{{ trans('litteraturkritikk.verk_spraak') }}</label>
-                    <div class="col-sm-5">
+                    <label for="verk_spraak" class="col-sm-1 control-label">{{ trans('litteraturkritikk.spraak') }}</label>
+                    <div class="col-sm-4">
                         {!! Form::select('verk_spraak[]', $spraakliste, old('verk_spraak') ?: $record->verk_spraak, ['id' => 'verk_spraak', 'placeholder' =>  trans('messages.choose'), 'multiple' => 'multiple']) !!}
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="verk_kommentar" class="col-sm-2 control-label">{{ trans('litteraturkritikk.verk_kommentar') }}</label>
+                    <label for="verk_kommentar" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kommentar') }}</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" id="verk_kommentar" name="verk_kommentar" value="{{ old('verk_kommentar') ?: $record->verk_kommentar }}">
                     </div>
-                    <label for="verk_utgivelsessted" class="col-sm-2 control-label">{{ trans('litteraturkritikk.verk_utgivelsessted') }}</label>
+                    <label for="verk_utgivelsessted" class="col-sm-1 control-label">{{ trans('litteraturkritikk.utgivelsessted') }}</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" id="verk_utgivelsessted" name="verk_utgivelsessted" value="{{ old('verk_utgivelsessted') ?: $record->verk_utgivelsessted }}">
                     </div>
@@ -166,46 +156,101 @@
 
             <!-- Forfatter -->
             <li class="list-group-item">
-                <h4 class="list-group-item-heading">Forfatter:</h4>
+                <h4 class="list-group-item-heading">Forfatter(e) av det kritiserte verket:</h4>
 
-                <div class="form-group">
-                    <label for="kritiker_etternavn" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kritiker_etternavn') }}</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="kritiker_etternavn" name="kritiker_etternavn" value="{{ old('kritiker_etternavn') ?: $record->kritiker_etternavn }}">
-                    </div>
-                    <label for="kritiker_fornavn" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kritiker_fornavn') }}</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="kritiker_fornavn" name="kritiker_fornavn" value="{{ old('kritiker_fornavn') ?: $record->kritiker_fornavn }}">
-                    </div>
-                    <div class="col-sm-2">
-                        {!! Form::select('kritiker_kjonn', $kjonnstyper, old('kritiker_kjonn') ?: $record->kritiker_kjonn, ['id' => 'kritiker_kjonn', 'placeholder' => 'Kjønn']) !!}
-                    </div>
+                <div class="control-group">
+
+                    <label for="forfattere" class="sr-only">Personer:</label>
+                    <select id="forfattere" name="forfattere[]" placeholder="Etternavn, Fornavn" multiple>
+                    @foreach ( old('forfattere') ?: $record->forfattere as $person)
+                        <option value="{{ strval($person) }}" selected>{{ strval($person) }}</option>
+                    @endforeach
+                    </select>
+
+                    <label>
+                        {!! Form::checkbox('is_edited', 'is_edited', $is_edited) !!}
+                        Redaktør
+                    </label>
+                    <label>
+                        {!! Form::checkbox('forfatter_mfl', 'forfatter_mfl', $record->forfatter_mfl) !!}
+                        m. fl.
+                    </label>
+
                 </div>
 
-                <div class="form-group">
-                    <label for="kritiker_pseudonym" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kritiker_pseudonym') }}</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="kritiker_pseudonym" name="kritiker_pseudonym" value="{{ old('kritiker_pseudonym') ?: $record->kritiker_pseudonym }}">
-                    </div>
-                    <label for="kritiker_kommentar" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kritiker_kommentar') }}</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="kritiker_kommentar" name="kritiker_kommentar" value="{{ old('kritiker_kommentar') ?: $record->kritiker_kommentar }}">
-                    </div>
-                </div>
             </li>
         </ul>
 
     </div>
 
-
     @section('script')
 
         <script>
-            $('#kritikktype').selectize({});
-            $('#spraak').selectize({});
-            $('#verk_spraak').selectize({});
-            $('#kjonn').selectize({});
-            $('#kritiker_kjonn').selectize({});
+
+            var defaultOptions = {
+                openOnFocus: false,
+                closeAfterSelect: true,
+                selectOnTab: true
+            };
+
+            $('#kritikktype').selectize(defaultOptions);
+            $('#spraak').selectize(defaultOptions);
+            $('#verk_spraak').selectize(defaultOptions);
+
+            function search(field, query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: '{{ action("LitteraturkritikkController@search") }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        field: field,
+                        q: query
+                    },
+                    error: function () {
+                        callback();
+                    },
+                    success: function (res) {
+                        callback(res);
+                    }
+                });
+            }
+
+            var selectPersonsOptions = {
+                valueField: 'value',
+                labelField: 'value',
+                searchField: 'value',
+                options: [],
+                delimiter: null,
+                create: true,
+                selectOnTab: true,
+                openOnFocus: false,
+                closeAfterSelect: true,
+                load: function(query, callback) {
+                    search('person', query, callback);
+                }
+            };
+
+            $('#forfattere').selectize(selectPersonsOptions);
+            $('#kritikere').selectize(selectPersonsOptions);
+
+            var selectPublicationOptions = {
+                valueField: 'value',
+                labelField: 'value',
+                searchField: 'value',
+                options: [],
+                delimiter: null,
+                create: true,
+                selectOnTab: true,
+                openOnFocus: false,
+                closeAfterSelect: true,
+                load: function(query, callback) {
+                    search('publikasjon', query, callback);
+                }
+            };
+
+            $('#publikasjon').selectize(selectPublicationOptions);
+
         </script>
 
     @endsection

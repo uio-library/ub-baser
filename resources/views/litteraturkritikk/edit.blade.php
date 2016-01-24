@@ -8,7 +8,7 @@
 
     @include('shared.errors')
 
-    <form method="POST" action="{{ action('BeyerController@update', $record->id) }}" class="form-horizontal">
+    <form method="POST" action="{{ action('LitteraturkritikkController@update', $record->id) }}" class="form-horizontal">
         {!! csrf_field() !!}
         <input type="hidden" name="_method" value="PUT">
 
@@ -21,5 +21,9 @@
         </div>
 
     </form>
+
+    <div style="height: 100px;">
+        <!-- Some spacing for menus -->
+    </div>
 
 @endsection

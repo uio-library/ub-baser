@@ -41,3 +41,21 @@ header #user {
   padding: .4em 1.2em;
   border-radius: 4px;
 }
+
+ul.authorlist {
+  display: inline-block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+ul.authorlist li {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+ul.authorlist li+li:before {
+  content: '; ';
+}
+h3 {
+  font-size: 125%;
+}

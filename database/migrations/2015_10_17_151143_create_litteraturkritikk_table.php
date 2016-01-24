@@ -17,9 +17,10 @@ class CreateLitteraturkritikkTable extends Migration
             $table->string('navn');
         });
 
-        Schema::create('litteraturkritikk', function (Blueprint $table) {
+        Schema::create('litteraturkritikk_records', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
+            $table->softDeletes();
 
             # Om kritikken
             $table->jsonb('kritikktype');
@@ -40,17 +41,19 @@ class CreateLitteraturkritikkTable extends Migration
             $table->string('utgivelseskommentar')->nullable();   # Eventuelle tilleggsopplysninger om publiseringen. F.eks. ”egenpublisert”
 
             # Om kritikeren
-            $table->string('kritiker_etternavn')->nullable();
-            $table->string('kritiker_fornavn')->nullable();
-            $table->string('kritiker_kjonn')->nullable();
-            $table->string('kritiker_pseudonym')->nullable();
-            $table->string('kritiker_kommentar')->nullable();
+//            $table->string('kritiker_etternavn')->nullable();
+//            $table->string('kritiker_fornavn')->nullable();
+//            $table->string('kritiker_kjonn')->nullable();
+//            $table->string('kritiker_pseudonym')->nullable();
+//            $table->string('kritiker_kommentar')->nullable();
 
             # Om det kritiserte verket og dets forfatter
-            $table->string('forfatter_etternavn')->nullable();
-            $table->string('forfatter_fornavn')->nullable();
-            $table->string('forfatter_kjonn')->nullable();
-            $table->string('forfatter_kommentar')->nullable();  # F.eks. navn på evt. medforfatter(e)), pseudonym m.m.
+
+//            $table->string('forfatter_etternavn')->nullable();
+//            $table->string('forfatter_fornavn')->nullable();
+//            $table->string('forfatter_kjonn')->nullable();
+//            $table->string('forfatter_kommentar')->nullable();  # F.eks. navn på evt. medforfatter(e)), pseudonym m.m.
+
             $table->string('verk_tittel')->nullable();     # "Verkstittel", tittel på verket som kritiseres
             $table->string('verk_aar')->nullable();        # "Utgivelsesår", i hvilket år er verket utgitt?
             $table->string('verk_sjanger')->nullable();    # "Sjanger", hvilken sjanger tilhører verket?
@@ -58,41 +61,102 @@ class CreateLitteraturkritikkTable extends Migration
             $table->string('verk_kommentar')->nullable();  # F.eks. undertitler, forlag, opplag, omarbeidet utgave m.m.
             $table->string('verk_utgivelsessted')->nullable();
 
-            $table->index('forfatter_etternavn');
-            $table->index('forfatter_fornavn');
+//            $table->index('forfatter_etternavn');
+//            $table->index('forfatter_fornavn');
             $table->index('verk_tittel');
-            $table->index('kritiker_etternavn');
-            $table->index('kritiker_fornavn');
-            $table->index('kritiker_pseudonym');
+//            $table->index('kritiker_etternavn');
+//            $table->index('kritiker_fornavn');
+//            $table->index('kritiker_pseudonym');
             $table->index('publikasjon');
+
+            $table->integer('created_by')->unsigned()->nullable();
+            $table->integer('updated_by')->unsigned()->nullable();
+
+            $table->boolean('kritiker_mfl')->default(false);
+            $table->boolean('forfatter_mfl')->default(false);
+
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
         });
 
-        // Add column for search index
-        DB::unprepared('
-            ALTER TABLE litteraturkritikk ADD COLUMN tsv tsvector;
-            CREATE INDEX litteraturkritikk_tsv_idx ON litteraturkritikk USING gin(tsv);
-            CREATE TRIGGER update_tsv BEFORE INSERT OR UPDATE
-                ON litteraturkritikk FOR EACH ROW EXECUTE PROCEDURE
-                tsvector_update_trigger(tsv, "pg_catalog.simple", verk_tittel, tittel, forfatter_etternavn, forfatter_fornavn, kritiker_etternavn, kritiker_fornavn);
+        Schema::create('litteraturkritikk_personer', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+            $table->softDeletes();
 
-            ALTER TABLE litteraturkritikk ADD COLUMN tsv_person tsvector;
-            CREATE INDEX litteraturkritikk_tsv_person_idx ON litteraturkritikk USING gin(tsv_person);
-            CREATE TRIGGER update_tsv_person BEFORE INSERT OR UPDATE
-                ON litteraturkritikk FOR EACH ROW EXECUTE PROCEDURE
-                tsvector_update_trigger(tsv_person, "pg_catalog.simple", forfatter_etternavn, forfatter_fornavn, kritiker_etternavn, kritiker_fornavn);
-        ');
+            $table->string('etternavn')->nullable();
+            $table->string('fornavn')->nullable();
+            $table->string('pseudonym_for')->nullable();
+            $table->string('pseudonym')->nullable();
+            $table->string('kommentar')->nullable();
+            $table->string('kjonn', 1)->nullable();
+            $table->string('bibsys_id')->nullable();
+            $table->tinyInteger('birth_year', false, true)->nullable();
+            $table->tinyInteger('death_year', false, true)->nullable();
+            $table->index('fornavn');
+            $table->unique(['etternavn', 'fornavn', 'birth_year']);
+        });
+
+        Schema::create('litteraturkritikk_record_person', function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->integer('record_id')->unsigned();
+            $table->integer('person_id')->unsigned();
+            $table->string('person_role')->nullable();
+            $table->string('kommentar')->nullable();  # F.eks. navn på evt. medforfatter(e)), pseudonym m.m.
+            $table->string('pseudonym')->nullable();
+        });
 
         DB::unprepared("
-            CREATE VIEW litteraturkritikk_view AS
+            CREATE MATERIALIZED VIEW litteraturkritikk_records_search AS
                 SELECT
-                    litteraturkritikk.*,
-                    (litteraturkritikk.forfatter_fornavn::text || ' '::text || litteraturkritikk.forfatter_etternavn::text) AS forfatter_fornavn_etternavn,
-                    (litteraturkritikk.forfatter_etternavn::text || ' '::text || litteraturkritikk.forfatter_fornavn::text) AS forfatter_etternavn_fornavn,
-                    (litteraturkritikk.kritiker_fornavn::text || ' '::text || litteraturkritikk.kritiker_etternavn::text) AS kritiker_fornavn_etternavn,
-                    (litteraturkritikk.kritiker_etternavn::text || ' '::text || litteraturkritikk.kritiker_fornavn::text) AS kritiker_etternavn_fornavn,
-                    substr(trim(aar),1,4) AS aar_numeric
-                FROM litteraturkritikk;
+                    litteraturkritikk_records.*,
+
+                    substr(trim(aar),1,4) AS aar_numeric,
+
+                    to_tsvector('simple', coalesce(litteraturkritikk_records.tittel, ''))
+                    || to_tsvector('simple', coalesce(litteraturkritikk_records.verk_tittel, ''))
+                    || to_tsvector('simple', coalesce(litteraturkritikk_records.kommentar, ''))
+                    || to_tsvector('simple', coalesce(litteraturkritikk_records.utgivelseskommentar, ''))
+                    || to_tsvector('simple', coalesce(litteraturkritikk_records.verk_kommentar, ''))
+                    || to_tsvector('simple', coalesce(string_agg(litteraturkritikk_personer.etternavn, ' '), ''))
+                    || to_tsvector('simple', coalesce(string_agg(litteraturkritikk_personer.fornavn, ' '), ''))
+                    || to_tsvector('simple', coalesce(string_agg(litteraturkritikk_personer.pseudonym, ' '), ''))
+                    || to_tsvector('simple', coalesce(string_agg(litteraturkritikk_personer.pseudonym_for, ' '), ''))
+                    AS document
+
+                FROM litteraturkritikk_records
+                    LEFT JOIN litteraturkritikk_record_person
+                        ON litteraturkritikk_records.id=litteraturkritikk_record_person.record_id
+                    LEFT JOIN litteraturkritikk_personer
+                        ON litteraturkritikk_personer.id=litteraturkritikk_record_person.person_id
+
+                GROUP BY litteraturkritikk_records.id
         ");
+
+        DB::unprepared('CREATE INDEX litteraturkritikk_fts_search ON litteraturkritikk_records_search USING gin(document)');
+
+        DB::unprepared("
+            CREATE VIEW litteraturkritikk_personer_view AS
+                SELECT
+                    litteraturkritikk_personer.*,
+                    (CASE
+                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL
+                        THEN litteraturkritikk_personer.fornavn::text || ' '::text || litteraturkritikk_personer.etternavn::text
+                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL
+                        THEN litteraturkritikk_personer.fornavn
+                        ELSE ''
+                    END) AS fornavn_etternavn,
+                    (CASE
+                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL
+                        THEN litteraturkritikk_personer.etternavn::text || ', '::text || litteraturkritikk_personer.fornavn::text
+                        WHEN litteraturkritikk_personer.etternavn IS NOT NULL
+                        THEN litteraturkritikk_personer.etternavn
+                        ELSE ''
+                    END) AS etternavn_fornavn
+                FROM litteraturkritikk_personer;
+        ");
+
     }
 
     /**
@@ -102,12 +166,12 @@ class CreateLitteraturkritikkTable extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP TRIGGER update_tsv_person ON litteraturkritikk');
-        DB::unprepared('DROP INDEX litteraturkritikk_tsv_person_idx');
-        DB::unprepared('DROP TRIGGER update_tsv ON litteraturkritikk');
-        DB::unprepared('DROP INDEX litteraturkritikk_tsv_idx');
-        DB::unprepared('DROP VIEW litteraturkritikk_view');
-        Schema::drop('litteraturkritikk');
+        DB::unprepared('DROP MATERIALIZED VIEW litteraturkritikk_records_search');
+        DB::unprepared('DROP VIEW litteraturkritikk_personer_view');
+
+        Schema::drop('litteraturkritikk_record_person');
+        Schema::drop('litteraturkritikk_records');
+        Schema::drop('litteraturkritikk_personer');
         Schema::drop('litteraturkritikk_kritikktyper');
     }
 }
