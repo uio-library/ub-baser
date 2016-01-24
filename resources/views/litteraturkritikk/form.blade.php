@@ -28,8 +28,11 @@
             <div class="form-group">
                 <label for="publikasjon" class="col-sm-2 control-label">{{ trans('litteraturkritikk.publikasjon') }}</label>
                 <div class="col-sm-3">
-                    {!! Form::select('publikasjon', [], old('publikasjon') ?: $record->publikasjon, ['id' => 'publikasjon', 'placeholder' =>  trans('messages.choose')]) !!}
-
+                    <select id="publikasjon" name="publikasjon" placeholder="{{ trans('messages.choose') }}">
+                        @if (old('publikasjon') ?: $record->publikasjon)
+                            <option value="{{ old('publikasjon') ?: $record->publikasjon }}" selected>{{ old('publikasjon') ?: $record->publikasjon }}</option>
+                        @endif
+                    </select>
                 </div>
                 <label for="utgivelsessted" class="col-sm-1 control-label">{{ trans('litteraturkritikk.utgivelsessted') }}</label>
                 <div class="col-sm-3">
