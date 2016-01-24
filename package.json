@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "bootstrap-sass": "^3.0.0",
-    "laravel-elixir": "^3.0.0",
+    "laravel-elixir": "^4.2.0",
     "jquery": "~2.1.4",
     "selectize": "~0.12.1",
     "bootstrap-slider": "~5.3.2",
