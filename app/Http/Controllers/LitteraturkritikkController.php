@@ -115,12 +115,18 @@ class LitteraturkritikkController extends RecordController
             $records->where('publikasjon', '=', $q);
         }
 
+        if (array_has($fields, 'sjanger')) {
+            $q = $fields['sjanger'];
+            $records->where('sjanger', '=', $q);
+        }
+
         $selectOptions = [
-            ['id' => 'q', 'type' => 'text', 'label' => 'Fritekst', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...'],
-            ['id' => 'person', 'type' => 'select', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn'],
-            ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel'],
-            ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon'],
-            ['id' => 'kritikktype', 'type' => 'select', 'label' => 'Kritikktype', 'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...'],
+            ['id' => 'q', 'type' => 'text', 'label' => 'Fritekst', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...', 'options' => []],
+            ['id' => 'person', 'type' => 'select', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn', 'options' => []],
+            ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel', 'options' => []],
+            ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon', 'options' => []],
+            ['id' => 'verk_sjanger', 'type' => 'select', 'label' => 'Verk-sjanger', 'placeholder' => 'F.eks. lyrikk, roman, ...', 'options' => ['Kake', 'Bake']],
+            ['id' => 'kritikktype', 'type' => 'select', 'label' => 'Kritikktype', 'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...', 'options' => []],
         ];
 
         // Make sure there's always at least one input field visible
@@ -153,10 +159,29 @@ class LitteraturkritikkController extends RecordController
         $term = $request->get('q') . '%';
         $data = [];
         if ($field == 'publikasjon') {
-            foreach (RecordView::where($field, 'ilike', $term)->limit(25)->select($field)->get() as $res) {
-                $data[] = [
-                    'value' => $res[$field]
-                ];
+            if ($term != '%') {
+                // Ignore preload request
+                foreach (RecordView::where($field, 'ilike', $term)->limit(25)->select($field)->get() as $res) {
+                    $data[] = [
+                        'value' => $res[$field]
+                    ];
+                }
+            }
+        } elseif ($field == 'verk_sjanger') {
+            if ($term == '%') {
+                // Preload request
+                $rows = \DB::select('select verk_sjanger from litteraturkritikk_records group by verk_sjanger');
+                foreach ($rows as $row) {
+                    $data[] = [
+                        'value' => $row->verk_sjanger
+                    ];
+                }
+            } else {
+                foreach (RecordView::where($field, 'ilike', $term)->groupBy($field)->limit(25)->select($field)->get() as $res) {
+                    $data[] = [
+                        'value' => $res[$field]
+                    ];
+                }
             }
         } elseif ($field == 'kritikktype') {
             foreach (KritikkType::where('navn', 'ilike', $term)->limit(25)->select('navn')->get() as $res) {

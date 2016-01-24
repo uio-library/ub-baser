@@ -100,12 +100,17 @@ $(function() {
 
     function onFieldSelect(evt) {
         var fieldId = this.id.match('input([0-9]+)field')[1],
-            selIdx = this.selectedIndex,
+            newIdx = this.selectedIndex,
+            oldIdx = $(this).data('oldIndex'),
             textField = $('#input' + fieldId + 'value');
 
-        // TODO: Empty val() if select actually changed?
+        if (oldIdx == newIdx) {
+            return;
+        }
 
-        textField.attr('placeholder', fields[selIdx].placeholder);
+        $(this).data('oldIndex', newIdx);
+
+        textField.attr('placeholder', fields[newIdx].placeholder);
 
         var s = textField[0].selectize;
         if (s) {
@@ -113,11 +118,12 @@ $(function() {
             s.destroy();
         }
         textField.addClass('form-control');
+        textField.val('');
 
-        if (fields[selIdx].type == 'select') {
+        if (fields[newIdx].type == 'select') {
             setTimeout(function() {
                 console.log('Adding selectize');
-                addSelectize(fields[selIdx], textField);
+                addSelectize(fields[newIdx], textField);
             }, 0);
         }
     }
@@ -130,11 +136,11 @@ $(function() {
             delimiter: null,
             maxItems: 1,
             closeAfterSelect: true,
+            openOnFocus: true,
             selectOnTab: true,
-            options: [],
+            preload: true,
             create: false,
             load: function(query, callback) {
-                if (!query.length) return callback();
                 $.ajax({
                     url: '{{ action("LitteraturkritikkController@search") }}',
                     type: 'GET',
