@@ -110,6 +110,12 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
         // Normalize 'verk_spraak' as array of valid ISO639 language codes
         $row['verk_spraak'] = $this->normalizeVerkSpraak($row['verk_spraak'], $allespraak);
+
+        // Trim all fields
+        foreach (array_keys($row) as $k) {
+            $row[$k] = trim($row[$k]);
+            if (empty($row[$k])) $row[$k] = null;
+        }
     }
 
     public function splitTrimAndFilterEmpty($value)
