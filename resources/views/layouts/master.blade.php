@@ -5,6 +5,7 @@
     <title>{{ isset($title) ? $title . ' - ' : '' }}@yield('db-title')</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/table-view/css/themes/tableview-a.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/vendor.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/app.css') }}">
     @yield('head')

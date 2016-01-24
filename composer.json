@@ -4,6 +4,12 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/scriptotek/laravel-table-view"
+        }
+    ],
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
@@ -13,7 +19,8 @@
         "laravelcollective/html": "~5.1",
         "barryvdh/laravel-debugbar": "~2.0",
         "punic/punic": "^1.6",
-        "stevenmaguire/laravel-middleware-csp": "^0.1.1"
+        "stevenmaguire/laravel-middleware-csp": "^0.1.1",
+        "witty/laravel-table-view": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
