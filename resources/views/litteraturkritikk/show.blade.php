@@ -102,9 +102,9 @@
             <h3>Metadata</h3>
             <dl class="dl-horizontal">
                 <dt>Opprettet</dt>
-                <dd>{{ $record->created_at }} av {{ $record->created_by ?: ' (import)' }}</dd>
+                <dd>{{ $record->created_at }} av {{ $record->createdBy ? $record->createdBy->name : ' (import)' }}</dd>
                 <dt>Sist endret</dt>
-                <dd>{{ $record->updated_at }} av {{ $record->updated_by ?: ' (import)' }}</dd>
+                <dd>{{ $record->updated_at }} av {{ $record->updatedBy ? $record->updatedBy->name : ' (import)' }}</dd>
             </dl>
         @endif
 

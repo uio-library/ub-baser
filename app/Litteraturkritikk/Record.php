@@ -25,6 +25,16 @@ class Record extends \App\Record
         'verk_spraak' => 'array',
     ];
 
+    public function createdBy()
+    {
+        return $this->belongsTo('App\User', 'created_by');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo('App\User', 'updated_by');
+    }
+
     /**
      * The persons that are part of this record.
      */
