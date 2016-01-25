@@ -121,6 +121,8 @@ class CreateLitteraturkritikkTable extends Migration
                     || to_tsvector('simple', coalesce(litteraturkritikk_records.kommentar, ''))
                     || to_tsvector('simple', coalesce(litteraturkritikk_records.utgivelseskommentar, ''))
                     || to_tsvector('simple', coalesce(litteraturkritikk_records.verk_kommentar, ''))
+                    || to_tsvector('simple', coalesce(litteraturkritikk_records.forfatter_kommentar, ''))
+                    || to_tsvector('simple', coalesce(litteraturkritikk_records.kritiker_kommentar, ''))
                     || to_tsvector('simple', coalesce(string_agg(litteraturkritikk_personer.etternavn, ' '), ''))
                     || to_tsvector('simple', coalesce(string_agg(litteraturkritikk_personer.fornavn, ' '), ''))
                     || to_tsvector('simple', coalesce(string_agg(litteraturkritikk_personer.pseudonym, ' '), ''))
