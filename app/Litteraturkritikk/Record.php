@@ -50,7 +50,7 @@ class Record extends \App\Record
     public function forfattere()
     {
         return $this->persons()
-            ->whereIn('person_role', ['forfatter', 'redaktør']);
+            ->where('person_role', '!=', 'kritiker');
     }
 
     /**
@@ -119,7 +119,7 @@ class Record extends \App\Record
         $repr = '';
         $forfattere = [];
         foreach ($this->forfattere as $person) {
-            $forfattere[] = strval($person);
+            $forfattere[] = strval($person) . (($person->pivot->person_role != 'forfatter') ? ' (' . $person->pivot->person_role . ')' : '');
         }
 
         $forfattere = implode($forfatter_delimiter, $forfattere);

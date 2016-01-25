@@ -92,19 +92,32 @@
 
             <ul class="list-group">
                 <li class="list-group-item">
-                <h4 class="list-group-item-heading">Forfatter(e) av kritikken:</h4>
 
-                    <div class="control-group">
-                        <label for="kritikere" class="sr-only">Personer:</label>
-                        <select id="kritikere" name="kritikere[]" placeholder="Etternavn, Fornavn" multiple>
-                            @foreach (old('kritikere') ?: $record->kritikere as $person)
-                            <option value="{{ strval($person) }}" selected>{{ strval($person) }}</option>
+                    <div class="form-group">
+
+                        <div class="col-sm-4">
+
+                            <label for="kritikere">Forfatter(e) av kritikken:</label>
+                            <select id="kritikere" name="kritikere[]" placeholder="Etternavn, Fornavn" multiple>
+                            @foreach ( old('kritikere') ?: $record->kritikere as $person)
+                                <option value="{{ strval($person) }}" selected>{{ strval($person) }}</option>
                             @endforeach
-                        </select>
-                        <label>
-                            {!! Form::checkbox('kritiker_mfl', 'kritiker_mfl', $record->kritiker_mfl) !!}
-                            m. fl.
-                        </label>
+                            </select>
+
+                            <label>
+                                {!! Form::checkbox('kritiker_mfl', 'kritiker_mfl', $record->kritiker_mfl) !!}
+                                m. fl.
+                            </label>
+
+                        </div>
+
+                        <div class="col-sm-4">
+
+                            <label for="kritiker_kommentar">Merknad om forfatterskap:</label>
+                            <input type="text" class="form-control" id="kritiker_kommentar" name="kritiker_kommentar" value="{{ old('kritiker_kommentar') ?: $record->kritiker_kommentar }}">
+
+                        </div>
+
                     </div>
 
                 </li>
@@ -121,7 +134,6 @@
 
             <!-- Verket -->
             <li class="list-group-item">
-                <h4 class="list-group-item-heading">Verket:</h4>
 
                 <div class="form-group">
                     <label for="verk_tittel" class="col-sm-2 control-label">{{ trans('litteraturkritikk.tittel') }}</label>
@@ -159,26 +171,36 @@
 
             <!-- Forfatter -->
             <li class="list-group-item">
-                <h4 class="list-group-item-heading">Forfatter(e) av det kritiserte verket:</h4>
 
-                <div class="control-group">
+                <div class="form-group">
 
-                    <label for="forfattere" class="sr-only">Personer:</label>
-                    <select id="forfattere" name="forfattere[]" placeholder="Etternavn, Fornavn" multiple>
-                    @foreach ( old('forfattere') ?: $record->forfattere as $person)
-                        <option value="{{ strval($person) }}" selected>{{ strval($person) }}</option>
-                    @endforeach
-                    </select>
+                    <div class="col-sm-4">
 
-                    <label>
-                        {!! Form::checkbox('is_edited', 'is_edited', $is_edited) !!}
-                        Redaktør
-                    </label>
-                    <label>
-                        {!! Form::checkbox('forfatter_mfl', 'forfatter_mfl', $record->forfatter_mfl) !!}
-                        m. fl.
-                    </label>
+                        <label for="forfattere">Forfatter(e) av det kritiserte verket:</label>
+                        <select id="forfattere" name="forfattere[]" placeholder="Etternavn, Fornavn" multiple>
+                        @foreach ( old('forfattere') ?: $record->forfattere as $person)
+                            <option value="{{ strval($person) }}" selected>{{ strval($person) }}</option>
+                        @endforeach
+                        </select>
 
+                        <label>
+                            {!! Form::checkbox('forfatter_mfl', 'forfatter_mfl', $record->forfatter_mfl) !!}
+                            m. fl.
+                        </label>
+
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label for="person_role">Rolle:</label>
+                        <input type="text" class="form-control" id="person_role" name="person_role" placeholder="Hvis annen en forfatter. Eks.: red., utgiver" value="{{ old('person_role') ?: $person_role }}">
+                    </div>
+
+                    <div class="col-sm-4">
+
+                        <label for="forfatter_kommentar">Merknad om forfatterskap:</label>
+                        <input type="text" class="form-control" id="forfatter_kommentar" name="forfatter_kommentar" value="{{ old('forfatter_kommentar') ?: $record->forfatter_kommentar }}">
+
+                    </div>
                 </div>
 
             </li>

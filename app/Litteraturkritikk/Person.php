@@ -41,13 +41,13 @@ class Person extends \Eloquent
     public function records_as_forfatter()
     {
         return $this->records()
-            ->whereIn('person_role', ['forfatter', 'redaktør']);
+            ->where('person_role', '!=', 'kritiker');
     }
 
     public function records_as_kritiker()
     {
         return $this->records()
-            ->whereIn('person_role', ['kritiker']);
+            ->where('person_role', '=', 'kritiker');
     }
 
     function normalizedName() {

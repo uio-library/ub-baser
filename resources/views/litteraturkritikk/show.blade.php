@@ -33,7 +33,7 @@
                     }}</li>
                 @endforeach
                 @if ($record->kritiker_mfl)
-                    <li>m. fl.</li>
+                    <li class="mfl"><em>m. fl</em></li>
                 @endif
             </ul>.
         @endif
@@ -70,7 +70,7 @@
         <ul class="authorlist">
         @foreach ($record->forfattere as $person)
             <li><a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
-                ($person->pivot->person_role == 'redaktør') ? ' (red.)' : ''
+                ($person->pivot->person_role != 'forfatter') ? ' (' . $person->pivot->person_role . ')' : ''
             }}{{
                 $person->pseudonym_for ? ' (pseudonym for: ' . $person->pseudonym_for . ')' : ''
             }}{{
@@ -78,7 +78,7 @@
             }}</li>
             @endforeach
             @if ($record->forfatter_mfl)
-                <li>m. fl.</li>
+                <li class="mfl"><em>m. fl</em></li>
             @endif
         </ul>.
         @endif

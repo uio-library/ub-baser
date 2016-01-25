@@ -262,11 +262,11 @@ class LitteraturkritikkController extends RecordController
 
         $record->save();
 
-        $is_edited = $request->get('is_edited');
+        $person_role = $request->get('person_role');
 
         $persons = [];
         foreach ( $this->parsePersons($request->get('forfattere', [])) as $id) {
-            $persons[$id] = ['person_role' => $is_edited ? 'redaktør' : 'forfatter'];
+            $persons[$id] = ['person_role' => $person_role ?: 'forfatter'];
         }
         foreach ( $this->parsePersons($request->get('kritikere', [])) as $id) {
             $persons[$id] = ['person_role' => 'kritiker'];
@@ -279,15 +279,21 @@ class LitteraturkritikkController extends RecordController
         return $record;
     }
 
-    protected function isEdited($record)
+    /**
+     * Get the first non-standard person role. While the database schema
+     * supports setting role per person, the UI currently only supports
+     * setting it per record. So we threat it as a per-record property for
+     * now. If needed, we can support role per-person in the future.
+     */
+    protected function getPersonRole($record)
     {
         foreach ($record->forfattere as $person) {
-            if ($person->person_role == 'redaktør') {
-                return true;
+            if ($person->pivot->person_role != 'forfatter') {
+                return $person->pivot->person_role;
             }
         }
 
-        return false;
+        return '';
     }
 
     protected function formArguments($record)
@@ -298,7 +304,7 @@ class LitteraturkritikkController extends RecordController
             'kjonnstyper'   => $this->getKjonnstyper(),
             'spraakliste'   => $this->getLanguageList(),
             'record'        => $record,
-            'is_edited'     => $this->isEdited($record),
+            'person_role'   => $this->getPersonRole($record),
         ];
     }
 

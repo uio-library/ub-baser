@@ -53,7 +53,7 @@ ul.authorlist li {
   margin: 0;
   padding: 0;
 }
-ul.authorlist li+li:before {
+ul.authorlist li+li:not(.mfl):before {
   content: '; ';
 }
 h3 {
