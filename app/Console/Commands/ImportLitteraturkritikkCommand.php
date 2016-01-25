@@ -141,8 +141,9 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         if (preg_match('/m\.\s?fl\./', $row[$column])) {
             $row[$column] = preg_replace('/m\.\s?fl\./', '', $row[$column]);
             $row[$column] = trim($row[$column]);
-            $record->forfatter_mfl = true;
+            return true;
         }
+        return false;
     }
 
     protected function normalizeKjonn($value)
@@ -224,15 +225,12 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         $record = Record::findOrFail($row['id']);
         $record->persons()->detach();
 
-        $record->forfatter_mfl = false;
-        $record->kritiker_mfl = false;
-        $this->extractMfl($row, $record, 'forfatter_etternavn');
-        $this->extractMfl($row, $record, 'forfatter_fornavn');
-        $this->extractMfl($row, $record, 'kritiker_etternavn');
-        $this->extractMfl($row, $record, 'kritiker_fornavn');
+        $record->forfatter_mfl = $this->extractMfl($row, $record, 'forfatter_etternavn') || $this->extractMfl($row, $record, 'forfatter_fornavn');
+        $record->kritiker_mfl = $this->extractMfl($row, $record, 'kritiker_etternavn') || $this->extractMfl($row, $record, 'kritiker_fornavn');
 
         $this->processPerson($record, $row, 'forfatter');
         $this->processPerson($record, $row, 'kritiker');
+
         $record->save();
     }
 
