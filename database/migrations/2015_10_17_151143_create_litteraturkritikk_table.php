@@ -74,6 +74,8 @@ class CreateLitteraturkritikkTable extends Migration
 
             $table->boolean('kritiker_mfl')->default(false);
             $table->boolean('forfatter_mfl')->default(false);
+            $table->string('kritiker_kommentar')->nullable();
+            $table->string('forfatter_kommentar')->nullable();
 
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');

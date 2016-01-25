@@ -159,7 +159,6 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         $etternavn = $row[$role . '_etternavn'];
         $fornavn = $row[$role . '_fornavn'];
         $kjonn = $row[$role . '_kjonn'];
-        $kommentar = $row[$role . '_kommentar'];
 
         $etternavn_arr = $this->splitTrimAndFilterEmpty($etternavn);
         $fornavn_arr = $this->splitTrimAndFilterEmpty($fornavn);
@@ -214,11 +213,9 @@ class ImportLitteraturkritikkCommand extends ImportCommand
                 $this->error("[$rowId] Redaktørrolle angitt for kritiker");
             }
             $person_role = $red ? 'redaktør' : $role;
-            $kommentar = !empty($kommentar) ? $kommentar : null;
 
             $record->persons()->save($person, [
                 'person_role' => $person_role,
-                'kommentar' => $kommentar,
             ]);
         }
     }
@@ -271,11 +268,9 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             'forfatter_etternavn',
             'forfatter_fornavn',
             'forfatter_kjonn',
-            'forfatter_kommentar',
             'kritiker_etternavn',
             'kritiker_fornavn',
             'kritiker_kjonn',
-            'kritiker_kommentar',
             'kritiker_pseudonym',
         ];
         $persons = array_map(function($x) use ($personColumns) {
