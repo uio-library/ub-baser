@@ -118,7 +118,9 @@ $(function() {
             s.destroy();
         }
         textField.addClass('form-control');
-        textField.val('');
+        if (oldIdx !== undefined) {
+            textField.val('');
+        }
 
         if (fields[newIdx].type == 'select') {
             setTimeout(function() {
