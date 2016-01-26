@@ -7,83 +7,77 @@
         <div class="panel-body">
 
             <div class="form-group">
-                <label for="navn" class="col-sm-2 control-label">{{ trans('litteraturkritikk.type') }}</label>
-                <div class="col-sm-4">
+
+                <div class="col-sm-7">
+                    <label for="tittel" class="control-label">{{ trans('litteraturkritikk.tittel') }}</label>
+                    <input type="text" class="form-control" id="tittel" name="tittel" value="{{ old('tittel') ?: $record->tittel }}">
+                </div>
+
+                <div class="col-sm-3">
+                    <label for="navn" class="control-label">{{ trans('litteraturkritikk.type') }}</label>
                     {!! Form::select('kritikktype[]', $kritikktyper, old('kritikktype') ?: $record->kritikktype, ['id' => 'kritikktype', 'multiple' => 'multiple']) !!}
                 </div>
 
-                <label for="spraak" class="col-sm-2 control-label">{{ trans('litteraturkritikk.spraak') }}</label>
-                <div class="col-sm-4">
+                <div class="col-sm-2">
+                    <label for="spraak" class="control-label">{{ trans('litteraturkritikk.spraak') }}</label>
                     {!! Form::select('spraak', $spraakliste, old('spraak') ?: $record->spraak, ['id' => 'spraak', 'placeholder' => trans('messages.choose')]) !!}
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="tittel" class="col-sm-2 control-label">{{ trans('litteraturkritikk.tittel') }}</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="tittel" name="tittel" value="{{ old('tittel') ?: $record->tittel }}">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="publikasjon" class="col-sm-2 control-label">{{ trans('litteraturkritikk.publikasjon') }}</label>
-                <div class="col-sm-3">
+                <div class="col-sm-5">
+                <label for="publikasjon" class="control-label">{{ trans('litteraturkritikk.publikasjon') }}</label>
                     <select id="publikasjon" name="publikasjon" placeholder="{{ trans('messages.choose') }}">
                         @if (old('publikasjon') ?: $record->publikasjon)
                             <option value="{{ old('publikasjon') ?: $record->publikasjon }}" selected>{{ old('publikasjon') ?: $record->publikasjon }}</option>
                         @endif
                     </select>
                 </div>
-                <label for="utgivelsessted" class="col-sm-1 control-label">{{ trans('litteraturkritikk.utgivelsessted') }}</label>
-                <div class="col-sm-3">
+                <div class="col-sm-4">
+                <label for="utgivelsessted" class="control-label">{{ trans('litteraturkritikk.utgivelsessted') }}</label>
+
                     <input type="text" class="form-control" id="utgivelsessted" name="utgivelsessted" value="{{ old('utgivelsessted') ?: $record->utgivelsessted }}">
                 </div>
-                <label for="aar" class="col-sm-1 control-label">{{ trans('litteraturkritikk.aar') }}</label>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
+                    <label for="aar" class="control-label">{{ trans('litteraturkritikk.aar') }}</label>
                     <input type="text" class="form-control" id="aar" name="aar" value="{{ old('aar') ?: $record->aar }}">
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="dato" class="col-sm-2 control-label">{{ trans('litteraturkritikk.dato') }}</label>
                 <div class="col-sm-2">
+                    <label for="dato" class="control-label">{{ trans('litteraturkritikk.dato') }}</label>
                     <input type="text" class="form-control" id="dato" name="dato" value="{{ old('dato') ?: $record->dato }}">
                 </div>
-                <label for="aargang" class="col-sm-1 control-label">{{ trans('litteraturkritikk.aargang') }}</label>
                 <div class="col-sm-2">
+                    <label for="aargang" class="control-label">{{ trans('litteraturkritikk.aargang') }}</label>
                     <input type="text" class="form-control" id="aargang" name="aargang" value="{{ old('aargang') ?: $record->aargang }}">
                 </div>
-                <label for="bind" class="col-sm-1 control-label">{{ trans('litteraturkritikk.bind') }}</label>
                 <div class="col-sm-2">
+                    <label for="bind" class="control-label">{{ trans('litteraturkritikk.bind') }}</label>
                     <input type="text" class="form-control" id="bind" name="bind" value="{{ old('bind') ?: $record->bind }}">
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label for="hefte" class="col-sm-2 control-label">{{ trans('litteraturkritikk.hefte') }}</label>
                 <div class="col-sm-2">
+                    <label for="hefte" class="control-label">{{ trans('litteraturkritikk.hefte') }}</label>
                     <input type="text" class="form-control" id="hefte" name="hefte" value="{{ old('hefte') ?: $record->hefte }}">
                 </div>
-                <label for="nummer" class="col-sm-1 control-label">{{ trans('litteraturkritikk.nummer') }}</label>
                 <div class="col-sm-2">
+                    <label for="nummer" class="control-label">{{ trans('litteraturkritikk.nummer') }}</label>
                     <input type="text" class="form-control" id="nummer" name="nummer" value="{{ old('nummer') ?: $record->nummer }}">
                 </div>
-                <label for="sidetall" class="col-sm-1 control-label">{{ trans('litteraturkritikk.sidetall') }}</label>
                 <div class="col-sm-2">
+                    <label for="sidetall" class="control-label">{{ trans('litteraturkritikk.sidetall') }}</label>
                     <input type="text" class="form-control" id="sidetall" name="sidetall" value="{{ old('sidetall') ?: $record->sidetall }}">
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="kommentar" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kommentar') }}</label>
-                <div class="col-sm-10">
+                <div class="col-sm-6">
+                    <label for="kommentar" class="control-label">{{ trans('litteraturkritikk.kommentar') }}</label>
                     <input placeholder="Merknad om innholdet i kritikken." type="text" class="form-control" id="kommentar" name="kommentar" value="{{ old('kommentar') ?: $record->kommentar }}">
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label for="utgivelseskommentar" class="col-sm-2 control-label">{{ trans('litteraturkritikk.utgivelseskommentar') }}</label>
-                <div class="col-sm-10">
+                <div class="col-sm-6">
+                    <label for="utgivelseskommentar" class="control-label">{{ trans('litteraturkritikk.utgivelseskommentar') }}</label>
                     <input placeholder="Merknad om utgivelsen (f.eks. 'innledning', 'egenpublisert', usikker info)." type="text" class="form-control" id="utgivelseskommentar" name="utgivelseskommentar" value="{{ old('utgivelseskommentar') }}">
                 </div>
             </div>
@@ -97,7 +91,7 @@
 
                         <div class="col-sm-4">
 
-                            <label for="kritikere">Forfatter(e) av kritikken:</label>
+                            <label for="kritikere">Forfatter(e):</label>
                             <select id="kritikere" name="kritikere[]" placeholder="Etternavn, Fornavn" multiple>
                             @foreach ( old('kritikere') ?: $record->kritikere as $person)
                                 <option value="{{ strval($person) }}" selected>{{ strval($person) }}</option>
@@ -127,7 +121,7 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Det kritiserte verket</h3>
+            <h3 class="panel-title">Kritisert/omtalt</h3>
         </div>
 
         <ul class="list-group">
@@ -136,34 +130,36 @@
             <li class="list-group-item">
 
                 <div class="form-group">
-                    <label for="verk_tittel" class="col-sm-2 control-label">{{ trans('litteraturkritikk.tittel') }}</label>
                     <div class="col-sm-4">
+                        <label for="verk_tittel" class="control-label">{{ trans('litteraturkritikk.tittel') }}</label>
                         <input type="text" class="form-control" id="verk_tittel" name="verk_tittel" value="{{ old('verk_tittel') ?: $record->verk_tittel }}">
                     </div>
-                    <label for="verk_aar" class="col-sm-1 control-label">{{ trans('litteraturkritikk.aar') }}</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" id="verk_aar" name="verk_aar" value="{{ old('verk_aar') ?: $record->verk_aar }}">
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="verk_sjanger" class="col-sm-2 control-label">{{ trans('litteraturkritikk.sjanger') }}</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
+                        <label for="verk_sjanger" class="control-label">{{ trans('litteraturkritikk.sjanger') }}</label>
                         <input type="text" class="form-control" id="verk_sjanger" name="verk_sjanger" value="{{ old('verk_sjanger') ?: $record->verk_sjanger }}">
                     </div>
-                    <label for="verk_spraak" class="col-sm-1 control-label">{{ trans('litteraturkritikk.spraak') }}</label>
-                    <div class="col-sm-4">
+
+                    <div class="col-sm-2">
+                        <label for="verk_aar" class="control-label">{{ trans('litteraturkritikk.aar') }}</label>
+                        <input type="text" class="form-control" id="verk_aar" name="verk_aar" value="{{ old('verk_aar') ?: $record->verk_aar }}">
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label for="verk_spraak" class="control-label">{{ trans('litteraturkritikk.spraak') }}</label>
                         {!! Form::select('verk_spraak[]', $spraakliste, old('verk_spraak') ?: $record->verk_spraak, ['id' => 'verk_spraak', 'placeholder' =>  trans('messages.choose'), 'multiple' => 'multiple']) !!}
                     </div>
+
                 </div>
 
                 <div class="form-group">
-                    <label for="verk_kommentar" class="col-sm-2 control-label">{{ trans('litteraturkritikk.kommentar') }}</label>
-                    <div class="col-sm-4">
+
+                    <div class="col-sm-5">
+                        <label for="verk_kommentar" class="control-label">{{ trans('litteraturkritikk.kommentar') }}</label>
                         <input type="text" class="form-control" id="verk_kommentar" name="verk_kommentar" value="{{ old('verk_kommentar') ?: $record->verk_kommentar }}">
                     </div>
-                    <label for="verk_utgivelsessted" class="col-sm-1 control-label">{{ trans('litteraturkritikk.utgivelsessted') }}</label>
                     <div class="col-sm-4">
+                        <label for="verk_utgivelsessted" class="control-label">{{ trans('litteraturkritikk.utgivelsessted') }}</label>
                         <input type="text" class="form-control" id="verk_utgivelsessted" name="verk_utgivelsessted" value="{{ old('verk_utgivelsessted') ?: $record->verk_utgivelsessted }}">
                     </div>
                 </div>
@@ -176,7 +172,7 @@
 
                     <div class="col-sm-4">
 
-                        <label for="forfattere">Forfatter(e) av det kritiserte verket:</label>
+                        <label for="forfattere">Forfatter(e):</label>
                         <select id="forfattere" name="forfattere[]" placeholder="Etternavn, Fornavn" multiple>
                         @foreach ( old('forfattere') ?: $record->forfattere as $person)
                             <option value="{{ strval($person) }}" selected>{{ strval($person) }}</option>

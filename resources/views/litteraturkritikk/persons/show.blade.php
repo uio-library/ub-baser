@@ -9,7 +9,7 @@
     </p>
 
     <h2>
-        Person {{ $person->id }}
+        {{ strval($person) }}
     </h2>
 
     @if ( $person->trashed() )
@@ -18,12 +18,9 @@
         </div>
     @endif
 
-    <div>
-        {{ strval($person) }}
-        @if ($person->kjonn)
-            ({{ $person->kjonnRepr() }})
-        @endif
-    </div>
+    @if ($person->kjonn)
+        <div>Kjønn: {{ $person->kjonnRepr() }}</div>
+    @endif
 
     @if ($person->pseudonym)
         <div>
@@ -53,7 +50,7 @@
     @endif
 
     @if (count($person->records_as_kritiker))
-    <h3>Omtaler</h3>
+    <h3>Forfatter av</h3>
     <ul>
     @foreach ($person->records_as_kritiker as $record)
         <li>{!! $record->representation() !!}</li>

@@ -60,7 +60,7 @@ class Person extends \Eloquent
         }
         $nn = implode(', ', $names);
         if ($this->birth_year) {
-            $nn .= ' (' . $this->birth_year . '-' . $this->death_year ?: '' . ')';
+            $nn .= ' (' . $this->birth_year . '-' . ($this->death_year ?: '') . ')';
         }
 
         return $nn;

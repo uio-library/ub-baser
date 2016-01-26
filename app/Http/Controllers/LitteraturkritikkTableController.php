@@ -44,7 +44,7 @@ class LitteraturkritikkTableController extends Controller
             ->column('Tittel', 'tittel:sort,search')
             ->column('Publikasjon', 'publikasjon:sort,search')
             ->column('Sted', 'utgivelsessted:sort,search')
-            ->column('År', 'aar')
+            ->column('År', 'aar:sort')
 
             ->column('Verk', 'verk_tittel:sort,search')
             ->column('Verk år', 'verk_aar:sort')

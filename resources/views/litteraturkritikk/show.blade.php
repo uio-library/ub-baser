@@ -14,13 +14,6 @@
             Post {{ $record->id }}
         </h2>
 
-        <!--
-        kritikktype kommentar spraak tittel publikasjon utgivelsessted aar dato aargang nummer bind hefte sidetall
-        utgivelseskommentar kritiker_etternavn kritiker_fornavn kritiker_kjonn kritiker_pseudonym kritiker_kommentar
-        forfatter_etternavn forfatter_fornavn forfatter_kjonn forfatter_kommentar verk_tittel verk_aar verk_sjanger
-        verk_kommentar verk_utgivelsessted
--->
-
         <h3>Kritikken</h3>
 
         @if (count($record->kritikere))
@@ -64,7 +57,7 @@
         }}
 
 
-        <h3>Omtalt verk</h3>
+        <h3>Omtalt</h3>
 
         @if (count($record->forfattere))
         <ul class="authorlist">
