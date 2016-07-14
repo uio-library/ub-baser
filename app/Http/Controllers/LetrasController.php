@@ -13,6 +13,7 @@ class LetrasController extends RecordController
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * test
      */
 
     public function index()
