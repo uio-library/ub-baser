@@ -10,4 +10,12 @@ class LetrasRecord extends Record
      * @var string
      */
     protected $table = 'letras';
+
+    public function representation()
+    {
+     
+     $repr = $this->forfatter;
+        //
+     return $repr;
+    }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use App\LetrasRecord;
+use App\Page;
 use Illuminate\Http\Request;
 
 class LetrasController extends RecordController
@@ -11,9 +14,20 @@ class LetrasController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        //
+        
+        
+        $records = DB::table('letras')->paginate(30); //Pass how many record you want to display per page
+ 
+        return view('letras.index', ['records' => $records]);
+
+        /**
+        *$data['records'] = LetrasRecord::all();
+        *
+        *return response()->view('letras.index', $data);
+        */
     }
 
     /**
@@ -24,6 +38,14 @@ class LetrasController extends RecordController
     public function create()
     {
         //
+    }
+
+public function representation()
+    {
+     
+     $repr = $this->forfatter;
+        //
+     return $repr;
     }
 
     /**
@@ -47,7 +69,16 @@ class LetrasController extends RecordController
      */
     public function show($id)
     {
-        //
+        
+        $record = LetrasRecord::findOrFail($id);
+ 
+
+        $data = [
+            'columns' => config('baser.letras.columns'),
+            'record' => LetrasRecord::findOrFail($id),
+        ];
+
+        return response()->view('letras.show', $data);
     }
 
     /**

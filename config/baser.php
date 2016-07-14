@@ -126,4 +126,48 @@ return [
 
     ],
 
+'letras' => [
+
+        'columns' => [
+            [
+                'field' => 'forfatter',
+                'type'  => 'text',
+            ],[
+                'field' => 'land',
+                'type'  => 'text',
+            ],[
+                'field' => 'tittel',
+                'type'  => 'text',
+            ],[
+                'field' => 'utgivelsesaar',
+                'type'  => 'text',
+            ],[
+                'field' => 'sjanger',
+                'type'  => 'text',
+            ],[
+                'field' => 'oversetter',
+                'type'  => 'text',
+            ],[
+                'field' => 'tittel2',
+                'type'  => 'text',
+            ],[
+                'field' => 'utgivelsessted',
+                'type'  => 'text',
+            ],[
+                'field' => 'utgivelsesaar2',
+                'type'  => 'text',
+            ],[
+                'field' => 'forlag',
+                'type'  => 'text',
+            ],[
+                'field' => 'foretterord',
+                'type'  => 'text',
+            ],[
+                'field' => 'spraak',
+                'type'  => 'text',
+            ]
+        ],
+
+    ],
+
 ];
