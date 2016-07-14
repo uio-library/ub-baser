@@ -8,7 +8,7 @@
 
     @include('shared.errors')
 
-    <form method="POST" action="{{ action('BeyerController@store') }}" class="form-horizontal">
+    <form method="POST" action="{{ action('LitteraturkritikkController@store') }}" class="form-horizontal">
         {!! csrf_field() !!}
 
         @include('litteraturkritikk.form')

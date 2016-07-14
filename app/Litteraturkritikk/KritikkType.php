@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Litteraturkritikk;
 
-class BeyerKritikkType extends \Eloquent
+class KritikkType extends \Eloquent
 {
     /**
      * The table associated with the model.

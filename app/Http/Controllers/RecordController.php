@@ -11,4 +11,14 @@ class RecordController extends Controller
     {
         $this->middleware('auth', ['only' => ['create', 'edit', 'store', 'update', 'destroy']]);
     }
+
+    public function getKjonnstyper()
+    {
+        return [
+            'f'  => 'Kvinne',
+            'm'  => 'Mann',
+            'u'  => 'Ukjent',
+            // etc...
+        ];
+    }
 }

@@ -36,13 +36,13 @@ class RouteServiceProvider extends ServiceProvider
 
     public function mapPage(Router $router, Page $page)
     {
-        $router->get($page->route, ['as' => $page->name, function () use ($page) {
+        $router->get($page->route, ['middleware' => 'secure.content', 'as' => $page->name, function () use ($page) {
             $c = new PageController();
 
             return $c->show($page);
         }]);
 
-        $router->get($page->route . '/edit', ['as' => $page->name . '.edit', function () use ($page) {
+        $router->get($page->route . '/edit', ['middleware' => 'secure.content', 'as' => $page->name . '.edit', function () use ($page) {
             $c = new PageController();
 
             return $c->edit($page);

@@ -2,13 +2,17 @@
 
 @section('content')
 
-        @can('litteraturkritikk')
-            <p>
-                <a href="{{ action('BeyerController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
+        <p>
+            @if (Auth::check())
+                <a href="{{ action('LitteraturkritikkTableController@index') }}"><i class="fa fa-table"></i> Tabellvisning</a>
+                &nbsp;
+            @endif
+            @can('litteraturkritikk')
+                <a href="{{ action('LitteraturkritikkController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
                 &nbsp;
                 <a href="{{ route('litteraturkritikk.intro.edit') }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
-            </p>
-        @endif
+            @endif
+        </p>
 
         <div class="lead">
             {!! $intro !!}

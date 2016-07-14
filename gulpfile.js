@@ -3,7 +3,10 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
 
     mix
-        .sass('app.scss')
+
+        .sass([
+            'app.scss',
+        ], 'public/css/app.css')
         .styles([
 
             // Bootstrap
@@ -77,7 +80,7 @@ elixir(function(mix) {
             'public/js/vendor.js',
             'public/js/editing.js',
         ])
-        .copy('bower_components/font-awesome/fonts', 'public/build/fonts')
-        .copy('bower_components/material-design-iconic-font/dist/fonts', 'public/build/fonts');
+        .copy('node_modules/font-awesome/fonts', 'public/build/fonts')
+        .copy('node_modules/material-design-iconic-font/dist/fonts', 'public/build/fonts');
 
 });

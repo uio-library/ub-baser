@@ -1,15 +1,19 @@
 <?php
 
-namespace App;
+namespace App\Litteraturkritikk;
 
-class BeyerRecord extends Record
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Record extends \App\Record
 {
+    use SoftDeletes;
+
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'litteraturkritikk';
+    protected $table = 'litteraturkritikk_records';
 
     /**
      * The attributes that should be casted to native types.
@@ -20,6 +24,43 @@ class BeyerRecord extends Record
         'kritikktype' => 'array',
         'verk_spraak' => 'array',
     ];
+
+    public function createdBy()
+    {
+        return $this->belongsTo('App\User', 'created_by');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo('App\User', 'updated_by');
+    }
+
+    /**
+     * The persons that are part of this record.
+     */
+    public function persons()
+    {
+        return $this->belongsToMany('App\Litteraturkritikk\Person', 'litteraturkritikk_record_person', 'record_id', 'person_id')
+            ->withPivot('person_role', 'kommentar', 'pseudonym');
+    }
+
+    /**
+     * The persons that are part of this record.
+     */
+    public function forfattere()
+    {
+        return $this->persons()
+            ->where('person_role', '!=', 'kritiker');
+    }
+
+    /**
+     * The persons that are part of this record.
+     */
+    public function kritikere()
+    {
+        return $this->persons()
+            ->where('person_role', '=', 'kritiker');
+    }
 
     public function formatKritikkType($name)
     {
@@ -70,27 +111,23 @@ class BeyerRecord extends Record
         return isset($separators[$preferredType]) ? $separators[$preferredType] : 'av/om';
     }
 
-    public function formatForfatter($etternavn, $fornavn, $kommentar)
-    {
-        $repr = '';
-        if ($etternavn) {
-            $repr .= $fornavn . ' ' . $etternavn;
-            if ($kommentar) {
-                $repr .= ' (' . $kommentar . ')';
-            }
-        }
-
-        return $repr;
-    }
-
     public function formatVerk()
     {
-        $repr = '';
+        $forfatter_delimiter = '; ';
+        $forfatter_verk_delimiter = '. ';
 
-        $forfatter = $this->formatForfatter($this->forfatter_etternavn, $this->forfatter_fornavn, $this->forfatter_kommentar);
-        $repr .= $forfatter;
-        if ($forfatter && $this->verk_tittel) {
-            $repr .= ': ';
+        $repr = '';
+        $forfattere = [];
+        foreach ($this->forfattere as $person) {
+            $forfattere[] = strval($person) . (($person->pivot->person_role != 'forfatter') ? ' (' . $person->pivot->person_role . ')' : '');
+        }
+
+        $forfattere = implode($forfatter_delimiter, $forfattere);
+
+        $repr .= $forfattere;
+
+        if ($forfattere && $this->verk_tittel) {
+            $repr .= $forfatter_verk_delimiter;
         }
         if ($this->verk_tittel) {
             $repr .= '«' . $this->verk_tittel . '»';
@@ -105,8 +142,15 @@ class BeyerRecord extends Record
     public function formatKritikk()
     {
         $repr = '';
-        $kritiker = $this->formatForfatter($this->kritiker_etternavn, $this->kritiker_fornavn, '');
-        $repr .= $kritiker ?: 'ukjent';
+
+        $kritikere = [];
+        foreach ($this->kritikere as $person) {
+            $kritikere[] = strval($person);
+        }
+
+        $kritikere = implode(', ', $kritikere);
+
+        $repr .= $kritikere ?: 'ukjent';
 
         if ($this->aar) {
             $repr .= ' (' . $this->aar . ')';
@@ -143,7 +187,7 @@ class BeyerRecord extends Record
 
     public function representation()
     {
-        $repr = '<a href="' . action('BeyerController@show', $this->id) . '">';
+        $repr = '<a href="' . action('LitteraturkritikkController@show', $this->id) . '">';
 
         $repr .= $this->formatKritikk();
         $kritikktype = $this->preferredKritikktype($this->kritikktype);

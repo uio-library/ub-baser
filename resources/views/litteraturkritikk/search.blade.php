@@ -1,4 +1,4 @@
-    <form class="form-horizontal" id="searchForm" method="GET" action="{{ action('BeyerController@index') }}">
+    <form class="form-horizontal" id="searchForm" method="GET" action="{{ action('LitteraturkritikkController@index') }}">
         <input type="hidden" name="search" value="true">
 
         @foreach ($fields as $fieldIndex => $field)
@@ -43,7 +43,7 @@
                 <button type="submit" class="btn btn-primary btn-block"><i class="zmdi zmdi-search"></i> {{ trans('messages.search') }}</button>
             </div>
             <div class="col-sm-2">
-                <a href="{{ action('BeyerController@index') }}" class="btn btn-default">{{ trans('messages.clear') }}</a>
+                <a href="{{ action('LitteraturkritikkController@index') }}" class="btn btn-default">{{ trans('messages.clear') }}</a>
             </div>
         </div>
     </form>
@@ -100,12 +100,17 @@ $(function() {
 
     function onFieldSelect(evt) {
         var fieldId = this.id.match('input([0-9]+)field')[1],
-            selIdx = this.selectedIndex,
+            newIdx = this.selectedIndex,
+            oldIdx = $(this).data('oldIndex'),
             textField = $('#input' + fieldId + 'value');
 
-        // TODO: Empty val() if select actually changed?
+        if (oldIdx == newIdx) {
+            return;
+        }
 
-        textField.attr('placeholder', fields[selIdx].placeholder);
+        $(this).data('oldIndex', newIdx);
+
+        textField.attr('placeholder', fields[newIdx].placeholder);
 
         var s = textField[0].selectize;
         if (s) {
@@ -113,11 +118,14 @@ $(function() {
             s.destroy();
         }
         textField.addClass('form-control');
+        if (oldIdx !== undefined) {
+            textField.val('');
+        }
 
-        if (fields[selIdx].type == 'select') {
+        if (fields[newIdx].type == 'select') {
             setTimeout(function() {
                 console.log('Adding selectize');
-                addSelectize(fields[selIdx], textField);
+                addSelectize(fields[newIdx], textField);
             }, 0);
         }
     }
@@ -127,15 +135,16 @@ $(function() {
             valueField: 'value',
             labelField: 'value',
             searchField: 'value',
+            delimiter: null,
             maxItems: 1,
             closeAfterSelect: true,
+            openOnFocus: true,
             selectOnTab: true,
-            options: [],
+            preload: true,
             create: false,
             load: function(query, callback) {
-                if (!query.length) return callback();
                 $.ajax({
-                    url: '{{ action("BeyerController@search") }}',
+                    url: '{{ action("LitteraturkritikkController@search") }}',
                     type: 'GET',
                     dataType: 'json',
                     data: {
