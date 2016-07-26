@@ -23,11 +23,11 @@ class RecordQBuilderLetras
     public function make()
     {
         $this->query = (new $this->className())->newQuery();
-        $this->sortColumn = $this->request->input('sort', config('baser.letras.default.column'));
-        $this->sortOrder = $this->request->input('order', config('baser.letras.default.order'));
+        $this->sortColumn = $this->request->input('sort', config('baser.letras.default2.column'));
+        $this->sortOrder = $this->request->input('order', config('baser.letras.default2.order'));
         $this->query->orderBy($this->sortColumn, $this->sortOrder);
 
-        foreach (config('baser.letras.columns') as $col) {
+        foreach (config('baser.letras.cols') as $col) {
             if ($this->request->has($col['field'])) {
                 if (array_get($col, 'type') == 'text') {
                     $this->query->where($this->prefix . '.' . $col['field'], 'LIKE', '%' . $this->request->get($col['field']) . '%');
@@ -40,7 +40,7 @@ class RecordQBuilderLetras
 
     public function getColumns()
     {
-        $columns = config('baser.letras.columns');
+        $columns = config('baser.letras.cols');
 
         foreach ($columns as &$d) {
             $d['link'] = Request('url') . '?' . http_build_query([

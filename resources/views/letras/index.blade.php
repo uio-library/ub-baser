@@ -48,13 +48,23 @@ index.blade.php
     <table border="0" cellpadding="0" cellspacing="0" class="table table-striped">
     @if(count($records)>0) {{-- If there is data then display it --}}
     <thead>
-      <tr>
-        <th>Forfatter</th>
-        <th>Tittel</th>
-        <th>Utgivelsesår</th>
-        <th>Sjanger</th>
-      </tr>
-    </thead>
+    <tr>
+      @foreach ($columns as $column)
+      <th style="{{ isset($column['width']) ? 'width: ' . $column['width'] . ';' : '' }}">
+        <a href="{{ $column['link'] }}">
+          {{ trans($prefix . '.' . $column['field']) }}
+          @if ($sortColumn == $column['field'])
+            @if ($sortOrder == 'asc')
+              <i class="zmdi zmdi-sort-amount-asc"></i>
+            @else
+              <i class="zmdi zmdi-sort-amount-desc"></i>
+            @endif
+          @endif
+        </a>
+      </th>
+      @endforeach
+    </tr>
+  </thead>
     <tbody>
     @foreach ($records as $record)
     

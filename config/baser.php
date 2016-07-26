@@ -167,8 +167,28 @@ return [
                 'type'  => 'text',
             ]
         ],
-        
+
         'default' => [
+            'column' => 'utgivelsesaar',
+            'order' => 'desc'
+        ],
+
+        'cols' => [
+            [
+                'field' => 'forfatter',
+                'type'  => 'text',
+            ],[
+                'field' => 'tittel',
+                'type'  => 'text',
+            ],[
+                'field' => 'utgivelsesaar',
+                'type'  => 'text',
+            ],[
+                'field' => 'sjanger',
+                'type'  => 'text',
+            ]
+        ],
+        'default2' => [
             'column' => 'utgivelsesaar',
             'order' => 'desc'
         ],
