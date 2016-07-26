@@ -14,7 +14,7 @@ index.blade.php
                 <a href="{{ route('letras.intro.edit') }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
             @endif
           
-           {{ $records->total() }} poster
+           
         </p>
 
         
@@ -33,11 +33,27 @@ index.blade.php
                             <input type="text" class="form-control" id="forfatter" name="forfatter" value="{{ array_get($query, 'forfatter') }}">
                         </div>
                     </div>
-
-                   
-
+                    <div class="form-group">
+                        <label for="tittel" class="col-sm-2 control-label">{{ trans('letras.tittel') }}</label>
+                        <div class="col-sm-2">
+                        <input type="text" class="form-control" id="tittel" name="tittel" value="{{ array_get($query, 'tittel') }}">
+                        </div>
+                        <label for="utgivelsesaar" class="col-sm-2 control-label">{{ trans('letras.utgivelsesaar') }}</label>
+                        <div class="col-sm-2">
+                        <input type="text" class="form-control" id="utgivelsesaar" name="utgivelsesaar" value="{{ array_get($query, 'utgivelsesaar') }}">
+                        </div>
+                        <label for="sjanger" class="col-sm-2 control-label">{{ trans('letras.sjanger') }}</label>
+                        <div class="col-sm-2">
+                        <input type="text" class="form-control" id="sjanger" name="sjanger" value="{{ array_get($query, 'sjanger') }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ti" class="col-sm-2 control-label"></label>
+                        <div class="col-sm-2">
+                            <button type="submit" class="btn btn-primary btn-block"><i class="zmdi zmdi-search"></i> {{ trans('messages.search') }}</button>
+                        </div>
+                    </div>                  
                 </form>
-
             </div>
         </div>
   
