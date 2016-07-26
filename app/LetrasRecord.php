@@ -11,10 +11,40 @@ class LetrasRecord extends Record
      */
     protected $table = 'letras';
 
-    public function representation()
+    public function forfatter()
     {
      
-     $repr = $this->forfatter;
+      $repr = $this->forfatter;
+        //
+     return $repr;
+
+      //$repr = '<a href="' . action('LetrasController@show', $this->id) . '">';
+
+      //return $repr;
+     //$repr = $this->forfatter;
+        //
+     //return action('LetrasController@show', $this->id);
+    }
+
+     public function tittel()
+    {
+     
+      $repr = $this->tittel;
+        //
+     return $repr;
+    }
+
+     public function utgivelsesaar()
+    {
+     
+      $repr = $this->utgivelsesaar;
+        //
+     return $repr;
+    }
+    public function sjanger()
+    {
+     
+      $repr = $this->sjanger;
         //
      return $repr;
     }

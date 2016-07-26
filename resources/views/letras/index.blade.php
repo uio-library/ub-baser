@@ -13,14 +13,36 @@ index.blade.php
                 &nbsp;
                 <a href="{{ route('letras.intro.edit') }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
             @endif
-        </p>
-
-        
-        <p>
+          
            {{ $records->total() }} poster
         </p>
 
         
+
+
+      <div class="panel panel-default">
+            <div class="panel-body">
+
+                <form class="form-horizontal" id="searchForm" method="GET" action="{{ action('LetrasController@index') }}">
+
+                    <input type="hidden" name="search" value="true">
+
+                    <div class="form-group">
+                        <label for="navn" class="col-sm-2 control-label">{{ trans('letras.forfatter') }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="forfatter" name="forfatter" value="{{ array_get($query, 'forfatter') }}">
+                        </div>
+                    </div>
+
+                   
+
+                </form>
+
+            </div>
+        </div>
+  
+
+
 
        <div class="container">  
     <table border="0" cellpadding="0" cellspacing="0" class="table table-striped">
@@ -29,18 +51,29 @@ index.blade.php
       <tr>
         <th>Forfatter</th>
         <th>Tittel</th>
+        <th>Utgivelsesår</th>
+        <th>Sjanger</th>
       </tr>
     </thead>
     <tbody>
     @foreach ($records as $record)
     
     <tr>
-      <td>
+                <td>
                     <a href="{{ action('LetrasController@show', $record->id) }}">
-                        {{ $record->forfatter}}
+
+                        {!! $record->forfatter() !!}
                     </a>
                 </td>
-      <td>{{ $record->tittel}}</td>
+                <td>
+                        {!! $record->tittel() !!}
+                </td>
+                <td>
+                        {!! $record->utgivelsesaar() !!}
+                </td>
+                <td>
+                        {!! $record->sjanger() !!}
+                </td>
     </tr>
     @endforeach
     </tbody>

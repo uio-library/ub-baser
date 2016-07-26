@@ -167,6 +167,11 @@ return [
                 'type'  => 'text',
             ]
         ],
+        
+        'default' => [
+            'column' => 'utgivelsesaar',
+            'order' => 'desc'
+        ],
 
     ],
 

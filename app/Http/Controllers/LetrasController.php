@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use App\LetrasRecord;
 use App\Page;
+use App\RecordQBuilderLetras;
 use Illuminate\Http\Request;
 
 class LetrasController extends RecordController
@@ -13,22 +13,27 @@ class LetrasController extends RecordController
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     * test
      */
 
-    public function index()
+    public function index(Request $request)
     {
         
-        
-        $records = DB::table('letras')->paginate(30); //Pass how many record you want to display per page
- 
-        return view('letras.index', ['records' => $records]);
+        $q = new RecordQBuilderLetras($request, 'letras', LetrasRecord::class);
+        $q->make();
 
-        /**
-        *$data['records'] = LetrasRecord::all();
-        *
-        *return response()->view('letras.index', $data);
-        */
+        $data = [
+            'prefix' => 'letras',
+            'query' => $request->all(),
+            'columns' => $q->getColumns(),
+            'sortColumn' => $q->sortColumn,
+            'sortOrder' => $q->sortOrder,
+        ];
+
+        $data['records'] = $q->query
+            ->paginate(50);
+
+        return response()->view('letras.index', $data); 
+       
     }
 
     /**
@@ -41,12 +46,16 @@ class LetrasController extends RecordController
         //
     }
 
-public function representation()
+public function show($id)
     {
+    $record = LetrasRecord::findOrFail($id);
      
-     $repr = $this->forfatter;
-        //
-     return $repr;
+     $data = [
+            'columns' => config('baser.letras.columns'),
+            'record'  => $record,
+        ];
+
+        return response()->view('letras.show', $data);
     }
 
     /**
@@ -68,6 +77,7 @@ public function representation()
      *
      * @return \Illuminate\Http\Response
      */
+    /**
     public function show($id)
     {
         
@@ -80,7 +90,7 @@ public function representation()
         ];
 
         return response()->view('letras.show', $data);
-    }
+    }*/
 
     /**
      * Show the form for editing the specified resource.
