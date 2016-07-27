@@ -3,20 +3,14 @@ index.blade.php
 
 @section('content')
 
-        <p>
-            @if (Auth::check())
-                <a href="{{ action('LetrasTableController@index') }}"><i class="fa fa-table"></i> Tabellvisning</a>
-                &nbsp;
-            @endif
-            @can('letras')
+       
+     @can('dommer')
+            <p>
                 <a href="{{ action('LetrasController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
                 &nbsp;
-                <a href="{{ route('letras.intro.edit') }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
-            @endif
-          
-           
-        </p>
-
+                
+            </p>
+        @endif
         
 
 
@@ -95,10 +89,10 @@ index.blade.php
                         {!! $record->tittel() !!}
                 </td>
                 <td>
-                        {!! $record->utgivelsesaar() !!}
+                        {!! $record->sjanger() !!}
                 </td>
                 <td>
-                        {!! $record->sjanger() !!}
+                        {!! $record->utgivelsesaar() !!}
                 </td>
     </tr>
     @endforeach

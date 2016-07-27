@@ -181,10 +181,10 @@ return [
                 'field' => 'tittel',
                 'type'  => 'text',
             ],[
-                'field' => 'utgivelsesaar',
+                'field' => 'sjanger',
                 'type'  => 'text',
             ],[
-                'field' => 'sjanger',
+                'field' => 'utgivelsesaar',
                 'type'  => 'text',
             ]
         ],

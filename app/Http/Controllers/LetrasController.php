@@ -41,10 +41,76 @@ class LetrasController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
+    protected function updateOrCreate(Request $request, $id = null)
+    {
+        $record = is_null($id) ? new LetrasRecord() : LetrasRecord::findOrFail($id);
+
+        $this->validate($request, [
+            'forfatter'     => 'required' . (is_null($id) ? '' : ',' . $id) . '|max:255',
+            'land'      => 'required',
+            'tittel'     => 'required',
+            'utgivelsesaar' => 'required',
+            'sjanger' => 'required',
+            'oversetter' => 'required',
+            'tittel2' => 'required',
+            'utgivelsessted' => 'required',
+            'utgivelsesaar2' => 'required',
+            'forlag' => 'required',
+            'foretterord' => 'required',
+            'spraak' => 'required',
+        ]);
+
+        $record->forfatter = $request->get('forfatter');
+        $record->land = $request->get('land');
+        $record->tittel = $request->get('tittel');
+        $record->utgivelsesaar = $request->get('utgivelsesaar');
+        $record->sjanger = $request->get('sjanger');
+        $record->oversetter = $request->get('oversetter');
+        $record->tittel2 = $request->get('tittel2');
+        $record->utgivelsessted = $request->get('utgivelsessted');
+        $record->utgivelsesaar2 = $request->get('utgivelsesaar2');
+        $record->forlag = $request->get('forlag');
+        $record->foretterord = $request->get('foretterord');
+        $record->spraak = $request->get('spraak');
+        
+        $record->save();
+
+        return $record;
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        //
+        $this->authorize('letras');
+
+        $data = [
+            'columns' => config('baser.letras.columns'),
+        ];
+
+        return response()->view('letras.create', $data);
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->authorize('letras');
+
+        $record = $this->updateOrCreate($request);
+
+        return redirect()->action('LetrasController@show', $record->id)
+            ->with('status', 'Posten ble opprettet.');
+    }
+
 
 public function show($id)
     {
@@ -59,40 +125,6 @@ public function show($id)
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /**
-    public function show($id)
-    {
-        
-        $record = LetrasRecord::findOrFail($id);
- 
-
-        $data = [
-            'columns' => config('baser.letras.columns'),
-            'record' => LetrasRecord::findOrFail($id),
-        ];
-
-        return response()->view('letras.show', $data);
-    }*/
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param int $id
@@ -101,7 +133,15 @@ public function show($id)
      */
     public function edit($id)
     {
-        //
+        $this->authorize('letras');
+
+        $record = LetrasRecord::findOrFail($id);
+
+        $data = [
+            'record'   => $record,
+        ];
+
+        return response()->view('letras.edit', $data);
     }
 
     /**
@@ -114,7 +154,12 @@ public function show($id)
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->authorize('letras');
+
+        $this->updateOrCreate($request, $id);
+
+        return redirect()->action('LetrasController@show', $id)
+            ->with('status', 'Posten ble lagret');
     }
 
     /**
@@ -126,6 +171,8 @@ public function show($id)
      */
     public function destroy($id)
     {
+        $this->authorize('letras');
+
         //
     }
 }
