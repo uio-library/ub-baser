@@ -38,6 +38,7 @@ class RecordQBuilderLetras
         }
     }
 
+    //return 
     public function getColumns()
     {
         $columns = config('baser.letras.cols');
