@@ -1,7 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\OpesRecord;
+use App\Page;
+use App\RecordQueryBuilderOpes;
 use Illuminate\Http\Request;
 
 class OpesController extends RecordController
@@ -11,90 +13,105 @@ class OpesController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-    {
-        list($fields, $fieldPairs) = $this->parseFields($request);
-
-        $minYear = '1789';
-        $maxYear = strftime('%Y');
-        $dateRange = [$minYear, $maxYear];
-
-        /*$inputDateRange = preg_split('/[-:,]/', $request->get('date', ''));
-        if (count($inputDateRange) == 2 && strlen($inputDateRange[0]) == 4 && strlen($inputDateRange[1]) == 4) {
-            $dateRange = $inputDateRange;
-        }
-        */
-        $records = OpesRecordView::query();
-
-        /*if ($dateRange[0] != $minYear || $dateRange[1] != $maxYear) {
-            $records->where('aar_numeric', '>=', intval($dateRange[0]))
-                ->where('aar_numeric', '<=', intval($dateRange[1]));
-        }*/
-
-        if (array_has($fields, 'q')) {
-            $term = $fields['q']; 
-            echo = "test";
-            $records->whereRaw("tsv @@ plainto_tsquery('simple', '" . pg_escape_string($term) . "')");
-        }
-
-        /* if (array_has($fields, 'person')) {
-            $term = preg_replace('/,/', '', $fields['person']) . '%';
-            $records->whereRaw("tsv_person @@ plainto_tsquery('simple', '" . pg_escape_string($term) . "')");
-        }
-
-        if (array_has($fields, 'kritikktype')) {
-            $q = $fields['kritikktype'];
-            // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-            $records->whereRaw('kritikktype ~@ \'' . pg_escape_string($q) . '\'');
-        }
-
-        if (array_has($fields, 'verk')) {
-            $q = $fields['verk'] . '%';
-            $records->where('verk_tittel', 'ilike', $q);
-        }
-        */
-
-
-        $selectOptions = [
-            ['id' => 'q', 'type' => 'text', 'label' => 'Fritekst', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...'],
-            ['id' => 'person', 'type' => 'text', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn'],
-            ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel'],
-            ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon'],
-            ['id' => 'kritikktype', 'type' => 'select', 'label' => 'Kritikktype', 'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...'],
-        ];
-
-        // Make sure there's always at least one input field visible
-        if (!count($fieldPairs)) {
-            $fieldPairs[] = ['q', ''];
-        }
-
-        $intro = Page::where('name', '=', 'litteraturkritikk.intro')->first();
-
-        $records->orderBy('aar_numeric', 'desc');
-
+        
+        $q = new RecordQueryBuilderOpes($request, 'opes', OpesRecord::class);
+        $q->make();
         $data = [
-            'intro'         => $intro->body,
-            'records'       => $records->paginate(200),
-            'fields'        => $fieldPairs,
-            'selectOptions' => $selectOptions,
-            'date'          => $dateRange,
-            'minDate'       => $minYear,
-            'maxDate'       => $maxYear,
+            'prefix' => 'opes',
+            'query' => $request->all(),
+            'columns' => $q->getColumns(),
+            'sortColumn' => $q->sortColumn,
+            'sortOrder' => $q->sortOrder,
         ];
 
-        return response()->view('opes.index', $data);
+        $data['records'] = $q->query
+            ->join('opes', 'opes_pub.papy_id', '=', 'opes.id')
+            //->select('opes_pub.*', 'opes.navn AS kilde_navn')
+            // Dan henter verdier     
+
+
+        
+            ->paginate(50);
+        return response()->view('opes.index', $data); 
+       
     }
+
+    // ny function laget 2 august 2016 
+    // henter ut verdier for alle publication for hver  
+    //  
+    protected function getPublications()
+    {
+        $publi = [];
+        foreach (PubOpes::all() as $publi) {
+            $publi[$publi->id] = $publi->;
+
+        }
+
+        return $publi;
+    }
+
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    /* protected function updateOrCreate(Request $request, $id = null)
     {
-        //
-    }
+        $record = is_null($id) ? new LetrasRecord() : LetrasRecord::findOrFail($id);
+        $this->validate($request, [
+            'forfatter'     => 'required' . (is_null($id) ? '' : ',' . $id) . '|max:255',
+            'land'      => 'required',
+            'tittel'     => 'required',
+            'utgivelsesaar' => 'required',
+            'sjanger' => 'required',
+            'oversetter' => 'required',
+            'tittel2' => 'required',
+            'utgivelsessted' => 'required',
+            'utgivelsesaar2' => 'required',
+            'forlag' => 'required',
+            'foretterord' => 'required',
+            'spraak' => 'required',
+        ]);
+        $record->forfatter = $request->get('forfatter');
+        $record->land = $request->get('land');
+        $record->tittel = $request->get('tittel');
+        $record->utgivelsesaar = $request->get('utgivelsesaar');
+        $record->sjanger = $request->get('sjanger');
+        $record->oversetter = $request->get('oversetter');
+        $record->tittel2 = $request->get('tittel2');
+        $record->utgivelsessted = $request->get('utgivelsessted');
+        $record->utgivelsesaar2 = $request->get('utgivelsesaar2');
+        $record->forlag = $request->get('forlag');
+        $record->foretterord = $request->get('foretterord');
+        $record->spraak = $request->get('spraak');
+        
+        $record->save();
+        return $record;
+    } */
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    
+    /* public function create()
+    {
+        $this->authorize('opes');
+        $data = [
+            'columns' => config('baser.opes.columns'),
+        ];
+        return response()->view('opes.create', $data);
+    } */
+
 
     /**
      * Store a newly created resource in storage.
@@ -103,23 +120,27 @@ class OpesController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
+    
+/* 
     public function store(Request $request)
     {
-        //
+        $this->authorize('opes');
+        $record = $this->updateOrCreate($request);
+        return redirect()->action('OpesController@show', $record->id)
+            ->with('status', 'Posten ble opprettet.');
     }
+*/
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+  public function show($id)
     {
-        //
+    $record = OpesRecord::findOrFail($id);
+     
+     $data = [
+            'columns' => config('baser.opes.columns'),
+            'record'  => $record,
+        ];
+        return response()->view('opes.show', $data);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -127,10 +148,16 @@ class OpesController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+
+    /* public function edit($id)
     {
-        //
-    }
+        $this->authorize('opes');
+        $record = OpesRecord::findOrFail($id);
+        $data = [
+            'record'   => $record,
+        ];
+        return response()->view('opes.edit', $data);
+    } */
 
     /**
      * Update the specified resource in storage.
@@ -140,11 +167,14 @@ class OpesController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    
+    /* public function update(Request $request, $id)
     {
-        //
+        $this->authorize('opes');
+        $this->updateOrCreate($request, $id);
+        return redirect()->action('OpesController@show', $id)
+            ->with('status', 'Posten ble lagret');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -152,8 +182,10 @@ class OpesController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+
+    /* public function destroy($id)
     {
+        $this->authorize('opes');
         //
-    }
+    } */
 }

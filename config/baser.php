@@ -1,10 +1,6 @@
 <?php
-
 return [
-
-
     'dommer' => [
-
         'columns' => [
             [
                 'field' => 'navn',
@@ -26,16 +22,12 @@ return [
                 'type'  => 'exact',
             ],
         ],
-
         'default' => [
             'column' => 'aar',
             'order' => 'desc'
         ],
-
     ],
-
     'beyer' => [
-
         'columns' => [
             [
                 'field' => 'kritikktype',
@@ -123,11 +115,8 @@ return [
                 'type'  => 'text',
             ]
         ],
-
     ],
-
 'letras' => [
-
         'columns' => [
             [
                 'field' => 'forfatter',
@@ -167,7 +156,46 @@ return [
                 'type'  => 'text',
             ]
         ],
-
+        'default' => [
+            'column' => 'utgivelsesaar',
+            'order' => 'desc'
+        ],
+        'cols' => [
+            [
+                'field' => 'forfatter',
+                'type'  => 'text',
+            ],[
+                'field' => 'tittel',
+                'type'  => 'text',
+            ],[
+                'field' => 'sjanger',
+                'type'  => 'text',
+            ],[
+                'field' => 'utgivelsesaar',
+                'type'  => 'text',
+            ]
+        ],
+        'default2' => [
+            'column' => 'utgivelsesaar',
+            'order' => 'desc'
+        ],
     ],
-
+    'opes' => [
+        'columns' => [
+            [
+                'field' => 'inv_no',
+                'type'  => 'text',
+            ],
+            [
+                'field' => 'type_of_text_file',
+                'width' => '40%',
+                'type'  => 'exact',
+            ],
+            
+        ],
+        'default' => [
+            'column' => 'inv_no',
+            'order' => 'desc'
+        ],
+    ],
 ];
