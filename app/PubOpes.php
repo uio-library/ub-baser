@@ -17,7 +17,7 @@ class PubOpes extends \Eloquent
     // peker tilbake til papyrus item
     public function papyrus()
     {
-        return $this->belongsTo('App\OpesRecord')
+        return $this->belongsTo('App\OpesRecord');
     }
 
     public function Ser_vol()
@@ -33,6 +33,11 @@ class PubOpes extends \Eloquent
     public function Year()
     {
         return $this->Year;
+    }
+
+     public function __toString()
+    {
+        return $this->Ser_vol;
     }
 
 

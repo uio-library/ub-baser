@@ -19,26 +19,13 @@ class OpesRecord extends Record
 
 // denne henter alle publikasjoner for denne papyrus
 // 2 august 2016
-    public function poster()
+    public function GetPubl()
     {
         return $this->hasMany('App\PubOpes');
     }
 
-    public function inv_no()
-    {
      
-      $repr = $this->inv_no;
-        //
-     return $repr;
-      //$repr = '<a href="' . action('LetrasController@show', $this->id) . '">';
-      //return $repr;
-     //$repr = $this->forfatter;
-        //
-     //return action('LetrasController@show', $this->id);
-    }
-
-     
-
+/*
 
     public function  section_or_side()
     {
@@ -477,7 +464,7 @@ class OpesRecord extends Record
     {
       $repr = $this->id2;
      return $repr;
-    } 
+    } */
 
      
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\PubOpes;
 use App\OpesRecord;
 use App\Page;
 use App\RecordQueryBuilderOpes;
@@ -8,11 +9,31 @@ use Illuminate\Http\Request;
 
 class OpesController extends RecordController
 {
+    
+    // ny function laget 2 august 2016 
+    // henter ut verdier for alle publication for hver  
+    //  
+    protected function getPublications()
+    {
+        $publi = [];
+        foreach (PubOpes::all() as $publi) {
+            $publi[$publi->id] = $publi->Ser_Vol;
+    
+        }
+    
+        return $publi;
+    }
+
+
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    
+
     public function index(Request $request)
     {
         
@@ -25,32 +46,27 @@ class OpesController extends RecordController
             'sortColumn' => $q->sortColumn,
             'sortOrder' => $q->sortOrder,
         ];
+        // 
+        $data['records'] = OpesRecord::paginate(50);
 
-        $data['records'] = $q->query
-            ->join('opes', 'opes_pub.papy_id', '=', 'opes.id')
-            //->select('opes_pub.*', 'opes.navn AS kilde_navn')
-            // Dan henter verdier     
+        /* $q->query
+          ->join('opes_pub', 'opes.id', '=', 'opes_pub.opes_id')
+          //join('opes', 'opes_pub.papy_id', '=', 'opes.id')
+          ->select('opes_pub.*', 'opes.*')
+          // Dan henter verdier   opes_pub.Ser_Vol 
+         // join('opes_pub', 'opes.id', '=', 'opes_pub.papy_id')
+          // 'opes_pub', 'opes.id', '=', 'opes_pub.papy_id' */
 
 
-        
-            ->paginate(50);
+          // vi vet ikke hva dette er....
+        $data['publikasjoner'] = $this->getPublications();
+
+
         return response()->view('opes.index', $data); 
        
     }
 
-    // ny function laget 2 august 2016 
-    // henter ut verdier for alle publication for hver  
-    //  
-    protected function getPublications()
-    {
-        $publi = [];
-        foreach (PubOpes::all() as $publi) {
-            $publi[$publi->id] = $publi->;
 
-        }
-
-        return $publi;
-    }
 
 
 

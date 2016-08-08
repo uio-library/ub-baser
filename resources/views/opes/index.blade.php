@@ -79,11 +79,14 @@ index.blade.php
                 <td>
                     <a href="{{ action('OpesController@show', $record->id) }}">
 
-                        {!! $record->inv_no() !!}
+                    {{$record}}
+
+
+                        {{ $record->inv_no }}
                     </a>
                 </td>
                 <td>
-                        {!! $record->type_of_text_file() !!}
+                        {{ $record->type_of_text_file }}
                 </td>
                 
     </tr>

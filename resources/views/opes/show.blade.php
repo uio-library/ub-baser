@@ -33,4 +33,8 @@
 
         </p>
 
+        <h2>
+            Post {{$record->GetPubl}}
+        </h2>
+
 @endsection
