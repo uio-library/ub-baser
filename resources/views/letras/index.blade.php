@@ -3,44 +3,67 @@ index.blade.php
 
 @section('content')
 
-        <p>
-            @if (Auth::check())
-                <a href="{{ action('LetrasTableController@index') }}"><i class="fa fa-table"></i> Tabellvisning</a>
-                &nbsp;
-            @endif
-            @can('letras')
+       
+     @can('letras')
+            <p>
                 <a href="{{ action('LetrasController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
                 &nbsp;
-                <a href="{{ route('letras.intro.edit') }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
-            @endif
-        </p>
-
+                
+            </p>
+        @endif
         
-        <p>
-           {{ $records->total() }} poster
-        </p>
 
-        
+       <div class="panel panel-default">
+            <div class="panel-body">
+
+                @include('letras.search')
+
+            </div>
+        </div>
+      
+
+
 
        <div class="container">  
     <table border="0" cellpadding="0" cellspacing="0" class="table table-striped">
     @if(count($records)>0) {{-- If there is data then display it --}}
     <thead>
-      <tr>
-        <th>Forfatter</th>
-        <th>Tittel</th>
-      </tr>
-    </thead>
+    <tr>
+      @foreach ($columns as $column)
+      <th style="{{ isset($column['width']) ? 'width: ' . $column['width'] . ';' : '' }}">
+        <a href="{{ $column['link'] }}">
+          {{ trans($prefix . '.' . $column['field']) }}
+          @if ($sortColumn == $column['field'])
+            @if ($sortOrder == 'asc')
+              <i class="zmdi zmdi-sort-amount-asc"></i>
+            @else
+              <i class="zmdi zmdi-sort-amount-desc"></i>
+            @endif
+          @endif
+        </a>
+      </th>
+      @endforeach
+    </tr>
+  </thead>
     <tbody>
     @foreach ($records as $record)
     
     <tr>
-      <td>
+                <td>
                     <a href="{{ action('LetrasController@show', $record->id) }}">
-                        {{ $record->forfatter}}
+
+                        {!! $record->forfatter() !!}
                     </a>
                 </td>
-      <td>{{ $record->tittel}}</td>
+                <td>
+                        {!! $record->tittel() !!}
+                </td>
+                <td>
+                        {!! $record->sjanger() !!}
+                </td>
+                <td>
+                        {!! $record->utgivelsesaar() !!}
+                </td>
     </tr>
     @endforeach
     </tbody>
