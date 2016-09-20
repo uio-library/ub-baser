@@ -36,6 +36,14 @@ Eventuelt:
 * `php-cs-fixer fix` for å tilpasse koden til gjeldende kodestandard ved hjelp av [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Lurt å kjøre før commit.
 * `gulp` for å bygge css og js. For å kjøre gulp, sjekk at [Node og NPM](https://docs.npmjs.com/getting-started/installing-node) er installert, og kjør så `npm install`.
 
+Optimering for PhpStorm:
+
+	php artisan clear-compiled
+	php artisan ide-helper:generate
+	php artisan ide-helper:models --dir=app -N
+	php artisan optimize
+
+
 ### Automatisk testing
 
 ```
