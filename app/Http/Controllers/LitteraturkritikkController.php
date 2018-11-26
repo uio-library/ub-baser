@@ -115,9 +115,9 @@ class LitteraturkritikkController extends RecordController
             $records->where('publikasjon', '=', $q);
         }
 
-        if (array_has($fields, 'sjanger')) {
-            $q = $fields['sjanger'];
-            $records->where('sjanger', '=', $q);
+        if (array_has($fields, 'verk_sjanger')) {
+            $q = $fields['verk_sjanger'];
+            $records->where('verk_sjanger', '=', $q);
         }
 
         $selectOptions = [
@@ -125,7 +125,7 @@ class LitteraturkritikkController extends RecordController
             ['id' => 'person', 'type' => 'select', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn', 'options' => []],
             ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel', 'options' => []],
             ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon', 'options' => []],
-            ['id' => 'verk_sjanger', 'type' => 'select', 'label' => 'Verk-sjanger', 'placeholder' => 'F.eks. lyrikk, roman, ...', 'options' => ['Kake', 'Bake']],
+            ['id' => 'verk_sjanger', 'type' => 'select', 'label' => 'Sjanger', 'placeholder' => 'Sjanger til det omtalte verket. F.eks. lyrikk, roman, ...', 'options' => ['a', 'b']],
             ['id' => 'kritikktype', 'type' => 'select', 'label' => 'Kritikktype', 'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...', 'options' => []],
         ];
 
