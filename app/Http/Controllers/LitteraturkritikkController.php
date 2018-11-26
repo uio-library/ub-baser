@@ -121,7 +121,7 @@ class LitteraturkritikkController extends RecordController
         }
 
         $selectOptions = [
-            ['id' => 'q', 'type' => 'text', 'label' => 'Fritekst', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...', 'options' => []],
+            ['id' => 'q', 'type' => 'text', 'label' => 'Alle felt', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...', 'options' => []],
             ['id' => 'person', 'type' => 'select', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn', 'options' => []],
             ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel', 'options' => []],
             ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon', 'options' => []],
