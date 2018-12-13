@@ -99,6 +99,32 @@ class LitteraturkritikkController extends RecordController
             });
         }
 
+        if (array_has($fields, 'forfatter')) {
+            $records->whereIn('id', function($query) use ($fields) {
+                $query
+                    ->select('litteraturkritikk_record_person.record_id')
+                    ->from('litteraturkritikk_personer_view AS litteraturkritikk_personer')
+                    ->join('litteraturkritikk_record_person', 'litteraturkritikk_record_person.person_id', '=', 'litteraturkritikk_personer.id')
+                    ->where('litteraturkritikk_record_person.person_role', '=', 'forfatter')
+                    ->where('etternavn_fornavn', '=', $fields['forfatter'])
+                    ->orWhere('fornavn_etternavn', '=', $fields['forfatter'])
+                ;
+            });
+        }
+
+        if (array_has($fields, 'kritiker')) {
+            $records->whereIn('id', function($query) use ($fields) {
+                $query
+                    ->select('litteraturkritikk_record_person.record_id')
+                    ->from('litteraturkritikk_personer_view AS litteraturkritikk_personer')
+                    ->join('litteraturkritikk_record_person', 'litteraturkritikk_record_person.person_id', '=', 'litteraturkritikk_personer.id')
+                    ->where('litteraturkritikk_record_person.person_role', '=', 'kritiker')
+                    ->where('etternavn_fornavn', '=', $fields['kritiker'])
+                    ->orWhere('fornavn_etternavn', '=', $fields['kritiker'])
+                ;
+            });
+        }
+
         if (array_has($fields, 'kritikktype')) {
             $q = $fields['kritikktype'];
             // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
@@ -123,6 +149,8 @@ class LitteraturkritikkController extends RecordController
         $selectOptions = [
             ['id' => 'q', 'type' => 'text', 'label' => 'Alle felt', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...', 'options' => []],
             ['id' => 'person', 'type' => 'select', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn', 'options' => []],
+            ['id' => 'forfatter', 'type' => 'select', 'label' => 'Forfatter', 'placeholder' => 'Fornavn og/eller etternavn', 'options' => []],
+            ['id' => 'kritiker', 'type' => 'select', 'label' => 'Kritiker', 'placeholder' => 'Fornavn og/eller etternavn', 'options' => []],
             ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel', 'options' => []],
             ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon', 'options' => []],
             ['id' => 'verk_sjanger', 'type' => 'select', 'label' => 'Sjanger', 'placeholder' => 'Sjanger til det omtalte verket. F.eks. lyrikk, roman, ...', 'options' => ['a', 'b']],
@@ -189,7 +217,7 @@ class LitteraturkritikkController extends RecordController
                     'value' => $res->navn
                 ];
             }
-        } elseif ($field == 'person') {
+        } elseif (in_array($field, ['person', 'forfatter', 'kritiker'])) {
             foreach (PersonView::where('etternavn_fornavn', 'ilike', $term)
                      ->orWhere('fornavn_etternavn', 'ilike', $term)
                      ->limit(25)->select('id', 'etternavn_fornavn', 'bibsys_id', 'birth_year')->get() as $res) {
