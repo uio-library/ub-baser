@@ -63,6 +63,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         'secure.content' => \Stevenmaguire\Laravel\Http\Middleware\EnforceContentSecurity::class,
+        'admin' => \App\Http\Middleware\Login::class,
+
     ];
 
     /**

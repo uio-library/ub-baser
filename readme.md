@@ -12,7 +12,7 @@ Nytt, felles grensesnitt for basene OPES, Letras, Beyer og Dommers populærnavn.
 
 ### Installasjon
 
-1. Sjekk at maskinen har PHP >= 5.5.9 og Composer, samt nødvendige PHP-tillegg (se http://laravel.com/docs/5.1#installation).
+1. Sjekk at maskinen har PHP >= 7.1 og Composer, samt nødvendige PHP-tillegg (se http://laravel.com/docs/5.1#installation).
 2. `git clone git@github.com:scriptotek/ub-baser.git`
 3. `composer install`
 4. Legg inn databasekonfigurasjon i `.env`
@@ -22,7 +22,7 @@ Nytt, felles grensesnitt for basene OPES, Letras, Beyer og Dommers populærnavn.
 6. `chmod g+s storage`
 7. `php artisan key:generate`
 8. `npm install`
-9. `gulp` for å bygge JavaScript og CSS i `public/build`
+9. `npm run dev` for å bygge JavaScript og CSS i `public/build`
 
 Eventuelt:
 
