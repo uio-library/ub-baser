@@ -5,11 +5,10 @@
     <title>{{ isset($title) ? $title . ' - ' : '' }}@yield('db-title')</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/table-view/css/themes/tableview-a.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ elixir('css/vendor.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ elixir('css/app.css') }}">
-    @yield('head')
+    <link rel="stylesheet" type="text/css" href="{{ mix('css/vendor.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
 
+    @yield('head')
 </head>
 <body>
 
@@ -59,9 +58,9 @@
         @yield('content')
     </div>
 
-    <script src="{{ elixir('js/vendor.js') }}"></script>
+    <script src="{{ mix('js/vendor.js') }}"></script>
     @if (Auth::check())
-        <script src="{{ elixir('js/editing.js') }}"></script>
+        <script src="{{ mix('js/editing.js') }}"></script>
     @endif
 
     @yield('script')
