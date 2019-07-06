@@ -34,7 +34,7 @@ Eventuelt:
 
 * `php artisan serve` for å starte en lokal utviklingsserver på port 8080.
 * `php-cs-fixer fix` for å tilpasse koden til gjeldende kodestandard ved hjelp av [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Lurt å kjøre før commit.
-* `gulp` for å bygge css og js. For å kjøre gulp, sjekk at [Node og NPM](https://docs.npmjs.com/getting-started/installing-node) er installert, og kjør så `npm install`.
+* `npm run dev` for å bygge css og js. Sjekk at [Node og NPM](https://docs.npmjs.com/getting-started/installing-node) er installert, og kjør så `npm install`.
 
 Optimering for PhpStorm:
 

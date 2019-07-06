@@ -9,4 +9,4 @@ _ide_helper*
 tests/_output/*
 tests/_support/_generated/*
 storage/debugbar
-
+public/mix-manifest.json
