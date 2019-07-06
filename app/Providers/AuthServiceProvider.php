@@ -32,13 +32,12 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Register any application authentication / authorization services.
      *
-     * @param \Illuminate\Contracts\Auth\Access\Gate $gate
-     *
+     * @param GateContract $gate
      * @return void
      */
     public function boot(GateContract $gate)
     {
-        parent::registerPolicies($gate);
+        $this->registerPolicies();
 
         foreach (self::$rights as $right) {
             $gate->define($right, function ($user) use ($right) {

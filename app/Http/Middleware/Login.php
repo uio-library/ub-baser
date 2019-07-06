@@ -18,9 +18,9 @@ class Login
     public function handle($request, Closure $next)
     {
         if ($request->has('login')) {
-            $request->session()->put('url.intended', URL::previous());
+            $request->session()->put('url.intended', url()->previous());
 
-            return redirect(action('Auth\AuthController@getLogin'));
+            return redirect(action('Auth\LoginController@showLoginForm'));
         }
 
         return $next($request);
