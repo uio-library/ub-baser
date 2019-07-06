@@ -8,6 +8,38 @@ class Record extends \App\Record
 {
     use SoftDeletes;
 
+    public static $fields = [
+        // Kritikken
+        ['key' => 'id', 'label' => 'ID', 'display' => false],
+        ['key' => 'kritikktype', 'label' => 'Kritikktype'],
+        ['key' => 'spraak', 'label' => 'Språk'],
+        ['key' => 'tittel', 'label' => 'Tittel'],
+        ['key' => 'publikasjon', 'label' => 'Publikasjon'],
+        ['key' => 'utgivelsessted', 'label' => 'Utgivelsessted'],
+
+        ['key' => 'aar_numeric', 'label' => 'År'],
+
+
+        ['key' => 'dato', 'label' => 'Dato'],
+        ['key' => 'aargang', 'label' => 'Årgang'],
+        ['key' => 'bind', 'label' => 'Bind'],
+        ['key' => 'hefte', 'label' => 'Hefte'],
+        ['key' => 'nummer', 'label' => 'Nummer'],
+        ['key' => 'sidetall', 'label' => 'Sidetall'],
+        ['key' => 'kommentar', 'label' => 'Kommentar'],
+
+        ['key' => 'utgivelseskommentar', 'label' => 'Utgivelseskommentar'], // ????
+        ['key' => 'verk_tittel', 'label' => 'Omtalt verk: Tittel'],
+        ['key' => 'verk_aar', 'label' => 'Omtalt verk: År'],
+        ['key' => 'verk_sjanger', 'label' => 'Omtalt verk: Sjanger'],
+        ['key' => 'verk_spraak', 'label' => 'Omtalt verk: Språk'],
+        ['key' => 'verk_kommentar', 'label' => 'Omtalt verk: Kommentar'],
+        ['key' => 'verk_utgivelsessted', 'label' => 'Omtalt verk: Utgivelsessted'],
+
+        ['key' => 'forfatter_mfl', 'label' => 'Omtalt verk: Forfatter m.fl.', 'display' => false],
+        ['key' => 'kritiker_mfl', 'label' => 'Omtalt verk: Kritiker m.fl.', 'display' => false],
+    ];
+
     /**
      * The table associated with the model.
      *

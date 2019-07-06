@@ -166,9 +166,7 @@ return [
          * Package Service Providers...
          */
         Collective\Html\HtmlServiceProvider::class,
-        // Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
-        // Witty\LaravelTableView\LaravelTableViewServiceProvider::class,
 
         /*
          * Application Service Providers...

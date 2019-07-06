@@ -88,40 +88,37 @@ class LitteraturkritikkController extends RecordController
         }
 
         if (array_has($fields, 'person')) {
-            $records->whereIn('id', function($query) use ($fields) {
+            $records->whereIn('id', function ($query) use ($fields) {
                 $query
                     ->select('litteraturkritikk_record_person.record_id')
                     ->from('litteraturkritikk_personer_view AS litteraturkritikk_personer')
                     ->join('litteraturkritikk_record_person', 'litteraturkritikk_record_person.person_id', '=', 'litteraturkritikk_personer.id')
                     ->where('etternavn_fornavn', '=', $fields['person'])
-                    ->orWhere('fornavn_etternavn', '=', $fields['person'])
-                ;
+                    ->orWhere('fornavn_etternavn', '=', $fields['person']);
             });
         }
 
         if (array_has($fields, 'forfatter')) {
-            $records->whereIn('id', function($query) use ($fields) {
+            $records->whereIn('id', function ($query) use ($fields) {
                 $query
                     ->select('litteraturkritikk_record_person.record_id')
                     ->from('litteraturkritikk_personer_view AS litteraturkritikk_personer')
                     ->join('litteraturkritikk_record_person', 'litteraturkritikk_record_person.person_id', '=', 'litteraturkritikk_personer.id')
                     ->where('litteraturkritikk_record_person.person_role', '=', 'forfatter')
                     ->where('etternavn_fornavn', '=', $fields['forfatter'])
-                    ->orWhere('fornavn_etternavn', '=', $fields['forfatter'])
-                ;
+                    ->orWhere('fornavn_etternavn', '=', $fields['forfatter']);
             });
         }
 
         if (array_has($fields, 'kritiker')) {
-            $records->whereIn('id', function($query) use ($fields) {
+            $records->whereIn('id', function ($query) use ($fields) {
                 $query
                     ->select('litteraturkritikk_record_person.record_id')
                     ->from('litteraturkritikk_personer_view AS litteraturkritikk_personer')
                     ->join('litteraturkritikk_record_person', 'litteraturkritikk_record_person.person_id', '=', 'litteraturkritikk_personer.id')
                     ->where('litteraturkritikk_record_person.person_role', '=', 'kritiker')
                     ->where('etternavn_fornavn', '=', $fields['kritiker'])
-                    ->orWhere('fornavn_etternavn', '=', $fields['kritiker'])
-                ;
+                    ->orWhere('fornavn_etternavn', '=', $fields['kritiker']);
             });
         }
 
@@ -164,24 +161,81 @@ class LitteraturkritikkController extends RecordController
 
         $intro = Page::where('name', '=', 'litteraturkritikk.intro')->first();
 
-        $records
-            ->with('forfattere', 'kritikere')
-            ->orderBy('aar_numeric', 'desc');
+        $records->with('forfattere', 'kritikere');
 
-        $data = [
-            'intro'         => $intro->body,
-            'records'       => $records->paginate(200),
-            'fields'        => $fieldPairs,
-            'selectOptions' => $selectOptions,
-            'date'          => $dateRange,
-            'minDate'       => $minYear,
-            'maxDate'       => $maxYear,
-        ];
+        $allFields = Record::$fields;
+        $allFieldKeys = array_map(function($field) {
+            return $field['key'];
+        }, $allFields);
 
-        return response()->view('litteraturkritikk.index', $data);
+        if ($request->wantsJson()) {
+            \DB::enableQueryLog();
+
+            // Parse request parameters from DataTables
+            $requestedColumns = [];
+            foreach ($request->columns as $k => $v) {
+                $requestedColumns[$k] = $v['data'];
+            }
+
+            $records->select(array_values($requestedColumns));
+            foreach ($request->order as $order) {
+                $col = $requestedColumns[$order['column']];
+                if (in_array($col, $allFieldKeys)) {
+                    $dir = ($order['dir'] == 'asc') ? 'asc' : 'desc';
+                    $records->orderByRaw("$col $dir NULLS LAST");
+                }
+            }
+
+            $recordCount = (int) $records->count();
+
+            $records->skip($request->start);
+            $records->take($request->length);
+
+            $data = $records->get()
+                ->map(function($row) {
+                    foreach ($row as $k => $v) {
+                        if (is_array($v)) {
+                            $row[$k] = implode(', ', $v);
+                        }
+                    }
+                    return $row;
+                });
+
+            return response()->json([
+                'draw' => $request->draw,
+                'recordsFiltered' => $recordCount,
+                'recordsTotal' => $recordCount,
+                'data' => $data,
+                'queries' => \DB::getQueryLog(),
+            ]);
+
+        } else {
+            $records->orderByRaw('aar_numeric desc NULLS LAST');
+
+            $qs = $request->except('view');
+            $qsJson = json_encode($qs);
+            $qs = http_build_query($qs);
+            $viewQs = strlen($qs) ? "?{$qs}&" : "?";
+
+            $data = [
+                'intro' => $intro->body,
+                'records' => $records->paginate(200),
+                'fields' => $fieldPairs,
+                'allFields' => $allFields,
+                'selectOptions' => $selectOptions,
+                'date' => $dateRange,
+                'minDate' => $minYear,
+                'maxDate' => $maxYear,
+                'view' => ($request->view == 'table') ? 'table' : 'list',
+                'viewQs' => $viewQs,
+                'qsJson' => $qsJson,
+            ];
+
+            return response()->view('litteraturkritikk.index', $data);
+        }
     }
 
-    public function search(Request $request)
+    public function autocomplete(Request $request)
     {
         $field = $request->get('field');
         $term = $request->get('q') . '%';
@@ -219,8 +273,8 @@ class LitteraturkritikkController extends RecordController
             }
         } elseif (in_array($field, ['person', 'forfatter', 'kritiker'])) {
             foreach (PersonView::where('etternavn_fornavn', 'ilike', $term)
-                     ->orWhere('fornavn_etternavn', 'ilike', $term)
-                     ->limit(25)->select('id', 'etternavn_fornavn', 'bibsys_id', 'birth_year')->get() as $res) {
+                         ->orWhere('fornavn_etternavn', 'ilike', $term)
+                         ->limit(25)->select('id', 'etternavn_fornavn', 'bibsys_id', 'birth_year')->get() as $res) {
                 $data[] = [
                     'id' => $res->id,
                     'bibsys_id' => $res->bibsys_id,
@@ -239,7 +293,7 @@ class LitteraturkritikkController extends RecordController
      * Store a newly created record, or update an existing one.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param int $id
      *
      * @return Record
      */
@@ -249,13 +303,17 @@ class LitteraturkritikkController extends RecordController
         $record = $isNew ? new Record() : Record::findOrFail($id);
 
         $this->validate($request, [
-            'kritikktype'    => 'required',
-            'kommentar'      => '',
-            'spraak'         => 'required|in:' . implode(',', array_keys($this->getLanguageList())),
-            'tittel'         => 'max:255',
-            'publikasjon'    => '',
+            'kritikktype' => 'required',
+            'kommentar' => '',
+            'spraak' => 'required|in:' . implode(',', array_keys($this->getLanguageList())),
+            'tittel' => 'max:255',
+            'publikasjon' => '',
         ]);
 
+        foreach (Record::$fields as $field) {
+            $record->{$field['key']} = $request->get($field['key']);
+        }
+        /*
         $record->kritikktype = $request->get('kritikktype');
         $record->spraak = $request->get('spraak');
         $record->tittel = $request->get('tittel');
@@ -282,6 +340,7 @@ class LitteraturkritikkController extends RecordController
 
         $record->forfatter_mfl = $request->get('forfatter_mfl') ? true : false;
         $record->kritiker_mfl = $request->get('kritiker_mfl') ? true : false;
+        */
 
         $record->updated_by = $request->user()->id;
         if ($isNew) {
@@ -293,10 +352,10 @@ class LitteraturkritikkController extends RecordController
         $person_role = $request->get('person_role');
 
         $persons = [];
-        foreach ( $this->parsePersons($request->get('forfattere', [])) as $id) {
+        foreach ($this->parsePersons($request->get('forfattere', [])) as $id) {
             $persons[$id] = ['person_role' => $person_role ?: 'forfatter'];
         }
-        foreach ( $this->parsePersons($request->get('kritikere', [])) as $id) {
+        foreach ($this->parsePersons($request->get('kritikere', [])) as $id) {
             $persons[$id] = ['person_role' => 'kritiker'];
         }
 
@@ -327,12 +386,12 @@ class LitteraturkritikkController extends RecordController
     protected function formArguments($record)
     {
         return [
-            'columns'       => config('baser.beyer.columns'),
-            'kritikktyper'  => $this->getkritikktyper(),
-            'kjonnstyper'   => $this->getKjonnstyper(),
-            'spraakliste'   => $this->getLanguageList(),
-            'record'        => $record,
-            'person_role'   => $this->getPersonRole($record),
+            'columns' => config('baser.beyer.columns'),
+            'kritikktyper' => $this->getkritikktyper(),
+            'kjonnstyper' => $this->getKjonnstyper(),
+            'spraakliste' => $this->getLanguageList(),
+            'record' => $record,
+            'person_role' => $this->getPersonRole($record),
         ];
     }
 
@@ -397,7 +456,7 @@ class LitteraturkritikkController extends RecordController
 
         $data = [
             'columns' => config('baser.beyer.columns'),
-            'record'  => $record,
+            'record' => $record,
         ];
 
         return response()->view('litteraturkritikk.show', $data);
@@ -407,7 +466,7 @@ class LitteraturkritikkController extends RecordController
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */

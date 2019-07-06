@@ -221,7 +221,7 @@
             function search(field, query, callback) {
                 if (!query.length) return callback();
                 $.ajax({
-                    url: '{{ action("LitteraturkritikkController@search") }}',
+                    url: '{{ action("LitteraturkritikkController@autocomplete") }}',
                     type: 'GET',
                     dataType: 'json',
                     data: {

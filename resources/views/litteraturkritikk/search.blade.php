@@ -1,5 +1,6 @@
     <form class="form-horizontal" id="searchForm" method="GET" action="{{ action('LitteraturkritikkController@index') }}">
         <input type="hidden" name="search" value="true">
+        <input type="hidden" name="view" value="{{ $view }}">
 
         @foreach ($fields as $fieldIndex => $field)
 
@@ -49,7 +50,7 @@
     </form>
 
 @section('script')
-
+    @parent
 <script type="text/javascript">
 
 $(function() {
@@ -144,7 +145,7 @@ $(function() {
             create: false,
             load: function(query, callback) {
                 $.ajax({
-                    url: '{{ action("LitteraturkritikkController@search") }}',
+                    url: '{{ action("LitteraturkritikkController@autocomplete") }}',
                     type: 'GET',
                     dataType: 'json',
                     data: {

@@ -41,6 +41,13 @@ mix.styles([
     './node_modules/froala-editor/css/plugins/line_breaker.min.css',
     './node_modules/froala-editor/css/plugins/table.min.css',
 
+    // DataTables
+    // './node_modules/datatables.net-dt/css/jquery.dataTables.css',
+    './node_modules/datatables.net-bs/css/dataTables.bootstrap.css',
+
+    // Bootstrap-select
+    './node_modules/bootstrap-select/dist/css/bootstrap-select.css',
+
 ], './public/css/vendor.css');
 
 
@@ -49,8 +56,8 @@ mix.scripts([
     // jQuery
     './node_modules/jquery/dist/jquery.js',
 
-    // Bootstrap (Uncomment if we start using any of the JS components)
-    // './node_modules/bootstrap/dist/js/bootstrap.js',
+    // Bootstrap (include, since we use Bootstrap-select)
+    './node_modules/bootstrap/dist/js/bootstrap.js',
 
     // Slider component
     './node_modules/bootstrap-slider/js/bootstrap-slider.js',
@@ -59,6 +66,15 @@ mix.scripts([
     './node_modules/microplugin/src/microplugin.js',
     './node_modules/sifter/sifter.js',
     './node_modules/selectize/dist/js/selectize.js',
+
+    // DataTables
+    './node_modules/datatables.net/js/jquery.dataTables.js',
+    './node_modules/datatables.net-dt/js/dataTables.dataTables.js',
+    './node_modules/datatables.net-bs/js/dataTables.bootstrap.js',
+
+    // Bootstrap-select
+    './node_modules/bootstrap-select/dist/js/bootstrap-select.js',
+    './node_modules/bootstrap-select/dist/js/i18n/defaults-nb_NO.js',
 
 ], './public/js/vendor.js');
 
@@ -94,6 +110,12 @@ mix.version([
     './public/js/editing.js',
 ]);
 
+mix.copy('./node_modules/bootstrap/fonts', './public/fonts');
+
 mix.copy('./node_modules/font-awesome/fonts', './public/fonts');
 
 mix.copy('./node_modules/material-design-iconic-font/dist/fonts', './public/fonts');
+
+mix.copy('./node_modules/datatables.net-dt/images/*', './public/images');
+
+mix.copy('./node_modules/datatables.net-plugins/i18n/Norwegian-Bokmal.lang', './public/misc/datatables-nb.json');

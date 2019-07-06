@@ -7,4 +7,3 @@
 @section('head')
 
 @endsection
-
