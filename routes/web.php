@@ -10,9 +10,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index')->name('home');
 
 // App routes
 Route::get('norsk-litteraturkritikk/autocomplete', 'LitteraturkritikkController@autocomplete');
@@ -43,5 +41,3 @@ Route::group(['middleware' => 'admin'], function () {
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
