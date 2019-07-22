@@ -22,19 +22,6 @@
         <div>Kjønn: {{ $person->kjonnRepr() }}</div>
     @endif
 
-    @if ($person->pseudonym)
-        <div>
-            {{ trans('litteraturkritikk.pseudonym') }}:
-            {{ $person->pseudonym }}
-        </div>
-    @endif
-    @if ($person->pseudonym_for)
-        <div>
-            {{ trans('litteraturkritikk.pseudonym_for') }}:
-            {{ $person->pseudonym_for }}
-        </div>
-    @endif
-
     @if ($person->kommentar)
         <div>
             {{ trans('litteraturkritikk.kommentar') }}:
@@ -49,23 +36,31 @@
         </div>
     @endif
 
-    @if (count($person->records_as_kritiker))
-    <h3>Forfatter av</h3>
-    <ul>
-    @foreach ($person->records_as_kritiker as $record)
-        <li>{!! $record->representation() !!}</li>
-    @endforeach
-    </ul>
+    @if ($person->wikidata_id)
+        <div>
+            {{ trans('litteraturkritikk.wikidata_id') }}:
+            {{ $person->wikidata_id }}
+        </div>
     @endif
 
-
     @if (count($person->records_as_forfatter))
-    <h3>Omtalt i</h3>
+    <h3>Forfatter e.l. av verk omtalt i {{ count($person->records_as_forfatter ) }} kritikker</h3>
     <ul>
         @foreach ($person->records_as_forfatter as $record)
             <li>{!! $record->representation() !!}</li>
         @endforeach
     </ul>
+    <a href="{{ action('LitteraturkritikkController@index', ['input0field' => 'forfatter', 'input0value' => strval($person)])  }}">Vis som tabellvisning</a>
+    @endif
+
+    @if (count($person->records_as_kritiker))
+        <h3>Skribent av {{ count($person->records_as_kritiker ) }} kritikker</h3>
+        <ul>
+            @foreach ($person->records_as_kritiker as $record)
+                <li>{!! $record->representation() !!}</li>
+            @endforeach
+        </ul>
+        <a href="{{ action('LitteraturkritikkController@index', ['input0field' => 'kritiker', 'input0value' => strval($person)])  }}">Vis som tabellvisning</a>
     @endif
 
 @endsection

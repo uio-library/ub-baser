@@ -17,6 +17,7 @@ class LitteraturkritikkPersonController extends RecordController
      */
     public function show($id)
     {
+        \Debugbar::startMeasure('query','DB query');
         $data = [
             'person' => Person::withTrashed()->with(
                 'records_as_forfatter',
@@ -27,8 +28,15 @@ class LitteraturkritikkPersonController extends RecordController
                 'records_as_kritiker.kritikere'
             )->findOrFail($id),
         ];
+        \Debugbar::stopMeasure('query');
 
-        return response()->view('litteraturkritikk.persons.show', $data);
+        \Debugbar::startMeasure('render','Time for rendering');
+        $view = response()->view('litteraturkritikk.persons.show', $data);
+        \Debugbar::stopMeasure('render');
+
+        return $view;
+
+
     }
 
     /**
@@ -44,7 +52,7 @@ class LitteraturkritikkPersonController extends RecordController
 
         $data = [
             'person' => Person::findOrFail($id),
-            'kjonnstyper' => $this->getKjonnstyper(),
+            'kjonnliste' => self::getGenderList(),
         ];
 
         return response()->view('litteraturkritikk.persons.edit', $data);
@@ -66,18 +74,19 @@ class LitteraturkritikkPersonController extends RecordController
 
         $this->validate($request, [
             'etternavn'    => 'required',
-            'birth_year'   => 'numeric|max:2100',
+            'fodt'   => 'nullable|numeric|max:2200', // Note: No negative limit, since we have authors like Menander who lived B.C.
+            'dod'   => 'nullable|numeric|max:2200',
         ]);
 
         $person->etternavn = $request->get('etternavn');
-        $person->fornavn = $request->get('fornavn') ?: null;
-        $person->pseudonym_for = $request->get('pseudonym_for') ?: null;
-        $person->pseudonym = $request->get('pseudonym') ?: null;
-        $person->kommentar = $request->get('kommentar') ?: null;
-        $person->bibsys_id = $request->get('bibsys_id') ?: null;
-        $person->birth_year = $request->get('birth_year') ?: null;
-        $person->death_year = $request->get('death_year') ?: null;
-        $person->kjonn = $request->get('kjonn') ?: null;
+        $person->fornavn = $request->get('fornavn');
+        $person->kritiker_pseudonym = $request->get('kritiker_pseudonym');
+        $person->kommentar = $request->get('kommentar');
+        $person->fodt = $request->get('fodt');
+        $person->dod = $request->get('dod');
+        $person->kjonn = $request->get('kjonn');
+        $person->bibsys_id = $request->get('bibsys_id');
+        $person->wikidata_id = $request->get('wikidata_id');
 
         $person->save();
 

@@ -12,6 +12,13 @@
 </head>
 <body>
 
+    <div class="uio-header">
+        <div class="container">
+            <a href="https://www.uio.no/" title="Universitetet i Oslo"><img src="/images/uio-logo.svg" alt="Universitetet i Oslo"></a>
+            <!-- Dette ser kanskje litt teit ut, men vi er pålagt å ha det her -->
+        </div>
+    </div>
+
     <header class="container">
         <div id="user">
             @if (Auth::check())
@@ -47,7 +54,7 @@
 
     </header>
 
-    <div class="container">
+    <div class="container" id="app">
 
         @if (session('status'))
             <div class="alert alert-success">
@@ -59,6 +66,7 @@
     </div>
 
     <script src="{{ mix('js/vendor.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
     @if (Auth::check())
         <script src="{{ mix('js/editing.js') }}"></script>
     @endif

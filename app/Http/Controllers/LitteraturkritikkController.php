@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LitteraturkritikkSearchRequest;
 use App\Litteraturkritikk\KritikkType;
 use App\Litteraturkritikk\Person;
 use App\Litteraturkritikk\PersonView;
 use App\Litteraturkritikk\Record;
-use App\Litteraturkritikk\RecordView;
 use App\Page;
 use Illuminate\Http\Request;
-use Punic\Language;
+use Illuminate\Support\Arr;
 
 class LitteraturkritikkController extends RecordController
 {
-    public function getKritikkTyper()
+    /**
+     * @return array List of critique types.
+     */
+    public static function getTypeList()
     {
         $kritikktyper = [];
         foreach (KritikkType::all() as $kilde) {
@@ -23,175 +26,49 @@ class LitteraturkritikkController extends RecordController
         return $kritikktyper;
     }
 
-    public function getLanguageList()
-    {
-        return Language::getAll(true, true, 'nb');
-    }
-
-    /**
-     * Turns ['input1field' => 'A', 'input1value' => 'B', 'input2field' => 'C', 'input2value' => 'D', ...]
-     * into ['A' => 'B', 'C' => 'D', ...] and [['A', 'B'], ['C', 'D']].
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
-     */
-    public function parseFields(Request $request)
-    {
-        $fields = [];
-        $fieldPairs = [];
-        foreach ($request->all() as $key => $value) {
-            if (preg_match('/^input([0-9]+)value$/', $key, $matches)) {
-                $keyField = 'input' . $matches[1] . 'field';
-                $field = array_get($request, $keyField);
-                if ($field && $value) {
-                    $fields[$field] = $value;
-                    $fieldPairs[] = [$field, $value];
-                }
-            }
-        }
-
-        return [$fields, $fieldPairs];
-    }
-
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
      *
+     * @param LitteraturkritikkSearchRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(LitteraturkritikkSearchRequest $request)
     {
-        list($fields, $fieldPairs) = $this->parseFields($request);
+        $queryBuilder = $request->queryBuilder;
 
-        $minYear = '1789';
-        $maxYear = strftime('%Y');
-        $dateRange = [$minYear, $maxYear];
-
-        $inputDateRange = preg_split('/[-:,]/', $request->get('date', ''));
-        if (count($inputDateRange) == 2 && strlen($inputDateRange[0]) == 4 && strlen($inputDateRange[1]) == 4) {
-            $dateRange = $inputDateRange;
+        $allFields = Record::getColumns();
+        $allFieldKeys = [];
+        foreach ($allFields as $group) {
+            foreach ($group['fields'] as $field) {
+                $allFieldKeys[] = $field['key'];
+            }
         }
-
-        // Create an instances of \Illuminate\Database\Eloquent\Builder
-        $records = RecordView::query();
-
-        if ($dateRange[0] != $minYear || $dateRange[1] != $maxYear) {
-            $records->where('aar_numeric', '>=', intval($dateRange[0]))
-                ->where('aar_numeric', '<=', intval($dateRange[1]));
-        }
-
-        if (array_has($fields, 'q')) {
-            $term = $fields['q'];
-            $records->whereRaw("document @@ plainto_tsquery('simple', '" . pg_escape_string($term) . "')");
-        }
-
-        if (array_has($fields, 'person')) {
-            $records->whereIn('id', function ($query) use ($fields) {
-                $query
-                    ->select('litteraturkritikk_record_person.record_id')
-                    ->from('litteraturkritikk_personer_view AS litteraturkritikk_personer')
-                    ->join('litteraturkritikk_record_person', 'litteraturkritikk_record_person.person_id', '=', 'litteraturkritikk_personer.id')
-                    ->where('etternavn_fornavn', '=', $fields['person'])
-                    ->orWhere('fornavn_etternavn', '=', $fields['person']);
-            });
-        }
-
-        if (array_has($fields, 'forfatter')) {
-            $records->whereIn('id', function ($query) use ($fields) {
-                $query
-                    ->select('litteraturkritikk_record_person.record_id')
-                    ->from('litteraturkritikk_personer_view AS litteraturkritikk_personer')
-                    ->join('litteraturkritikk_record_person', 'litteraturkritikk_record_person.person_id', '=', 'litteraturkritikk_personer.id')
-                    ->where('litteraturkritikk_record_person.person_role', '=', 'forfatter')
-                    ->where('etternavn_fornavn', '=', $fields['forfatter'])
-                    ->orWhere('fornavn_etternavn', '=', $fields['forfatter']);
-            });
-        }
-
-        if (array_has($fields, 'kritiker')) {
-            $records->whereIn('id', function ($query) use ($fields) {
-                $query
-                    ->select('litteraturkritikk_record_person.record_id')
-                    ->from('litteraturkritikk_personer_view AS litteraturkritikk_personer')
-                    ->join('litteraturkritikk_record_person', 'litteraturkritikk_record_person.person_id', '=', 'litteraturkritikk_personer.id')
-                    ->where('litteraturkritikk_record_person.person_role', '=', 'kritiker')
-                    ->where('etternavn_fornavn', '=', $fields['kritiker'])
-                    ->orWhere('fornavn_etternavn', '=', $fields['kritiker']);
-            });
-        }
-
-        if (array_has($fields, 'kritikktype')) {
-            $q = $fields['kritikktype'];
-            // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-            $records->whereRaw('kritikktype ~@ \'' . pg_escape_string($q) . '\'');
-        }
-
-        if (array_has($fields, 'verk')) {
-            $q = $fields['verk'] . '%';
-            $records->where('verk_tittel', 'ilike', $q);
-        }
-
-        if (array_has($fields, 'publikasjon')) {
-            $q = $fields['publikasjon'];
-            $records->where('publikasjon', '=', $q);
-        }
-
-        if (array_has($fields, 'verk_sjanger')) {
-            $q = $fields['verk_sjanger'];
-            $records->where('verk_sjanger', '=', $q);
-        }
-
-        $selectOptions = [
-            ['id' => 'q', 'type' => 'text', 'label' => 'Alle felt', 'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...', 'options' => []],
-            ['id' => 'person', 'type' => 'select', 'label' => 'Forfatter eller kritiker', 'placeholder' => 'Fornavn og/eller etternavn', 'options' => []],
-            ['id' => 'forfatter', 'type' => 'select', 'label' => 'Forfatter', 'placeholder' => 'Fornavn og/eller etternavn', 'options' => []],
-            ['id' => 'kritiker', 'type' => 'select', 'label' => 'Kritiker', 'placeholder' => 'Fornavn og/eller etternavn', 'options' => []],
-            ['id' => 'verk', 'type' => 'text', 'label' => 'Omtalt tittel', 'placeholder' => 'Verkstittel', 'options' => []],
-            ['id' => 'publikasjon', 'type' => 'select', 'label' => 'Publikasjon', 'placeholder' => 'Publikasjon', 'options' => []],
-            ['id' => 'verk_sjanger', 'type' => 'select', 'label' => 'Sjanger', 'placeholder' => 'Sjanger til det omtalte verket. F.eks. lyrikk, roman, ...', 'options' => ['a', 'b']],
-            ['id' => 'kritikktype', 'type' => 'select', 'label' => 'Kritikktype', 'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...', 'options' => []],
-        ];
-
-        // Make sure there's always at least one input field visible
-        if (!count($fieldPairs)) {
-            $fieldPairs[] = ['q', ''];
-        }
-
-        $intro = Page::where('name', '=', 'litteraturkritikk.intro')->first();
-
-        $records->with('forfattere', 'kritikere');
-
-        $allFields = Record::$fields;
-        $allFieldKeys = array_map(function($field) {
-            return $field['key'];
-        }, $allFields);
 
         if ($request->wantsJson()) {
-            \DB::enableQueryLog();
 
             // Parse request parameters from DataTables
             $requestedColumns = [];
             foreach ($request->columns as $k => $v) {
                 $requestedColumns[$k] = $v['data'];
             }
+            $requestedColumns[] = 'id';
 
-            $records->select(array_values($requestedColumns));
+            $queryBuilder->select(array_values($requestedColumns));
             foreach ($request->order as $order) {
                 $col = $requestedColumns[$order['column']];
                 if (in_array($col, $allFieldKeys)) {
                     $dir = ($order['dir'] == 'asc') ? 'asc' : 'desc';
-                    $records->orderByRaw("$col $dir NULLS LAST");
+                    $queryBuilder->orderByRaw("$col $dir NULLS LAST");
                 }
             }
 
-            $recordCount = (int) $records->count();
+            $recordCount = (int) $queryBuilder->count();
 
-            $records->skip($request->start);
-            $records->take($request->length);
+            $queryBuilder->skip($request->start);
+            $queryBuilder->take($request->length);
 
-            $data = $records->get()
+            $data = $queryBuilder->get()
                 ->map(function($row) {
                     foreach ($row as $k => $v) {
                         if (is_array($v)) {
@@ -206,28 +83,29 @@ class LitteraturkritikkController extends RecordController
                 'recordsFiltered' => $recordCount,
                 'recordsTotal' => $recordCount,
                 'data' => $data,
-                'queries' => \DB::getQueryLog(),
             ]);
 
         } else {
-            $records->orderByRaw('aar_numeric desc NULLS LAST');
 
-            $qs = $request->except('view');
+            $intro = Page::where('name', '=', 'litteraturkritikk.intro')->first();
+
+            // Make sure there's always at least one input field visible
+            if (!count($request->queryParts)) {
+                $request->queryParts[] = ['field' => 'q', 'operator' => 'eq', 'value' => ''];
+            }
+
+            $qs = $request->all();
             $qsJson = json_encode($qs);
             $qs = http_build_query($qs);
             $viewQs = strlen($qs) ? "?{$qs}&" : "?";
 
             $data = [
                 'intro' => $intro->body,
-                'records' => $records->paginate(200),
-                'fields' => $fieldPairs,
+                'query' => $request->queryParts,
                 'allFields' => $allFields,
-                'selectOptions' => $selectOptions,
-                'date' => $dateRange,
-                'minDate' => $minYear,
-                'maxDate' => $maxYear,
-                'view' => ($request->view == 'table') ? 'table' : 'list',
-                'viewQs' => $viewQs,
+                'searchFields' => Record::getSearchFields(),
+                'advancedSearch' => ($request->advanced === 'on'),
+                'qs' => $viewQs,
                 'qsJson' => $qsJson,
             ];
 
@@ -240,16 +118,7 @@ class LitteraturkritikkController extends RecordController
         $field = $request->get('field');
         $term = $request->get('q') . '%';
         $data = [];
-        if ($field == 'publikasjon') {
-            if ($term != '%') {
-                // Ignore preload request
-                foreach (RecordView::where($field, 'ilike', $term)->limit(25)->select($field)->get() as $res) {
-                    $data[] = [
-                        'value' => $res[$field]
-                    ];
-                }
-            }
-        } elseif ($field == 'verk_sjanger') {
+        if (in_array($field, ['publikasjon', 'spraak', 'verk_spraak', 'verk_sjanger', 'verk_tittel'])) {
             if ($term == '%') {
                 // Preload request
                 $rows = \DB::select('select verk_sjanger from litteraturkritikk_records group by verk_sjanger');
@@ -259,9 +128,24 @@ class LitteraturkritikkController extends RecordController
                     ];
                 }
             } else {
-                foreach (RecordView::where($field, 'ilike', $term)->groupBy($field)->limit(25)->select($field)->get() as $res) {
+
+                if (in_array($field, ['verk_tittel'])) {
+                    $query = \DB::table('litteraturkritikk_records_search')
+                        ->whereRaw("verk_tittel_ts @@ (phraseto_tsquery('simple', '" . pg_escape_string($term) . "')::text || ':*')::tsquery");
+                } else {
+                    $query = \DB::table('litteraturkritikk_records_search')
+                        ->where($field, 'ilike', $term);
+                }
+
+
+                foreach ($query->groupBy($field)
+                             ->select([$field, \DB::raw('COUNT(*) AS cnt')])
+                             ->orderBy('cnt', 'desc')
+                             ->limit(25)
+                             ->get() as $res) {
                     $data[] = [
-                        'value' => $res[$field]
+                        'value' => $res->{$field},
+                        'count' => $res->cnt,
                     ];
                 }
             }
@@ -274,11 +158,11 @@ class LitteraturkritikkController extends RecordController
         } elseif (in_array($field, ['person', 'forfatter', 'kritiker'])) {
             foreach (PersonView::where('etternavn_fornavn', 'ilike', $term)
                          ->orWhere('fornavn_etternavn', 'ilike', $term)
-                         ->limit(25)->select('id', 'etternavn_fornavn', 'bibsys_id', 'birth_year')->get() as $res) {
+                         ->limit(25)->select('id', 'etternavn_fornavn', 'bibsys_id', 'fodt')->get() as $res) {
                 $data[] = [
                     'id' => $res->id,
                     'bibsys_id' => $res->bibsys_id,
-                    'birth_year' => $res->birth_year,
+                    'fodt' => $res->fodt,
                     'value' => $res->etternavn_fornavn,
                 ];
             }
@@ -304,43 +188,15 @@ class LitteraturkritikkController extends RecordController
 
         $this->validate($request, [
             'kritikktype' => 'required',
-            'kommentar' => '',
-            'spraak' => 'required|in:' . implode(',', array_keys($this->getLanguageList())),
-            'tittel' => 'max:255',
-            'publikasjon' => '',
         ]);
 
-        foreach (Record::$fields as $field) {
-            $record->{$field['key']} = $request->get($field['key']);
+        foreach (Record::getColumns() as $group) {
+            foreach ($group['fields'] as $field) {
+                if (!Arr::get($field, 'readonly')) {
+                    $record->{$field['key']} = $request->get($field['key'], Arr::get($field, 'default'));
+                }
+            }
         }
-        /*
-        $record->kritikktype = $request->get('kritikktype');
-        $record->spraak = $request->get('spraak');
-        $record->tittel = $request->get('tittel');
-        $record->publikasjon = $request->get('publikasjon');
-        $record->utgivelsessted = $request->get('utgivelsessted');
-        $record->aar = $request->get('aar');
-
-        $record->dato = $request->get('dato');
-        $record->aargang = $request->get('aargang');
-        $record->bind = $request->get('bind');
-        $record->hefte = $request->get('hefte');
-        $record->nummer = $request->get('nummer');
-        $record->sidetall = $request->get('sidetall');
-
-        $record->kommentar = $request->get('kommentar');
-        $record->utgivelseskommentar = $request->get('utgivelseskommentar');
-
-        $record->verk_tittel = $request->get('verk_tittel');
-        $record->verk_aar = $request->get('verk_aar');
-        $record->verk_sjanger = $request->get('verk_sjanger');
-        $record->verk_spraak = $request->get('verk_spraak');
-        $record->verk_kommentar = $request->get('verk_kommentar');
-        $record->verk_utgivelsessted = $request->get('verk_utgivelsessted');
-
-        $record->forfatter_mfl = $request->get('forfatter_mfl') ? true : false;
-        $record->kritiker_mfl = $request->get('kritiker_mfl') ? true : false;
-        */
 
         $record->updated_by = $request->user()->id;
         if ($isNew) {
@@ -385,11 +241,17 @@ class LitteraturkritikkController extends RecordController
 
     protected function formArguments($record)
     {
+        $columns = Record::getColumns();
+        $keys = Record::getColumnKeys();
+        $values = [];
+        foreach ($keys as $key) {
+            $values[$key] = old($key, $record->{$key});
+        }
         return [
-            'columns' => config('baser.beyer.columns'),
-            'kritikktyper' => $this->getkritikktyper(),
-            'kjonnstyper' => $this->getKjonnstyper(),
-            'spraakliste' => $this->getLanguageList(),
+            'columns' => $columns,
+            'values' => $values,
+            'typeliste' => self::getTypeList(),
+            'kjonnliste' => self::getGenderList(),
             'record' => $record,
             'person_role' => $this->getPersonRole($record),
         ];
@@ -455,7 +317,7 @@ class LitteraturkritikkController extends RecordController
         $record = Record::findOrFail($id);
 
         $data = [
-            'columns' => config('baser.beyer.columns'),
+            'columns' => Record::getColumns(),
             'record' => $record,
         ];
 
@@ -505,8 +367,8 @@ class LitteraturkritikkController extends RecordController
 
             $args = [
                 'etternavn' => $matches[1],
-                'fornavn' => array_get($matches, 3, null),
-                'birth_year' => array_get($matches, 5, null),
+                'fornavn' => Arr::get($matches, 3, null),
+                'fodt' => Arr::get($matches, 5, null),
             ];
 
             $person = Person::firstOrCreate($args);

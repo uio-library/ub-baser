@@ -21,63 +21,49 @@
                 <div class="form-group row">
                     <label for="etternavnInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.etternavn') }}</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="etternavnInput" name="etternavn" value="{{ old('etternavn') ?: $person->etternavn }}">
+                        <input type="text" class="form-control" id="etternavnInput" name="etternavn" value="{{ old('etternavn', $person->etternavn) }}">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="fornavnInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.fornavn') }}</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="fornavnInput" name="fornavn" value="{{ old('fornavn') ?: $person->fornavn }}">
+                        <input type="text" class="form-control" id="fornavnInput" name="fornavn" value="{{ old('fornavn', $person->fornavn) }}">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="kjonnInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.kjonn') }}</label>
                     <div class="col-sm-10">
-                        {!! Form::select('kjonn', $kjonnstyper, old('kjonn') ?: $person->kjonn, ['id' => 'kjonn', 'placeholder' => 'Kjønn']) !!}
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="pseudonymInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.pseudonym') }}</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="pseudonymInput" name="pseudonym" value="{{ old('pseudonym') ?: $person->pseudonym }}">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="pseudonymForInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.pseudonym_for') }}</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="pseudonymForInput" name="pseudonym_for" value="{{ old('pseudonym_for') ?: $person->pseudonym_for }}">
+                        {!! Form::select('kjonn', $kjonnliste, old('kjonn', $person->kjonn), ['id' => 'kjonn', 'placeholder' => '(ingen verdi)']) !!}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="kommentarInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.kommentar') }}</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="kommentarInput" name="kommentar" value="{{ old('kommentar') ?: $person->kommentar }}">
+                        <input type="text" class="form-control" id="kommentarInput" name="kommentar" value="{{ old('kommentar', $person->kommentar) }}">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="bibsysIdInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.bibsys_id') }}</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="bibsysIdInput" name="bibsys_id" value="{{ old('bibsys_id') ?: $person->bibsys_id }}">
+                        <input type="text" class="form-control" id="bibsysIdInput" name="bibsys_id" value="{{ old('bibsys_id', $person->bibsys_id) }}">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="birthYearInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.birth_year') }}</label>
+                    <label for="birthYearInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.fodt') }}</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="birthYearInput" name="birth_year" value="{{ old('birth_year') ?: $person->birth_year }}">
+                        <input type="text" class="form-control" id="birthYearInput" name="fodt" value="{{ old('fodt', $person->fodt) }}">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="deathYearInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.death_year') }}</label>
+                    <label for="deathYearInput" class="col-sm-2 form-control-label">{{ trans('litteraturkritikk.dod') }}</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="deathYearInput" name="death_year" value="{{ old('death_year') ?: $person->death_year }}">
+                        <input type="text" class="form-control" id="deathYearInput" name="dod" value="{{ old('dod', $person->dod) }}">
                     </div>
                 </div>
 

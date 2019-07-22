@@ -27,7 +27,7 @@ class Person extends \Eloquent
      *
      * @var array
      */
-    protected $fillable = ['etternavn', 'fornavn', 'kjonn', 'bibsys_id', 'birth_year'];
+    protected $fillable = ['etternavn', 'fornavn', 'kjonn', 'fodt', 'dod', 'bibsys_id', 'wikidata_id',];
 
     /**
      * The records this person belongs to.
@@ -59,8 +59,8 @@ class Person extends \Eloquent
             $names[] = $this->fornavn;
         }
         $nn = implode(', ', $names);
-        if ($this->birth_year) {
-            $nn .= ' (' . $this->birth_year . '-' . ($this->death_year ?: '') . ')';
+        if (!is_null($this->fodt)) {
+            $nn .= ' (' . $this->fodt . '-' . ($this->dod ?: '') . ')';
         }
 
         return $nn;

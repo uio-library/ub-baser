@@ -1,4 +1,6 @@
-window._ = require('lodash');
+import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -9,7 +11,7 @@ window._ = require('lodash');
 // window.Popper = require('popper.js').default;
 // window.$ = window.jQuery = require('jquery');
 
-require('bootstrap');
+// require('bootstrap');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -17,9 +19,9 @@ require('bootstrap');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+Vue.use(VueAxios, axios)
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -30,7 +32,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 let token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
@@ -51,3 +53,5 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+export default Vue

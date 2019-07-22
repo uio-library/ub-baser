@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Litteraturkritikk\KritikkType;
 use App\Litteraturkritikk\Person;
 use App\Litteraturkritikk\Record;
+use Illuminate\Support\Arr;
 use Punic\Language;
 
 class ImportLitteraturkritikkCommand extends ImportCommand
@@ -57,39 +58,10 @@ class ImportLitteraturkritikkCommand extends ImportCommand
      */
     protected $description = 'Import data for Norsk litteraturkritikk';
 
-    public function normalizeVerkSpraak($value, $langCodes) {
 
-        // Split by , or /
-        $value = preg_split('/[,\/]/', $value);
-
-        // Lowercase and trim .?()
-        $value = array_map(function ($t) {
-            return mb_strtolower(trim($t, '. ?()'));
-        }, $value);
-
-        // Filter out empty values
-        $value = array_values(array_filter($value, function($x) {
-            return !empty($x);
-        }));
-
-        // Map to language codes
-        $value = array_map(function ($lang) use ($langCodes) {
-            try {
-                return $langCodes[$lang];
-            } catch (\Exception $e) {
-                $this->error('Unknown language code: ' . $lang);
-
-                return '??';
-            }
-        }, $value);
-
-        return json_encode($value);
-    }
-
-
-    function processRecordRow(&$row, $allespraak)
+    function processRecordRow(&$record)
     {
-        $typer = trim($row['kritikktype']);
+        $typer = trim($record['kritikktype']);
         if (empty($typer)) {
             $typer = [];
         } else {
@@ -102,19 +74,19 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         //         $this->warn('Unknown kritikktype: ' . $t);
         //     }
         // }
-        $row['kritikktype'] = json_encode($typer);
+        $record['kritikktype'] = json_encode($typer);
 
         // Normalize 'spraak' as valid ISO639 language code
-        $lang = mb_strtolower($row['spraak']);
-        $row['spraak'] = empty($lang) ? null : $allespraak[$lang];
+//        $lang = mb_strtolower($record['spraak']);
+//        $record['spraak'] = empty($lang) ? null : $allespraak[$lang];
 
         // Normalize 'verk_spraak' as array of valid ISO639 language codes
-        $row['verk_spraak'] = $this->normalizeVerkSpraak($row['verk_spraak'], $allespraak);
+//        $record['verk_spraak'] = $this->normalizeVerkSpraak($record['verk_spraak'], $allespraak);
 
         // Trim all fields
-        foreach (array_keys($row) as $k) {
-            $row[$k] = trim($row[$k]);
-            if (empty($row[$k])) $row[$k] = null;
+        foreach (array_keys($record) as $k) {
+            $record[$k] = trim($record[$k]);
+            if (empty($record[$k])) $record[$k] = null;
         }
     }
 
@@ -138,9 +110,11 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
     protected function extractMfl(&$row, $record, $column)
     {
-        if (preg_match('/m\.\s?fl\./', $row[$column])) {
-            $row[$column] = preg_replace('/m\.\s?fl\./', '', $row[$column]);
+        if (preg_match('/m\.?\s?fl\./', $row[$column])) {
+            $oldValue = $row[$column];
+            $row[$column] = preg_replace('/m\.?\s?fl\./', '', $row[$column]);
             $row[$column] = trim($row[$column]);
+            $this->info(sprintf('Replaced "%s" → "%s"', $oldValue, $row[$column]));
             return true;
         }
         return false;
@@ -168,7 +142,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             ? $this->stats[$role][count($etternavn_arr)] + 1
             : 1;
 
-        if (count($etternavn_arr) > count($fornavn_arr)) {
+        if (count($etternavn_arr) > count($fornavn_arr) && count($fornavn_arr) != 0) {
             if (!in_array($etternavn_arr[0], ['anonym', 'ukjent', 'Ukjent'])) {
                 $this->warn("[$rowId] Antall etternavn <$etternavn> er flere enn antallet fornavn <$fornavn>.");
             }
@@ -206,7 +180,10 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
             $kjonn = $this->normalizeKjonn($kjonn);
             if ($person->kjonn && $kjonn && $person->kjonn != $kjonn) {
-                $this->error("[$rowId] Person $person->id har registrert flere verdier for kjønn: <$person->kjonn> og <$kjonn>");
+                $this->error(
+                    "[$rowId] Person {$person->id} ({$person->etternavn}, {$person->fornavn}) " .
+                    "har registrert flere verdier for kjonn: <$person->kjonn> og <$kjonn>"
+                );
             }
             $person->kjonn = $kjonn;
 
@@ -254,11 +231,11 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
         $data = $this->getData('import/litteraturkritikk.json');
 
-        $allespraak = array_flip(Language::getAll(true, true, 'nb'));
-        $allespraak['finsk-svensk'] = 'sv';
-        $allespraak['bokmål'] = 'nb';
-        $allespraak['nynorsk'] = 'nn';
-        $allespraak['bokmål (innslag av nynorsk)'] = 'nb';
+//        $allespraak = array_flip(Language::getAll(true, true, 'nb'));
+//        $allespraak['finsk-svensk'] = 'sv';
+//        $allespraak['bokmål'] = 'nb';
+//        $allespraak['nynorsk'] = 'nn';
+//        $allespraak['bokmål (innslag av nynorsk)'] = 'nb';
 
 
         // Separate out 'person' columns
@@ -269,17 +246,18 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             'kritiker_etternavn',
             'kritiker_fornavn',
             'kritiker_kjonn',
-            'kritiker_pseudonym',
+            // 'kritiker_pseudonym',
         ];
         $persons = array_map(function($x) use ($personColumns) {
-            return array_only($x, array_merge(['id'], $personColumns));
-        }, $data);
-        $records = array_map(function($x) use ($personColumns) {
-            return array_except($x, $personColumns);
+            return Arr::only($x, array_merge(['id'], $personColumns));
         }, $data);
 
-        foreach ($records as &$row) {
-            $this->processRecordRow($row, $allespraak);
+        $records = array_map(function($x) use ($personColumns) {
+            return Arr::except($x, $personColumns);
+        }, $data);
+
+        foreach ($records as &$record) {
+            $this->processRecordRow($record);
         }
 
         $this->comment('Clearing DB');

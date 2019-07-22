@@ -3,12 +3,6 @@
 @section('content')
 
         <p>
-            @if ($view == 'table')
-                <a href="{{ action('LitteraturkritikkController@index') . $viewQs }}view=list"><i class="fa fa-list"></i> Listevisning</a>&nbsp;
-            @else
-                <a href="{{ action('LitteraturkritikkController@index') . $viewQs }}view=table"><i class="fa fa-table"></i> Tabellvisning</a>
-            @endif
-
             @can('litteraturkritikk')
                 <a href="{{ action('LitteraturkritikkController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
                 &nbsp;
@@ -22,53 +16,43 @@
 
         <div class="panel panel-default">
             <div class="panel-body">
-
-                @include('litteraturkritikk.search')
-
+                <litteraturkritikk-search-form
+                    :initial-query="{{ json_encode($query) }}"
+                    :search-fields="{{ json_encode($searchFields) }}"
+                    :advanced-search="{{ json_encode($advancedSearch) }}"
+                ></litteraturkritikk-search-form>
             </div>
         </div>
 
-        <p>
-            {{ $records->total() }} poster
-        </p>
+        Vis kolonner:
 
-        @if ($view == 'table')
+        <select class="selectpicker" multiple>
+            @foreach ($allFields as $group)
+                @if (!isset($group['display']) || $group['display'])
+                    <optgroup label="{{ $group['label'] }}">
+                    @foreach ($group['fields'] as $field)
+                        @if (!isset($field['display']) || $field['display'])
+                            <option value="{{ $field['key'] }}">{{ $field['label'] }}</option>
+                        @endif
+                    @endforeach
+                    </optgroup>
+                @endif
+            @endforeach
+        </select>
 
-            Vis kolonner:
-
-            <select class="selectpicker" multiple>
-                @foreach ($allFields as $field)
-                    <option value="{{ $field['key'] }}">{{ $field['label'] }}</option>
-                @endforeach
-            </select>
-
-            <table id="table1" class="table table-striped table-bordered" style="width:100%">
-                <thead>
-                <tr>
-                    @foreach ($allFields as $field)
+        <table id="table1" class="table table-striped hover" style="width:100%">
+            <thead>
+            <tr>
+                @foreach ($allFields as $group)
+                    @foreach ($group['fields'] as $field)
                         @if (!isset($field['display']) || $field['display'])
                             <th>{{ $field['label'] }}</th>
                         @endif
                     @endforeach
-                </tr>
-                </thead>
-            </table>
-
-        @else
-
-            <table class="table">
-            @foreach ($records as $record)
-                <tr>
-                    <td>
-                        {!! $record->representation() !!}
-                    </td>
-                </tr>
-            @endforeach
-            </table>
-
-            {!! $records->render() !!}
-
-        @endif
+                @endforeach
+            </tr>
+            </thead>
+        </table>
 
 @endsection
 
@@ -78,54 +62,64 @@
         $(document).ready(function() {
 
             let visibleColumns = [
-                'aar_numeric',
-                'dato',
+
+                // Verket
                 'verk_tittel',
+                'verk_forfatter',
+                'verk_aar',
+
+                // Kritikken
+                'kritiker',
+                'publikasjon',
+                'aar',
+                'dato',
             ];
             if (sessionStorage.getItem('ub-baser-litteraturkritikk-selected-columns') !== null) {
                 visibleColumns = JSON.parse(sessionStorage.getItem('ub-baser-litteraturkritikk-selected-columns'));
             }
 
             let columns = [
-                @foreach ($allFields as $field)
-                    @if (!isset($field['display']) || $field['display'])
-                    {
-                        data: "{{ $field['key'] }}",
-                        visible: visibleColumns.indexOf('{{ $field['key'] }}') !== -1,
-                        render: function ( data, type, row ) {
-                            if (data === null) {
-                                data = '–';
-                            }
-                            return `<a href="{{ action('LitteraturkritikkController@index') }}/${row.id}">${data}</a>`;
+                @foreach ($allFields as $group)
+                    @foreach ($group['fields'] as $field)
+                        @if (!isset($field['display']) || $field['display'])
+
+                        {
+                            data: "{{ $field['key'] }}",
+                            visible: visibleColumns.indexOf('{{ $field['key'] }}') !== -1,
+                            render: function ( data, type, row ) {
+                                if (data === null) {
+                                    data = '–';
+                                }
+                                return `<a href="{{ action('LitteraturkritikkController@index') }}/${row.id}">${data}</a>`;
+                            },
                         },
-                    },
-                    @endif
+                        @endif
+                    @endforeach
                 @endforeach
             ];
 
             let columnKeys = columns.map(x => x.data);
 
             let defaultOrder = [[0, 'asc']];
-            if (visibleColumns.indexOf('aar_numeric') !== -1) {
-                defaultOrder = [[columnKeys.indexOf('aar_numeric'), 'desc']];
+            if (visibleColumns.indexOf('verk_aar') !== -1) {
+                defaultOrder = [[columnKeys.indexOf('verk_aar'), 'desc']];
             }
-            console.log('Order:', defaultOrder);
 
             let table = $('#table1').DataTable( {
                 language: {
                     "sEmptyTable": "Ingen data tilgjengelig i tabellen",
-                    "sInfo": "Viser _START_ til _END_ av _TOTAL_ linjer",
-                    "sInfoEmpty": "Viser 0 til 0 av 0 linjer",
-                    "sInfoFiltered": "(filtrert fra _MAX_ totalt antall linjer)",
+                    "sInfo": "Viser _START_ til _END_ av _TOTAL_ poster",
+                    "sInfoEmpty": "Viser 0 til 0 av 0 poster",
+                    "sInfoFiltered": "(filtrert fra _MAX_ totalt antall poster)",
                     "sInfoPostFix": "",
                     "sInfoThousands": " ",
                     "sLoadingRecords": "Laster...",
-                    "sLengthMenu": "Vis _MENU_ linjer",
+                    "sLengthMenu": "Vis _MENU_ poster",
                     "sLoadingRecords": "Laster...",
                     "sProcessing": "Laster...",
                     "sSearch": "S&oslash;k:",
                     "sUrl": "",
-                    "sZeroRecords": "Ingen linjer matcher s&oslash;ket",
+                    "sZeroRecords": "Ingen poster matcher s&oslash;ket",
                     "oPaginate": {
                         "sFirst": "F&oslash;rste",
                         "sPrevious": "Forrige",
@@ -137,8 +131,10 @@
                         "sSortDescending": ": aktiver for å sortere kolonnen synkende"
                     }
                 },
+                pageLength: 50,
+                lengthMenu: [ 10, 50, 100, 500, 1000 ],
                 ajax: {
-                    url: '{!! action('LitteraturkritikkController@index') . $viewQs !!}',
+                    url: '{!! action('LitteraturkritikkController@index') . $qs !!}',
                     data: function ( d ) {
                         return  $.extend( {}, d, {!! $qsJson !!} );
                     }
@@ -150,8 +146,6 @@
                 processing: true,
                 serverSide: true,
             } );
-
-            console.log(visibleColumns);
 
             $('.selectpicker').val(visibleColumns);
 
@@ -169,7 +163,19 @@
 
             })
 
-
+            $('#table1').on('click', 'tbody > tr > td', function ($event) {
+                // 'this' refers to the current <td>
+                let link = $(this).find('a').attr('href');
+                if ($event.which !== 1) {
+                    // Pass
+                } else if ($event.ctrlKey || $event.metaKey) {
+                    window.open(link, '_blank');
+                    return false;
+                } else {
+                    window.location = link;
+                    return false;
+                }
+            });
         } );
     </script>
 

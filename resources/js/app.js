@@ -4,9 +4,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+import Vue from './bootstrap';
 
-window.Vue = require('vue');
+Vue.config.devtools = true;
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,7 +19,13 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+import LitteraturkritikkSearchForm from './components/LitteraturkritikkSearchForm.vue';
+import LitteraturkritikkEditForm from './components/LitteraturkritikkEditForm.vue';
+import LitteraturkritikkFieldEditor from './components/LitteraturkritikkFieldEditor.vue';
+
+Vue.component('litteraturkritikk-search-form', LitteraturkritikkSearchForm);
+Vue.component('litteraturkritikk-edit-form', LitteraturkritikkEditForm);
+Vue.component('litteraturkritikk-field-editor', LitteraturkritikkFieldEditor);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

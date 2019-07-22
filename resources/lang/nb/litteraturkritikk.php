@@ -3,11 +3,11 @@
 return [
 
     'kritikktype' => 'Type',
-    'utgivelsessted' => 'Sted',
+    'utgivelsessted' => 'Utgivelsessted',
     'spraak' => 'Språk',
 
     'type' => 'Kritikktype',
-    'tittel' => 'Tittel',
+    'tittel' => 'Kritikkens tittel',
     'kommentar' => 'Kommentar',
     'publikasjon' => 'Publikasjon',
     'aar' => 'År',
@@ -19,21 +19,25 @@ return [
     'sidetall' => 'Sidetall',
     'utgivelseskommentar' => 'Utgivelseskommentar',
     'sjanger' => 'Sjanger',
+    'fulltekst_url' => 'Fulltekst-URL',
+
+    'kritiker' => 'Kritiker',
+    'kritiker_pseudonym' => 'Pseudonym',
 
     'etternavn' => 'Etternavn',
     'fornavn' => 'Fornavn',
-    'pseudonym' => 'Pseudonym',
-    'pseudonym_for' => 'Pseudonym for',
     'kjonn' => 'Kjønn',
+    'fodt' => 'Fødselsår',
+    'dod' => 'Dødsår',
     'bibsys_id' => 'Bibsys-ID',
-    'birth_year' => 'Fødselsår',
-    'death_year' => 'Dødsår',
+    'wikidata_id' => 'Wikidata-ID',
 
-    'verk_tittel' => 'Omtalt verk: Tittel',
-    'verk_aar' => 'Omtalt verk: Utgivelsesår',
-    'verk_sjanger' => 'Omtalt verk: Sjanger',
-    'verk_spraak' => 'Omtalt verk: Språk',
-    'verk_kommentar' => 'Omtalt verk: Kommentar',
-    'verk_utgivelsessted' => 'Omtalt verk: Utgivelsessted',
+    'verk_tittel' => 'Tittel',
+    'verk_aar' => 'Utgitt',
+    'verk_sjanger' => 'Sjanger',
+    'verk_spraak' => 'Språk',
+    'verk_kommentar' => 'Kommentar',
+    'verk_utgivelsessted' => 'Utgivelsessted',
 
+    'verk_forfatter' => 'Forfatter',
 ];

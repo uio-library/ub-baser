@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /*
  |--------------------------------------------------------------------------
@@ -12,7 +13,7 @@ const mix = require('laravel-mix');
  */
 
 mix.js('./resources/js/app.js', './public/js')
-    .sass('./resources/sass/app.scss', './public/css');
+    .sass('./resources/sass/app.sass', './public/css');
 
 
 mix.styles([
@@ -119,3 +120,16 @@ mix.copy('./node_modules/material-design-iconic-font/dist/fonts', './public/font
 mix.copy('./node_modules/datatables.net-dt/images/*', './public/images');
 
 mix.copy('./node_modules/datatables.net-plugins/i18n/Norwegian-Bokmal.lang', './public/misc/datatables-nb.json');
+
+mix.copy('./resources/images/*', './public/images');
+
+
+mix.webpackConfig({
+    plugins: [
+        // new BundleAnalyzerPlugin({
+        //     analyzerMode: 'disabled',
+        //     generateStatsFile: true,
+        //     // statsOptions: { source: false }
+        // }),
+    ]
+});

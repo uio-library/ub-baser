@@ -14,89 +14,56 @@
             Post {{ $record->id }}
         </h2>
 
-        <h3>Kritikken</h3>
+        @foreach ($record::getColumns() as $group)
+            @if (!isset($group['display']) || $group['display'] !== false)
 
-        @if (count($record->kritikere))
-            <ul class="authorlist">
-                @foreach ($record->kritikere as $person)
-                    <li><a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
-                        $person->pseudonym_for ? ' (pseudonym for: ' . $person->pseudonym_for . ')' : ''
-                    }}{{
-                        $person->pseudonym ? ' (pseudonym: ' . $person->pseudonym . ')' : ''
-                    }}</li>
-                @endforeach
-                @if ($record->kritiker_mfl)
-                    <li class="mfl"><em>m. fl</em></li>
-                @endif
-            </ul>.
-        @endif
-        {{
-            $record->tittel ? '«' . $record->tittel . '»' : ''
-        }}{{
-            count($record->kritikktype) ? ' (' . implode(', ', $record->kritikktype) . ')' : ''
-        }}{!!
-            $record->publikasjon ? '. I: <em>' . $record->publikasjon . '</em>' : ''
-        !!}{{
-            $record->utgivelsessted ? ' ' . $record->utgivelsessted . '' : ''
-        }}{{
-            $record->aargang ? ' årg. ' . $record->aargang : ''
-        }}{{
-            $record->bind ? ' bind ' . $record->bind : ''
-        }}{{
-            $record->aar ? ' (' . $record->aar . ')' : ''
-        }}{{
-            $record->nummer ? ' nummer ' . $record->nummer : ''
-        }}{{
-            $record->hefte ? ' hefte ' . $record->hefte : ''
-        }}{{
-            $record->sidetall ? ' ' . $record->sidetall : ''
-        }}.{{
-            $record->utgivelseskommentar ? ' ' . $record->utgivelseskommentar . '.' : ''
-        }}{{
-            $record->kommentar ? ' Kommentar: ' . $record->kommentar . '.' : ''
-        }}
+                <h3>{{ $group['label'] }}</h3>
+                <dl class="dl-horizontal">
+                    @foreach ($group['fields'] as $field)
+                        @if (!isset($field['display']) || $field['display'] !== false)
+                            <dt>
+                                {{ trans('litteraturkritikk.' . $field['key']) }}:
+                            </dt>
+                            <dd>
 
+                                @if ($field['key'] == 'kritiker')
 
-        <h3>Omtalt</h3>
+                                    @foreach ($record->kritikere as $person)
+                                        <a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>
+                                    @endforeach
+                                    @if ($record->kritiker_mfl)
+                                        <em>mfl.</em>
+                                    @endif
 
-        @if (count($record->forfattere))
-        <ul class="authorlist">
-        @foreach ($record->forfattere as $person)
-            <li><a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
-                ($person->pivot->person_role != 'forfatter') ? ' (' . $person->pivot->person_role . ')' : ''
-            }}{{
-                $person->pseudonym_for ? ' (pseudonym for: ' . $person->pseudonym_for . ')' : ''
-            }}{{
-                $person->pseudonym ? ' (pseudonym: ' . $person->pseudonym . ')' : ''
-            }}</li>
-            @endforeach
-            @if ($record->forfatter_mfl)
-                <li class="mfl"><em>m. fl</em></li>
+                                @elseif ($field['key'] == 'verk_forfatter')
+
+                                    @foreach ($record->forfattere as $person)
+                                        <a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
+                                            ($person->pivot->person_role != 'forfatter') ? ' (' . $person->pivot->person_role . ')' : ''
+                                        }}<br>
+                                    @endforeach
+                                    @if ($record->forfatter_mfl)
+                                        <em>mfl.</em>
+                                    @endif
+
+                                @elseif (is_array($record->{$field['key']}))
+                                    {{ implode(', ', $record->{$field['key']}) }}
+                                @else
+                                    {{ $record->{$field['key']} }}
+                                @endif
+                            </dd>
+                        @endif
+                    @endforeach
+                </dl>
             @endif
-        </ul>.
-        @endif
-        {{
-            $record->verk_tittel ? '«' . $record->verk_tittel . '»' : ''
-        }}{{
-            $record->verk_sjanger ? " ($record->verk_sjanger)" : ''
-        }}{{
-            $record->verk_tittel ? '. ' : ''
-        }}{{
-            $record->verk_utgivelsessted ? $record->verk_utgivelsessted . ' ' : ''
-        }}{{
-            $record->verk_aar ? $record->verk_aar : ''
-        }}
-
-        @if ($record->verk_kommentar)
-            Kommentar: {{ $record->verk_kommentar }}
-        @endif
+        @endforeach
 
         @if (Auth::check())
             <h3>Metadata</h3>
             <dl class="dl-horizontal">
-                <dt>Opprettet</dt>
+                <dt>Opprettet:</dt>
                 <dd>{{ $record->created_at }} av {{ $record->createdBy ? $record->createdBy->name : ' (import)' }}</dd>
-                <dt>Sist endret</dt>
+                <dt>Sist endret:</dt>
                 <dd>{{ $record->updated_at }} av {{ $record->updatedBy ? $record->updatedBy->name : ' (import)' }}</dd>
             </dl>
         @endif

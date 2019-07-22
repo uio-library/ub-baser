@@ -12,7 +12,10 @@ class RecordController extends Controller
         $this->middleware('auth', ['only' => ['create', 'edit', 'store', 'update', 'destroy']]);
     }
 
-    public function getKjonnstyper()
+    /**
+     * @return array List of genders.
+     */
+    public static function getGenderList()
     {
         return [
             'f'  => 'Kvinne',

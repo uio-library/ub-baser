@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Password;
 use Symfony\Component\Process\Process;
 
@@ -34,7 +35,7 @@ class DatabaseDumpCommand extends Command
             escapeshellarg($config['username']),
             escapeshellarg($config['password']),
             escapeshellarg($config['host']),
-            escapeshellarg(array_get($config, 'port', 3306)),
+            escapeshellarg(Arr::get($config, 'port', 3306)),
             escapeshellarg($config['database']),
             escapeshellarg($destinationFile)
         );
