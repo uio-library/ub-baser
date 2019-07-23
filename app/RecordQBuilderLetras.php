@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class RecordQBuilderLetras
 {
@@ -29,7 +30,7 @@ class RecordQBuilderLetras
 
         foreach (config('baser.letras.cols') as $col) {
             if ($this->request->has($col['field'])) {
-                if (array_get($col, 'type') == 'text') {
+                if (Arr::get($col, 'type') == 'text') {
                     $this->query->where($this->prefix . '.' . $col['field'], 'LIKE', '%' . $this->request->get($col['field']) . '%');
                 } else {
                     $this->query->where($this->prefix . '.' . $col['field'], '=', $this->request->get($col['field']));

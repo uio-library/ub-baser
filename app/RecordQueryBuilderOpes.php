@@ -1,6 +1,7 @@
 <?php
 namespace App;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class RecordQueryBuilderOpes
 {
@@ -29,7 +30,7 @@ class RecordQueryBuilderOpes
         $this->query->orderBy($this->sortColumn, $this->sortOrder);
         foreach (config('baser.opes.columns') as $col) {
             if ($this->request->has($col['field'])) {
-                if (array_get($col, 'type') == 'text') {
+                if (Arr::get($col, 'type') == 'text') {
                     $this->query->where($this->prefix . '.' . $col['field'], 'LIKE', '%' . $this->request->get($col['field']) . '%');
                 } else {
                     $this->query->where($this->prefix . '.' . $col['field'], '=', $this->request->get($col['field']));
