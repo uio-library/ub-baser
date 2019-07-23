@@ -155,9 +155,14 @@ class CreateLitteraturkritikkTable extends Migration
                     ARRAY_AGG(DISTINCT lk_person_pivot.person_role)
                     AS roller,
 
-                    -- Søkeindeks 'any_field_ts'
+                    -- Søkeindeks 'any_field_ts'. 
+                    -- Vi legger til navn begge veier for å støtte autocomplete med frasematch begge veier.
                     TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.etternavn, ''))
                     || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.fornavn, ''))
+                    || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.fodt::text, ''))
+                    || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.dod::text, ''))
+                    || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.fornavn, ''))
+                    || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.etternavn, ''))
                     || TO_TSVECTOR('simple', COALESCE(STRING_AGG(lk_person_pivot.pseudonym, ' '), ''))
                     AS any_field_ts
 
@@ -205,7 +210,7 @@ class CreateLitteraturkritikkTable extends Migration
                 TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.verk_tittel, ''))
                 AS verk_tittel_ts,
                 
-                -- Søkeindeks 'forfatter_ts'. Vi legger til navn begge veier for å kunne gjøre frasematch begge veier.
+                -- Søkeindeks 'forfatter_ts'. 
                 TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT forfatter_entity.etternavn_fornavn, ' '), ''))
                 || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT forfatter_entity.fornavn_etternavn, ' '), ''))
                 || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT lk_forfatter_pivot.pseudonym, ' '), ''))
