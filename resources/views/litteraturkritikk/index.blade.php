@@ -171,7 +171,10 @@
             $('#table1').on('mouseup', 'tbody > tr > td', function ($event) {
                 // 'this' refers to the current <td>
                 let link = $(this).find('a').attr('href');
-                if (drag) {
+
+                if ($event.originalEvent.originalTarget.tagName === 'A') {
+                    // Let browser handle
+                } else if (drag) {
                     // pass
                 } else if ($event.which !== 1) {
                     // Pass
