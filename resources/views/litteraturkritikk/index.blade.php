@@ -66,12 +66,11 @@
                 // Verket
                 'verk_tittel',
                 'verk_forfatter',
-                'verk_aar',
+                'verk_dato',
 
                 // Kritikken
                 'kritiker',
                 'publikasjon',
-                'aar',
                 'dato',
             ];
             if (sessionStorage.getItem('ub-baser-litteraturkritikk-selected-columns') !== null) {
@@ -101,8 +100,8 @@
             let columnKeys = columns.map(x => x.data);
 
             let defaultOrder = [[0, 'asc']];
-            if (visibleColumns.indexOf('verk_aar') !== -1) {
-                defaultOrder = [[columnKeys.indexOf('verk_aar'), 'desc']];
+            if (visibleColumns.indexOf('verk_dato') !== -1) {
+                defaultOrder = [[columnKeys.indexOf('verk_dato'), 'desc']];
             }
 
             let table = $('#table1').DataTable( {

@@ -47,7 +47,6 @@ class CreateLitteraturkritikkTable extends Migration
             $table->text('tittel')->nullable();
             $table->text('publikasjon')->nullable();
             $table->text('utgivelsessted')->nullable();
-            $table->text('aar')->nullable();
             $table->text('dato')->nullable();
             $table->text('aargang')->nullable();
             $table->text('nummer')->nullable();
@@ -66,7 +65,7 @@ class CreateLitteraturkritikkTable extends Migration
             # Det kritiserte verket
 
             $table->text('verk_tittel')->nullable();
-            $table->text('verk_aar')->nullable();
+            $table->text('verk_dato')->nullable();
             $table->text('verk_sjanger')->nullable();
             $table->text('verk_spraak')->nullable();
             $table->text('verk_kommentar')->nullable();
@@ -182,7 +181,7 @@ class CreateLitteraturkritikkTable extends Migration
         
                 r.*,
                                     
-                SUBSTR(TRIM(aar),1,4) AS aar_numeric,
+                SUBSTR(TRIM(dato),1,4) AS dato_numeric,
                 
                 -- Flat representasjon for tabellvisning
                 STRING_AGG(DISTINCT forfatter.etternavn_fornavn, '; ') AS verk_forfatter,
@@ -191,14 +190,14 @@ class CreateLitteraturkritikkTable extends Migration
                 -- Søkeindeks 'any_field_ts'
                 TO_TSVECTOR('simple', COALESCE(r.tittel, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.publikasjon, ''))
-                || TO_TSVECTOR('simple', COALESCE(r.aar, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.dato, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.bind, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.hefte, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.sidetall, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.kommentar, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.utgivelseskommentar, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.verk_tittel, ''))
-                || TO_TSVECTOR('simple', COALESCE(r.verk_aar, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.verk_dato, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.verk_kommentar, ''))
                 || TO_TSVECTOR('simple', COALESCE(STRING_AGG(person_pivot.kommentar, ' '), ''))
                 || TO_TSVECTOR('simple', COALESCE(STRING_AGG(person_pivot.pseudonym, ' '), ''))

@@ -110,7 +110,7 @@ class Record extends \App\Record
 
                         // År
                         [
-                            'key' => 'verk_aar',
+                            'key' => 'verk_dato',
                             'type' => 'simple',
                             'search' => [
                                 'type' => 'rangeslider',
@@ -121,7 +121,7 @@ class Record extends \App\Record
                                 ],
                                 'index' => [
                                     'type' => 'range',
-                                    'column' => 'verk_aar',
+                                    'column' => 'verk_dato',
                                 ],
                             ],
                         ],
@@ -230,7 +230,7 @@ class Record extends \App\Record
 
                         // År
                         [
-                            'key' => 'aar',
+                            'key' => 'dato',
                             'type' => 'simple',
                             'search' => [
                                 'type' => 'rangeslider',
@@ -242,16 +242,6 @@ class Record extends \App\Record
                                     'type' => 'range',
                                     'column' => 'aar_numeric',
                                 ],
-                            ],
-                        ],
-                        // ['key' => 'aar_numeric'],
-
-                        // Dato
-                        [
-                            'key' => 'dato',
-                            'type' => 'simple',
-                            'search' => [
-                                'advanced' => true,
                             ],
                         ],
 
@@ -303,14 +293,23 @@ class Record extends \App\Record
                         [
                             'key' => 'kommentar',
                             'type' => 'simple',
+                            'search' => [
+                                'advanced' => true,
+                            ],
                         ],
                         [
                             'key' => 'utgivelseskommentar',
                             'type' => 'simple',
+                            'search' => [
+                                'advanced' => true,
+                            ],
                         ],
                         [
                             'key' => 'fulltekst_url',
                             'type' => 'url',
+                            'search' => [
+                                'advanced' => true,
+                            ],
                         ],
                     ],
                 ],
@@ -503,8 +502,8 @@ class Record extends \App\Record
         if ($this->verk_tittel) {
             $repr .= '«' . $this->verk_tittel . '»';
         }
-        if ($this->verk_aar) {
-            $repr .= ' (' . $this->verk_aar . ')';
+        if ($this->verk_dato) {
+            $repr .= ' (' . $this->verk_dato . ')';
         }
 
         return $repr;
@@ -523,8 +522,8 @@ class Record extends \App\Record
 
         $repr .= $kritikere ?: 'ukjent';
 
-        if ($this->aar) {
-            $repr .= ' (' . $this->aar . ')';
+        if ($this->dato) {
+            $repr .= ' (' . $this->dato . ')';
         }
 
         if (strlen($repr) && $this->tittel) {

@@ -54,7 +54,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
         'verk_tittel',
         'verk_utgivelsessted',
-        'verk_aar',
+        'verk_dato',
         'verk_sjanger',
         'verk_spraak',
         'verk_kommentar',
@@ -74,23 +74,85 @@ class ImportLitteraturkritikkCommand extends ImportCommand
      */
     protected $description = 'Import data for Norsk litteraturkritikk';
 
-
-    function processRecordRow(&$record)
+    protected function processKritikktype($input)
     {
-        $typer = trim($record['kritikktype']);
-        if (empty($typer)) {
-            $typer = [];
+        $out = trim($input);
+        if (empty($out)) {
+            $out = [];
         } else {
-            $typer = array_map(function ($t) {
+            $out = array_map(function ($t) {
                 return mb_strtolower(trim($t));
-            }, explode(',', $typer));
+            }, explode(',', $out));
         }
-        // foreach ($typer as $t) {
+        // foreach ($out as $t) {
         //     if (!isset($kritikktyper[$t])) {
         //         $this->warn('Unknown kritikktype: ' . $t);
         //     }
         // }
-        $record['kritikktype'] = json_encode($typer);
+        return json_encode($out);
+    }
+
+    protected function mergeYearDate($aar, $dato, $kommentar)
+    {
+        $months = [
+            'jan' => '01',
+            'feb' => '02',
+            'mar' => '03',
+            'apr' => '04',
+            'mai' => '05',
+            'jun' => '06',
+            'jul' => '07',
+            'aug' => '08',
+            'sep' => '09',
+            'okt' => '10',
+            'nov' => '11',
+            'des' => '12',
+        ];
+
+        $in = "'$aar' '$dato'";
+        $dato_out = $aar;
+        $kommentar_out = $kommentar;
+
+        if ($dato) {
+            if (preg_match('/^([0-9]+)\. ?([a-z]{3})/', $dato, $matches)) {
+                if (isset($months[$matches[2]])) {
+                    $dato_out .= sprintf('-%02d-%02d', $months[$matches[2]], $matches[1]);
+                } else {
+                    $this->error('Invalid month: ' . $matches[2]);
+                }
+            } elseif (preg_match('/^([a-z]{3})/', $dato, $matches)) {
+                if (isset($months[$matches[1]])) {
+                    $dato_out .= sprintf('-%02d', $months[$matches[1]]);
+                } else {
+                    $this->error('Invalid month: ' . $matches[1]);
+                }
+            } else {
+                if (empty($kommentar_out)) {
+                    $kommentar_out = 'Publiseringsdato: ' . $dato;
+                } else {
+                    $kommentar_out .= '. Publiseringsdato: ' . $dato;
+                }
+                $this->error('Dato: ' . $dato . '. Kommentar: ' . $kommentar_out);
+            }
+        }
+
+        if ($in !== "'$dato_out'") {
+            //$this->info("$in → $dato_out");
+        }
+
+        return [$dato_out, $kommentar_out];
+    }
+
+
+    function processRecordRow(&$record)
+    {
+        $record['kritikktype'] = $this->processKritikktype($record['kritikktype']);
+
+        list($record['dato'], $record['kommentar']) = $this->mergeYearDate($record['aar'], $record['dato'], $record['kommentar']);
+
+
+        unset($record['aar']);
+
 
         // Normalize 'spraak' as valid ISO639 language code
 //        $lang = mb_strtolower($record['spraak']);
