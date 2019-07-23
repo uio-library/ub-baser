@@ -26,7 +26,7 @@
                             </dt>
                             <dd>
 
-                                @if ($field['datatype'] == 'person')
+                                @if ($field['type'] == 'person')
 
                                     @foreach ($record->{$field['model_attribute']} as $person)
                                         <a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
