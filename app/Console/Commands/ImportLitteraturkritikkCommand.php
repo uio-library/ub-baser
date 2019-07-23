@@ -13,11 +13,19 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
     protected $fields = [
         'id',
+
+        // 1. Kritikken
+
+        // 1.1 Person
+
         'kritiker_etternavn',
         'kritiker_fornavn',
         'kritiker_kjonn',
         'kritiker_pseudonym',
         'kritiker_kommentar',
+
+        // 1.2 Dokument
+
         'kritikktype',
         'publikasjon',
         'utgivelsessted',
@@ -32,10 +40,18 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         'tittel',
         'spraak',
         'kommentar',
+
+        // 2. Verket
+
+        // 2.1 Person
+
         'forfatter_etternavn',
         'forfatter_fornavn',
         'forfatter_kommentar',
         'forfatter_kjonn',
+
+        // 2.2 Dokument
+
         'verk_tittel',
         'verk_utgivelsessted',
         'verk_aar',
@@ -131,9 +147,13 @@ class ImportLitteraturkritikkCommand extends ImportCommand
     public function processPerson(&$record, &$row, $role)
     {
         $rowId = $row['id'];
+
         $etternavn = $row[$role . '_etternavn'];
         $fornavn = $row[$role . '_fornavn'];
         $kjonn = $row[$role . '_kjonn'];
+
+        $kommentar = Arr::get($row, $role . '_kommentar');
+        $pseudonym  = Arr::get($row, $role . '_pseudonym');
 
         $etternavn_arr = $this->splitTrimAndFilterEmpty($etternavn);
         $fornavn_arr = $this->splitTrimAndFilterEmpty($fornavn);
@@ -194,6 +214,8 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
             $record->persons()->save($person, [
                 'person_role' => $person_role,
+                'kommentar' => $kommentar,
+                'pseudonym' => $pseudonym,
             ]);
         }
     }
@@ -202,7 +224,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         $record = Record::findOrFail($row['id']);
         $record->persons()->detach();
 
-        $record->forfatter_mfl = $this->extractMfl($row, $record, 'forfatter_etternavn') || $this->extractMfl($row, $record, 'forfatter_fornavn');
+        $record->verk_forfatter_mfl = $this->extractMfl($row, $record, 'forfatter_etternavn') || $this->extractMfl($row, $record, 'forfatter_fornavn');
         $record->kritiker_mfl = $this->extractMfl($row, $record, 'kritiker_etternavn') || $this->extractMfl($row, $record, 'kritiker_fornavn');
 
         $this->processPerson($record, $row, 'forfatter');
@@ -243,10 +265,13 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             'forfatter_etternavn',
             'forfatter_fornavn',
             'forfatter_kjonn',
+            'forfatter_kommentar',  // pivot-egenskap
+
             'kritiker_etternavn',
             'kritiker_fornavn',
             'kritiker_kjonn',
-            // 'kritiker_pseudonym',
+            'kritiker_pseudonym',    // pivot-egenskap
+            'kritiker_kommentar',     // pivot-egenskap
         ];
         $persons = array_map(function($x) use ($personColumns) {
             return Arr::only($x, array_merge(['id'], $personColumns));

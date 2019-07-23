@@ -59,8 +59,8 @@ class CreateLitteraturkritikkTable extends Migration
             $table->text('kommentar')->nullable();
 
             $table->boolean('kritiker_mfl')->default(false);
-            $table->text('kritiker_kommentar')->nullable();
-            $table->text('kritiker_pseudonym')->nullable();
+
+            $table->text('fulltekst_url')->nullable();
 
             # ------------------------------------------------------------------------------------------------
             # Det kritiserte verket
@@ -72,8 +72,7 @@ class CreateLitteraturkritikkTable extends Migration
             $table->text('verk_kommentar')->nullable();
             $table->text('verk_utgivelsessted')->nullable();
 
-            $table->boolean('forfatter_mfl')->default(false);
-            $table->text('forfatter_kommentar')->nullable();
+            $table->boolean('verk_forfatter_mfl')->default(false);
         });
 
         Schema::create('litteraturkritikk_personer', function (Blueprint $table) {
@@ -100,8 +99,8 @@ class CreateLitteraturkritikkTable extends Migration
             $table->integer('record_id')->unsigned();
             $table->integer('person_id')->unsigned();
             $table->text('person_role')->nullable();
-            $table->text('kommentar')->nullable();  # F.eks. navn på evt. medforfatter(e)), pseudonym m.m.
-            $table->text('pseudonym')->nullable();
+            $table->text('kommentar')->nullable();   // Foreløpig ikke i bruk, men innholdet fra verk_forfatter_kommentar og kritiker_kommentar kunne vært flyttet hit.
+            $table->text('pseudonym')->nullable();   // Foreløpig ikke i bruk, Innholdet fra verk_forfatter_pseudonym kunne vært flyttet hit.
 
             $table->foreign('record_id')
                 ->references('id')
@@ -142,7 +141,8 @@ class CreateLitteraturkritikkTable extends Migration
                 litteraturkritikk_records.*,
                                     
                 SUBSTR(TRIM(aar),1,4) AS aar_numeric,
-        
+                
+                -- Flat representasjon for tabellvisning
                 STRING_AGG(DISTINCT forfatter_entity.etternavn_fornavn, '; ') AS verk_forfatter,
                 STRING_AGG(DISTINCT kritiker_entity.etternavn_fornavn, '; ') AS kritiker,
                 
@@ -158,9 +158,8 @@ class CreateLitteraturkritikkTable extends Migration
                 || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.verk_tittel, ''))
                 || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.verk_aar, ''))
                 || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.verk_kommentar, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.verk_forfatter_kommentar, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.kritiker_kommentar, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.kritiker_pseudonym, ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(lk_person_pivot.kommentar, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(lk_person_pivot.pseudonym, ' '), ''))
                 || TO_TSVECTOR('simple', COALESCE(STRING_AGG(person_entity.etternavn, ' '), ''))
                 || TO_TSVECTOR('simple', COALESCE(STRING_AGG(person_entity.fornavn, ' '), ''))
                 AS any_field_ts,
@@ -177,39 +176,39 @@ class CreateLitteraturkritikkTable extends Migration
                 -- Søkeindeks 'kritiker_ts'
                 TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT kritiker_entity.etternavn_fornavn, ' '), ''))
                 || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT kritiker_entity.fornavn_etternavn, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT litteraturkritikk_records.kritiker_pseudonym, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT lk_kritiker_pivot.pseudonym, ' '), ''))
                 AS kritiker_ts,
 
                 -- Søkeindeks 'person_ts'
                 TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT person_entity.etternavn_fornavn, ' '), ''))
                 || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT person_entity.fornavn_etternavn, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT litteraturkritikk_records.kritiker_pseudonym, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT lk_person_pivot.pseudonym, ' '), ''))
                 AS person_ts
         
             FROM litteraturkritikk_records
             
             -- person
-            LEFT JOIN litteraturkritikk_record_person AS lk_person
-                ON litteraturkritikk_records.id = lk_person.record_id
+            LEFT JOIN litteraturkritikk_record_person AS lk_person_pivot
+                ON litteraturkritikk_records.id = lk_person_pivot.record_id
         
                 LEFT JOIN litteraturkritikk_personer_view AS person_entity
-                    ON person_entity.id = lk_person.person_id
+                    ON person_entity.id = lk_person_pivot.person_id
         
             -- kritiker
-            LEFT JOIN litteraturkritikk_record_person AS lk_kritiker
-                ON litteraturkritikk_records.id = lk_kritiker.record_id
-                AND lk_kritiker.person_role = 'kritiker'
+            LEFT JOIN litteraturkritikk_record_person AS lk_kritiker_pivot
+                ON litteraturkritikk_records.id = lk_kritiker_pivot.record_id
+                AND lk_kritiker_pivot.person_role = 'kritiker'
         
                 LEFT JOIN litteraturkritikk_personer_view AS kritiker_entity
-                    ON kritiker_entity.id = lk_kritiker.person_id
+                    ON kritiker_entity.id = lk_kritiker_pivot.person_id
         
             -- forfatter
-            LEFT JOIN litteraturkritikk_record_person AS lk_forfatter
-                ON lk_forfatter.record_id = litteraturkritikk_records.id
-                AND lk_forfatter.person_role != 'kritiker'
+            LEFT JOIN litteraturkritikk_record_person AS lk_forfatter_pivot
+                ON lk_forfatter_pivot.record_id = litteraturkritikk_records.id
+                AND lk_forfatter_pivot.person_role != 'kritiker'
         
                 LEFT JOIN litteraturkritikk_personer_view AS forfatter_entity
-                    ON forfatter_entity.id = lk_forfatter.person_id
+                    ON forfatter_entity.id = lk_forfatter_pivot.person_id
         
             GROUP BY litteraturkritikk_records.id
         ");

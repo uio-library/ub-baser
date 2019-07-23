@@ -26,30 +26,29 @@
                             </dt>
                             <dd>
 
-                                @if ($field['key'] == 'kritiker')
+                                @if ($field['datatype'] == 'person')
 
-                                    @foreach ($record->kritikere as $person)
-                                        <a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>
-                                    @endforeach
-                                    @if ($record->kritiker_mfl)
-                                        <em>mfl.</em>
-                                    @endif
-
-                                @elseif ($field['key'] == 'verk_forfatter')
-
-                                    @foreach ($record->forfattere as $person)
+                                    @foreach ($record->{$field['model_attribute']} as $person)
                                         <a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
-                                            ($person->pivot->person_role != 'forfatter') ? ' (' . $person->pivot->person_role . ')' : ''
-                                        }}<br>
+                                            $person->pivot->pseudonym ? ', under pseudonymet «' . $person->pivot->pseudonym . '»' : ''
+                                        }}{{
+                                            !in_array($person->pivot->person_role, ['kritiker', 'forfatter']) ? ' (' . $person->pivot->person_role . ')' : ''
+                                        }}{{
+                                            $person->pivot->kommentar ? ' (' . $person->pivot->kommentar . ')' : ''
+                                        }}
                                     @endforeach
-                                    @if ($record->forfatter_mfl)
+                                    @if ($record->{$field['key'] . '_mfl'})
                                         <em>mfl.</em>
                                     @endif
 
                                 @elseif (is_array($record->{$field['key']}))
+
                                     {{ implode(', ', $record->{$field['key']}) }}
+
                                 @else
+
                                     {{ $record->{$field['key']} }}
+
                                 @endif
                             </dd>
                         @endif

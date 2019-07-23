@@ -27,9 +27,8 @@ class Record extends \App\Record
                     ['key' => 'verk_kommentar'],
                     ['key' => 'verk_utgivelsessted'],
 
-                    ['key' => 'verk_forfatter', 'readonly' => true, 'datatype' => 'person'],
+                    ['key' => 'verk_forfatter', 'readonly' => true, 'datatype' => 'person', 'model_attribute' => 'forfattere'],
                     ['key' => 'verk_forfatter_mfl', 'display' => false, 'default' => false],
-                    ['key' => 'verk_forfatter_kommentar'],
                 ],
             ],
             [
@@ -50,13 +49,10 @@ class Record extends \App\Record
                     ['key' => 'sidetall'],
                     ['key' => 'kommentar'],
                     ['key' => 'utgivelseskommentar'],
-
-                    ['key' => 'kritiker', 'readonly' => true, 'datatype' => 'person'],
-                    ['key' => 'kritiker_pseudonym'],
-                    ['key' => 'kritiker_kommentar'],
-                    ['key' => 'kritiker_mfl', 'display' => false, 'default' => false],
-
                     ['key' => 'fulltekst_url'],
+
+                    ['key' => 'kritiker', 'readonly' => true, 'datatype' => 'person', 'model_attribute' => 'kritikere'],
+                    ['key' => 'kritiker_mfl', 'display' => false, 'default' => false],
                 ],
             ],
         ];
