@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="panel panel-default" v-for="group in columns" :key="group.label" v-if="group.display !== false">
+        <div class="panel panel-default" v-for="group in columns.groups" :key="group.label" v-if="group.display !== false">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ group.label }}</h3>
             </div>
@@ -29,7 +29,7 @@
         },
         props: {
             columns: {
-                type: Array,
+                type: Object,
             },
             labels: {
                 type: Object,
@@ -41,7 +41,7 @@
         computed: {
             definitions() {
                 let out = [];
-                this.columns.forEach(columnGroup => {
+                this.columns.groups.forEach(columnGroup => {
                     columnGroup.fields.forEach(col => out[col.key] = col)
                 });
                 return out

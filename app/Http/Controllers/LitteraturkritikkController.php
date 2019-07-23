@@ -25,12 +25,7 @@ class LitteraturkritikkController extends RecordController
         $queryBuilder = $request->queryBuilder;
 
         $allFields = Record::getColumns();
-        $allFieldKeys = [];
-        foreach ($allFields as $group) {
-            foreach ($group['fields'] as $field) {
-                $allFieldKeys[] = $field['key'];
-            }
-        }
+        $allFieldKeys = Record::getColumnKeys();
 
         if ($request->wantsJson()) {
 
@@ -102,67 +97,95 @@ class LitteraturkritikkController extends RecordController
 
     public function autocomplete(Request $request)
     {
-        $field = $request->get('field');
+        $fieldName = $request->get('field');
+        $columns = Record::getColumnsFlatListByKey();
+        if (!isset($columns[$fieldName])) {
+            throw new \RuntimeException('Invalid field');
+        }
+        $fieldDef = $columns[$fieldName];
+
         $term = $request->get('q') . '%';
         $data = [];
-        if (in_array($field, ['publikasjon', 'spraak', 'verk_spraak', 'verk_sjanger', 'verk_tittel'])) {
-            if ($term == '%') {
-                // Preload request
-                $rows = \DB::select('select verk_sjanger from litteraturkritikk_records group by verk_sjanger');
-                foreach ($rows as $row) {
-                    $data[] = [
-                        'value' => $row->verk_sjanger
-                    ];
-                }
-            } else {
 
-                if (in_array($field, ['verk_tittel'])) {
-                    $query = \DB::table('litteraturkritikk_records_search')
-                        ->whereRaw("verk_tittel_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery", [$term]);
+        switch ($fieldName) {
+
+            case 'publikasjon':
+            case 'spraak':
+            case 'verk_spraak':
+            case 'verk_sjanger':
+            case 'verk_tittel':
+            case 'utgivelsessted':
+            case 'verk_utgivelsessted':
+                if ($term == '%') {
+                    // Preload request
+                    $rows = \DB::select(sprintf(
+                        'select distinct %s from litteraturkritikk_records group by %s',
+                        pg_escape_identifier($fieldName),
+                        pg_escape_identifier($fieldName)
+                    ));
+                    foreach ($rows as $row) {
+                        $data[] = [
+                            'value' => $row->verk_sjanger
+                        ];
+                    }
                 } else {
-                    $query = \DB::table('litteraturkritikk_records_search')
-                        ->where($field, 'ilike', $term);
-                }
 
-                foreach ($query->groupBy($field)
-                             ->select([$field, \DB::raw('COUNT(*) AS cnt')])
-                             ->orderBy('cnt', 'desc')
-                             ->limit(25)
-                             ->get() as $res) {
-                    $data[] = [
-                        'value' => $res->{$field},
-                        'count' => $res->cnt,
-                    ];
+                    if (in_array($fieldName, ['verk_tittel'])) {
+                        $query = \DB::table('litteraturkritikk_records_search')
+                            ->whereRaw("verk_tittel_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery", [$term]);
+                    } else {
+                        $query = \DB::table('litteraturkritikk_records_search')
+                            ->where($fieldName, 'ilike', $term);
+                    }
+
+                    foreach ($query->groupBy($fieldName)
+                                 ->select([$fieldName, \DB::raw('COUNT(*) AS cnt')])
+                                 ->orderBy('cnt', 'desc')
+                                 ->limit(25)
+                                 ->get() as $res) {
+                        $data[] = [
+                            'value' => $res->{$fieldName},
+                            'count' => $res->cnt,
+                        ];
+                    }
                 }
-            }
-        } elseif ($field == 'kritikktype') {
-            foreach (KritikkType::where('navn', 'ilike', $term)->select('navn')->get() as $res) {
-                $data[] = [
-                    'value' => $res->navn
-                ];
-            }
-        } elseif (in_array($field, ['person', 'forfatter', 'kritiker'])) {
-            $query = PersonView::select(
+                break;
+
+            case 'person':
+            case 'verk_forfatter':
+            case 'kritiker':
+                $personRolle = Arr::get($fieldDef, 'person_role');
+                $query = PersonView::select(
                     'id', 'etternavn_fornavn', 'etternavn', 'fornavn', 'kjonn',
                     'fodt', 'dod', 'bibsys_id', 'wikidata_id'
                 )
-                ->whereRaw(
-                    "any_field_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery",
-                    [$term]
-                );
-            if ($field != 'person') {
-                $query->whereRaw('? = ANY(roller)', [$field]);
-            }
+                    ->whereRaw(
+                        "any_field_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery",
+                        [$term]
+                    );
+                if ($personRolle) {
+                    $query->whereRaw('? = ANY(roller)', [$personRolle]);
+                }
 
-            foreach ($query->limit(25)->get() as $res) {
-                $data[] = [
-                    'id' => $res->id,
-                    'value' => $res->etternavn_fornavn,
-                    'record' => $res,
-                ];
-            }
-        } else {
-            throw new \ErrorException('Unknown search field');
+                foreach ($query->limit(25)->get() as $res) {
+                    $data[] = [
+                        'id' => $res->id,
+                        'value' => $res->etternavn_fornavn,
+                        'record' => $res,
+                    ];
+                }
+                break;
+
+            case 'kritikktype':
+                foreach (KritikkType::where('navn', 'ilike', $term)->select('navn')->get() as $res) {
+                    $data[] = [
+                        'value' => $res->navn
+                    ];
+                }
+                break;
+
+            default:
+                throw new \ErrorException('Unknown search field');
         }
 
         return response()->json($data);
@@ -182,12 +205,15 @@ class LitteraturkritikkController extends RecordController
         $record = $isNew ? new Record() : Record::findOrFail($id);
 
         $this->validate($request, [
-            // 'kritikktype' => 'required',
+            'kritikktype' => 'required',
         ]);
 
         $persons = [];
 
         foreach (Record::getColumnsFlatList() as $col) {
+            if (Arr::get($col, 'edit') === false) {
+                continue;
+            }
             $datatype = Arr::get($col, 'type', 'simple');
             $newValue = $request->get($col['key'], Arr::get($col, 'default'));
             if (in_array($datatype, ['simple', 'autocomplete', 'url', 'boolean', 'tags'])) {

@@ -9,81 +9,331 @@ class Record extends \App\Record
     use SoftDeletes;
 
     public static function getColumns(): array {
+        $minYear = 1789;
+        $maxYear = (int) strftime('%Y');
+
         $grouped = [
-            [
-                'label' => 'Meta',
-                'display' => false,
-                'fields' => [
-                    ['key' => 'id', 'label' => 'ID', 'display' => false, 'type' => 'incrementing'],
+            'fields' => [
+
+                // ID
+                [
+                    'key' => 'id',
+                    'type' => 'incrementing',
+                    'display' => false,
+                    'edit' => false,
+                    'search' => false,
+                ],
+
+                // Søk i alle felt
+                [
+                    'key' => 'q',
+                    'type' => 'simple',
+                    'display' => false,
+                    'edit' => false,
+                    'search' => [
+                        'advanced' => false,
+                        'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc... Avslutt med * om du føler for å trunkere.',
+                        'index' => ['type' => 'ts', 'ts_column' => 'any_field_ts'],
+                        'operators' => ['eq', 'neq']
+                    ]
+                ],
+
+                // Person-søk (forfatter eller kritiker)
+                [
+                    'key' => 'person',
+                    'type' => 'autocomplete',
+                    'display' => false,
+                    'edit' => false,
+                    'search' => [
+                        'advanced' => false,
+                        'placeholder' => 'Fornavn og/eller etternavn',
+                        'index' => ['type' => 'ts', 'ts_column' => 'person_ts'],
+                        'operators' => ['eq', 'neq'],
+                    ]
                 ],
             ],
-            [
-                'label' => 'Verket',
-                'fields' => [
-                    ['key' => 'verk_tittel'],
-                    ['key' => 'verk_aar'],
-                    ['key' => 'verk_sjanger'],
-                    ['key' => 'verk_spraak', 'type' => 'autocomplete'],
-                    ['key' => 'verk_kommentar'],
-                    ['key' => 'verk_utgivelsessted', 'type' => 'autocomplete'],
 
-                    [
-                        'key' => 'verk_forfatter',
-                        'type' => 'persons',
-                        'model_attribute' => 'forfattere',
-                        'person_role' => 'forfatter',
-                    ],
-                    [
-                        'key' => 'verk_forfatter_mfl',
-                        'help' => 'Kryss av hvis det er flere personer som ikke er listet opp',
-                        'display' => false,
-                        'type' => 'boolean',
-                        'default' => false,
+            'groups' => [
+
+                // Verket
+                [
+                    'label' => 'Verket',
+                    'fields' => [
+
+                        // Tittel
+                        [
+                            'key' => 'verk_tittel',
+                            'type' => 'autocomplete',
+                            'search' => [
+                                'placeholder' => 'Tittel på omtalt verk',
+                                'options' => [],
+                                'index' => [
+                                    'type' => 'ts',
+                                    'column' => 'verk_tittel',
+                                    'ts_column' => 'verk_tittel_ts',
+                                ],
+                            ],
                         ],
-                ],
-            ],
-            [
-                'label' => 'Kritikken',
-                'fields' => [
-                    ['key' => 'kritikktype', 'type' => 'tags', 'default' => []],
-                    ['key' => 'spraak', 'type' => 'autocomplete'],
-                    ['key' => 'tittel'],
-                    ['key' => 'publikasjon', 'type' => 'autocomplete'],
-                    ['key' => 'utgivelsessted', 'type' => 'autocomplete'],
-                    ['key' => 'aar'],
-                    // ['key' => 'aar_numeric'],
-                    ['key' => 'dato'],
-                    ['key' => 'aargang'],
-                    ['key' => 'bind'],
-                    ['key' => 'hefte'],
-                    ['key' => 'nummer'],
-                    ['key' => 'sidetall'],
-                    ['key' => 'kommentar'],
-                    ['key' => 'utgivelseskommentar'],
-                    ['key' => 'fulltekst_url', 'type' => 'url'],
 
-                    [
-                        'key' => 'kritiker',
-                        'type' => 'persons',
-                        'model_attribute' => 'kritikere',
-                        'person_role' => 'kritiker',
+                        // Forfatter
+                        [
+                            'key' => 'verk_forfatter',
+                            'type' => 'persons',
+                            'model_attribute' => 'forfattere',
+                            'person_role' => 'forfatter',
+                            'search' => [
+                                'type' => 'autocomplete',
+                                'placeholder' => 'Fornavn og/eller etternavn',
+                                'index' => [
+                                    'type' => 'ts',
+                                    'column' => 'verk_forfatter',
+                                    'ts_column' => 'forfatter_ts',
+                                ],
+                                'operators' => [
+                                    'eq',
+                                    'neq',
+                                    'isnull',
+                                    'notnull',
+                                ],
+                            ],
+                        ],
+
+                        // mfl.
+                        [
+                            'key' => 'verk_forfatter_mfl',
+                            'type' => 'boolean',
+                            'help' => 'Kryss av hvis det er flere personer som ikke er listet opp',
+                            'default' => false,
+                            'display' => false,
+                            'search' => false,
+                        ],
+
+                        // År
+                        [
+                            'key' => 'verk_aar',
+                            'type' => 'simple',
+                            'search' => [
+                                'type' => 'rangeslider',
+                                'advanced' => true,
+                                'options' => [
+                                    'minValue' => (int) $minYear,
+                                    'maxValue' => (int) $maxYear,
+                                ],
+                                'index' => [
+                                    'type' => 'range',
+                                    'column' => 'verk_aar',
+                                ],
+                            ],
+                        ],
+
+                        // Sjanger
+                        [
+                            'key' => 'verk_sjanger',
+                            'type' => 'autocomplete',
+                            'search' => [
+                                'placeholder' => 'Sjanger til det omtalte verket. F.eks. lyrikk, roman, ...',
+                                'options' => [],
+                                'index' => ['type' => 'simple', 'column' => 'verk_sjanger'],
+                            ],
+                        ],
+
+                        // Språk
+                        [
+                            'key' => 'verk_spraak',
+                            'type' => 'autocomplete',
+                            'search' => [
+                                'advanced' => true,
+                            ],
+                        ],
+
+                        // Kommentar
+                        [
+                            'key' => 'verk_kommentar',
+                            'type' => 'simple',
+                            'search' => [
+                                'advanced' => true,
+                            ],
+                        ],
+
+                        // Utgivelsessted
+                        [
+                            'key' => 'verk_utgivelsessted',
+                            'type' => 'autocomplete',
+                            'search' => [
+                                'advanced' => true,
+                            ],
+                        ],
+
                     ],
-                    [
-                        'key' => 'kritiker_mfl',
-                        'help' => 'Kryss av hvis det er flere personer som ikke er listet opp',
-                        'display' => false,
-                        'type' => 'boolean',
-                        'default' => false
+                ],
+
+                // Kritikken
+                [
+                    'label' => 'Kritikken',
+                    'fields' => [
+
+                        // Kritiker
+                        [
+                            'key' => 'kritiker',
+                            'type' => 'persons',
+                            'model_attribute' => 'kritikere',
+                            'person_role' => 'kritiker',
+                            'search' => [
+                                'type' => 'autocomplete',
+                                'placeholder' => 'Fornavn og/eller etternavn',
+                                'options' => [],
+                                'index' => [
+                                    'type' => 'ts',
+                                    'column' => 'kritiker',
+                                    'ts_column' => 'kritiker_ts',
+                                ],
+                            ],
+                        ],
+
+                        // mfl.
+                        [
+                            'key' => 'kritiker_mfl',
+                            'type' => 'boolean',
+                            'help' => 'Kryss av hvis det er flere personer som ikke er listet opp',
+                            'default' => false,
+                            'display' => false,
+                            'search' => false,
+                        ],
+
+                        // Publikasjon
+                        [
+                            'key' => 'publikasjon',
+                            'type' => 'autocomplete',
+                            'search' => [
+                                'placeholder' => 'Publikasjon',
+                                'index' => [
+                                    'type' => 'simple',
+                                    'column' => 'publikasjon',
+                                ],
+                            ],
+                        ],
+
+                        // Type
+                        [
+                            'key' => 'kritikktype',
+                            'type' => 'tags',
+                            'default' => [],
+                            'search' => [
+                                'type' => 'autocomplete',
+                                'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...',
+                                'index' => [
+                                    'type' => 'array',
+                                    'column' => 'kritikktype',
+                                ],
+                            ],
+                        ],
+
+                        // År
+                        [
+                            'key' => 'aar',
+                            'type' => 'simple',
+                            'search' => [
+                                'type' => 'rangeslider',
+                                'options' => [
+                                    'minValue' => (int) $minYear,
+                                    'maxValue' => (int) $maxYear,
+                                ],
+                                'index' => [
+                                    'type' => 'range',
+                                    'column' => 'aar_numeric',
+                                ],
+                            ],
+                        ],
+                        // ['key' => 'aar_numeric'],
+
+                        // Dato
+                        [
+                            'key' => 'dato',
+                            'type' => 'simple',
+                            'search' => [
+                                'advanced' => true,
+                            ],
+                        ],
+
+                        // Språk
+                        [
+                            'key' => 'spraak',
+                            'type' => 'autocomplete',
+                            'search' => [
+                                'advanced' => true,
+                            ],
+                        ],
+
+                        // Tittel
+                        [
+                            'key' => 'tittel',
+                            'type' => 'simple',
+                            'search' => [
+                                'advanced' => true,
+                            ],
+                        ],
+
+                        [
+                            'key' => 'utgivelsessted',
+                            'type' => 'autocomplete',
+                            'search' => [
+                                'advanced' => true,
+                            ],
+                        ],
+                        [
+                            'key' => 'aargang',
+                            'type' => 'simple',
+                        ],
+                        [
+                            'key' => 'bind',
+                            'type' => 'simple',
+                        ],
+                        [
+                            'key' => 'hefte',
+                            'type' => 'simple',
+                        ],
+                        [
+                            'key' => 'nummer',
+                            'type' => 'simple',
+                        ],
+                        [
+                            'key' => 'sidetall',
+                            'type' => 'simple',
+                        ],
+                        [
+                            'key' => 'kommentar',
+                            'type' => 'simple',
+                        ],
+                        [
+                            'key' => 'utgivelseskommentar',
+                            'type' => 'simple',
+                        ],
+                        [
+                            'key' => 'fulltekst_url',
+                            'type' => 'url',
+                        ],
                     ],
                 ],
             ],
         ];
 
-        foreach ($grouped as &$group) {
+        foreach ($grouped['fields'] as &$field) {
+            $field['label'] = trans('litteraturkritikk.' . $field['key']);
+        }
+        foreach ($grouped['groups'] as &$group) {
             foreach ($group['fields'] as &$field) {
+
+                // Add label
                 $field['label'] = trans('litteraturkritikk.' . $field['key']);
-                if (!isset($field['type'])) {
-                    $field['type'] = 'simple';
+
+                // Add default operators if not set
+                if (isset($field['search']) && $field['search'] && !isset($field['search']['operators'])) {
+                    $field['search']['operators'] = [
+                        'eq',
+                        'neq',
+                        'isnull',
+                        'notnull',
+                    ];
                 }
             }
         }
@@ -93,198 +343,9 @@ class Record extends \App\Record
 
     public static function getSearchFields(): array
     {
-        $minYear = 1789;
-        $maxYear = (int) strftime('%Y');
+        return self::getColumns();
 
-        return [
-            'fields' => [
-                [
-                    'key' => 'q',
-                    'type' => 'simple',
-                    'label' => 'Alle felt',
-                    'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...',
-                    'options' => [],
-                    'index' => [
-                        'type' => 'ts',
-                        'ts_column' => 'any_field_ts',
-                    ],
-                    'operators' => [
-                        'eq',
-                        'neq',
-                    ],
-                ],
-                [
-                    'key' => 'person',
-                    'type' => 'autocomplete',
-                    'label' => 'Forfatter eller kritiker',
-                    'placeholder' => 'Fornavn og/eller etternavn',
-                    'options' => [],
-                    'index' => [
-                        'type' => 'ts',
-                        'ts_column' => 'person_ts',
-                    ],
-                    'operators' => [
-                        'eq',
-                        'neq'
-                    ],
-                ],
-            ],
-            'groups' => [
-                [
-                    'label' => 'Verket',
-                    'fields' => [
-                        [
-                            'key' => 'forfatter',
-                            'type' => 'autocomplete',
-                            'label' => 'Forfatter',
-                            'placeholder' => 'Fornavn og/eller etternavn',
-                            'options' => [],
-                            'index' => [
-                                'type' => 'ts',
-                                'column' => 'verk_forfatter',
-                                'ts_column' => 'forfatter_ts',
-                            ],
-                            'operators' => [
-                                'eq',
-                                'neq',
-                                'isnull',
-                                'notnull',
-                            ],
-                        ],
-                        [
-                            'key' => 'verk_tittel',
-                            'type' => 'autocomplete',
-                            'label' => 'Verk',
-                            'placeholder' => 'Tittel på omtalt verk',
-                            'options' => [],
-                            'index' => [
-                                'type' => 'ts',
-                                'column' => 'verk_tittel',
-                                'ts_column' => 'verk_tittel_ts',
-                            ],
-                            'operators' => [
-                                'eq',
-                                'neq',
-                                'isnull',
-                                'notnull',
-                            ],
-                        ],
-                        [
-                            'key' => 'verk_sjanger',
-                            'type' => 'autocomplete',
-                            'label' => 'Sjanger',
-                            'placeholder' => 'Sjanger til det omtalte verket. F.eks. lyrikk, roman, ...',
-                            'options' => [],
-                            'index' => [
-                                'type' => 'simple',
-                                'column' => 'verk_sjanger',
-                            ],
-                            'operators' => [
-                                'eq',
-                                'neq',
-                                'isnull',
-                                'notnull',
-                            ],
-                        ],
-                        [
-                            'key' => 'verk_aar',
-                            'type' => 'rangeslkeyer',
-                            'label' => 'Publisert',
-                            'advanced' => true,
-                            'options' => [
-                                'minValue' => (int) $minYear,
-                                'maxValue' => (int) $maxYear,
-                            ],
-                            'index' => [
-                                'type' => 'range',
-                                'column' => 'verk_aar',
-                            ],
-                            'operators' => [
-                                'eq',
-                                'neq',
-                                'isnull',
-                                'notnull',
-                            ],
-                        ],
-                    ]
-                ],
-                [
-                    'label' => 'Kritikken',
-                    'fields' => [
-                        [
-                            'key' => 'kritiker',
-                            'type' => 'autocomplete',
-                            'label' => 'Kritiker',
-                            'placeholder' => 'Fornavn og/eller etternavn',
-                            'options' => [],
-                            'index' => [
-                                'type' => 'ts',
-                                'column' => 'kritiker',
-                                'ts_column' => 'kritiker_ts',
-                            ],
-                            'operators' => [
-                                'eq',
-                                'neq',
-                                'isnull',
-                                'notnull',
-                            ],
-                        ],
-                        [
-                            'key' => 'publikasjon',
-                            'type' => 'autocomplete',
-                            'label' => 'Publikasjon',
-                            'placeholder' => 'Publikasjon',
-                            'options' => [],
-                            'index' => [
-                                'type' => 'simple',
-                                'column' => 'publikasjon',
-                            ],
-                            'operators' => [
-                                'eq',
-                                'neq',
-                                'isnull',
-                                'notnull',
-                            ],
-                        ],
-                        [
-                            'key' => 'aar',
-                            'type' => 'rangeslider',
-                            'label' => 'Publisert',
-                            'options' => [
-                                'minValue' => (int) $minYear,
-                                'maxValue' => (int) $maxYear,
-                            ],
-                            'index' => [
-                                'type' => 'range',
-                                'column' => 'aar_numeric',
-                            ],
-                            'operators' => [
-                                'eq',
-                                'neq',
-                                'isnull',
-                                'notnull',
-                            ],
-                        ],
-                        [
-                            'key' => 'kritikktype',
-                            'type' => 'autocomplete',
-                            'label' => 'Type',
-                            'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...',
-                            'options' => [],
-                            'index' => [
-                                'type' => 'array',
-                                'column' => 'kritikktype',
-                            ],
-                            'operators' => [
-                                'eq',
-                                'isnull',
-                                'notnull',
-                            ]
-                        ],
-                    ]
-                ],
-            ],
-        ];
+
     }
 
     /**
@@ -305,13 +366,27 @@ class Record extends \App\Record
 
     public static function getColumnsFlatList()
     {
-        $cols = [];
-        foreach (self::getColumns() as $group) {
-            foreach ($group['fields'] as $col) {
-                $cols[] = $col;
+        $columns = self::getColumns();
+        $out = [];
+        foreach ($columns['fields'] as &$field) {
+            $out[] = $field;
+        }
+        foreach ($columns['groups'] as &$group) {
+            foreach ($group['fields'] as &$field) {
+                $out[] = $field;
             }
         }
-        return $cols;
+        return $out;
+    }
+
+    public static function getColumnsFlatListByKey()
+    {
+        $columns = self::getColumnsFlatList();
+        $out = [];
+        foreach ($columns as &$field) {
+            $out[$field['key']] = $field;
+        }
+        return $out;
     }
 
     public static function getColumnKeys()

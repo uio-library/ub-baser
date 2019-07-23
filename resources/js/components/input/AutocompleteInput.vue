@@ -6,14 +6,15 @@
               ref="input"
               :name="name"
               :value="value"
-              :placeholder="definition.placeholder"
+              :placeholder="placeholder"
               @input="$emit('value', $event.target.value)"
         >
     </div>
 </template>
 
 <script>
-    import autocomplete from "autocomplete.js";
+    import autocomplete from 'autocomplete.js';
+    import { get } from 'lodash/object';
 
     let search = null;
 
@@ -23,6 +24,11 @@
             name: String,
             definition: Object,
             value: String,
+        },
+        computed: {
+            placeholder() {
+                return get(this.definition, 'search.placeholder');
+            }
         },
         mounted() {
             this.initAutocomplete();
@@ -38,25 +44,21 @@
                 search = autocomplete(this.$refs.input, {}, [
                     {
                         source: (query, callback) => {
-                            if (this.definition.type !== 'autocomplete') {
-                                callback([]);
-                            } else {
-                                this.$http.get('/norsk-litteraturkritikk/autocomplete', {
-                                    params: {
-                                        field: this.definition.key,
-                                        q: query,
-                                    },
-                                })
-                                .then(
-                                    res => {
-                                        // let suggestions = countries.filter(n => n.label.toLowerCase().startsWith(text))
-                                        callback(res.data);
-                                    },
-                                    err => {
-                                        callback([]);
-                                    }
-                                );
-                            }
+                            this.$http.get('/norsk-litteraturkritikk/autocomplete', {
+                                params: {
+                                    field: this.definition.key,
+                                    q: query,
+                                },
+                            })
+                            .then(
+                                res => {
+                                    // let suggestions = countries.filter(n => n.label.toLowerCase().startsWith(text))
+                                    callback(res.data);
+                                },
+                                err => {
+                                    callback([]);
+                                }
+                            );
                         }
                     }
                 ])

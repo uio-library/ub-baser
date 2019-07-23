@@ -14,47 +14,45 @@
             Post {{ $record->id }}
         </h2>
 
-        @foreach ($record::getColumns() as $group)
-            @if (!isset($group['display']) || $group['display'] !== false)
+        @foreach ($columns['groups'] as $group)
+            <h3>{{ $group['label'] }}</h3>
+            <dl class="dl-horizontal">
+                @foreach ($group['fields'] as $field)
+                    @if (!isset($field['display']) || $field['display'] !== false)
+                        <dt>
+                            {{ trans('litteraturkritikk.' . $field['key']) }}:
+                        </dt>
+                        <dd>
 
-                <h3>{{ $group['label'] }}</h3>
-                <dl class="dl-horizontal">
-                    @foreach ($group['fields'] as $field)
-                        @if (!isset($field['display']) || $field['display'] !== false)
-                            <dt>
-                                {{ trans('litteraturkritikk.' . $field['key']) }}:
-                            </dt>
-                            <dd>
+                            @if ($field['type'] == 'persons')
 
-                                @if ($field['type'] == 'persons')
-
-                                    @foreach ($record->{$field['model_attribute']} as $person)
-                                        <a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
-                                            $person->pivot->pseudonym ? ', under pseudonymet «' . $person->pivot->pseudonym . '»' : ''
-                                        }}{{
-                                            !in_array($person->pivot->person_role, ['kritiker', 'forfatter']) ? ' (' . $person->pivot->person_role . ')' : ''
-                                        }}{{
-                                            $person->pivot->kommentar ? ' (' . $person->pivot->kommentar . ')' : ''
-                                        }}<br>
-                                    @endforeach
-                                    @if ($record->{$field['key'] . '_mfl'})
-                                        <em>mfl.</em>
-                                    @endif
-
-                                @elseif (is_array($record->{$field['key']}))
-
-                                    {{ implode(', ', $record->{$field['key']}) }}
-
-                                @else
-
-                                    {{ $record->{$field['key']} }}
-
+                                @foreach ($record->{$field['model_attribute']} as $person)
+                                    <a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
+                                        $person->pivot->pseudonym ? ', under pseudonymet «' . $person->pivot->pseudonym . '»' : ''
+                                    }}{{
+                                        !in_array($person->pivot->person_role, ['kritiker', 'forfatter']) ? ' (' . $person->pivot->person_role . ')' : ''
+                                    }}{{
+                                        $person->pivot->kommentar ? ' (' . $person->pivot->kommentar . ')' : ''
+                                    }}<br>
+                                @endforeach
+                                @if ($record->{$field['key'] . '_mfl'})
+                                    <em>mfl.</em>
                                 @endif
-                            </dd>
-                        @endif
-                    @endforeach
-                </dl>
-            @endif
+
+                            @elseif (is_array($record->{$field['key']}))
+
+                                {{ implode(', ', $record->{$field['key']}) }}
+
+                            @else
+
+                                {{ $record->{$field['key']} }}
+
+                            @endif
+                        </dd>
+
+                    @endif
+                @endforeach
+            </dl>
         @endforeach
 
         @if (Auth::check())

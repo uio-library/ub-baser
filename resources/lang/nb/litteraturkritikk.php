@@ -2,6 +2,10 @@
 
 return [
 
+    'id' => 'ID',
+    'q' => 'Alle felt',
+    'person' => 'Person (forfatter, kritiker e.a.)',
+
     'kritikktype' => 'Type',
     'utgivelsessted' => 'Utgivelsessted',
     'spraak' => 'Språk',

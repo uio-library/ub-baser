@@ -5,8 +5,8 @@
                         :adsorb="false"
                         :duration="0"
                         :enable-cross="false"
-                        :min="definition.options.minValue"
-                        :max="definition.options.maxValue"
+                        :min="minValue"
+                        :max="maxValue"
                         :useKeyboard="true"
                         tooltip="none"
                         @change="onChange($event)"
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+    import { get } from 'lodash/object'
     import VueSlider from 'vue-slider-component'
     import 'vue-slider-component/theme/antd.css'
 
@@ -39,11 +40,20 @@
         },
 
         computed: {
+            minValue() {
+                return get(this.definition, 'search.options.minValue')
+            },
+            maxValue() {
+                return get(this.definition, 'search.options.maxValue')
+            },
             valueAsArray() {
                 let val = this.value.split('-');
                 if (val.length !== 2 || !val[0].match(/-?[0-9]{1,4}/) || !val[1].match(/-?[0-9]{1,4}/) ) {
                     // Return default value
-                    return [this.definition.options.minValue, this.definition.options.maxValue];
+                    return [
+                        this.minValue,
+                        this.maxValue,
+                    ];
                 }
                 return [parseInt(val[0]), parseInt(val[1])];
             },

@@ -93,20 +93,30 @@ class LitteraturkritikkSearchRequest extends FormRequest
 
         foreach ($this->queryParts as $queryPart) {
             $field = $this->searchFieldMap[$queryPart['field']];
+
+            $indexType = Arr::get($field, 'search.index.type');
+            $index = Arr::get($field, 'search.index');
+
             $operator = $queryPart['operator'];
             $value = $queryPart['value'];
 
-            if ($field['index']['type'] == 'ts') {
-                $this->addTextSearchTerm($field['index'], $operator, $value);
+            if (is_null($index)) {
+                $index = [
+                    'column' => $field['key'],
+                ];
+            }
 
-            } elseif ($field['index']['type'] == 'range') {
-                $this->addRangeSearchTerm($field['index'], $operator, $value);
+            if ($indexType == 'ts') {
+                $this->addTextSearchTerm($index, $operator, $value);
 
-            } elseif ($field['index']['type'] == 'array') {
-                $this->addArraySearchTerm($field['index'], $operator, $value);
+            } elseif ($indexType == 'range') {
+                $this->addRangeSearchTerm($index, $operator, $value);
 
-            } elseif ($field['index']['type'] == 'simple') {
-                $this->addSimpleTerm($field['index'], $operator, $value);
+            } elseif ($indexType == 'array') {
+                $this->addArraySearchTerm($index, $operator, $value);
+
+            } else {
+                $this->addSimpleTerm($index, $operator, $value);
             }
         }
     }
@@ -126,7 +136,7 @@ class LitteraturkritikkSearchRequest extends FormRequest
         }
     }
 
-    protected function addTextSearchTerm(array $index, string $operator, string $value): void
+    protected function addTextSearchTerm(array $index, string $operator, ?string $value): void
     {
         if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
             // Phrase
@@ -151,7 +161,7 @@ class LitteraturkritikkSearchRequest extends FormRequest
         }
     }
 
-    protected function addSimpleTerm(array $index, string $operator, string $value): void
+    protected function addSimpleTerm(array $index, string $operator, ?string $value): void
     {
         switch ($operator) {
             case 'eq':
@@ -183,12 +193,16 @@ class LitteraturkritikkSearchRequest extends FormRequest
         }
     }
 
-    protected function addArraySearchTerm(array $index, string $operator, string $value): void
+    protected function addArraySearchTerm(array $index, string $operator, ?string $value): void
     {
         switch ($operator) {
             case 'eq':
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-                $this->queryBuilder->whereRaw($index['column'] . " ~@ ?", [$value]);
+                $this->queryBuilder->whereRaw($index['column'] . ' ~@ ?', [$value]);
+                break;
+            case 'neq':
+                // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
+                $this->queryBuilder->whereRaw('NOT ' . $index['column'] . ' ~@ ?', [$value]);
                 break;
             default:
                 $this->checkNull($index['column'], $operator);

@@ -27,7 +27,7 @@
         Vis kolonner:
 
         <select class="selectpicker" multiple>
-            @foreach ($allFields as $group)
+            @foreach ($allFields['groups'] as $group)
                 @if (!isset($group['display']) || $group['display'])
                     <optgroup label="{{ $group['label'] }}">
                     @foreach ($group['fields'] as $field)
@@ -43,7 +43,7 @@
         <table id="table1" class="table table-striped hover" style="width:100%">
             <thead>
             <tr>
-                @foreach ($allFields as $group)
+                @foreach ($allFields['groups'] as $group)
                     @foreach ($group['fields'] as $field)
                         @if (!isset($field['display']) || $field['display'])
                             <th>{{ $field['label'] }}</th>
@@ -79,7 +79,7 @@
             }
 
             let columns = [
-                @foreach ($allFields as $group)
+                @foreach ($allFields['groups'] as $group)
                     @foreach ($group['fields'] as $field)
                         @if (!isset($field['display']) || $field['display'])
 

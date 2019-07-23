@@ -7,13 +7,13 @@
                 @input="$emit('field', $event.target.value)"
             >
                 <option v-for="field in fields.fields"
-                        v-if="advanced || !field.advanced"
+                        v-if="field.search && (advanced || !field.search.advanced)"
                         :value="field.key"
                 >{{ field.label }}</option>
 
                 <optgroup v-for="fieldGroup in fields.groups" :key="fieldGroup.label" :label="fieldGroup.label">
                     <option v-for="field in fieldGroup.fields"
-                            v-if="advanced || !field.advanced"
+                            v-if="field.search && (advanced || !field.search.advanced)"
                             :value="field.key"
                     >{{ field.label }}</option>
                 </optgroup>
@@ -36,7 +36,7 @@
         <td>
             <component
                 v-if="operator != 'isnull' && operator != 'notnull'"
-                :is="definition.type"
+                :is="definition.search.type || definition.type"
                 :name="`v${index}`"
                 :value="value"
                 :definition="definition"
@@ -86,7 +86,7 @@
                 return fieldMap[this.field];
             },
             activeOperators() {
-                return this.operators.filter(op => this.definition.operators.indexOf(op.value) !== -1);
+                return this.operators.filter(op => this.definition.search.operators.indexOf(op.value) !== -1);
             }
         }
     }

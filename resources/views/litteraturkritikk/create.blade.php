@@ -11,7 +11,11 @@
     <form method="POST" action="{{ action('LitteraturkritikkController@store') }}" class="form-horizontal">
         {!! csrf_field() !!}
 
-        @include('litteraturkritikk.form')
+        <litteraturkritikk-edit-form
+                :columns="{{ json_encode($columns) }}"
+                :labels="{{ json_encode(trans('litteraturkritikk')) }}"
+                :values="{{ json_encode($values) }}"
+        ></litteraturkritikk-edit-form>
 
         <div class="form-group">
             <div class="col-sm-10">
