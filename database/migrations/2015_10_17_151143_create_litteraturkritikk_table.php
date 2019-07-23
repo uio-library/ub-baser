@@ -115,25 +115,25 @@ class CreateLitteraturkritikkTable extends Migration
         DB::unprepared("
             CREATE VIEW litteraturkritikk_personer_view AS
                 SELECT
-                    litteraturkritikk_personer.*,
+                    p.*,
 
-                    -- Fullt navn med etternavn først
+                    -- Fullt navn med etternavn først (invertert)
                     (CASE
                         -- Etternavn, Fornavn (Født-Død)
-                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL AND litteraturkritikk_personer.fodt IS NOT NULL AND litteraturkritikk_personer.dod IS NOT NULL
-                        THEN litteraturkritikk_personer.etternavn::text || ', '::text || litteraturkritikk_personer.fornavn::text || ', '::text || litteraturkritikk_personer.fodt::text || '-'::text || litteraturkritikk_personer.dod::text
+                        WHEN p.fornavn IS NOT NULL AND p.etternavn IS NOT NULL AND p.fodt IS NOT NULL AND p.dod IS NOT NULL
+                        THEN p.etternavn::text || ', '::text || p.fornavn::text || ', '::text || p.fodt::text || '-'::text || p.dod::text
 
                         -- Etternavn, Fornavn (Født-)
-                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL AND litteraturkritikk_personer.fodt IS NOT NULL
-                        THEN litteraturkritikk_personer.etternavn::text || ', '::text || litteraturkritikk_personer.fornavn::text || ', '::text || litteraturkritikk_personer.fodt::text || '-'::text
+                        WHEN p.fornavn IS NOT NULL AND p.etternavn IS NOT NULL AND p.fodt IS NOT NULL
+                        THEN p.etternavn::text || ', '::text || p.fornavn::text || ', '::text || p.fodt::text || '-'::text
 
                         -- Etternavn, Fornavn
-                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL
-                        THEN litteraturkritikk_personer.etternavn::text || ', '::text || litteraturkritikk_personer.fornavn::text
+                        WHEN p.fornavn IS NOT NULL AND p.etternavn IS NOT NULL
+                        THEN p.etternavn::text || ', '::text || p.fornavn::text
 
                         -- Etternavn
-                        WHEN litteraturkritikk_personer.etternavn IS NOT NULL
-                        THEN litteraturkritikk_personer.etternavn
+                        WHEN p.etternavn IS NOT NULL
+                        THEN p.etternavn
 
                         ELSE ''
                     END) AS etternavn_fornavn,
@@ -141,119 +141,119 @@ class CreateLitteraturkritikkTable extends Migration
                     -- Fullt navn med fornavn først, uten dato
                     (CASE
                         -- Etternavn, Fornavn
-                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL
-                        THEN litteraturkritikk_personer.fornavn::text || ' '::text || litteraturkritikk_personer.etternavn::text
+                        WHEN p.fornavn IS NOT NULL AND p.etternavn IS NOT NULL
+                        THEN p.fornavn::text || ' '::text || p.etternavn::text
 
                         -- Etternavn
-                        WHEN litteraturkritikk_personer.etternavn IS NOT NULL
-                        THEN litteraturkritikk_personer.etternavn
+                        WHEN p.etternavn IS NOT NULL
+                        THEN p.etternavn
 
                         ELSE ''
                     END) AS fornavn_etternavn,
 
                     -- Roller
-                    ARRAY_AGG(DISTINCT lk_person_pivot.person_role)
+                    ARRAY_AGG(DISTINCT pivot.person_role)
                     AS roller,
 
                     -- Søkeindeks 'any_field_ts'. 
                     -- Vi legger til navn begge veier for å støtte autocomplete med frasematch begge veier.
-                    TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.etternavn, ''))
-                    || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.fornavn, ''))
-                    || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.fodt::text, ''))
-                    || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.dod::text, ''))
-                    || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.fornavn, ''))
-                    || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.etternavn, ''))
-                    || TO_TSVECTOR('simple', COALESCE(STRING_AGG(lk_person_pivot.pseudonym, ' '), ''))
+                    TO_TSVECTOR('simple', COALESCE(p.etternavn, ''))
+                    || TO_TSVECTOR('simple', COALESCE(p.fornavn, ''))
+                    || TO_TSVECTOR('simple', COALESCE(p.fodt::text, ''))
+                    || TO_TSVECTOR('simple', COALESCE(p.dod::text, ''))
+                    || TO_TSVECTOR('simple', COALESCE(p.fornavn, ''))
+                    || TO_TSVECTOR('simple', COALESCE(p.etternavn, ''))
+                    || TO_TSVECTOR('simple', COALESCE(STRING_AGG(pivot.pseudonym, ' '), ''))
                     AS any_field_ts
 
-                FROM litteraturkritikk_personer
+                FROM litteraturkritikk_personer AS p
 
                 -- person
-                LEFT JOIN litteraturkritikk_record_person AS lk_person_pivot
-                    ON litteraturkritikk_personer.id = lk_person_pivot.person_id
+                LEFT JOIN litteraturkritikk_record_person AS pivot
+                    ON p.id = pivot.person_id
                                 
 
-                GROUP BY litteraturkritikk_personer.id
+                GROUP BY p.id
         ");
 
         DB::unprepared("
             CREATE MATERIALIZED VIEW litteraturkritikk_records_search AS
             SELECT
         
-                litteraturkritikk_records.*,
+                r.*,
                                     
                 SUBSTR(TRIM(aar),1,4) AS aar_numeric,
                 
                 -- Flat representasjon for tabellvisning
-                STRING_AGG(DISTINCT forfatter_entity.etternavn_fornavn, '; ') AS verk_forfatter,
-                STRING_AGG(DISTINCT kritiker_entity.etternavn_fornavn, '; ') AS kritiker,
+                STRING_AGG(DISTINCT forfatter.etternavn_fornavn, '; ') AS verk_forfatter,
+                STRING_AGG(DISTINCT kritiker.etternavn_fornavn, '; ') AS kritiker,
                 
                 -- Søkeindeks 'any_field_ts'
-                TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.tittel, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.publikasjon, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.aar, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.bind, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.hefte, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.sidetall, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.kommentar, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.utgivelseskommentar, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.verk_tittel, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.verk_aar, ''))
-                || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.verk_kommentar, ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(lk_person_pivot.kommentar, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(lk_person_pivot.pseudonym, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(person_entity.etternavn, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(person_entity.fornavn, ' '), ''))
+                TO_TSVECTOR('simple', COALESCE(r.tittel, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.publikasjon, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.aar, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.bind, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.hefte, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.sidetall, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.kommentar, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.utgivelseskommentar, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.verk_tittel, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.verk_aar, ''))
+                || TO_TSVECTOR('simple', COALESCE(r.verk_kommentar, ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(person_pivot.kommentar, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(person_pivot.pseudonym, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(person.etternavn, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(person.fornavn, ' '), ''))
                 AS any_field_ts,
                 
                 -- Søkeindeks 'verk_tittel_ts'
-                TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.verk_tittel, ''))
+                TO_TSVECTOR('simple', COALESCE(r.verk_tittel, ''))
                 AS verk_tittel_ts,
                 
                 -- Søkeindeks 'forfatter_ts'. 
-                TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT forfatter_entity.etternavn_fornavn, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT forfatter_entity.fornavn_etternavn, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT lk_forfatter_pivot.pseudonym, ' '), ''))
+                TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT forfatter.etternavn_fornavn, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT forfatter.fornavn_etternavn, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT forfatter_pivot.pseudonym, ' '), ''))
                 AS forfatter_ts,
 
                 -- Søkeindeks 'kritiker_ts'
-                TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT kritiker_entity.etternavn_fornavn, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT kritiker_entity.fornavn_etternavn, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT lk_kritiker_pivot.pseudonym, ' '), ''))
+                TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT kritiker.etternavn_fornavn, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT kritiker.fornavn_etternavn, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT kritiker_pivot.pseudonym, ' '), ''))
                 AS kritiker_ts,
 
                 -- Søkeindeks 'person_ts'
-                TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT person_entity.etternavn_fornavn, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT person_entity.fornavn_etternavn, ' '), ''))
-                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT lk_person_pivot.pseudonym, ' '), ''))
+                TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT person.etternavn_fornavn, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT person.fornavn_etternavn, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT person_pivot.pseudonym, ' '), ''))
                 AS person_ts
         
-            FROM litteraturkritikk_records
+            FROM litteraturkritikk_records AS r
             
             -- person
-            LEFT JOIN litteraturkritikk_record_person AS lk_person_pivot
-                ON litteraturkritikk_records.id = lk_person_pivot.record_id
+            LEFT JOIN litteraturkritikk_record_person AS person_pivot
+                ON r.id = person_pivot.record_id
         
-                LEFT JOIN litteraturkritikk_personer_view AS person_entity
-                    ON person_entity.id = lk_person_pivot.person_id
+                LEFT JOIN litteraturkritikk_personer_view AS person
+                    ON person.id = person_pivot.person_id
         
             -- kritiker
-            LEFT JOIN litteraturkritikk_record_person AS lk_kritiker_pivot
-                ON litteraturkritikk_records.id = lk_kritiker_pivot.record_id
-                AND lk_kritiker_pivot.person_role = 'kritiker'
+            LEFT JOIN litteraturkritikk_record_person AS kritiker_pivot
+                ON r.id = kritiker_pivot.record_id
+                AND kritiker_pivot.person_role = 'kritiker'
         
-                LEFT JOIN litteraturkritikk_personer_view AS kritiker_entity
-                    ON kritiker_entity.id = lk_kritiker_pivot.person_id
+                LEFT JOIN litteraturkritikk_personer_view AS kritiker
+                    ON kritiker.id = kritiker_pivot.person_id
         
             -- forfatter
-            LEFT JOIN litteraturkritikk_record_person AS lk_forfatter_pivot
-                ON lk_forfatter_pivot.record_id = litteraturkritikk_records.id
-                AND lk_forfatter_pivot.person_role != 'kritiker'
+            LEFT JOIN litteraturkritikk_record_person AS forfatter_pivot
+                ON forfatter_pivot.record_id = r.id
+                AND forfatter_pivot.person_role != 'kritiker'
         
-                LEFT JOIN litteraturkritikk_personer_view AS forfatter_entity
-                    ON forfatter_entity.id = lk_forfatter_pivot.person_id
+                LEFT JOIN litteraturkritikk_personer_view AS forfatter
+                    ON forfatter.id = forfatter_pivot.person_id
         
-            GROUP BY litteraturkritikk_records.id
+            GROUP BY r.id
         ");
 
         DB::unprepared('CREATE UNIQUE INDEX litteraturkritikk_records_search_id ON litteraturkritikk_records_search (id)');
