@@ -14,7 +14,7 @@ class Record extends \App\Record
                 'label' => 'Meta',
                 'display' => false,
                 'fields' => [
-                    ['key' => 'id', 'label' => 'ID', 'display' => false, 'readonly' => true],
+                    ['key' => 'id', 'label' => 'ID', 'display' => false, 'type' => 'incrementing'],
                 ],
             ],
             [
@@ -23,24 +23,35 @@ class Record extends \App\Record
                     ['key' => 'verk_tittel'],
                     ['key' => 'verk_aar'],
                     ['key' => 'verk_sjanger'],
-                    ['key' => 'verk_spraak', 'datatype' => 'autocomplete'],
+                    ['key' => 'verk_spraak', 'type' => 'autocomplete'],
                     ['key' => 'verk_kommentar'],
-                    ['key' => 'verk_utgivelsessted', 'datatype' => 'autocomplete'],
+                    ['key' => 'verk_utgivelsessted', 'type' => 'autocomplete'],
 
-                    ['key' => 'verk_forfatter', 'readonly' => true, 'datatype' => 'person', 'model_attribute' => 'forfattere'],
-                    ['key' => 'verk_forfatter_mfl', 'display' => false, 'datatype' => 'boolean', 'default' => false],
+                    [
+                        'key' => 'verk_forfatter',
+                        'type' => 'persons',
+                        'model_attribute' => 'forfattere',
+                        'person_role' => 'forfatter',
+                    ],
+                    [
+                        'key' => 'verk_forfatter_mfl',
+                        'help' => 'Kryss av hvis det er flere personer som ikke er listet opp',
+                        'display' => false,
+                        'type' => 'boolean',
+                        'default' => false,
+                        ],
                 ],
             ],
             [
                 'label' => 'Kritikken',
                 'fields' => [
-                    ['key' => 'kritikktype'],
-                    ['key' => 'spraak', 'datatype' => 'autocomplete'],
+                    ['key' => 'kritikktype', 'type' => 'tags', 'default' => []],
+                    ['key' => 'spraak', 'type' => 'autocomplete'],
                     ['key' => 'tittel'],
-                    ['key' => 'publikasjon', 'datatype' => 'autocomplete'],
-                    ['key' => 'utgivelsessted', 'datatype' => 'autocomplete'],
+                    ['key' => 'publikasjon', 'type' => 'autocomplete'],
+                    ['key' => 'utgivelsessted', 'type' => 'autocomplete'],
                     ['key' => 'aar'],
-                    // ['key' => 'aar_numeric', 'readonly' => true],
+                    // ['key' => 'aar_numeric'],
                     ['key' => 'dato'],
                     ['key' => 'aargang'],
                     ['key' => 'bind'],
@@ -49,10 +60,21 @@ class Record extends \App\Record
                     ['key' => 'sidetall'],
                     ['key' => 'kommentar'],
                     ['key' => 'utgivelseskommentar'],
-                    ['key' => 'fulltekst_url', 'datatype' => 'url'],
+                    ['key' => 'fulltekst_url', 'type' => 'url'],
 
-                    ['key' => 'kritiker', 'readonly' => true, 'datatype' => 'person', 'model_attribute' => 'kritikere'],
-                    ['key' => 'kritiker_mfl', 'display' => false, 'datatype' => 'boolean', 'default' => false],
+                    [
+                        'key' => 'kritiker',
+                        'type' => 'persons',
+                        'model_attribute' => 'kritikere',
+                        'person_role' => 'kritiker',
+                    ],
+                    [
+                        'key' => 'kritiker_mfl',
+                        'help' => 'Kryss av hvis det er flere personer som ikke er listet opp',
+                        'display' => false,
+                        'type' => 'boolean',
+                        'default' => false
+                    ],
                 ],
             ],
         ];
@@ -60,8 +82,8 @@ class Record extends \App\Record
         foreach ($grouped as &$group) {
             foreach ($group['fields'] as &$field) {
                 $field['label'] = trans('litteraturkritikk.' . $field['key']);
-                if (!isset($field['datatype'])) {
-                    $field['datatype'] = 'text';
+                if (!isset($field['type'])) {
+                    $field['type'] = 'simple';
                 }
             }
         }
@@ -77,7 +99,7 @@ class Record extends \App\Record
         return [
             'fields' => [
                 [
-                    'id' => 'q',
+                    'key' => 'q',
                     'type' => 'simple',
                     'label' => 'Alle felt',
                     'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc...',
@@ -92,7 +114,7 @@ class Record extends \App\Record
                     ],
                 ],
                 [
-                    'id' => 'person',
+                    'key' => 'person',
                     'type' => 'autocomplete',
                     'label' => 'Forfatter eller kritiker',
                     'placeholder' => 'Fornavn og/eller etternavn',
@@ -112,7 +134,7 @@ class Record extends \App\Record
                     'label' => 'Verket',
                     'fields' => [
                         [
-                            'id' => 'forfatter',
+                            'key' => 'forfatter',
                             'type' => 'autocomplete',
                             'label' => 'Forfatter',
                             'placeholder' => 'Fornavn og/eller etternavn',
@@ -130,7 +152,7 @@ class Record extends \App\Record
                             ],
                         ],
                         [
-                            'id' => 'verk_tittel',
+                            'key' => 'verk_tittel',
                             'type' => 'autocomplete',
                             'label' => 'Verk',
                             'placeholder' => 'Tittel på omtalt verk',
@@ -148,7 +170,7 @@ class Record extends \App\Record
                             ],
                         ],
                         [
-                            'id' => 'verk_sjanger',
+                            'key' => 'verk_sjanger',
                             'type' => 'autocomplete',
                             'label' => 'Sjanger',
                             'placeholder' => 'Sjanger til det omtalte verket. F.eks. lyrikk, roman, ...',
@@ -165,8 +187,8 @@ class Record extends \App\Record
                             ],
                         ],
                         [
-                            'id' => 'verk_aar',
-                            'type' => 'rangeslider',
+                            'key' => 'verk_aar',
+                            'type' => 'rangeslkeyer',
                             'label' => 'Publisert',
                             'advanced' => true,
                             'options' => [
@@ -190,7 +212,7 @@ class Record extends \App\Record
                     'label' => 'Kritikken',
                     'fields' => [
                         [
-                            'id' => 'kritiker',
+                            'key' => 'kritiker',
                             'type' => 'autocomplete',
                             'label' => 'Kritiker',
                             'placeholder' => 'Fornavn og/eller etternavn',
@@ -208,7 +230,7 @@ class Record extends \App\Record
                             ],
                         ],
                         [
-                            'id' => 'publikasjon',
+                            'key' => 'publikasjon',
                             'type' => 'autocomplete',
                             'label' => 'Publikasjon',
                             'placeholder' => 'Publikasjon',
@@ -225,7 +247,7 @@ class Record extends \App\Record
                             ],
                         ],
                         [
-                            'id' => 'aar',
+                            'key' => 'aar',
                             'type' => 'rangeslider',
                             'label' => 'Publisert',
                             'options' => [
@@ -244,7 +266,7 @@ class Record extends \App\Record
                             ],
                         ],
                         [
-                            'id' => 'kritikktype',
+                            'key' => 'kritikktype',
                             'type' => 'autocomplete',
                             'label' => 'Type',
                             'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...',
@@ -257,7 +279,7 @@ class Record extends \App\Record
                                 'eq',
                                 'isnull',
                                 'notnull',
-                            ],
+                            ]
                         ],
                     ]
                 ],
@@ -279,18 +301,24 @@ class Record extends \App\Record
      */
     protected $casts = [
         'kritikktype' => 'array',
-        'verk_spraak' => 'array',
     ];
+
+    public static function getColumnsFlatList()
+    {
+        $cols = [];
+        foreach (self::getColumns() as $group) {
+            foreach ($group['fields'] as $col) {
+                $cols[] = $col;
+            }
+        }
+        return $cols;
+    }
 
     public static function getColumnKeys()
     {
-        $keys = [];
-        foreach (self::getColumns() as $group) {
-            foreach ($group['fields'] as $field) {
-                $keys[] = $field['key'];
-            }
-        }
-        return $keys;
+        return array_map(function($col) {
+            return $col['key'];
+        }, self::getColumnsFlatList());
     }
 
     public function createdBy()

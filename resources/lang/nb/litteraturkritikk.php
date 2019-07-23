@@ -22,7 +22,7 @@ return [
     'fulltekst_url' => 'Fulltekst-URL',
 
     'kritiker' => 'Kritiker',
-    'kritiker_pseudonym' => 'Pseudonym',
+    'kritiker_mfl' => 'mfl.',
 
     'etternavn' => 'Etternavn',
     'fornavn' => 'Fornavn',
@@ -40,4 +40,6 @@ return [
     'verk_utgivelsessted' => 'Utgivelsessted',
 
     'verk_forfatter' => 'Forfatter',
+    'verk_forfatter_mfl' => 'mfl.',
+
 ];

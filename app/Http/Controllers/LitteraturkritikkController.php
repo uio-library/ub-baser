@@ -14,19 +14,6 @@ use Illuminate\Support\Arr;
 class LitteraturkritikkController extends RecordController
 {
     /**
-     * @return array List of critique types.
-     */
-    public static function getTypeList()
-    {
-        $kritikktyper = [];
-        foreach (KritikkType::all() as $kilde) {
-            $kritikktyper[$kilde->navn] = $kilde->navn;
-        }
-
-        return $kritikktyper;
-    }
-
-    /**
      * Display a listing of the resource.
      *
      *
@@ -149,13 +136,16 @@ class LitteraturkritikkController extends RecordController
                 }
             }
         } elseif ($field == 'kritikktype') {
-            foreach (KritikkType::where('navn', 'ilike', $term)->limit(25)->select('navn')->get() as $res) {
+            foreach (KritikkType::where('navn', 'ilike', $term)->select('navn')->get() as $res) {
                 $data[] = [
                     'value' => $res->navn
                 ];
             }
         } elseif (in_array($field, ['person', 'forfatter', 'kritiker'])) {
-            $query = PersonView::select('id', 'etternavn_fornavn', 'bibsys_id', 'fodt')
+            $query = PersonView::select(
+                    'id', 'etternavn_fornavn', 'etternavn', 'fornavn', 'kjonn',
+                    'fodt', 'dod', 'bibsys_id', 'wikidata_id'
+                )
                 ->whereRaw(
                     "any_field_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery",
                     [$term]
@@ -167,9 +157,8 @@ class LitteraturkritikkController extends RecordController
             foreach ($query->limit(25)->get() as $res) {
                 $data[] = [
                     'id' => $res->id,
-                    'bibsys_id' => $res->bibsys_id,
-                    'fodt' => $res->fodt,
                     'value' => $res->etternavn_fornavn,
+                    'record' => $res,
                 ];
             }
         } else {
@@ -193,14 +182,24 @@ class LitteraturkritikkController extends RecordController
         $record = $isNew ? new Record() : Record::findOrFail($id);
 
         $this->validate($request, [
-            'kritikktype' => 'required',
+            // 'kritikktype' => 'required',
         ]);
 
-        foreach (Record::getColumns() as $group) {
-            foreach ($group['fields'] as $field) {
-                if (!Arr::get($field, 'readonly')) {
-                    $record->{$field['key']} = $request->get($field['key'], Arr::get($field, 'default'));
+        $persons = [];
+
+        foreach (Record::getColumnsFlatList() as $col) {
+            $datatype = Arr::get($col, 'type', 'simple');
+            $newValue = $request->get($col['key'], Arr::get($col, 'default'));
+            if (in_array($datatype, ['simple', 'autocomplete', 'url', 'boolean', 'tags'])) {
+                $record->{$col['key']} = $newValue;
+            } elseif ($datatype == 'persons') {
+                foreach (json_decode($newValue, true) as $input) {
+                    $persons[] = $input;
                 }
+            } elseif ($datatype == 'incrementing') {
+                // Ignore
+            } else {
+                throw new \RuntimeException("Unsupported datatype: $datatype");
             }
         }
 
@@ -211,17 +210,9 @@ class LitteraturkritikkController extends RecordController
 
         $record->save();
 
-        $person_role = $request->get('person_role');
-
-        $persons = [];
-        foreach ($this->parsePersons($request->get('forfattere', [])) as $id) {
-            $persons[$id] = ['person_role' => $person_role ?: 'forfatter'];
-        }
-        foreach ($this->parsePersons($request->get('kritikere', [])) as $id) {
-            $persons[$id] = ['person_role' => 'kritiker'];
-        }
-
-        $record->persons()->sync($persons);
+        // Sync persons
+        $personsSyncData = $this->findOrCreatePersons($persons);
+        $record->persons()->sync($personsSyncData);
 
         \DB::unprepared('REFRESH MATERIALIZED VIEW litteraturkritikk_records_search');
 
@@ -248,18 +239,20 @@ class LitteraturkritikkController extends RecordController
     protected function formArguments($record)
     {
         $columns = Record::getColumns();
-        $keys = Record::getColumnKeys();
+        $columnsFlat = Record::getColumnsFlatList();
         $values = [];
-        foreach ($keys as $key) {
-            $values[$key] = old($key, $record->{$key});
+        foreach ($columnsFlat as $col) {
+            $key = $col['key'];
+            if (Arr::get($col, 'type') == 'persons') {
+                $values[$key] = $record->{$col['model_attribute']};
+            } else {
+                $values[$key] = old($key, $record->{$key});
+            }
         }
         return [
             'columns' => $columns,
             'values' => $values,
-            'typeliste' => self::getTypeList(),
-            'kjonnliste' => self::getGenderList(),
             'record' => $record,
-            'person_role' => $this->getPersonRole($record),
         ];
     }
 
@@ -362,25 +355,21 @@ class LitteraturkritikkController extends RecordController
 
     /**
      * Looks up IDs of persons from names, creates new person when not found.
-     * @param $names
+     * @param array $inputs
      * @return array
      */
-    protected function parsePersons($names)
+    protected function findOrCreatePersons(array $inputs): array
     {
-        $ids = [];
-        foreach ($names as $name) {
-            preg_match('/^(.+?)(, ([^(]+))?( \((.+?)\-\))?$/', $name, $matches);
-
-            $args = [
-                'etternavn' => $matches[1],
-                'fornavn' => Arr::get($matches, 3, null),
-                'fodt' => Arr::get($matches, 5, null),
-            ];
-
-            $person = Person::firstOrCreate($args);
-
-            $ids[] = $person->id;
+        $idsWithPivotData = [];
+        foreach ($inputs as $input) {
+            if (isset($input['id'])) {
+                // Validate existence
+                $person = Person::findOrFail($input['id']);
+            } else {
+                $person = Person::firstOrCreate($input);
+            }
+            $idsWithPivotData[$person->id] = $input['pivot'];
         }
-        return $ids;
+        return $idsWithPivotData;
     }
 }

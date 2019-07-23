@@ -5,8 +5,8 @@
             :columns="{{ json_encode($columns) }}"
             :labels="{{ json_encode(trans('litteraturkritikk')) }}"
             :values="{{ json_encode($values) }}"
-
     ></litteraturkritikk-edit-form>
+
 <!--
         <ul class="list-group">
 
@@ -224,7 +224,6 @@
         </ul>
 
     </div>
--->
 
     @section('script')
 

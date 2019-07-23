@@ -26,7 +26,7 @@
                             </dt>
                             <dd>
 
-                                @if ($field['type'] == 'person')
+                                @if ($field['type'] == 'persons')
 
                                     @foreach ($record->{$field['model_attribute']} as $person)
                                         <a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
@@ -35,7 +35,7 @@
                                             !in_array($person->pivot->person_role, ['kritiker', 'forfatter']) ? ' (' . $person->pivot->person_role . ')' : ''
                                         }}{{
                                             $person->pivot->kommentar ? ' (' . $person->pivot->kommentar . ')' : ''
-                                        }}
+                                        }}<br>
                                     @endforeach
                                     @if ($record->{$field['key'] . '_mfl'})
                                         <em>mfl.</em>

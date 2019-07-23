@@ -4,7 +4,7 @@
         <table style="width: 100%">
             <litteraturkritikk-search-field
                     v-for="(field, fieldIndex) in query"
-                    :key="field.id"
+                    :key="field.key"
                     class="form-group field-set"
                     :data-index="fieldIndex"
                     :advanced="advanced"

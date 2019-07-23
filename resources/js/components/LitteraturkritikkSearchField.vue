@@ -8,13 +8,13 @@
             >
                 <option v-for="field in fields.fields"
                         v-if="advanced || !field.advanced"
-                        :value="field.id"
+                        :value="field.key"
                 >{{ field.label }}</option>
 
                 <optgroup v-for="fieldGroup in fields.groups" :key="fieldGroup.label" :label="fieldGroup.label">
                     <option v-for="field in fieldGroup.fields"
                             v-if="advanced || !field.advanced"
-                            :value="field.id"
+                            :value="field.key"
                     >{{ field.label }}</option>
                 </optgroup>
             </select>
@@ -78,9 +78,9 @@
                 if (fieldMap === null) {
                     // Lazy-load field map
                     fieldMap = new Map();
-                    this.fields.fields.forEach(field => fieldMap[field.id] = field);
+                    this.fields.fields.forEach(field => fieldMap[field.key] = field);
                     this.fields.groups.forEach(fieldGroup => {
-                        fieldGroup.fields.forEach(field => fieldMap[field.id] = field);
+                        fieldGroup.fields.forEach(field => fieldMap[field.key] = field);
                     })
                 }
                 return fieldMap[this.field];

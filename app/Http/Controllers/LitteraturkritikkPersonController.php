@@ -80,8 +80,6 @@ class LitteraturkritikkPersonController extends RecordController
 
         $person->etternavn = $request->get('etternavn');
         $person->fornavn = $request->get('fornavn');
-        $person->kritiker_pseudonym = $request->get('kritiker_pseudonym');
-        $person->kommentar = $request->get('kommentar');
         $person->fodt = $request->get('fodt');
         $person->dod = $request->get('dod');
         $person->kjonn = $request->get('kjonn');

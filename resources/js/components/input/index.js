@@ -1,3 +1,6 @@
+export { default as simple, default as url } from './SimpleInput.vue'
 export { default as autocomplete } from './AutocompleteInput.vue'
 export { default as rangeslider } from './RangeSliderInput.vue'
-export { default as simple } from './SimpleInput.vue'
+export { default as persons } from './PersonsInput.vue'
+export { default as boolean } from './BooleanInput.vue'
+export { default as tags } from './TagsInput.vue'

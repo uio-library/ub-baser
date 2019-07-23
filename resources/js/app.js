@@ -21,11 +21,9 @@ Vue.config.devtools = true;
 
 import LitteraturkritikkSearchForm from './components/LitteraturkritikkSearchForm.vue';
 import LitteraturkritikkEditForm from './components/LitteraturkritikkEditForm.vue';
-import LitteraturkritikkFieldEditor from './components/LitteraturkritikkFieldEditor.vue';
 
 Vue.component('litteraturkritikk-search-form', LitteraturkritikkSearchForm);
 Vue.component('litteraturkritikk-edit-form', LitteraturkritikkEditForm);
-Vue.component('litteraturkritikk-field-editor', LitteraturkritikkFieldEditor);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

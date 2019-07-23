@@ -116,24 +116,40 @@ class CreateLitteraturkritikkTable extends Migration
             CREATE VIEW litteraturkritikk_personer_view AS
                 SELECT
                     litteraturkritikk_personer.*,
-                    
-                    -- Fornavn, Etternavn
-                    (CASE
-                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL
-                        THEN litteraturkritikk_personer.fornavn::text || ' '::text || litteraturkritikk_personer.etternavn::text
-                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL
-                        THEN litteraturkritikk_personer.fornavn
-                        ELSE ''
-                    END) AS fornavn_etternavn,
 
-                    -- Etternavn, Fornavn
+                    -- Fullt navn med etternavn først
                     (CASE
+                        -- Etternavn, Fornavn (Født-Død)
+                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL AND litteraturkritikk_personer.fodt IS NOT NULL AND litteraturkritikk_personer.dod IS NOT NULL
+                        THEN litteraturkritikk_personer.etternavn::text || ', '::text || litteraturkritikk_personer.fornavn::text || ', '::text || litteraturkritikk_personer.fodt::text || '-'::text || litteraturkritikk_personer.dod::text
+
+                        -- Etternavn, Fornavn (Født-)
+                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL AND litteraturkritikk_personer.fodt IS NOT NULL
+                        THEN litteraturkritikk_personer.etternavn::text || ', '::text || litteraturkritikk_personer.fornavn::text || ', '::text || litteraturkritikk_personer.fodt::text || '-'::text
+
+                        -- Etternavn, Fornavn
                         WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL
                         THEN litteraturkritikk_personer.etternavn::text || ', '::text || litteraturkritikk_personer.fornavn::text
+
+                        -- Etternavn
                         WHEN litteraturkritikk_personer.etternavn IS NOT NULL
                         THEN litteraturkritikk_personer.etternavn
+
                         ELSE ''
                     END) AS etternavn_fornavn,
+
+                    -- Fullt navn med fornavn først, uten dato
+                    (CASE
+                        -- Etternavn, Fornavn
+                        WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL
+                        THEN litteraturkritikk_personer.fornavn::text || ' '::text || litteraturkritikk_personer.etternavn::text
+
+                        -- Etternavn
+                        WHEN litteraturkritikk_personer.etternavn IS NOT NULL
+                        THEN litteraturkritikk_personer.etternavn
+
+                        ELSE ''
+                    END) AS fornavn_etternavn,
 
                     -- Roller
                     ARRAY_AGG(DISTINCT lk_person_pivot.person_role)
@@ -189,9 +205,10 @@ class CreateLitteraturkritikkTable extends Migration
                 TO_TSVECTOR('simple', COALESCE(litteraturkritikk_records.verk_tittel, ''))
                 AS verk_tittel_ts,
                 
-                -- Søkeindeks 'forfatter_ts'
+                -- Søkeindeks 'forfatter_ts'. Vi legger til navn begge veier for å kunne gjøre frasematch begge veier.
                 TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT forfatter_entity.etternavn_fornavn, ' '), ''))
                 || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT forfatter_entity.fornavn_etternavn, ' '), ''))
+                || TO_TSVECTOR('simple', COALESCE(STRING_AGG(DISTINCT lk_forfatter_pivot.pseudonym, ' '), ''))
                 AS forfatter_ts,
 
                 -- Søkeindeks 'kritiker_ts'

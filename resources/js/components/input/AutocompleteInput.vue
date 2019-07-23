@@ -43,7 +43,7 @@
                             } else {
                                 this.$http.get('/norsk-litteraturkritikk/autocomplete', {
                                     params: {
-                                        field: this.definition.id,
+                                        field: this.definition.key,
                                         q: query,
                                     },
                                 })
@@ -61,11 +61,17 @@
                     }
                 ])
                 .on('autocomplete:selected', (event, suggestion, dataset, context) => {
-                    this.$emit('value', suggestion.value)
+                    this.$emit('value', suggestion.value);
+                    this.$emit('selected', suggestion);
                 })
                 .on('autocomplete:autocompleted', (event, suggestion, dataset, context) => {
-                    this.$emit('value', suggestion.value)
+                    this.$emit('value', suggestion.value);
+                    this.$emit('selected', suggestion);
                 });
+            },
+
+            focus() {
+                this.$refs.input.focus();
             }
         }
     }

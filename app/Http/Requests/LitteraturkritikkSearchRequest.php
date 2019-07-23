@@ -36,11 +36,11 @@ class LitteraturkritikkSearchRequest extends FormRequest
 
         $this->searchFieldMap = [];
         foreach ($searchFields['fields'] as $field) {
-            $this->searchFieldMap[$field['id']] = $field;
+            $this->searchFieldMap[$field['key']] = $field;
         }
         foreach ($searchFields['groups'] as $fieldGroup) {
             foreach ($fieldGroup['fields'] as $field) {
-                $this->searchFieldMap[$field['id']] = $field;
+                $this->searchFieldMap[$field['key']] = $field;
             }
         }
     }
@@ -188,7 +188,7 @@ class LitteraturkritikkSearchRequest extends FormRequest
         switch ($operator) {
             case 'eq':
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-                $this->queryBuilder->whereRaw($index['column'] . " ~@ '" . pg_escape_string($value) . "'");
+                $this->queryBuilder->whereRaw($index['column'] . " ~@ ?", [$value]);
                 break;
             default:
                 $this->checkNull($index['column'], $operator);

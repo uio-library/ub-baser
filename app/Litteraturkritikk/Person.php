@@ -60,7 +60,7 @@ class Person extends \Eloquent
         }
         $nn = implode(', ', $names);
         if (!is_null($this->fodt)) {
-            $nn .= ' (' . $this->fodt . '-' . ($this->dod ?: '') . ')';
+            $nn .= ', ' . $this->fodt . '-' . ($this->dod ?: '');
         }
 
         return $nn;
