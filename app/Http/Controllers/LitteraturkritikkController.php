@@ -131,12 +131,11 @@ class LitteraturkritikkController extends RecordController
 
                 if (in_array($field, ['verk_tittel'])) {
                     $query = \DB::table('litteraturkritikk_records_search')
-                        ->whereRaw("verk_tittel_ts @@ (phraseto_tsquery('simple', '" . pg_escape_string($term) . "')::text || ':*')::tsquery");
+                        ->whereRaw("verk_tittel_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery", [$term]);
                 } else {
                     $query = \DB::table('litteraturkritikk_records_search')
                         ->where($field, 'ilike', $term);
                 }
-
 
                 foreach ($query->groupBy($field)
                              ->select([$field, \DB::raw('COUNT(*) AS cnt')])
@@ -156,9 +155,16 @@ class LitteraturkritikkController extends RecordController
                 ];
             }
         } elseif (in_array($field, ['person', 'forfatter', 'kritiker'])) {
-            foreach (PersonView::where('etternavn_fornavn', 'ilike', $term)
-                         ->orWhere('fornavn_etternavn', 'ilike', $term)
-                         ->limit(25)->select('id', 'etternavn_fornavn', 'bibsys_id', 'fodt')->get() as $res) {
+            $query = PersonView::select('id', 'etternavn_fornavn', 'bibsys_id', 'fodt')
+                ->whereRaw(
+                    "any_field_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery",
+                    [$term]
+                );
+            if ($field != 'person') {
+                $query->whereRaw('? = ANY(roller)', [$field]);
+            }
+
+            foreach ($query->limit(25)->get() as $res) {
                 $data[] = [
                     'id' => $res->id,
                     'bibsys_id' => $res->bibsys_id,

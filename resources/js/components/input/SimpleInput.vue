@@ -2,9 +2,9 @@
     <div>
         <input type="text"
                class="form-control"
-               :name="`v${index}`"
+               :name="name"
                :value="value"
-               :placeholder="field.placeholder"
+               :placeholder="definition.placeholder"
                @input="$emit('value', $event.target.value)"
         >
     </div>
@@ -14,8 +14,8 @@
     export default {
         name: "SimpleInput",
         props: {
-            index: Number,
-            field: Object,
+            name: String,
+            definition: Object,
             value: String,
         }
     }

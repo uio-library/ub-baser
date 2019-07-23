@@ -5,8 +5,8 @@
                         :adsorb="false"
                         :duration="0"
                         :enable-cross="false"
-                        :min="field.options.minValue"
-                        :max="field.options.maxValue"
+                        :min="definition.options.minValue"
+                        :max="definition.options.maxValue"
                         :useKeyboard="true"
                         tooltip="none"
                         @change="onChange($event)"
@@ -15,7 +15,7 @@
         <div style="padding:4px;">
             {{ value }}
             <input type="hidden"
-                   :name="`v${index}`"
+                   :name="name"
                    :value="value">
         </div>
     </div>
@@ -33,8 +33,8 @@
         },
 
         props: {
-            index: Number,
-            field: Object,
+            name: String,
+            definition: Object,
             value: String,
         },
 
@@ -43,14 +43,13 @@
                 let val = this.value.split('-');
                 if (val.length !== 2 || !val[0].match(/-?[0-9]{1,4}/) || !val[1].match(/-?[0-9]{1,4}/) ) {
                     // Return default value
-                    return [this.field.options.minValue, this.field.options.maxValue];
+                    return [this.definition.options.minValue, this.definition.options.maxValue];
                 }
                 return [parseInt(val[0]), parseInt(val[1])];
             },
         },
 
         mounted() {
-            console.log(this.field);
             // We might have inherited a value from another component, so validate
             // and update it just in case.
             this.$emit('value', `${this.valueAsArray[0]}-${this.valueAsArray[1]}`);

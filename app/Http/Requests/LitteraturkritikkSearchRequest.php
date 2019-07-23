@@ -130,21 +130,21 @@ class LitteraturkritikkSearchRequest extends FormRequest
     {
         if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
             // Phrase
-            $query = "phraseto_tsquery('simple', '" . pg_escape_string($value) . "')";
+            $query = "phraseto_tsquery('simple', ?)";
         } elseif (Str::endsWith($value, '*')) {
             // Prefix / ending wildcard
-            $query = "(phraseto_tsquery('simple', '" . pg_escape_string($value) . "')::text || ':*')::tsquery";
+            $query = "(phraseto_tsquery('simple', ?)::text || ':*')::tsquery";
         } else {
             // Keyword
-            $query = "plainto_tsquery('simple', '" . pg_escape_string($value) . "')";
+            $query = "plainto_tsquery('simple', ?)";
         }
 
         switch ($operator) {
             case 'eq':
-                $this->queryBuilder->whereRaw($index['ts_column'] . ' @@ ' . $query);
+                $this->queryBuilder->whereRaw($index['ts_column'] . ' @@ ' . $query, [$value]);
                 break;
             case 'neq':
-                $this->queryBuilder->whereRaw('NOT ' . $index['ts_column'] . ' @@ ' . $query);
+                $this->queryBuilder->whereRaw('NOT ' . $index['ts_column'] . ' @@ ' . $query, [$value]);
                 break;
             default:
                 $this->checkNull($index['column'], $operator);

@@ -8,8 +8,7 @@
                 <litteraturkritikk-field-editor
                         v-for="field in group.fields"
                         :key="field.key"
-                        v-if="!field.readonly"
-                        :column="columnsByKey[field.key]"
+                        :column-definition="columnsByKey[field.key]"
                         :field="field.key"
                         :label="labels[field.key]"
                         :value="values[field.key]"

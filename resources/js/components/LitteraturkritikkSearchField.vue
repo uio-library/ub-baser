@@ -36,10 +36,10 @@
         <td>
             <component
                 v-if="operator != 'isnull' && operator != 'notnull'"
-                :is="fieldObject.type"
-                :index="index"
+                :is="definition.type"
+                :name="`v${index}`"
                 :value="value"
-                :field="fieldObject"
+                :definition="definition"
                 @value="$emit('value', $event)"
             ></component>
         </td>
@@ -52,7 +52,6 @@
 </template>
 
 <script>
-    import { find } from 'lodash/collection';
     import * as components from './input'
 
     let fieldMap = null;
@@ -75,7 +74,7 @@
         },
 
         computed: {
-            fieldObject() {
+            definition() {
                 if (fieldMap === null) {
                     // Lazy-load field map
                     fieldMap = new Map();
@@ -87,8 +86,7 @@
                 return fieldMap[this.field];
             },
             activeOperators() {
-                console.log(this.fieldObject.operators);
-                return this.operators.filter(op => this.fieldObject.operators.indexOf(op.value) !== -1);
+                return this.operators.filter(op => this.definition.operators.indexOf(op.value) !== -1);
             }
         }
     }

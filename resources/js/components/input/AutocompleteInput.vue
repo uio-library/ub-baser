@@ -4,9 +4,9 @@
               class="form-control"
               autocomplete="off"
               ref="input"
-              :name="`v${index}`"
+              :name="name"
               :value="value"
-              :placeholder="field.placeholder"
+              :placeholder="definition.placeholder"
               @input="$emit('value', $event.target.value)"
         >
     </div>
@@ -20,8 +20,8 @@
     export default {
         name: "AutocompleteInput",
         props: {
-            index: Number,
-            field: Object,
+            name: String,
+            definition: Object,
             value: String,
         },
         mounted() {
@@ -38,12 +38,12 @@
                 search = autocomplete(this.$refs.input, {}, [
                     {
                         source: (query, callback) => {
-                            if (this.field.type !== 'autocomplete') {
+                            if (this.definition.type !== 'autocomplete') {
                                 callback([]);
                             } else {
                                 this.$http.get('/norsk-litteraturkritikk/autocomplete', {
                                     params: {
-                                        field: this.field.id,
+                                        field: this.definition.id,
                                         q: query,
                                     },
                                 })

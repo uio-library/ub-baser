@@ -82,7 +82,6 @@ class CreateLitteraturkritikkTable extends Migration
 
             $table->text('etternavn')->nullable();
             $table->text('fornavn')->nullable();
-            $table->text('kommentar')->nullable();
             $table->text('kjonn', 1)->nullable();
             $table->tinyInteger('fodt', false, true)->nullable();
             $table->tinyInteger('dod', false, true)->nullable();
@@ -117,6 +116,8 @@ class CreateLitteraturkritikkTable extends Migration
             CREATE VIEW litteraturkritikk_personer_view AS
                 SELECT
                     litteraturkritikk_personer.*,
+                    
+                    -- Fornavn, Etternavn
                     (CASE
                         WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL
                         THEN litteraturkritikk_personer.fornavn::text || ' '::text || litteraturkritikk_personer.etternavn::text
@@ -124,14 +125,34 @@ class CreateLitteraturkritikkTable extends Migration
                         THEN litteraturkritikk_personer.fornavn
                         ELSE ''
                     END) AS fornavn_etternavn,
+
+                    -- Etternavn, Fornavn
                     (CASE
                         WHEN litteraturkritikk_personer.fornavn IS NOT NULL AND litteraturkritikk_personer.etternavn IS NOT NULL
                         THEN litteraturkritikk_personer.etternavn::text || ', '::text || litteraturkritikk_personer.fornavn::text
                         WHEN litteraturkritikk_personer.etternavn IS NOT NULL
                         THEN litteraturkritikk_personer.etternavn
                         ELSE ''
-                    END) AS etternavn_fornavn
-                FROM litteraturkritikk_personer;
+                    END) AS etternavn_fornavn,
+
+                    -- Roller
+                    ARRAY_AGG(DISTINCT lk_person_pivot.person_role)
+                    AS roller,
+
+                    -- Søkeindeks 'any_field_ts'
+                    TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.etternavn, ''))
+                    || TO_TSVECTOR('simple', COALESCE(litteraturkritikk_personer.fornavn, ''))
+                    || TO_TSVECTOR('simple', COALESCE(STRING_AGG(lk_person_pivot.pseudonym, ' '), ''))
+                    AS any_field_ts
+
+                FROM litteraturkritikk_personer
+
+                -- person
+                LEFT JOIN litteraturkritikk_record_person AS lk_person_pivot
+                    ON litteraturkritikk_personer.id = lk_person_pivot.person_id
+                                
+
+                GROUP BY litteraturkritikk_personer.id
         ");
 
         DB::unprepared("

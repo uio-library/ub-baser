@@ -7,7 +7,7 @@
             <input type="text" :name="field" :value="value">
         </td>
         <td>
-            {{ column }}
+            {{ columnDefinition }}
         </td>
     </tr>
 </template>
@@ -15,7 +15,7 @@
 <script>
     export default {
         name: "LitteraturkritikkFieldEditor",
-        props: ['field', 'label', 'value', 'column']
+        props: ['field', 'label', 'value', 'columnDefinition']
     }
 </script>
 
