@@ -163,10 +163,17 @@
 
             })
 
-            $('#table1').on('click', 'tbody > tr > td', function ($event) {
+            let drag = false;
+
+            $('#table1').on('mousedown', () => { drag = false });
+            $('#table1').on('mousemove', () => { drag = true });
+
+            $('#table1').on('mouseup', 'tbody > tr > td', function ($event) {
                 // 'this' refers to the current <td>
                 let link = $(this).find('a').attr('href');
-                if ($event.which !== 1) {
+                if (drag) {
+                    // pass
+                } else if ($event.which !== 1) {
                     // Pass
                 } else if ($event.ctrlKey || $event.metaKey) {
                     window.open(link, '_blank');
