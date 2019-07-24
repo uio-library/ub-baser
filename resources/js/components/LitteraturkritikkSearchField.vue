@@ -1,6 +1,6 @@
 <template>
-    <tr>
-        <td style="width: 200px;">
+    <div class="d-flex my-1">
+        <div class="flex-grow-0">
             <select class="form-control field-select"
                 :name="`f${index}`"
                 :value="field"
@@ -18,9 +18,9 @@
                     >{{ field.label }}</option>
                 </optgroup>
             </select>
-        </td>
+        </div>
 
-        <td v-if="advanced" style="width: 200px;">
+        <div v-if="advanced" class="flex-grow-0 mx-1">
             <select v-if="advanced"
                 class="form-control field-select"
                 :name="`o${index}`"
@@ -31,9 +31,9 @@
                         :value="option.value"
                 >{{ option.label }}</option>
             </select>
-        </td>
+        </div>
 
-        <td>
+        <div class="flex-grow-1 mx-1">
             <component
                 v-if="operator != 'isnull' && operator != 'notnull'"
                 :is="definition.search.type || definition.type"
@@ -42,13 +42,12 @@
                 :definition="definition"
                 @value="$emit('value', $event)"
             ></component>
-        </td>
+        </div>
 
-        <td style="width: 100px;">
+        <div class="flex-grow-0">
             <slot></slot>
-        </td>
-
-    </tr>
+        </div>
+    </div>
 </template>
 
 <script>

@@ -1,8 +1,14 @@
 // Body
-$body-bg: #f8fafc;
+$body-bg: #ffffff;
+$body-color: #111;
+
+$theme-colors: (
+  "primary": #2771bb,  // UiO-blå
+  "danger": #ce0606    // UiO-rød
+);
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
+$font-family-sans-serif: 'Arial', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 

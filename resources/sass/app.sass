@@ -5,24 +5,154 @@
   Se https://laravel.com/docs/5.8/mix for mer info.
   */
 
-// Fonts
-//@import url('https://fonts.googleapis.com/css?family=Nunito');
+$break-sm: 768px
+$break-md: 992px
+$break-md: 1200px
 
 // Variables
-//@import 'variables';
+@import 'variables'
 
 // Bootstrap
-//@import '~bootstrap/scss/bootstrap';
-
-.uio-header
-  background: #000
-
-  img
-    margin: 8px 0 10px
-    height: 12.4px
+@import '~bootstrap/scss/bootstrap'
 
 
-// DataTables
+body
+  // Always show scollbar to avoid jumping of centered content during page load
+  overflow-y: scroll
+
+
+.lds-heart
+  display: inline-block
+  position: relative
+  width: 64px
+  height: 64px
+  transform: rotate(45deg)
+  transform-origin: 32px 32px
+
+  div
+    top: 23px
+    left: 19px
+    position: absolute
+    width: 26px
+    height: 26px
+    background: black
+    animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1)
+
+    &:after, &:before
+      content: " "
+      position: absolute
+      display: block
+      width: 26px
+      height: 26px
+      background: black
+
+    &:before
+      left: -17px
+      border-radius: 50% 0 0 50%
+
+    &:after
+      top: -17px
+      border-radius: 50% 50% 0 0
+
+@keyframes lds-heart
+  0%
+    transform: scale(0.95)
+
+  5%
+    transform: scale(1.1)
+
+  39%
+    transform: scale(0.85)
+
+  45%
+    transform: scale(1)
+
+  60%
+    transform: scale(0.95)
+
+  100%
+    transform: scale(0.9)
+
+
+
+
+/*******************************************************************
+ * Header
+ *******************************************************************/
+
+header
+  background: rgba(0, 0, 0, 0.05)
+  margin-bottom: 18px
+
+  #user
+    padding-top: 4px
+    text-align: right
+
+  h1
+    padding: 20px 0
+    color: #333
+
+    a:link, a:visited
+      color: #333
+
+  .uio-header
+    background: black
+    img
+      @media (max-width: $break-sm)
+        margin: 7px 0 9px 0
+        height: 10px
+      @media (min-width: $break-sm)
+        margin: 8px 0 10px 0
+        height: 12.4px
+
+
+main
+  margin-bottom: 40px
+
+/*******************************************************************
+ * Footer
+ *******************************************************************/
+
+footer
+  background-color: black
+  color: white
+  font-size: 90%
+  margin-top: auto
+  padding: 1rem 0
+
+  a:link, a:visited
+    color: #bbb
+
+  .container
+    display: flex
+
+    @media (max-width: $break-sm)
+      flex-direction: column
+
+    .logo
+      background-image: url(/images/uio-segl.png)
+      background-repeat: no-repeat
+      background-position: center
+      flex: 0 0 auto
+      width: 130px
+      height: 130px
+      background-size: 110px 110px
+
+      @media (max-width: $break-sm)
+        width: 100px
+        height: 100px
+        background-size: 90px 90px
+
+    > div
+      flex: 1 0 auto
+      margin-left: 10px
+      margin-right: 10px
+
+
+/*******************************************************************
+ * DataTables
+ *******************************************************************/
+
 table.dataTable
 
   &.hover tbody tr:hover
@@ -38,6 +168,10 @@ table.dataTable
   tbody th.dt-body-nowrap, tbody td.dt-body-nowrap
     white-space: nowrap
 
+
+/*******************************************************************
+ * Algolia
+ *******************************************************************/
 
 .algolia-autocomplete
   width: 100%

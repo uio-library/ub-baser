@@ -1,5 +1,5 @@
 <template>
-    <form id="searchForm" method="GET" action="/norsk-litteraturkritikk">
+    <form id="searchForm" method="GET" action="/norsk-litteraturkritikk" class="pb-3">
 
         <table style="width: 100%">
             <litteraturkritikk-search-field
@@ -20,23 +20,33 @@
             >
                 <button v-if="fieldIndex == query.length - 1"
                         type="button"
-                        class="btn btn-info"
+                        class="btn btn-primary"
                         id="addFieldButton"
                         @click="addField()"
+                        style="width:50px"
                 ><i class="fa fa-plus"></i></button>
-                <div v-else class="help-block">og</div>
+
+                <button v-else
+                        type="button"
+                        disabled
+                        class="btn"
+                        style="width:50px"
+                >og</button>
             </litteraturkritikk-search-field>
         </table>
 
-        <div style="padding: 6px">
+        <div class="d-flex py-1">
+            <div class="flex-grow-1">
+                <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-search"></i> Søk</button>
+                <a href="/norsk-litteraturkritikk" class="btn btn-secondary">Nullstill</a>
+            </div>
 
-            <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-search"></i> Søk</button>
-
-            <a href="/norsk-litteraturkritikk" class="btn btn-default">Nullstill</a>
-
-            <label>
-                <input type="checkbox" name="advanced" v-model="advanced"> Avansert
-            </label>
+            <div class="flex-grow-0">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1" name="advanced" v-model="advanced">
+                    <label class="custom-control-label" for="customSwitch1">Avansert søk</label>
+                </div>
+            </div>
         </div>
     </form>
 </template>
@@ -72,7 +82,11 @@
         },
         methods: {
             addField() {
-                this.query.push({field: 'q', value: ''});
+                this.query.push({
+                    field: 'q',
+                    op: 'eq',
+                    value: ''
+                });
             }
         }
     }

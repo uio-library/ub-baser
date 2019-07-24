@@ -2,10 +2,10 @@
     <div>
         <div class="panel panel-default" v-for="group in columns.groups" :key="group.label" v-if="group.display !== false">
             <div class="panel-heading">
-                <h3 class="panel-title">{{ group.label }}</h3>
+                <h4 class="panel-title">{{ group.label }}</h4>
             </div>
             <div class="panel-body">
-                <table class="table">
+                <table class="table table-borderless table-sm">
                     <litteraturkritikk-edit-field
                             v-for="field in group.fields"
                             :key="field.key"
