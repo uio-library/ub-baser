@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <input type="hidden" :name="this.definition.key" :value="personsJson">
+        <input type="hidden" :name="this.schema.key" :value="personsJson">
 
         <table v-if="persons.length">
             <tr>
@@ -20,7 +20,7 @@
                     <input type="text" v-model="person.fornavn" class="form-control" :disabled="person.id">
                 </td>
                 <td style="width:100px">
-                    <select v-model="person.kjonn" :id="`person_${definition.key}_${personIdx}`" :disabled="person.id">
+                    <select v-model="person.kjonn" :id="`person_${schema.key}_${personIdx}`" :disabled="person.id">
                         <option value="">(ingen verdi)</option>
                         <option value="f">kvinne</option>
                         <option value="m">mann</option>
@@ -48,7 +48,7 @@
 
                 <autocomplete-input
                         :value="newPersonValue"
-                        :definition="{type:'autocomplete', 'key': 'person'}"
+                        :schema="{type:'autocomplete', 'key': 'person'}"
                         ref="newperson"
                         @value="newPersonValue=$event"
                         @selected="selectedPerson=$event"
@@ -69,13 +69,13 @@
     import AutocompleteInput from './AutocompleteInput'
 
     export default {
-        name: "PersonInput",
+        name: "person-input",
         components: {
             AutocompleteInput,
         },
         props: {
             name: String,
-            definition: Object,
+            schema: Object,
             value: Array,
         },
         data() {
@@ -105,7 +105,7 @@
         methods: {
             initSelectize() {
                 this.persons.forEach((person, personIdx) => {
-                    $(`#person_${this.definition.key}_${personIdx}`).selectize({
+                    $(`#person_${this.schema.key}_${personIdx}`).selectize({
                         openOnFocus: true,
                         closeAfterSelect: true,
                     });
@@ -141,7 +141,7 @@
                     fornavn: '',
                     kjonn: '',
                     pivot: {
-                        person_role: this.definition.person_role,
+                        person_role: this.schema.person_role,
                         kommentar: '',
                         pseudonym: '',
                     },

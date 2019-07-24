@@ -14,6 +14,19 @@ use Illuminate\Support\Arr;
 class LitteraturkritikkController extends RecordController
 {
     /**
+     * @return array List of genders.
+     */
+    public static function getGenderList()
+    {
+        return [
+            'f'  => 'Kvinne',
+            'm'  => 'Mann',
+            'u'  => 'Ukjent',
+            // etc...
+        ];
+    }
+
+    /**
      * Display a listing of the resource.
      *
      *
@@ -22,83 +35,43 @@ class LitteraturkritikkController extends RecordController
      */
     public function index(LitteraturkritikkSearchRequest $request)
     {
-        $queryBuilder = $request->queryBuilder;
-
-        $allFields = Record::getColumns();
-        $allFieldKeys = Record::getColumnKeys();
-
         if ($request->wantsJson()) {
-
-            // Parse request parameters from DataTables
-            $requestedColumns = [];
-            foreach ($request->columns as $k => $v) {
-                $requestedColumns[$k] = $v['data'];
-            }
-            $requestedColumns[] = 'id';
-
-            $queryBuilder->select(array_values($requestedColumns));
-            foreach ($request->order as $order) {
-                $col = $requestedColumns[$order['column']];
-                if (in_array($col, $allFieldKeys)) {
-                    $dir = ($order['dir'] == 'asc') ? 'asc' : 'desc';
-                    $queryBuilder->orderByRaw("$col $dir NULLS LAST");
-                }
-            }
-
-            $recordCount = (int) $queryBuilder->count();
-
-            $queryBuilder->skip($request->start);
-            $queryBuilder->take($request->length);
-
-            $data = $queryBuilder->get()
-                ->map(function($row) {
-                    foreach ($row as $k => $v) {
-                        if (is_array($v)) {
-                            $row[$k] = implode(', ', $v);
-                        }
-                    }
-                    return $row;
-                });
-
-            return response()->json([
-                'draw' => $request->draw,
-                'recordsFiltered' => $recordCount,
-                'recordsTotal' => $recordCount,
-                'data' => $data,
-            ]);
-
-        } else {
-
-            $intro = Page::where('name', '=', 'litteraturkritikk.intro')->first();
-
-            // Make sure there's always at least one input field visible
-            if (!count($request->queryParts)) {
-                $request->queryParts[] = ['field' => 'q', 'operator' => 'eq', 'value' => ''];
-            }
-
-            $qs = $request->all();
-            $qsJson = json_encode($qs);
-            $qs = http_build_query($qs);
-            $viewQs = strlen($qs) ? "?{$qs}&" : "?";
-
-            $data = [
-                'intro' => $intro->body,
-                'query' => $request->queryParts,
-                'allFields' => $allFields,
-                'searchFields' => Record::getSearchFields(),
-                'advancedSearch' => ($request->advanced === 'on'),
-                'qs' => $viewQs,
-                'qsJson' => $qsJson,
-            ];
-
-            return response()->view('litteraturkritikk.index', $data);
+            return $this->dataTablesResponse($request, Record::getKeys());
         }
+
+        $introPage = Page::where('name', '=', 'litteraturkritikk.intro')->first();
+        $intro = $introPage ? $introPage->body : '';
+
+        return response()->view('litteraturkritikk.index', [
+            'schema' => Record::getSchema(),
+
+            'query' => $request->all(),
+            'processedQuery' => $request->queryParts,
+            'advancedSearch' => ($request->advanced === 'on'),
+
+            'intro' => $intro,
+
+            'defaultColumns' => [
+                // Verket
+                'verk_tittel',
+                'verk_forfatter',
+                'verk_dato',
+
+                // Kritikken
+                'kritiker',
+                'publikasjon',
+                'dato',
+            ],
+            'order' => [
+                ['key' => 'verk_dato', 'direction' => 'desc'],
+            ]
+        ]);
     }
 
     public function autocomplete(Request $request)
     {
         $fieldName = $request->get('field');
-        $columns = Record::getColumnsFlatListByKey();
+        $columns = Record::getSchemaByKey();
         if (!isset($columns[$fieldName])) {
             throw new \RuntimeException('Invalid field');
         }
@@ -118,14 +91,15 @@ class LitteraturkritikkController extends RecordController
             case 'verk_utgivelsessted':
                 if ($term == '%') {
                     // Preload request
-                    $rows = \DB::select(sprintf(
-                        'select distinct %s from litteraturkritikk_records group by %s',
-                        pg_escape_identifier($fieldName),
-                        pg_escape_identifier($fieldName)
-                    ));
+                    $rows = \DB::table('letras')
+                        ->select($fieldName)
+                        ->distinct()
+                        ->groupBy($fieldName)
+                        ->get();
+
                     foreach ($rows as $row) {
                         $data[] = [
-                            'value' => $row->verk_sjanger
+                            'value' => $row->{$fieldName},
                         ];
                     }
                 } else {
@@ -217,7 +191,7 @@ class LitteraturkritikkController extends RecordController
 
         $persons = [];
 
-        foreach (Record::getColumnsFlatList() as $col) {
+        foreach (Record::getFlatSchema() as $col) {
             if (Arr::get($col, 'edit') === false) {
                 continue;
             }
@@ -271,21 +245,21 @@ class LitteraturkritikkController extends RecordController
 
     protected function formArguments($record)
     {
-        $columns = Record::getColumns();
-        $columnsFlat = Record::getColumnsFlatList();
+        $schema = Record::getSchema();
+
         $values = [];
-        foreach ($columnsFlat as $col) {
-            $key = $col['key'];
+        foreach (Record::getSchemaByKey() as $key => $col) {
             if (Arr::get($col, 'type') == 'persons') {
                 $values[$key] = $record->{$col['model_attribute']};
             } else {
                 $values[$key] = old($key, $record->{$key});
             }
         }
+
         return [
-            'columns' => $columns,
-            'values' => $values,
             'record' => $record,
+            'schema' => $schema,
+            'values' => $values,
         ];
     }
 
@@ -350,7 +324,7 @@ class LitteraturkritikkController extends RecordController
 
         $data = [
             'title' => $record->tittel ?: '#' . $record->id,
-            'columns' => Record::getColumns(),
+            'schema' => Record::getSchema(),
             'record' => $record,
         ];
 

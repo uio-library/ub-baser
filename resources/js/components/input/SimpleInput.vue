@@ -14,15 +14,15 @@
     import { get } from 'lodash/object';
 
     export default {
-        name: "SimpleInput",
+        name: "simple-input",
         props: {
             name: String,
-            definition: Object,
+            schema: Object,
             value: String,
         },
         computed: {
             placeholder() {
-                return get(this.definition, 'search.placeholder');
+                return get(this.schema, 'search.placeholder');
             }
         },
     }

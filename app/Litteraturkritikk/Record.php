@@ -3,16 +3,16 @@
 namespace App\Litteraturkritikk;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 
 class Record extends \App\Record
 {
     use SoftDeletes;
 
-    public static function getColumns(): array {
-        $minYear = 1789;
-        $maxYear = (int) strftime('%Y');
+    public static $prefix = 'litteraturkritikk';
 
-        $grouped = [
+    public static function getSchema(): array {
+        $schema = [
             'fields' => [
 
                 // ID
@@ -118,10 +118,6 @@ class Record extends \App\Record
                             'search' => [
                                 'type' => 'rangeslider',
                                 'advanced' => true,
-                                'options' => [
-                                    'minValue' => (int) $minYear,
-                                    'maxValue' => (int) $maxYear,
-                                ],
                                 'index' => [
                                     'type' => 'range',
                                     'column' => 'verk_dato',
@@ -240,10 +236,6 @@ class Record extends \App\Record
                             ],
                             'search' => [
                                 'type' => 'rangeslider',
-                                'options' => [
-                                    'minValue' => (int) $minYear,
-                                    'maxValue' => (int) $maxYear,
-                                ],
                                 'index' => [
                                     'type' => 'range',
                                     'column' => 'aar_numeric',
@@ -322,35 +314,13 @@ class Record extends \App\Record
             ],
         ];
 
-        foreach ($grouped['fields'] as &$field) {
-            $field['label'] = trans('litteraturkritikk.' . $field['key']);
-        }
-        foreach ($grouped['groups'] as &$group) {
-            foreach ($group['fields'] as &$field) {
+        static::initSchema($schema, [
+            'autocompleTarget' => action('LitteraturkritikkController@autocomplete'),
+            'minYear' => 1789,
+            'maxYear' => (int) strftime('%Y'),
+        ]);
 
-                // Add label
-                $field['label'] = trans('litteraturkritikk.' . $field['key']);
-
-                // Add default operators if not set
-                if (isset($field['search']) && $field['search'] && !isset($field['search']['operators'])) {
-                    $field['search']['operators'] = [
-                        'eq',
-                        'neq',
-                        'isnull',
-                        'notnull',
-                    ];
-                }
-            }
-        }
-
-        return $grouped;
-    }
-
-    public static function getSearchFields(): array
-    {
-        return self::getColumns();
-
-
+        return $schema;
     }
 
     /**
@@ -368,38 +338,6 @@ class Record extends \App\Record
     protected $casts = [
         'kritikktype' => 'array',
     ];
-
-    public static function getColumnsFlatList()
-    {
-        $columns = self::getColumns();
-        $out = [];
-        foreach ($columns['fields'] as &$field) {
-            $out[] = $field;
-        }
-        foreach ($columns['groups'] as &$group) {
-            foreach ($group['fields'] as &$field) {
-                $out[] = $field;
-            }
-        }
-        return $out;
-    }
-
-    public static function getColumnsFlatListByKey()
-    {
-        $columns = self::getColumnsFlatList();
-        $out = [];
-        foreach ($columns as &$field) {
-            $out[$field['key']] = $field;
-        }
-        return $out;
-    }
-
-    public static function getColumnKeys()
-    {
-        return array_map(function($col) {
-            return $col['key'];
-        }, self::getColumnsFlatList());
-    }
 
     public function createdBy()
     {

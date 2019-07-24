@@ -1,14 +1,14 @@
 <template>
     <tr>
         <td style="width: 150px;" valign="top">
-            {{ label }}
+            {{ schema.label }}
         </td>
         <td>
             <component
-                :is="definition.type"
-                :name="definition.key"
+                :is="schema.type"
+                :name="schema.key"
                 :value="value"
-                :definition="definition"
+                :schema="schema"
                 @value="$emit('value', $event)"
             ></component>
         </td>
@@ -19,14 +19,13 @@
     import * as components from './input'
 
     export default {
-        name: "LitteraturkritikkEditField",
+        name: "edit-field",
         components: {
             ...components,
         },
         props: [
-            'label',
+            'schema',
             'value',
-            'definition',
         ]
     }
 </script>

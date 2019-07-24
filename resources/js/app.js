@@ -19,11 +19,13 @@ Vue.config.devtools = true;
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-import LitteraturkritikkSearchForm from './components/LitteraturkritikkSearchForm.vue';
-import LitteraturkritikkEditForm from './components/LitteraturkritikkEditForm.vue';
+import DataTable from './components/DataTable.vue';
+import SearchForm from './components/SearchForm.vue';
+import EditForm from './components/EditForm.vue';
 
-Vue.component('litteraturkritikk-search-form', LitteraturkritikkSearchForm);
-Vue.component('litteraturkritikk-edit-form', LitteraturkritikkEditForm);
+Vue.component('data-table', DataTable);
+Vue.component('search-form', SearchForm);
+Vue.component('edit-form', EditForm);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

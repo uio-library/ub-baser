@@ -1,15 +1,15 @@
 <template>
-    <form id="searchForm" method="GET" action="/norsk-litteraturkritikk" class="pb-3">
+    <form id="searchForm" method="GET" :action="action" class="pb-3">
 
         <table style="width: 100%">
-            <litteraturkritikk-search-field
+            <search-field
                     v-for="(field, fieldIndex) in query"
                     :key="field.key"
                     class="form-group field-set"
                     :data-index="fieldIndex"
                     :advanced="advanced"
                     :index="fieldIndex"
-                    :fields="searchFields"
+                    :schema="schema"
                     :field="field.field"
                     @field="field.field = $event"
                     :operators="operators"
@@ -32,13 +32,13 @@
                         class="btn"
                         style="width:50px"
                 >og</button>
-            </litteraturkritikk-search-field>
+            </search-field>
         </table>
 
         <div class="d-flex py-1">
             <div class="flex-grow-1">
                 <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-search"></i> Søk</button>
-                <a href="/norsk-litteraturkritikk" class="btn btn-secondary">Nullstill</a>
+                <a :href="action" class="btn btn-secondary">Nullstill</a>
             </div>
 
             <div class="flex-grow-0">
@@ -52,18 +52,44 @@
 </template>
 
 <script>
-    import LitteraturkritikkSearchField from './LitteraturkritikkSearchField'
+    import SearchField from './SearchField'
 
     export default {
-        name: "LitteraturkritikkSearch",
+        name: "search-form",
+
         components: {
-            LitteraturkritikkSearchField,
+            SearchField,
         },
+
         props: {
+            action: String,
             initialQuery: Array,
-            searchFields: Object,
+            schema: Object,
             advancedSearch: Boolean,
         },
+
+        computed: {
+
+            allFields() {
+                let fields = [];
+                this.schema.fields.forEach(field => fields.push(field));
+                this.schema.groups.forEach(fieldGroup => {
+                    fieldGroup.fields.forEach(field => fields.push(field));
+                });
+                return fields;
+            },
+
+            firstSearchField() {
+                for (let i = 0; i < this.allFields.length; i++) {
+                    if (this.allFields[i].search !== false) {
+                        return this.allFields[i].key;
+                    }
+                }
+                throw new Error('Found no search fields!');
+            },
+
+        },
+
         data() {
             return {
                 advanced: this.advancedSearch,
@@ -80,13 +106,22 @@
                 ],
             }
         },
+
         methods: {
+
             addField() {
                 this.query.push({
-                    field: 'q',
-                    op: 'eq',
+                    field: this.firstSearchField,
+                    operator: 'eq',
                     value: ''
                 });
+            }
+
+        },
+
+        mounted() {
+            if (!this.query.length) {
+                this.addField();
             }
         }
     }

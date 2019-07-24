@@ -27,7 +27,7 @@
     import 'vue-slider-component/theme/antd.css'
 
     export default {
-        name: "DateRangeInput",
+        name: "range-slider-input",
 
         components: {
             VueSlider,
@@ -35,16 +35,16 @@
 
         props: {
             name: String,
-            definition: Object,
+            schema: Object,
             value: String,
         },
 
         computed: {
             minValue() {
-                return get(this.definition, 'search.options.minValue')
+                return get(this.schema, 'search.options.minValue')
             },
             maxValue() {
-                return get(this.definition, 'search.options.maxValue')
+                return get(this.schema, 'search.options.maxValue')
             },
             valueAsArray() {
                 let val = this.value.split('-');

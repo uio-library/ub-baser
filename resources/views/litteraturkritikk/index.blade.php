@@ -16,214 +16,23 @@
 
         <div class="panel panel-default">
             <div class="panel-body">
-                <litteraturkritikk-search-form
-                    :initial-query="{{ json_encode($query) }}"
-                    :search-fields="{{ json_encode($searchFields) }}"
-                    :advanced-search="{{ json_encode($advancedSearch) }}"
-                ></litteraturkritikk-search-form>
+                <search-form
+                        action="{{ action('LitteraturkritikkController@index') }}"
+                        :initial-query="{{ json_encode($processedQuery) }}"
+                        :schema="{{ json_encode($schema) }}"
+                        :advanced-search="{{ json_encode($advancedSearch) }}"
+                ></search-form>
             </div>
         </div>
 
-        <div id="lk_spinner" style="height:300px; display: flex; justify-content: center; align-items: center">
-            <div class="lds-heart"><div></div></div>
-        </div>
-
-        <div style="opacity: 0" id="lk_container">
-
-            <div id="visibleColumns" class="d-flex align-items-center ">
-                <div class="flex-grow-0">
-                    Vis kolonner:
-                </div>
-                <select class="selectpicker col flex-grow-1" data-style="" data-style-base="form-control form-control-sm" multiple>
-                    @foreach ($allFields['groups'] as $group)
-                        @if (!isset($group['display']) || $group['display'])
-                            <optgroup label="{{ $group['label'] }}">
-                            @foreach ($group['fields'] as $field)
-                                @if (!isset($field['display']) || $field['display'])
-                                    <option value="{{ $field['key'] }}">{{ $field['label'] }}</option>
-                                @endif
-                            @endforeach
-                            </optgroup>
-                        @endif
-                    @endforeach
-                </select>
-            </div>
-
-            <table id="table1" class="table hover" style="width:100%">
-                <thead>
-                <tr>
-                    @foreach ($allFields['groups'] as $group)
-                        @foreach ($group['fields'] as $field)
-                            @if (!isset($field['display']) || $field['display'])
-                                <th>{{ $field['label'] }}</th>
-                            @endif
-                        @endforeach
-                    @endforeach
-                </tr>
-                </thead>
-            </table>
-        </div>
-
-@endsection
-
-@section('script')
-
-    <script>
-        $(function() {
-
-            let visibleColumns = [
-
-                // Verket
-                'verk_tittel',
-                'verk_forfatter',
-                'verk_dato',
-
-                // Kritikken
-                'kritiker',
-                'publikasjon',
-                'dato',
-            ];
-            if (sessionStorage.getItem('ub-baser-litteraturkritikk-selected-columns') !== null) {
-                visibleColumns = JSON.parse(sessionStorage.getItem('ub-baser-litteraturkritikk-selected-columns'));
-            }
-
-            let columns = [
-                @foreach ($allFields['groups'] as $group)
-                    @foreach ($group['fields'] as $field)
-                        @if (!isset($field['display']) || $field['display'])
-
-                        {
-                            data: "{{ $field['key'] }}",
-                            visible: visibleColumns.indexOf('{{ $field['key'] }}') !== -1,
-                            render: function ( data, type, row ) {
-                                if (data === null) {
-                                    data = '–';
-                                }
-                                return `<a href="{{ action('LitteraturkritikkController@index') }}/${row.id}">${data}</a>`;
-                            },
-                            @if (Arr::has($field, 'display.columnClassName'))
-
-                            className: "{{ Arr::get($field, 'display.columnClassName') }}",
-
-                            @endif
-                        },
-                        @endif
-                    @endforeach
-                @endforeach
-            ];
-
-            let columnKeys = columns.map(x => x.data);
-
-            let defaultOrder = [[0, 'asc']];
-            if (visibleColumns.indexOf('verk_dato') !== -1) {
-                defaultOrder = [[columnKeys.indexOf('verk_dato'), 'desc']];
-            }
-
-            let table = $('#table1').DataTable( {
-                language: {
-                    "sEmptyTable": "Ingen data tilgjengelig i tabellen",
-                    "sInfo": "Viser _START_ til _END_ av _TOTAL_ poster",
-                    "sInfoEmpty": "Viser 0 til 0 av 0 poster",
-                    "sInfoFiltered": "(filtrert fra _MAX_ totalt antall poster)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": " ",
-                    "sLoadingRecords": "Laster...",
-                    "sLengthMenu": "Vis _MENU_ poster",
-                    "sLoadingRecords": "Laster...",
-                    "sProcessing": "Laster...",
-                    "sSearch": "S&oslash;k:",
-                    "sUrl": "",
-                    "sZeroRecords": "Ingen poster matcher s&oslash;ket",
-                    "oPaginate": {
-                        "sFirst": "F&oslash;rste",
-                        "sPrevious": "Forrige",
-                        "sNext": "Neste",
-                        "sLast": "Siste"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": aktiver for å sortere kolonnen stigende",
-                        "sSortDescending": ": aktiver for å sortere kolonnen synkende"
-                    }
-                },
-                pageLength: 50,
-                lengthMenu: [ 10, 50, 100, 500, 1000 ],
-                ajax: {
-                    url: '{!! action('LitteraturkritikkController@index') . $qs !!}',
-                    data: function ( d ) {
-                        return  $.extend( {}, d, {!! $qsJson !!} );
-                    }
-                },
-                columns: columns,
-                order: defaultOrder,
-
-                searching: false,
-                processing: true,
-                serverSide: true,
-            } );
-
-            table.on( 'init', (event) => {
-                // Datatable is ready, let's move our select into it.
-                // DOM manipulation time, oh hay!
-
-                // Move "Vis kolonner" dropdown into the table header
-                $container = $('<div class="col-sm-12 col-md-6"></div>');
-                $container.append($('#visibleColumns').detach());
-                $('#table1_wrapper > .row:first').prepend($container);
-
-                // Drop the last div, this is used for the DataTables search box, but we don't use that.
-                $('#table1_wrapper > .row:first > div:last').detach();
-
-                // Right-align "Vis X poster"
-                $('#table1_wrapper > .row:first > div:last').addClass('text-right');
-
-
-
-                // We're ready!
-                $('#lk_spinner').hide();
-                $('#lk_container').css('opacity', '1');
-            });
-
-
-            $('.selectpicker').val(visibleColumns);
-
-            $('.selectpicker').on('change', function() {
-                let visibleColumns = $('.selectpicker').val();  // array of keys
-
-                sessionStorage.setItem('ub-baser-litteraturkritikk-selected-columns', JSON.stringify(visibleColumns));
-
-                columns.forEach(function(col, idx) {
-                    let visible = visibleColumns.indexOf(col.data) !== -1;
-                    table.column(idx).visible(visible);
-                });
-
-                // var column = table.column( $(this).attr('data-column') );
-
-            })
-
-            let drag = false;
-
-            $('#table1').on('mousedown', () => { drag = false });
-            $('#table1').on('mousemove', () => { drag = true });
-
-            $('#table1').on('mouseup', 'tbody > tr > td', function ($event) {
-                // 'this' refers to the current <td>
-                let link = $(this).find('a').attr('href');
-
-                if ($event.originalEvent.target.tagName === 'A') {
-                    // Let browser handle
-                } else if (drag) {
-                    // pass
-                } else if ($event.which !== 1) {
-                    // Pass
-                } else if ($event.ctrlKey || $event.metaKey) {
-                    window.open(link, '_blank');
-                    return false;
-                } else {
-                    window.location = link;
-                    return false;
-                }
-            });
-        } );
-    </script>
+        <data-table
+                v-once
+                url="{{ action('LitteraturkritikkController@index') }}"
+                prefix="litteraturkritikk"
+                :schema="{{ json_encode($schema) }}"
+                :default-columns="{{ json_encode($defaultColumns) }}"
+                :order="{{ json_encode($order) }}"
+                :query="{{ json_encode($query, JSON_FORCE_OBJECT) }}"
+        ></data-table>
 
 @endsection

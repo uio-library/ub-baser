@@ -17,7 +17,8 @@
             <h2>
                 Post {{ $record->id }}
             </h2>
-            @foreach ($columns['groups'] as $group)
+
+            @foreach ($schema['groups'] as $group)
                 <h4 class="mt-4">{{ $group['label'] }}</h4>
                 <dl class="row">
                     @foreach ($group['fields'] as $field)
@@ -57,6 +58,7 @@
                     @endforeach
                 </dl>
             @endforeach
+
             @if (Auth::check())
                 <h3>Metadata</h3>
                 <dl class="row">

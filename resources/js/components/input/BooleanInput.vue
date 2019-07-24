@@ -5,16 +5,16 @@
                :checked="value"
                @input="$emit('value', $event.target.value)"
         >
-        {{ definition.help }}
+        {{ schema.help }}
     </div>
 </template>
 
 <script>
     export default {
-        name: "SimpleInput",
+        name: "simple-input",
         props: {
             name: String,
-            definition: Object,
+            schema: Object,
             value: Boolean,
         }
     }

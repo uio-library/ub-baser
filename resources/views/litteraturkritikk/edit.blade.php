@@ -12,11 +12,10 @@
         {!! csrf_field() !!}
         <input type="hidden" name="_method" value="PUT">
 
-        <litteraturkritikk-edit-form
-                :columns="{{ json_encode($columns) }}"
-                :labels="{{ json_encode(trans('litteraturkritikk')) }}"
+        <edit-form
+                :schema="{{ json_encode($schema) }}"
                 :values="{{ json_encode($values) }}"
-        ></litteraturkritikk-edit-form>
+        ></edit-form>
 
         <div class="form-group">
             <div class="col-sm-10">

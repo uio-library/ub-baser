@@ -8,10 +8,10 @@
 
 <script>
     export default {
-        name: "ArrayInput",
+        name: "tags-input",
         props: {
             name: String,
-            definition: Object,
+            schema: Object,
             value: Array,
         },
         mounted() {
@@ -33,7 +33,7 @@
                     load: (query, callback) => {
                         this.$http.get('/norsk-litteraturkritikk/autocomplete', {
                             params: {
-                                field: this.definition.key,
+                                field: this.schema.key,
                                 q: query,
                             }
                         }).then(

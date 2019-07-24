@@ -19,15 +19,15 @@
     let search = null;
 
     export default {
-        name: "AutocompleteInput",
+        name: "autocomplete-input",
         props: {
             name: String,
-            definition: Object,
+            schema: Object,
             value: String,
         },
         computed: {
             placeholder() {
-                return get(this.definition, 'search.placeholder');
+                return get(this.schema, 'search.placeholder');
             }
         },
         mounted() {
@@ -41,12 +41,13 @@
         },
         methods: {
             initAutocomplete() {
+                let url = get(this.schema, 'search.options.target');
                 search = autocomplete(this.$refs.input, {}, [
                     {
                         source: (query, callback) => {
-                            this.$http.get('/norsk-litteraturkritikk/autocomplete', {
+                            this.$http.get(url, {
                                 params: {
-                                    field: this.definition.key,
+                                    field: this.schema.key,
                                     q: query,
                                 },
                             })
