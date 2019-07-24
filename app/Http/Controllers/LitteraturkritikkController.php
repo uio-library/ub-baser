@@ -349,6 +349,7 @@ class LitteraturkritikkController extends RecordController
         $record = Record::findOrFail($id);
 
         $data = [
+            'title' => $record->tittel ?: '#' . $record->id,
             'columns' => Record::getColumns(),
             'record' => $record,
         ];
