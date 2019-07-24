@@ -176,7 +176,7 @@
                 // 'this' refers to the current <td>
                 let link = $(this).find('a').attr('href');
 
-                if ($event.originalEvent.originalTarget.tagName === 'A') {
+                if ($event.originalEvent.target.tagName === 'A') {
                     // Let browser handle
                 } else if (drag) {
                     // pass
