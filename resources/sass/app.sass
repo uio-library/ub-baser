@@ -21,13 +21,22 @@
     margin: 8px 0 10px
     height: 12.4px
 
-table.dataTable.hover tbody tr:hover
-  cursor: pointer
-  background-color: #f8fafb
 
-  a
-    text-decoration: none
+// DataTables
+table.dataTable
 
+  &.hover tbody tr:hover
+    cursor: pointer
+    background-color: #f8fafb
+
+    a
+      text-decoration: none
+
+  thead th.dt-head-nowrap, thead td.dt-head-nowrap, tfoot th.dt-head-nowrap, tfoot td.dt-head-nowrap
+    white-space: nowrap
+
+  tbody th.dt-body-nowrap, tbody td.dt-body-nowrap
+    white-space: nowrap
 
 
 .algolia-autocomplete

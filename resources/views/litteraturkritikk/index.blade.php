@@ -91,6 +91,11 @@
                                 }
                                 return `<a href="{{ action('LitteraturkritikkController@index') }}/${row.id}">${data}</a>`;
                             },
+                            @if (Arr::has($field, 'display.columnClassName'))
+
+                            className: "{{ Arr::get($field, 'display.columnClassName') }}",
+
+                            @endif
                         },
                         @endif
                     @endforeach
@@ -148,7 +153,7 @@
 
             $('.selectpicker').val(visibleColumns);
 
-            $('.selectpicker').on('change', function(evt) {
+            $('.selectpicker').on('change', function() {
                 let visibleColumns = $('.selectpicker').val();  // array of keys
 
                 sessionStorage.setItem('ub-baser-litteraturkritikk-selected-columns', JSON.stringify(visibleColumns));

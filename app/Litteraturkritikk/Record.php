@@ -112,6 +112,9 @@ class Record extends \App\Record
                         [
                             'key' => 'verk_dato',
                             'type' => 'simple',
+                            'display' => [
+                                'columnClassName' => 'dt-body-nowrap',
+                            ],
                             'search' => [
                                 'type' => 'rangeslider',
                                 'advanced' => true,
@@ -232,6 +235,9 @@ class Record extends \App\Record
                         [
                             'key' => 'dato',
                             'type' => 'simple',
+                            'display' => [
+                                'columnClassName' => 'dt-body-nowrap',
+                            ],
                             'search' => [
                                 'type' => 'rangeslider',
                                 'options' => [
