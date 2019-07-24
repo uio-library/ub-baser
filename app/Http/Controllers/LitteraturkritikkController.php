@@ -165,6 +165,9 @@ class LitteraturkritikkController extends RecordController
                     );
                 if ($personRolle) {
                     $query->whereRaw('? = ANY(roller)', [$personRolle]);
+                } else {
+                    // Skjul personer som ikke er i bruk
+                    $query->whereRaw('CARDINALITY(roller) != 0');
                 }
 
                 foreach ($query->limit(25)->get() as $res) {

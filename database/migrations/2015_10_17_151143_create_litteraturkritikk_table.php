@@ -150,8 +150,9 @@ class CreateLitteraturkritikkTable extends Migration
                         ELSE ''
                     END) AS fornavn_etternavn,
 
-                    -- Roller
-                    ARRAY_AGG(DISTINCT pivot.person_role)
+                    -- Roller 
+                    -- Why array_remove? See https://stackoverflow.com/a/33145722/489916
+                    ARRAY_REMOVE(ARRAY_AGG(DISTINCT pivot.person_role), NULL)
                     AS roller,
 
                     -- Søkeindeks 'any_field_ts'. 
