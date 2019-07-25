@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class ImportLetrasCommand extends ImportCommand
 {
@@ -44,8 +45,16 @@ class ImportLetrasCommand extends ImportCommand
 
     protected function fillTable()
     {
-        $data = $this->getData('import/letras.json');
-        \DB::table('letras')->insert($data);
+        $rows = $this->getData('import/letras.json');
+
+        // Trim all values
+        $rows = array_map(function($row) {
+            return array_map(function ($col) {
+                return trim($col);
+            }, $row);
+        }, $rows);
+
+        \DB::table('letras')->insert($rows);
     }
 
     /**
@@ -67,6 +76,11 @@ class ImportLetrasCommand extends ImportCommand
         $this->comment('Filling letras');
         $this->fillTable();
 
+        $this->info('Updating sequences');
+
+        \DB::unprepared('SELECT pg_catalog.setval(pg_get_serial_sequence(\'letras\', \'id\'), MAX(id)) FROM letras');
+
         $this->info('Done');
+
     }
 }
