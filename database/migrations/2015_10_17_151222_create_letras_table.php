@@ -15,18 +15,18 @@ class CreateLetrasTable extends Migration
         Schema::dropIfExists('letras');
         Schema::create('letras', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('forfatter');
-            $table->string('land');
-            $table->string('tittel');
-            $table->string('utgivelsesaar');
-            $table->string('sjanger');
-            $table->string('oversetter');
-            $table->string('tittel2');
-            $table->string('utgivelsessted');
-            $table->string('utgivelsesaar2');
-            $table->string('forlag');
-            $table->string('foretterord');
-            $table->string('spraak');
+            $table->string('forfatter')->nullable();
+            $table->string('land')->nullable();
+            $table->string('tittel')->nullable();
+            $table->string('utgivelsesaar')->nullable();
+            $table->string('sjanger')->nullable();
+            $table->string('oversetter')->nullable();
+            $table->string('tittel2')->nullable();
+            $table->string('utgivelsessted')->nullable();
+            $table->string('utgivelsesaar2')->nullable();
+            $table->string('forlag')->nullable();
+            $table->string('foretterord')->nullable();
+            $table->string('spraak')->nullable();
             
             $table->timestamps();
             $table->softDeletes();
