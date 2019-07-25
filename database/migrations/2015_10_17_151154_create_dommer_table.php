@@ -36,6 +36,18 @@ class CreateDommerTable extends Migration
             $table->foreign('kilde_id')
                 ->references('id')->on('dommer_kilder');
         });
+
+        DB::unprepared("
+            CREATE VIEW dommer_view AS
+                SELECT
+                    d.*,
+                    kilder.navn as kilde_navn
+
+                FROM dommer AS d
+
+                JOIN dommer_kilder AS kilder
+                    ON d.kilde_id = kilder.id
+        ");
     }
 
     /**

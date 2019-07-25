@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\DommerKilde;
-use App\DommerRecord;
+use App\Dommer\DommerKilde;
+use App\Dommer\DommerRecord;
+use App\Dommer\DommerRecordView;
+use App\Http\Requests\DommerSearchRequest;
 use App\Page;
-use App\RecordQueryBuilder;
 use Illuminate\Http\Request;
 
 class DommerController extends RecordController
@@ -23,30 +24,37 @@ class DommerController extends RecordController
     /**
      * Display a listing of the resource.
      *
+     * @param DommerSearchRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(DommerSearchRequest $request)
     {
-        $q = new RecordQueryBuilder($request, 'dommer', DommerRecord::class);
-        $q->make();
+        if ($request->wantsJson()) {
+            return $this->dataTablesResponse($request, DommerRecordView::getKeys());
+        }
 
-        $data = [
-            'prefix' => 'dommer',
+        $introPage = Page::where('name', '=', 'dommer.intro')->first();
+        $intro = $introPage ? $introPage->body : '';
+
+        return response()->view('dommer.index', [
+            'schema' => DommerRecordView::getSchema(),
+
             'query' => $request->all(),
-            'columns' => $q->getColumns(),
-            'sortColumn' => $q->sortColumn,
-            'sortOrder' => $q->sortOrder,
-            'intro' => Page::where('name', '=', 'dommer.intro')->first()->body,
-        ];
+            'processedQuery' => $request->queryParts,
+            'advancedSearch' => ($request->advanced === 'on'),
 
-        $data['records'] = $q->query
-            ->join('dommer_kilder', 'dommer.kilde_id', '=', 'dommer_kilder.id')
-            ->select('dommer.*', 'dommer_kilder.navn AS kilde_navn')
-            ->paginate(50);
+            'intro' => $intro,
 
-        $data['kilder'] = $this->getKilder();
-
-        return response()->view('dommer.index', $data);
+            'defaultColumns' => [
+                'navn',
+                'kilde_navn',
+                'aar',
+                'side',
+            ],
+            'order' => [
+                ['key' => 'aar', 'direction' => 'desc'],
+            ]
+        ]);
     }
 
     /**

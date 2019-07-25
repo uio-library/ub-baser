@@ -2,20 +2,17 @@
 
 @section('content')
 
-<tt>
-	show.blade.php
-	
-</tt>
+<p>
+	<a href="{{ URL::previous() }}"><i class="fa fa-arrow-circle-left"></i> Tilbake</a>
+	@can('dommer')
+		&nbsp;
+		<a href="{{ action('DommerController@edit', $record->id) }}"><i class="fa fa-edit"></i> Rediger post</a>
+	@endcan
+</p>
 
 <h2>
 	«{{ $record->navn }}»
 </h2>
-
-@can('dommer')
-<p>
-	<a href="{{ action('DommerController@edit', $record->id) }}">Rediger</a>
-</p>
-@endcan
 
 <p>
 	Referanse: {{ $record->kilde }} {{ $record->aar }}, side {{ $record->side }}
