@@ -1,18 +1,19 @@
 <?php
 
 return [
+    // Verket
+    'forfatter' => 'Forfatter (Escritor)',
+    'land' => 'Land (País)',
+    'tittel' => 'Tittel (Título)',
+    'utgivelsesaar' => 'Utgivelsesår (Año de publicación)',
+    'sjanger' => 'Sjanger (Género)',
 
-    'forfatter' => 'Forfatter',
-    'land' => 'Land',
-    'tittel' => 'Tittel',
-    'utgivelsesaar' => 'Publiserings år',
-    'sjanger' => 'Sjanger',
-    'oversetter' => 'Oversetter',
-    'tittel2' => 'Tittel 2',
-    'utgivelsessted' => 'Publiserings sted',
-    'utgivelsesaar2' => 'Publiserings år 2',
-    'forlag' => 'Forlag',
-    'foretterord' => 'Foretterord',
-    'spraak' => 'Språk',
-    
+    // Oversettelsen
+    'oversetter' => 'Oversetter (Traductor)',
+    'tittel2' => 'Tittel (Título)',
+    'utgivelsessted' => 'Utgivelsessted (Lugar de publicación)',
+    'utgivelsesaar2' => 'Utgivelsesår (Año de publicación)',
+    'forlag' => 'Forlag (Editorial)',
+    'foretterord' => 'For- eller etterord (Prólogo o Epílogo)',
+    'spraak' => 'Språk (Idioma)',
 ];

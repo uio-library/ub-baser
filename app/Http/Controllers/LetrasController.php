@@ -2,38 +2,101 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LetrasSearchRequest;
 use App\LetrasRecord;
 use App\Page;
 use App\RecordQBuilderLetras;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class LetrasController extends RecordController
 {
     /**
      * Display a listing of the resource.
      *
+     * @param LetrasSearchRequest $request
      * @return \Illuminate\Http\Response
      */
 
-    public function index(Request $request)
+    public function index(LetrasSearchRequest $request)
     {
-        
-        $q = new RecordQBuilderLetras($request, 'letras', LetrasRecord::class);
-        $q->make();
+        if ($request->wantsJson()) {
+            return $this->dataTablesResponse($request, LetrasRecord::getKeys());
+        }
 
-        $data = [
-            'prefix' => 'letras',
+        $introPage = Page::where('name', '=', 'letras.intro')->first();
+        $intro = $introPage ? $introPage->body : '';
+
+        return response()->view('letras.index', [
+            'schema' => LetrasRecord::getSchema(),
+
             'query' => $request->all(),
-            'columns' => $q->getColumns(),
-            'sortColumn' => $q->sortColumn,
-            'sortOrder' => $q->sortOrder,
-        ];
+            'processedQuery' => $request->queryParts,
+            'advancedSearch' => ($request->advanced === 'on'),
 
-        $data['records'] = $q->query
-            ->paginate(50);
+            'intro' => $intro,
 
-        return response()->view('letras.index', $data); 
-       
+            'defaultColumns' => [
+                // Verket
+                'forfatter',
+                'tittel',
+                'utgivelsesaar',
+
+                // Oversettelsen
+                'oversetter',
+                'tittel2',
+                'utgivelsesaar2',
+            ],
+            'order' => [
+                ['key' => 'utgivelsesaar', 'direction' => 'desc'],
+            ]
+
+        ]);
+    }
+
+    public function autocomplete(Request $request)
+    {
+        $fieldName = $request->get('field');
+        $columns = LetrasRecord::getSchemaByKey();
+        if (!isset($columns[$fieldName])) {
+            throw new \RuntimeException('Invalid field');
+        }
+        $fieldDef = $columns[$fieldName];
+
+        if (is_null($fieldDef)) {
+            throw new \RuntimeException('Invalid autocomplete field');
+        }
+
+        $term = $request->get('q') . '%';
+        $data = [];
+
+        switch ($fieldName) {
+
+            default:
+                if ($term == '%') {
+                    // Preload request
+                    $rows = \DB::table('letras')
+                        ->select($fieldName)
+                        ->distinct()
+                        ->groupBy($fieldName)
+                        ->get();
+                } else {
+                    $rows = \DB::table('letras')
+                        ->select($fieldName)
+                        ->distinct()
+                        ->where($fieldName, 'ilike', $term)
+                        ->groupBy($fieldName)
+                        ->get();
+                }
+                foreach ($rows as $row) {
+                    $data[] = [
+                        'value' => $row->{$fieldName},
+                    ];
+                }
+                break;
+        }
+
+        return response()->json($data);
     }
 
     /**
@@ -46,18 +109,18 @@ class LetrasController extends RecordController
         $record = is_null($id) ? new LetrasRecord() : LetrasRecord::findOrFail($id);
 
         $this->validate($request, [
-            'forfatter'     => 'required' . (is_null($id) ? '' : ',' . $id) . '|max:255',
-            'land'      => 'required',
-            'tittel'     => 'required',
-            'utgivelsesaar' => 'required',
-            'sjanger' => 'required',
-            'oversetter' => 'required',
-            'tittel2' => 'required',
-            'utgivelsessted' => 'required',
-            'utgivelsesaar2' => 'required',
-            'forlag' => 'required',
-            'foretterord' => 'required',
-            'spraak' => 'required',
+//            'forfatter'     => 'required' . (is_null($id) ? '' : ',' . $id) . '|max:255',
+//            'land'      => 'required',
+//            'tittel'     => 'required',
+//            'utgivelsesaar' => 'required',
+//            'sjanger' => 'required',
+//            'oversetter' => 'required',
+//            'tittel2' => 'required',
+//            'utgivelsessted' => 'required',
+//            'utgivelsesaar2' => 'required',
+//            'forlag' => 'required',
+//            'foretterord' => 'required',
+//            'spraak' => 'required',
         ]);
 
         $record->forfatter = $request->get('forfatter');
@@ -72,7 +135,8 @@ class LetrasController extends RecordController
         $record->forlag = $request->get('forlag');
         $record->foretterord = $request->get('foretterord');
         $record->spraak = $request->get('spraak');
-        
+
+
         $record->save();
 
         return $record;
@@ -87,11 +151,17 @@ class LetrasController extends RecordController
     {
         $this->authorize('letras');
 
-        $data = [
-            'columns' => config('baser.letras.columns'),
-        ];
+        $schema = LetrasRecord::getSchema();
 
-        return response()->view('letras.create', $data);
+        $values = [];
+        foreach (LetrasRecord::getSchemaByKey() as $key => $col) {
+            $values[$key] = old($key);
+        }
+
+        return response()->view('letras.create', [
+            'schema' => LetrasRecord::getSchema(),
+            'values' => $values,
+        ]);
     }
 
     /**
@@ -111,13 +181,12 @@ class LetrasController extends RecordController
             ->with('status', 'Posten ble opprettet.');
     }
 
-
-public function show($id)
+    public function show($id)
     {
-    $record = LetrasRecord::findOrFail($id);
-     
-     $data = [
-            'columns' => config('baser.letras.columns'),
+        $record = LetrasRecord::findOrFail($id);
+
+        $data = [
+            'schema' => LetrasRecord::getSchema(),
             'record'  => $record,
         ];
 
@@ -137,11 +206,18 @@ public function show($id)
 
         $record = LetrasRecord::findOrFail($id);
 
-        $data = [
-            'record'   => $record,
-        ];
+        $schema = LetrasRecord::getSchema();
 
-        return response()->view('letras.edit', $data);
+        $values = [];
+        foreach (LetrasRecord::getSchemaByKey() as $key => $col) {
+            $values[$key] = old($key, $record->{$key});
+        }
+
+        return response()->view('letras.edit', [
+            'record' => $record,
+            'schema' => $schema,
+            'values' => $values,
+        ]);
     }
 
     /**

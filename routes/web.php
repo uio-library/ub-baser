@@ -14,6 +14,7 @@ Route::get('/', 'HomeController@index')->name('home');
 
 // App routes
 Route::get('norsk-litteraturkritikk/autocomplete', 'LitteraturkritikkController@autocomplete');
+Route::get('letras/autocomplete', 'LetrasController@autocomplete');
 
 Route::resource('norsk-litteraturkritikk', 'LitteraturkritikkController');
 Route::resource('norsk-litteraturkritikk/personer', 'LitteraturkritikkPersonController');

@@ -4,6 +4,8 @@ namespace App;
 
 class LetrasRecord extends Record
 {
+    public static $prefix = 'letras';
+
     /**
      * The table associated with the model.
      *
@@ -11,41 +13,125 @@ class LetrasRecord extends Record
      */
     protected $table = 'letras';
 
-    public function forfatter()
-    {
-     
-      $repr = $this->forfatter;
-        //
-     return $repr;
 
-      //$repr = '<a href="' . action('LetrasController@show', $this->id) . '">';
-
-      //return $repr;
-     //$repr = $this->forfatter;
-        //
-     //return action('LetrasController@show', $this->id);
-    }
-
-     public function tittel()
+    public static function getSchema(): array
     {
-     
-      $repr = $this->tittel;
-        //
-     return $repr;
-    }
+        $schema = [
+            'fields' => [
 
-     public function utgivelsesaar()
-    {
-     
-      $repr = $this->utgivelsesaar;
-        //
-     return $repr;
-    }
-    public function sjanger()
-    {
-     
-      $repr = $this->sjanger;
-        //
-     return $repr;
+                // ID
+                [
+                    'key' => 'id',
+                    'type' => 'incrementing',
+                    'display' => false,
+                    'edit' => false,
+                    'search' => false,
+                ],
+            ],
+
+            'groups' => [
+
+                [
+                    'label' => 'Verket',
+                    'fields' => [
+
+                        // Forfatter
+                        [
+                            'key' => 'forfatter',
+                            'type' => 'autocomplete',
+                        ],
+
+                        // Land
+                        [
+                            'key' => 'land',
+                            'type' => 'autocomplete',
+                        ],
+
+                        // Tittel
+                        [
+                            'key' => 'tittel',
+                            'type' => 'simple',
+                        ],
+
+                        // Utgivelsesår
+                        [
+                            'key' => 'utgivelsesaar',
+                            'type' => 'simple',
+                        ],
+
+                        // Sjanger
+                        [
+                            'key' => 'sjanger',
+                            'type' => 'autocomplete',
+                        ],
+                    ],
+                ],
+
+                [
+                    'label' => 'Oversettelsen',
+                    'fields' => [
+
+                        // Oversetter
+                        [
+                            'key' => 'oversetter',
+                            'type' => 'simple',
+                        ],
+
+                        // Tittel
+                        [
+                            'key' => 'tittel2',
+                            'type' => 'simple',
+                        ],
+
+                        // Utgivelsessted
+                        [
+                            'key' => 'utgivelsessted',
+                            'type' => 'simple',
+                        ],
+
+
+                        // Utgivelsesår
+                        [
+                            'key' => 'utgivelsesaar2',
+                            'type' => 'simple',
+                            'search' => [
+                                'advanced' => true,
+                            ],
+                        ],
+
+                        // Forlag
+                        [
+                            'key' => 'forlag',
+                            'type' => 'simple',
+                            'search' => [
+                            ],
+                        ],
+
+                        // Forord/etterord
+                        [
+                            'key' => 'foretterord',
+                            'type' => 'simple',
+                            'search' => [
+                                'advanced' => true,
+                            ],
+                        ],
+
+                        // Språk
+                        [
+                            'key' => 'spraak',
+                            'type' => 'simple',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        static::initSchema($schema, [
+            'minYear' => 1789,
+            'maxYear' => (int)strftime('%Y'),
+            'autocompleTarget' => action('LetrasController@autocomplete'),
+        ]);
+
+        return $schema;
     }
 }

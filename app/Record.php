@@ -25,8 +25,13 @@ abstract class Record extends \Eloquent
         // Add label
         $field['label'] = trans(static::$prefix . '.' . $field['key']);
 
+        // Make fields searchable by default
+        if (!Arr::has($field, 'search')) {
+            Arr::set($field, 'search', []);
+        }
+
         // Add default operators if not set
-        if (isset($field['search']) && $field['search'] !== false && !isset($field['search']['operators'])) {
+        if ($field['search'] !== false && !isset($field['search']['operators'])) {
             $field['search']['operators'] = [
                 'eq',
                 'neq',
