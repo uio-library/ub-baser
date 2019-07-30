@@ -6,6 +6,8 @@ use App\BaseSchema;
 
 class LitteraturkritikkSchema extends BaseSchema
 {
+    public $prefix = 'litteraturkritikk';
+
     protected $schema = [
         'fields' => [
 

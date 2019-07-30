@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LitteraturkritikkSearchRequest;
 use App\Litteraturkritikk\KritikkType;
+use App\Litteraturkritikk\LitteraturkritikkSchema;
 use App\Litteraturkritikk\Person;
 use App\Litteraturkritikk\PersonView;
 use App\Litteraturkritikk\Record;
@@ -31,19 +32,20 @@ class LitteraturkritikkController extends RecordController
      *
      *
      * @param LitteraturkritikkSearchRequest $request
+     * @param LitteraturkritikkSchema $schema
      * @return \Illuminate\Http\Response
      */
-    public function index(LitteraturkritikkSearchRequest $request)
+    public function index(LitteraturkritikkSearchRequest $request, LitteraturkritikkSchema $schema)
     {
         if ($request->wantsJson()) {
-            return $this->dataTablesResponse($request, Record::getKeys());
+            return $this->dataTablesResponse($request, $schema);
         }
 
         $introPage = Page::where('name', '=', 'litteraturkritikk.intro')->first();
         $intro = $introPage ? $introPage->body : '';
 
         return response()->view('litteraturkritikk.index', [
-            'schema' => Record::getSchema(),
+            'schema' => $schema,
 
             'query' => $request->all(),
             'processedQuery' => $request->queryParts,
@@ -68,14 +70,14 @@ class LitteraturkritikkController extends RecordController
         ]);
     }
 
-    public function autocomplete(Request $request)
+    public function autocomplete(Request $request, LitteraturkritikkSchema $schema)
     {
         $fieldName = $request->get('field');
-        $columns = Record::getSchemaByKey();
-        if (!isset($columns[$fieldName])) {
+        $fields = $schema->keyed();
+        if (!isset($fields[$fieldName])) {
             throw new \RuntimeException('Invalid field');
         }
-        $fieldDef = $columns[$fieldName];
+        $fieldDef = $fields[$fieldName];
 
         $term = $request->get('q') . '%';
         $data = [];
@@ -176,7 +178,7 @@ class LitteraturkritikkController extends RecordController
      *
      * @return Record
      */
-    protected function updateOrCreate(Request $request, $id = null)
+    protected function updateOrCreate(Request $request, LitteraturkritikkSchema $schema, $id = null)
     {
         $isNew = is_null($id);
         $record = $isNew ? new Record() : Record::findOrFail($id);
@@ -191,12 +193,13 @@ class LitteraturkritikkController extends RecordController
 
         $persons = [];
 
-        foreach (Record::getFlatSchema() as $col) {
+        foreach ($schema->flat() as $col) {
             if (Arr::get($col, 'edit') === false) {
                 continue;
             }
             $datatype = Arr::get($col, 'type', 'simple');
             $newValue = $request->get($col['key'], Arr::get($col, 'default'));
+
             if (in_array($datatype, ['simple', 'autocomplete', 'url', 'boolean', 'tags'])) {
                 $record->{$col['key']} = $newValue;
             } elseif ($datatype == 'persons') {
@@ -243,13 +246,12 @@ class LitteraturkritikkController extends RecordController
         return '';
     }
 
-    protected function formArguments($record)
+    protected function formArguments(Record $record, LitteraturkritikkSchema $schema)
     {
-        $schema = Record::getSchema();
 
         $values = [];
-        foreach (Record::getSchemaByKey() as $key => $col) {
-            if (Arr::get($col, 'type') == 'persons') {
+        foreach ($schema->keyed() as $key => $col) {
+            if (Arr::has($col, 'model_attribute')) {
                 $values[$key] = $record->{$col['model_attribute']};
             } else {
                 $values[$key] = old($key, $record->{$key});
@@ -266,13 +268,15 @@ class LitteraturkritikkController extends RecordController
     /**
      * Show the form for creating a new resource.
      *
+     * @param LitteraturkritikkSchema $schema
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create()
+    public function create(LitteraturkritikkSchema $schema)
     {
         $this->authorize('litteraturkritikk');
 
-        $data = $this->formArguments(new Record());
+        $data = $this->formArguments(new Record(), $schema);
 
         return response()->view('litteraturkritikk.create', $data);
     }
@@ -284,12 +288,12 @@ class LitteraturkritikkController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(LitteraturkritikkSchema $schema, $id)
     {
         $this->authorize('litteraturkritikk');
 
         $record = Record::with('forfattere', 'kritikere')->findOrFail($id);
-        $data = $this->formArguments($record);
+        $data = $this->formArguments($record, $schema);
 
         return response()->view('litteraturkritikk.edit', $data);
     }
@@ -299,13 +303,15 @@ class LitteraturkritikkController extends RecordController
      *
      * @param \Illuminate\Http\Request $request
      *
+     * @param LitteraturkritikkSchema $schema
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(Request $request)
+    public function store(Request $request, LitteraturkritikkSchema $schema)
     {
         $this->authorize('litteraturkritikk');
 
-        $record = $this->updateOrCreate($request);
+        $record = $this->updateOrCreate($request, $schema);
 
         return redirect()->action('LitteraturkritikkController@show', $record->id)
             ->with('status', 'Posten ble opprettet.');
@@ -314,17 +320,18 @@ class LitteraturkritikkController extends RecordController
     /**
      * Display the specified resource.
      *
+     * @param LitteraturkritikkSchema $schema
      * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(LitteraturkritikkSchema $schema, $id)
     {
         $record = Record::findOrFail($id);
 
         $data = [
             'title' => $record->tittel ?: '#' . $record->id,
-            'schema' => Record::getSchema(),
+            'schema' => $schema,
             'record' => $record,
         ];
 
@@ -335,15 +342,17 @@ class LitteraturkritikkController extends RecordController
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
+     * @param LitteraturkritikkSchema $schema
      * @param int $id
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, LitteraturkritikkSchema $schema, $id)
     {
         $this->authorize('litteraturkritikk');
 
-        $this->updateOrCreate($request, $id);
+        $this->updateOrCreate($request, $schema, $id);
 
         return redirect()->action('LitteraturkritikkController@show', $id)
             ->with('status', 'Posten ble lagret');

@@ -119,7 +119,7 @@
                         return;
                     }
                     let col = {
-                        data: field.key,
+                        data: get(field, 'display.column', field.key),
                         columnLabel: field.label,
                         visible: this.visibleColumns.indexOf(field.key) !== -1,
                         render: ( data, type, row ) => {

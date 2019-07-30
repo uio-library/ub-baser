@@ -24,33 +24,16 @@ class RecordQBuilderLetras
     public function make()
     {
         $this->query = (new $this->className())->newQuery();
-        $this->sortColumn = $this->request->input('sort', config('baser.letras.default2.column'));
-        $this->sortOrder = $this->request->input('order', config('baser.letras.default2.order'));
+        $this->sortColumn = $this->request->input('sort', config('baser.letras.default_sort_column'));
+        $this->sortOrder = $this->request->input('order', config('baser.letras.default_sort_order'));
         $this->query->orderBy($this->sortColumn, $this->sortOrder);
 
-        foreach (config('baser.letras.cols') as $col) {
-            if ($this->request->has($col['field'])) {
-                if (Arr::get($col, 'type') == 'text') {
-                    $this->query->where($this->prefix . '.' . $col['field'], 'LIKE', '%' . $this->request->get($col['field']) . '%');
-                } else {
-                    $this->query->where($this->prefix . '.' . $col['field'], '=', $this->request->get($col['field']));
-                }
+        $fields = LetrasRecord::getFlatSchema();
+
+        foreach ($fields as $col) {
+            if ($this->request->has($col['key'])) {
+                $this->query->where($this->prefix . '.' . $col['key'], 'ilike', '%' . $this->request->get($col['key']) . '%');
             }
         }
-    }
-
-    //return 
-    public function getColumns()
-    {
-        $columns = config('baser.letras.cols');
-
-        foreach ($columns as &$d) {
-            $d['link'] = Request('url') . '?' . http_build_query([
-                'sort'  => $d['field'],
-                'order' => ($d['field'] == $this->sortColumn && $this->sortOrder == 'asc') ? 'desc' : 'asc',
-            ]);
-        }
-
-        return $columns;
     }
 }

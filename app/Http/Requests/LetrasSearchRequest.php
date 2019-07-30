@@ -2,16 +2,19 @@
 
 namespace App\Http\Requests;
 
-use App\LetrasRecord;
+use App\BaseSchema;
+use App\Letras\LetrasSchema;
+use App\Letras\LetrasRecord;
+use Illuminate\Database\Eloquent\Builder;
 
 class LetrasSearchRequest extends SearchRequest
 {
-    protected function getFields()
+    protected function getSchema(): BaseSchema
     {
-        return LetrasRecord::getSchemaByKey();
+        return app(LetrasSchema::class);
     }
 
-    protected function makeQueryBuilder()
+    protected function makeQueryBuilder(): Builder
     {
         return LetrasRecord::query();
     }

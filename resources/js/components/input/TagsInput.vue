@@ -7,6 +7,8 @@
 </template>
 
 <script>
+    import { get } from 'lodash/object';
+
     export default {
         name: "tags-input",
         props: {
@@ -22,16 +24,17 @@
         },
         methods: {
             initSelectize() {
+                let url = get(this.schema, 'search.options.target');
                 $(`#select_${this.name}`).selectize({
                     create: true,
                     preload: true,
                     labelField: 'value',
                     valueField: 'value',
                     searchField: 'value',
-                    openOnFocus: false,
+                    openOnFocus: true,
                     closeAfterSelect: true,
                     load: (query, callback) => {
-                        this.$http.get('/norsk-litteraturkritikk/autocomplete', {
+                        this.$http.get(url, {
                             params: {
                                 field: this.schema.key,
                                 q: query,
@@ -42,7 +45,7 @@
                         )
                     },
                     render: {
-                        option_create: (data, escape) => `<div class="create">Opprett ny type «${escape(data.input)}»</div>`,
+                        option_create: (data, escape) => `<div class="create">Opprett «${escape(data.input)}»</div>`,
                     },
                 });
             },

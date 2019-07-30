@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Dommer\DommerKilde;
 use App\Dommer\DommerRecord;
 use App\Dommer\DommerRecordView;
+use App\Dommer\DommerSchema;
 use App\Http\Requests\DommerSearchRequest;
 use App\Page;
 use Illuminate\Http\Request;
@@ -25,19 +26,20 @@ class DommerController extends RecordController
      * Display a listing of the resource.
      *
      * @param DommerSearchRequest $request
+     * @param DommerSchema $schema
      * @return \Illuminate\Http\Response
      */
-    public function index(DommerSearchRequest $request)
+    public function index(DommerSearchRequest $request, DommerSchema $schema)
     {
         if ($request->wantsJson()) {
-            return $this->dataTablesResponse($request, DommerRecordView::getKeys());
+            return $this->dataTablesResponse($request, $schema);
         }
 
         $introPage = Page::where('name', '=', 'dommer.intro')->first();
         $intro = $introPage ? $introPage->body : '';
 
         return response()->view('dommer.index', [
-            'schema' => DommerRecordView::getSchema(),
+            'schema' => $schema->get(),
 
             'query' => $request->all(),
             'processedQuery' => $request->queryParts,
@@ -73,7 +75,7 @@ class DommerController extends RecordController
             'navn'     => 'required|unique:dommer,navn' . (is_null($id) ? '' : ',' . $id) . '|max:255',
             'aar'      => 'required|digits:4',
             'side'     => 'required|numeric|min:1|max:9999',
-            'kilde_id' => 'required',
+            'kilde_id' => 'required|numeric',
         ]);
 
         $record->navn = $request->get('navn');
@@ -139,22 +141,36 @@ class DommerController extends RecordController
     /**
      * Show the form for editing the specified resource.
      *
+     * @param DommerSchema $schema
      * @param int $id
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit($id)
+    public function edit(DommerSchema $schema, $id)
     {
         $this->authorize('dommer');
 
         $record = DommerRecord::findOrFail($id);
 
-        $data = [
-            'record'   => $record,
-            'kilder'   => $this->getKilder(),
-        ];
+        $values = [];
+        foreach ($schema->keyed() as $key => $col) {
+            $value = $record->{$key};
+            if ($key == 'kilde') {
+                $value = [
+                    'id' => $value->id,
+                    'label' => $value->navn,
+                ];
+            }
+            $values[$key] = old($key, $value);
 
-        return response()->view('dommer.edit', $data);
+        }
+
+        return response()->view('dommer.edit', [
+            'record' => $record,
+            'schema' => $schema,
+            'values' => $values,
+        ]);
     }
 
     /**
@@ -187,5 +203,22 @@ class DommerController extends RecordController
         $this->authorize('dommer');
 
         //
+    }
+
+    public function autocomplete(Request $request)
+    {
+        $rows = \DB::table('dommer_kilder')
+            ->select('id', 'navn')
+            ->get();
+
+        $out = [];
+        foreach ($rows as $row) {
+            $out[] = [
+                'id' => $row->id,
+                'label' => $row->navn,
+            ];
+        }
+
+        return response()->json($out);
     }
 }

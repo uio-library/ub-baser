@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\BaseSchema;
 use App\Http\Requests\SearchRequest;
+use Illuminate\Support\Arr;
 
 class RecordController extends Controller
 {
@@ -14,7 +16,7 @@ class RecordController extends Controller
         $this->middleware('auth', ['only' => ['create', 'edit', 'store', 'update', 'destroy']]);
     }
 
-    protected function dataTablesResponse(SearchRequest $request, array $keys)
+    protected function dataTablesResponse(SearchRequest $request)
     {
         $queryBuilder = $request->queryBuilder;
         $requestedColumns = [];
@@ -26,10 +28,9 @@ class RecordController extends Controller
         $queryBuilder->select(array_values($requestedColumns));
         foreach ($request->order as $order) {
             $col = $requestedColumns[$order['column']];
-            if (in_array($col, $keys)) {
-                $dir = ($order['dir'] == 'asc') ? 'asc' : 'desc';
-                $queryBuilder->orderByRaw("$col $dir NULLS LAST");
-            }
+            $col = preg_replace('/[^a-z_]/', '', $col);
+            $dir = ($order['dir'] == 'asc') ? 'asc' : 'desc';
+            $queryBuilder->orderByRaw("$col $dir NULLS LAST");
         }
 
         $recordCount = (int) $queryBuilder->count();

@@ -11,7 +11,7 @@
         </p>
     @endif
 
-    @foreach ($schema['groups'] as $group)
+    @foreach ($schema->groups as $group)
         <h4 class="mt-4">{{ $group['label'] }}</h4>
         <dl class="row">
             @foreach ($group['fields'] as $field)

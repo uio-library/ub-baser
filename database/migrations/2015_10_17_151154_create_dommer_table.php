@@ -57,6 +57,7 @@ class CreateDommerTable extends Migration
      */
     public function down()
     {
+        DB::unprepared('DROP VIEW dommer_view');
         Schema::drop('dommer');
         Schema::drop('dommer_kilder');
     }

@@ -1,10 +1,8 @@
 <?php
 
 return [
-
     'navn' => 'Populærnavn',
-    'kilde_navn' => 'Kilde',
+    'kilde' => 'Kilde',
     'side' => 'Sidetall',
     'aar' => 'År',
-
 ];

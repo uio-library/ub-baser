@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LetrasSearchRequest;
-use App\LetrasRecord;
+use App\Letras\LetrasRecord;
+use App\Letras\LetrasSchema;
 use App\Page;
 use App\RecordQBuilderLetras;
 use Illuminate\Http\Request;
@@ -15,20 +16,21 @@ class LetrasController extends RecordController
      * Display a listing of the resource.
      *
      * @param LetrasSearchRequest $request
+     * @param LetrasSchema $schema
      * @return \Illuminate\Http\Response
      */
 
-    public function index(LetrasSearchRequest $request)
+    public function index(LetrasSearchRequest $request, LetrasSchema $schema)
     {
         if ($request->wantsJson()) {
-            return $this->dataTablesResponse($request, LetrasRecord::getKeys());
+            return $this->dataTablesResponse($request, $schema);
         }
 
         $introPage = Page::where('name', '=', 'letras.intro')->first();
         $intro = $introPage ? $introPage->body : '';
 
         return response()->view('letras.index', [
-            'schema' => LetrasRecord::getSchema(),
+            'schema' => $schema,
 
             'query' => $request->all(),
             'processedQuery' => $request->queryParts,
@@ -54,17 +56,12 @@ class LetrasController extends RecordController
         ]);
     }
 
-    public function autocomplete(Request $request)
+    public function autocomplete(Request $request, LetrasSchema $schema)
     {
         $fieldName = $request->get('field');
-        $columns = LetrasRecord::getSchemaByKey();
+        $columns = $schema->keyed();
         if (!isset($columns[$fieldName])) {
             throw new \RuntimeException('Invalid field');
-        }
-        $fieldDef = $columns[$fieldName];
-
-        if (is_null($fieldDef)) {
-            throw new \RuntimeException('Invalid autocomplete field');
         }
 
         $term = $request->get('q') . '%';
@@ -145,21 +142,21 @@ class LetrasController extends RecordController
     /**
      * Show the form for creating a new resource.
      *
+     * @param LetrasSchema $schema
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create()
+    public function create(LetrasSchema $schema)
     {
         $this->authorize('letras');
 
-        $schema = LetrasRecord::getSchema();
-
         $values = [];
-        foreach (LetrasRecord::getSchemaByKey() as $key => $col) {
+        foreach ($schema->keyed() as $key => $col) {
             $values[$key] = old($key);
         }
 
         return response()->view('letras.create', [
-            'schema' => LetrasRecord::getSchema(),
+            'schema' => $schema,
             'values' => $values,
         ]);
     }
@@ -181,12 +178,12 @@ class LetrasController extends RecordController
             ->with('status', 'Posten ble opprettet.');
     }
 
-    public function show($id)
+    public function show(LetrasSchema $schema, $id)
     {
         $record = LetrasRecord::findOrFail($id);
 
         $data = [
-            'schema' => LetrasRecord::getSchema(),
+            'schema' => $schema,
             'record'  => $record,
         ];
 
@@ -196,20 +193,20 @@ class LetrasController extends RecordController
     /**
      * Show the form for editing the specified resource.
      *
+     * @param LetrasSchema $schema
      * @param int $id
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit($id)
+    public function edit(LetrasSchema $schema, $id)
     {
         $this->authorize('letras');
 
         $record = LetrasRecord::findOrFail($id);
 
-        $schema = LetrasRecord::getSchema();
-
         $values = [];
-        foreach (LetrasRecord::getSchemaByKey() as $key => $col) {
+        foreach ($schema->keyed() as $key => $col) {
             $values[$key] = old($key, $record->{$key});
         }
 

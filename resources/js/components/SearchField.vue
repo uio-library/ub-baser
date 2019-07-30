@@ -91,7 +91,8 @@
                 return fieldMap[this.field];
             },
             currentType() {
-                return get(this.currentSchema, 'search.type', this.currentSchema.type);
+                let type = get(this.currentSchema, 'search.type', this.currentSchema.type);
+                return type.substr(0, 1).toUpperCase() + type.substr(1) + 'Input';
             },
             currentOperators() {
                 return this.operators.filter(

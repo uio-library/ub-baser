@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\BaseSchema;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -13,31 +15,25 @@ abstract class SearchRequest extends FormRequest
     public $queryBuilder;
     protected $defaultOperator = 'eq';
 
-    protected function getFields()
-    {
-        // Override me
-    }
+    abstract protected function getSchema(): BaseSchema;
 
-    protected function makeQueryBuilder()
-    {
-        // Override me
-    }
+    abstract protected function makeQueryBuilder(): Builder;
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $this->main();
 
         return [];
     }
 
-    protected function init()
+    protected function init(): void
     {
-        $this->fields = $this->getFields();
+        $this->fields = $this->getSchema()->keyed();
     }
 
     /**
@@ -48,7 +44,7 @@ abstract class SearchRequest extends FormRequest
      *
      * @return array
      */
-    protected function getInput()
+    protected function getInput(): array
     {
         $fields = [];
         foreach ($this->all() as $key => $fieldName) {
@@ -77,7 +73,7 @@ abstract class SearchRequest extends FormRequest
         return $input;
     }
 
-    protected function main()
+    protected function main(): void
     {
         $this->init();
 
@@ -116,7 +112,7 @@ abstract class SearchRequest extends FormRequest
         }
     }
 
-    protected function checkNull(string $column, string $operator)
+    protected function checkNull(string $column, string $operator): void
     {
         switch ($operator) {
             case 'isnull':
