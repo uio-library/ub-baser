@@ -15,10 +15,9 @@ class CreatePages extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('name')->unique();
+            $table->string('slug')->unique();
             $table->string('layout');
             $table->string('permission');
-            $table->string('route')->unique();
 
             $table->string('title')->default('');
             $table->longText('body')->default('');

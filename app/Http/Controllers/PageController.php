@@ -14,11 +14,9 @@ class PageController extends Controller
      */
     public function index()
     {
-        $data = [
+        return response()->view('pages.index', [
             'pages' => Page::get(),
-        ];
-
-        return response()->view('pages.index', $data);
+        ]);
     }
 
     /**
@@ -52,12 +50,9 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
-        $data = [
-            'editRoute' => $page->name . '.edit',
-            'page'      => $page,
-        ];
-
-        return response()->view('pages.show', $data);
+        return response()->view('pages.show', [
+            'page' => $page,
+        ]);
     }
 
     /**
@@ -71,12 +66,9 @@ class PageController extends Controller
     {
         $this->authorize($page->permission);
 
-        $data = [
-            'updateRoute' => $page->name . '.update',
+        return response()->view('pages.edit', [
             'page'        => $page,
-        ];
-
-        return response()->view('pages.edit', $data);
+        ]);
     }
 
     /**
@@ -95,7 +87,7 @@ class PageController extends Controller
         $page->updated_by = $request->user()->id;
         $page->save();
 
-        return redirect()->route($page->name)
+        return redirect()->action('PageController@show', ['page' => $page->slug])
             ->with('status', 'Siden ble lagret.');
     }
 

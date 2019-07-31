@@ -41,7 +41,7 @@ class LitteraturkritikkController extends RecordController
             return $this->dataTablesResponse($request, $schema);
         }
 
-        $introPage = Page::where('name', '=', 'litteraturkritikk.intro')->first();
+        $introPage = Page::where('slug', '=', 'norsk-litteraturkritikk/intro')->first();
         $intro = $introPage ? $introPage->body : '';
 
         return response()->view('litteraturkritikk.index', [

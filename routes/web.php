@@ -12,11 +12,19 @@
 
 Route::get('/', 'HomeController@index')->name('home');
 
-// App routes
+// Autocomplete routes
 Route::get('norsk-litteraturkritikk/autocomplete', 'LitteraturkritikkController@autocomplete');
 Route::get('letras/autocomplete', 'LetrasController@autocomplete');
-Route::get('letras/dommer', 'DommerController@autocomplete');
+Route::get('dommer/autocomplete', 'DommerController@autocomplete');
 
+// Page routes
+Route::group(['middleware' => 'admin'], function () {
+    Route::get('{page}/edit', 'PageController@edit')->where('page', '[a-z-]+/[a-z-]+');
+    Route::post('{page}/update', 'PageController@update')->where('page', '[a-z-]+/[a-z-]+');
+});
+Route::get('{page}', 'PageController@show')->where('page', '[a-z-]+/[a-z-]+');
+
+// Resource routes
 Route::resource('norsk-litteraturkritikk', 'LitteraturkritikkController');
 Route::resource('norsk-litteraturkritikk/personer', 'LitteraturkritikkPersonController');
 Route::resource('dommer', 'DommerController');

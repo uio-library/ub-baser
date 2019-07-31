@@ -6,7 +6,7 @@
             @can('litteraturkritikk')
                 <a href="{{ action('LitteraturkritikkController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
                 &nbsp;
-                <a href="{{ route('litteraturkritikk.intro.edit') }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
+                <a href="{{ action('PageController@edit', ['page' => 'norsk-litteraturkritikk/intro']) }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
             @endcan
         </p>
 

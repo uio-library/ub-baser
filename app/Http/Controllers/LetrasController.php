@@ -26,7 +26,7 @@ class LetrasController extends RecordController
             return $this->dataTablesResponse($request, $schema);
         }
 
-        $introPage = Page::where('name', '=', 'letras.intro')->first();
+        $introPage = Page::where('slug', '=', 'letras.intro')->first();
         $intro = $introPage ? $introPage->body : '';
 
         return response()->view('letras.index', [

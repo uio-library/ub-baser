@@ -6,7 +6,7 @@
             <p>
                 <a href="{{ action('DommerController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
                 &nbsp;
-                <a href="{{ route('dommer.intro.edit') }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
+                <a href="{{ action('PageController@edit', ['page' => 'dommer/intro']) }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
             </p>
         @endif
 

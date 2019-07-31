@@ -13,10 +13,8 @@ class PagesTableSeeder extends Seeder
     {
         DB::table('pages')->insert([
             [
-
-                'name' => 'litteraturkritikk.intro',
                 'layout' => 'layouts.litteraturkritikk',
-                'route' => 'norsk-litteraturkritikk/intro',
+                'slug' => 'norsk-litteraturkritikk/intro',
                 'permission' => 'litteraturkritikk',
 
                 'title' => '',
@@ -26,10 +24,8 @@ class PagesTableSeeder extends Seeder
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
             ],[
-
-                'name' => 'litteraturkritikk.about',
                 'layout' => 'layouts.litteraturkritikk',
-                'route' => 'norsk-litteraturkritikk/om',
+                'slug' => 'norsk-litteraturkritikk/om',
                 'permission' => 'litteraturkritikk',
 
                 'title' => 'Om basen',
@@ -39,10 +35,8 @@ class PagesTableSeeder extends Seeder
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
             ],[
-
-                'name' => 'litteraturkritikk.sources',
                 'layout' => 'layouts.litteraturkritikk',
-                'route' => 'norsk-litteraturkritikk/kilder',
+                'slug' => 'norsk-litteraturkritikk/kilder',
                 'permission' => 'litteraturkritikk',
 
                 'title' => 'Kilder',
@@ -52,10 +46,8 @@ class PagesTableSeeder extends Seeder
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
             ],[
-
-                'name' => 'litteraturkritikk.fields',
                 'layout' => 'layouts.litteraturkritikk',
-                'route' => 'norsk-litteraturkritikk/felter',
+                'slug' => 'norsk-litteraturkritikk/felter',
                 'permission' => 'litteraturkritikk',
 
                 'title' => 'Felter',
@@ -65,10 +57,8 @@ class PagesTableSeeder extends Seeder
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
             ],[
-
-                'name' => 'dommer.intro',
                 'layout' => 'layouts.dommer',
-                'route' => 'dommer/intro',
+                'slug' => 'dommer/intro',
                 'permission' => 'dommer',
 
                 'title' => '',

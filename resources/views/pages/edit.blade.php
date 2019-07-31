@@ -3,7 +3,7 @@
 @section('content')
 
 
-    <form method="POST" action="{{ route($updateRoute) }}">
+    <form method="POST" action="{{ action('PageController@update', ['page' => $page->slug]) }}">
         <?php echo csrf_field(); ?>
 
         <div class="form-group">
@@ -12,7 +12,7 @@
 
         <button type="submit" class="btn btn-primary">{{ trans('messages.update') }}</button>
 
-        <a href="{{ route($page->name) }}" class="btn btn-default">{{ trans('messages.cancel') }}</a>
+        <a href="{{ action('PageController@show', ['page' => $page->slug]) }}" class="btn btn-default">{{ trans('messages.cancel') }}</a>
 
     </form>
 

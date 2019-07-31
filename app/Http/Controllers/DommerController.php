@@ -35,7 +35,7 @@ class DommerController extends RecordController
             return $this->dataTablesResponse($request, $schema);
         }
 
-        $introPage = Page::where('name', '=', 'dommer.intro')->first();
+        $introPage = Page::where('slug', '=', 'dommer/intro')->first();
         $intro = $introPage ? $introPage->body : '';
 
         return response()->view('dommer.index', [

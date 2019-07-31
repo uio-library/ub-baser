@@ -13,4 +13,14 @@ class Page extends Model
     {
         return $this->belongsTo('App\User', 'updated_by', 'id');
     }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
