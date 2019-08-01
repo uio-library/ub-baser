@@ -13,7 +13,12 @@ fi
 php composer.phar install --no-interaction --no-dev --no-autoloader
 
 php composer.phar dump-autoload --optimize
+
+# Cache the framework bootstrap files into bootstrap/cache
 php artisan route:cache
+php artisan config:cache
+
+# Compile the application's Blade templates into framework/views
 php artisan view:cache
 
 npm install
@@ -23,8 +28,9 @@ chmod -R a+rX .
 
 docker build . --file docker/Dockerfile --tag "ub-baser:$COMMIT" --tag "ub-baser:latest"
 
-# Back to devenv
+# Remove the caches, so that we can continue development without surprises
 php artisan route:clear
+php artisan config:clear
 php artisan view:clear
 
 
