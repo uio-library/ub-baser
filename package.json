@@ -8,10 +8,17 @@
     "watch-poll": "npm run watch -- --watch-poll",
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "test": "node_modules/.bin/wdio wdio.conf.js"
   },
   "devDependencies": {
+    "@wdio/cli": "^5.11.12",
+    "@wdio/local-runner": "^5.11.12",
+    "@wdio/mocha-framework": "^5.11.0",
+    "@wdio/spec-reporter": "^5.11.7",
+    "@wdio/sync": "^5.11.11",
     "acorn": "^6.2.1",
+    "chromedriver": "^76.0.0",
     "cross-env": "^5.1",
     "laravel-mix": "^4.1.2",
     "lodash": "^4.17.15",
@@ -21,6 +28,7 @@
     "sass": "^1.22.7",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10",
+    "wdio-chromedriver-service": "^5.0.2",
     "webpack-bundle-analyzer": "^3.3.2"
   },
   "dependencies": {

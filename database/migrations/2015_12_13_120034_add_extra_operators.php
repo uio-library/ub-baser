@@ -18,6 +18,10 @@ class AddExtraOperators extends Migration
          *
          * Source: <http://stackoverflow.com/a/30464989/489916>
          */
+        DB::statement('DROP OPERATOR IF EXISTS ~@& (jsonb, text[])');
+        DB::statement('DROP OPERATOR IF EXISTS ~@| (jsonb, text[])');
+        DB::statement('DROP OPERATOR IF EXISTS ~@ (jsonb, text)');
+
         DB::statement('CREATE OPERATOR ~@ (LEFTARG = jsonb, RIGHTARG = text, PROCEDURE = jsonb_exists)');
         DB::statement('CREATE OPERATOR ~@| (LEFTARG = jsonb, RIGHTARG = text[], PROCEDURE = jsonb_exists_any)');
         DB::statement('CREATE OPERATOR ~@& (LEFTARG = jsonb, RIGHTARG = text[], PROCEDURE = jsonb_exists_all)');

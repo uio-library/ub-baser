@@ -16,4 +16,4 @@ install:
   - ./dev.sh up -d
 
 script:
-  - vendor/bin/codecept run functional --steps  # --debug
+  - npm run test
