@@ -1,41 +1,19 @@
 language: php
 
-sudo: required
-# Currently needed to install locale
-# https://github.com/travis-ci/travis-ci/issues/2598
-# https://github.com/travis-ci/travis-ci/issues/3195
-
 php:
-  - 5.5
-  - 5.6
+  - 7.3
 
-addons:
-  postgresql: "9.4"
-
-# https://docs.travis-ci.com/user/using-postgresql/#PostgreSQL-and-Locales
-before_install:
-  - sudo apt-get update && sudo apt-get install language-pack-nb
-  - locale -a
-  - sudo /etc/init.d/postgresql stop
-  - sudo /etc/init.d/postgresql start 9.4
+services:
+  docker
 
 install:
-  - nvm install 4.1 && nvm use 4.1
-  - npm install -g npm@latest
-  - npm install -g gulp@latest
-  - php -v
-  - psql --version
-  - composer install
-  - cp .env.testing .env
-  - php artisan key:generate
+  - docker --version
+  - php --version
+  - curl -sS https://getcomposer.org/installer | php --
+  - php composer.phar install --no-interaction --no-dev
   - npm install
-  - gulp
-
-before_script:
-  - vendor/bin/codecept build
-  - createdb -E UTF8 -T template0 -U postgres --lc-collate=nb_NO.UTF-8 --lc-ctype=nb_NO.UTF-8 ub_baser_test
-  - php artisan --database=pgsql_test --seed migrate
-  - php artisan db:dump --database pgsql_test
+  - npm run production
+  - ./dev.sh up -d
 
 script:
   - vendor/bin/codecept run functional --steps  # --debug
