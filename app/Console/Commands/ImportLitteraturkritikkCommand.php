@@ -65,7 +65,8 @@ class ImportLitteraturkritikkCommand extends ImportCommand
      *
      * @var string
      */
-    protected $signature = 'import:litteraturkritikk';
+    protected $signature = 'import:litteraturkritikk  {--force   : Whether to delete existing data without asking}
+                                                      {filename  : The JSON file to import}';
 
     /**
      * The console command description.
@@ -302,18 +303,27 @@ class ImportLitteraturkritikkCommand extends ImportCommand
      */
     public function handle()
     {
+        $filename = $this->argument('filename');
+        $force = $this->option('force');
+
+        $this->comment('');
+        $this->comment(sprintf("Preparing import at host '%s'", \DB::getConfig('host')));
+
+        if (env('APP_ENV') === 'production') {
+            $this->error('This is the production environment!!!');
+            $force = false;
+        }
+
+        if (!$this->ensureEmpty('litteraturkritikk_records', $force)) return;
+
+        // ------
+
         $kritikktyper = [];
         foreach (KritikkType::all() as $kilde) {
             $kritikktyper[mb_strtolower($kilde->navn)] = $kilde->id;
         }
 
-        $this->info('');
-        $this->warn(' This will re-populate the table from scratch. Any user contributed data will be lost!');
-        if (!$this->confirm('Are you sure you want to continue? [y|N]')) {
-            return;
-        }
-
-        $data = $this->getData('import/litteraturkritikk.json');
+        $data = $this->getData($filename);
 
 //        $allespraak = array_flip(Language::getAll(true, true, 'nb'));
 //        $allespraak['finsk-svensk'] = 'sv';
@@ -347,14 +357,13 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             $this->processRecordRow($record);
         }
 
-        $this->comment('Clearing DB');
-        \DB::delete('delete from litteraturkritikk_records');
-
         $this->comment('Inserting records');
 
-        $chunks = array_chunk($records, 100);
+        $chunks = array_chunk($records, 1000);
         foreach ($chunks as $chunk) {
-            \DB::table('litteraturkritikk_records')->insert($chunk);
+            if (\DB::table('litteraturkritikk_records')->insert($chunk)) {
+                $this->comment('Imported ' . count($chunk) . ' records');
+            }
         }
 
         $this->comment('Inserting persons');
@@ -371,16 +380,16 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             print "Kritiker: $k : $v\n";
         }
 
-        $this->info('Refreshing views');
+        $this->comment('Refreshing views');
 
         \DB::unprepared('REFRESH MATERIALIZED VIEW litteraturkritikk_records_search');
 
-        $this->info('Updating sequences');
+        $this->comment('Updating sequences');
 
         \DB::unprepared('SELECT pg_catalog.setval(pg_get_serial_sequence(\'litteraturkritikk_records\', \'id\'), MAX(id)) FROM litteraturkritikk_records');
         \DB::unprepared('SELECT pg_catalog.setval(pg_get_serial_sequence(\'litteraturkritikk_personer\', \'id\'), MAX(id)) FROM litteraturkritikk_personer');
 
-        $this->info('Done');
+        $this->comment('Import complete');
     }
 
 }

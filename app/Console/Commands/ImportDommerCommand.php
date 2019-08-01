@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Dommer\DommerRecord;
 use Carbon\Carbon;
 
 class ImportDommerCommand extends ImportCommand
@@ -20,7 +21,8 @@ class ImportDommerCommand extends ImportCommand
      *
      * @var string
      */
-    protected $signature = 'import:dommer';
+    protected $signature = 'import:dommer {--force   : Whether to delete existing data without asking}
+                                          {filename  : The JSON file to import}';
 
     /**
      * The console command description.
@@ -28,12 +30,6 @@ class ImportDommerCommand extends ImportCommand
      * @var string
      */
     protected $description = 'Import Dommer data';
-
-    protected function clearData()
-    {
-        \DB::delete('delete from dommer');
-        \DB::delete('delete from dommer_kilder');
-    }
 
     protected function fillDommerKilderTable()
     {
@@ -45,10 +41,12 @@ class ImportDommerCommand extends ImportCommand
         \DB::table('dommer_kilder')->insert($data);
     }
 
-    protected function fillDommerTable()
+    protected function importDommerTable($filename)
     {
-        $data = $this->getData('import/dommer.json');
-        \DB::table('dommer')->insert($data);
+        $data = $this->getData($filename);
+        if (\DB::table('dommer')->insert($data)) {
+            $this->comment('Imported ' . count($data) . ' records');
+        }
     }
 
     /**
@@ -58,26 +56,30 @@ class ImportDommerCommand extends ImportCommand
      */
     public function handle()
     {
-        $this->info('');
-        $this->warn(' This will re-populate the table from scratch. Any user contributed data will be lost!');
-        if (!$this->confirm('Are you sure you want to continue? [y|N]')) {
-            return;
+        $filename = $this->argument('filename');
+        $force = $this->option('force');
+
+        $this->comment('');
+        $this->comment(sprintf("Preparing import at host '%s'", \DB::getConfig('host')));
+
+        if (env('APP_ENV') === 'production') {
+            $this->error('This is the production environment!!!');
+            $force = false;
         }
 
-        $this->comment('Clearing tables');
-        $this->clearData();
+        if (!$this->ensureEmpty('dommer', $force)) return;
+        if (!$this->ensureEmpty('dommer_kilder', $force)) return;
 
-        $this->comment('Filling dommer_kilder');
+        // ------
+
         $this->fillDommerKilderTable();
+        $this->importDommerTable($filename);
 
-        $this->comment('Filling dommer');
-        $this->fillDommerTable();
-
-        $this->info('Updating sequences');
+        $this->comment('Updating sequences');
 
         \DB::unprepared('SELECT pg_catalog.setval(pg_get_serial_sequence(\'dommer\', \'id\'), MAX(id)) FROM dommer');
         \DB::unprepared('SELECT pg_catalog.setval(pg_get_serial_sequence(\'dommer_kilder\', \'id\'), MAX(id)) FROM dommer_kilder');
 
-        $this->info('Done');
+        $this->comment('Import complete');
     }
 }

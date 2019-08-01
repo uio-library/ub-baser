@@ -1,0 +1,5 @@
+.env
+.env.prod
+.git
+node_modules
+storage

@@ -29,7 +29,8 @@ class ImportLetrasCommand extends ImportCommand
      *
      * @var string
      */
-    protected $signature = 'import:letras';
+    protected $signature = 'import:letras  {--force : Whether to delete existing data without asking}
+                                           {filename  : The JSON file to import}';
 
     /**
      * The console command description.
@@ -38,14 +39,9 @@ class ImportLetrasCommand extends ImportCommand
      */
     protected $description = 'Import Letras data';
 
-    protected function clearTable()
+    protected function importFile(string $filename)
     {
-        \DB::delete('delete from letras');
-    }
-
-    protected function fillTable()
-    {
-        $rows = $this->getData('import/letras.json');
+        $rows = $this->getData($filename);
 
         // Trim all values
         $rows = array_map(function($row) {
@@ -54,7 +50,9 @@ class ImportLetrasCommand extends ImportCommand
             }, $row);
         }, $rows);
 
-        \DB::table('letras')->insert($rows);
+        if (\DB::table('letras')->insert($rows)) {
+            $this->comment('Imported ' . count($rows) . ' records');
+        }
     }
 
     /**
@@ -64,23 +62,28 @@ class ImportLetrasCommand extends ImportCommand
      */
     public function handle()
     {
-        $this->info('');
-        $this->warn(' This will re-populate the table from scratch. Any user contributed data will be lost!');
-        if (!$this->confirm('Are you sure you want to continue? [y|N]')) {
-            return;
+        $filename = $this->argument('filename');
+        $force = $this->option('force');
+
+        $this->comment('');
+        $this->comment(sprintf("Preparing import at host '%s'", \DB::getConfig('host')));
+
+        if (env('APP_ENV') === 'production') {
+            $this->error('This is the production environment!!!');
+            $force = false;
         }
 
-        $this->comment('Clearing tables');
-        $this->clearTable();
+        if (!$this->ensureEmpty('letras', $force)) return;
 
-        $this->comment('Filling letras');
-        $this->fillTable();
+        // -------------
 
-        $this->info('Updating sequences');
+        $this->comment('Importing letras');
+        $this->importFile($filename);
+
+        $this->comment('Updating sequences');
 
         \DB::unprepared('SELECT pg_catalog.setval(pg_get_serial_sequence(\'letras\', \'id\'), MAX(id)) FROM letras');
 
-        $this->info('Done');
-
+        $this->comment('Import complete');
     }
 }

@@ -1,0 +1,42 @@
+version: '3'
+
+volumes:
+  storage:
+  pgdata:
+
+services:
+
+  app:
+    image: ub-baser:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        - GITHUB_TOKEN
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=postgres
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=
+      - APP_KEY=DoesNotNeedToBeRandomInDevEnviro
+      - SITE_CERTIFICATE=-----BEGIN CERTIFICATE-----\nMIIDSDCCAjACCQDxZ+G4BactaDANBgkqhkiG9w0BAQsFADBmMQswCQYDVQQGEwJO\nTzENMAsGA1UEBwwET3NsbzEMMAoGA1UECgwDVWlPMRYwFAYDVQQDDA11Yi1iYXNl\nci50ZXN0MSIwIAYJKoZIhvcNAQkBFhNkLm0uaGVnZ29AdWIudWlvLm5vMB4XDTE5\nMDcyOTE5MDg0MFoXDTIwMDcyODE5MDg0MFowZjELMAkGA1UEBhMCTk8xDTALBgNV\nBAcMBE9zbG8xDDAKBgNVBAoMA1VpTzEWMBQGA1UEAwwNdWItYmFzZXIudGVzdDEi\nMCAGCSqGSIb3DQEJARYTZC5tLmhlZ2dvQHViLnVpby5ubzCCASIwDQYJKoZIhvcN\nAQEBBQADggEPADCCAQoCggEBAOPsMZbJeUwvzP5//N8L87VlTB7Mm0hTxIysmZ4P\ndCEkZ7qyI4F4u/I2AaEbRZ3f0RuF3iesqaDXYZeGbNbdPly0aRhFxgCOZGqDgKXi\ntlhzn22jFR0ZZaW6Ex1U+g1enIi6fQQBqjAsA3uKsn/KhGkXrYB5E8ubNO8QsrtF\nfWVrZy0v8js+Z/pEQq/WoWHa/ICubklOz7e045qjA+n6aY7QXksBwrMAhFZdhOyg\n4oQ/ST0HM+D0do/vzL7ARCS4PwwOYykqJMJnE+K8MkTpzAM2R5BTSKXvGdwIPtNj\npRiOoVu0lroHKRk2aDzRfaSrLPbCM+x4v6wErmxQNv4/9nUCAwEAATANBgkqhkiG\n9w0BAQsFAAOCAQEAoLSAKuME0cw7lfZl6H4m2MNm6R068crvLHy42NL9MXqWAEBH\nOd94980U9fFztn9MaXL5bqYK0znzs64nxD6ETQzWPSsLnTBTlTFwgr0vBH/U94iC\nTnVSmPkQjmGwhy113jassMYV0qjE+Lv0qnMbA6HnL0gPMzl2RHW5kjtTtx23pqP/\nHm/h99iEZ45+mlZB7dH03MMUx7HQq2mxL/JME+dz6RxfWwEOXWe9MVgPVHVJaY8g\noaoG9X4/5Sa0h0A4zLAPAPcYtX0p5cUZSLobqMkQ4XxuAFpLvw8Hsgbf/+DUCdK1\nOHCKeYvILOS3/tbYoQWz3/xKDP6djR7mBtovBg==\n-----END CERTIFICATE-----
+      - SITE_CERTIFICATE_KEY=-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA4+wxlsl5TC/M/n/83wvztWVMHsybSFPEjKyZng90ISRnurIj\ngXi78jYBoRtFnd/RG4XeJ6ypoNdhl4Zs1t0+XLRpGEXGAI5kaoOApeK2WHOfbaMV\nHRllpboTHVT6DV6ciLp9BAGqMCwDe4qyf8qEaRetgHkTy5s07xCyu0V9ZWtnLS/y\nOz5n+kRCr9ahYdr8gK5uSU7Pt7TjmqMD6fppjtBeSwHCswCEVl2E7KDihD9JPQcz\n4PR2j+/MvsBEJLg/DA5jKSokwmcT4rwyROnMAzZHkFNIpe8Z3Ag+02OlGI6hW7SW\nugcpGTZoPNF9pKss9sIz7Hi/rASubFA2/j/2dQIDAQABAoIBAD2Dyf6AchR18kXe\nFUm92BDlPh4x6tcihLHTA8L9OMKZKMXivmJ7S36bxOTOj4OEnNNo1gSvPTkD6HsU\n9Nso62Pp7VN3wXD0/XUh+N7MyZol2qmkklZAPIb2KaKJBNQG7QiaDJPAP0axGl+F\nl5eV+RbEJTe/dfBF+4tqXlLc9nMgfzop0ZTQZvNMm42IjKkgQ/ZFthi9apOD3UcL\ngu14AA2IlYpwZHhDcfk5paH8Vh6QGaXm0J/IABTICzZBbpnOqZkXypU4tYD6Vza4\nzZWzwJEQg8q8Ya27ZOPv1zyLI1tGAUiu5ClMLUbrmN+st6U6Wz7CjnF86QUb4ej0\n13nlRwECgYEA/MloKAeuvtAW+flHGiWKaQXcOF0B+YVMGs7P5Ff0gbtbPneMFMue\nKAPQQxBrX/r83WH4CIZMHr/vpp0CHMjCGz89Cjm2nCusmkCt5BH8TVFAghy68FVT\nAtm2GGQmt0go4Etf+3HZ/M1K82/P03Ol98a4e/mc2yzFlnHxgiSPgL0CgYEA5tHg\nZdX6ecFXGVOBXusUEBXVKGYOCIy+dB2Oqn90hA4msY4iciZBrU3eNRJAggf0JdW5\n+R+20W7a+26OfvYcTKz09LWC5LqfueDPmoXPanqZa6vdLEk960CLaupmCLL37J4q\nCyCSvKKhPcF2gF1z5B9H73d/7FdYdveb80bONBkCgYEA9bdxHzgYjDIJo4LDso67\nM8sWfVMrEDiZ+ZT+T5+PdGuCDf52k+A5I/xQ/F+BgBKgqTEJwH+KjnlTokkMPJ6I\nz6Nw2fevoa5yYJ5uaTtyXFWWtuLmc6b8wdCOSLdRSudBlISwD+JjWnDTYj5Vbd0E\nfw0TVq8T4ZhrmAm6EB8pvqECgYBC5mPGwF1Hutz2zzg4/aOkAd/1RJcerURqPULj\nceugdsWKQusC8MmqZF5aPX8K8Sk3ahnr9eA0FZBMvb95VvXe12ZsIsvcZabz5g/l\n9pCmiQA8r+R7+IKE1AFUrLmEHfMz1qfS7873858OWitxiySS4uojoxwlsS9H0/6U\nZVpQyQKBgQCVhbWuKl/uuBufFvlGeE5UgxOpBy+M6F1lqBeB0irh8wUbl+pM+ozk\nEQx71kJJ7CqHfxSniyNjK+IVLu2JaMYNcq7rSkCLWcHE3dwmdb0fUgXOMPlfoOYe\nRiZFYMrihXM3Skyu2QJLyHh8UxF08sLFNbvOv9r10CpQYD+GSp0Qjg==\n-----END RSA PRIVATE KEY-----
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ..:/app/
+      - storage:/app/storage
+    depends_on:
+      - db
+
+  db:
+    build: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

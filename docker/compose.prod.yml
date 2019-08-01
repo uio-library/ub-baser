@@ -1,0 +1,22 @@
+version: '3'
+
+volumes:
+  storage:
+
+services:
+
+  app:
+    image: ub-baser:latest
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+    env_file:
+      - ../.env.prod
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - storage:/app/storage
+    deploy:
+      restart_policy:
+        condition: on-failure

@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImportLitteraturkritikkCommand::class,
         \App\Console\Commands\ImportDommerCommand::class,
         \App\Console\Commands\ImportLetrasCommand::class,
+        \App\Console\Commands\ImportCommand::class,
     ];
 
     /**

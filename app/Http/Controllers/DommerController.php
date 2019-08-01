@@ -32,7 +32,7 @@ class DommerController extends RecordController
     public function index(DommerSearchRequest $request, DommerSchema $schema)
     {
         if ($request->wantsJson()) {
-            return $this->dataTablesResponse($request, $schema);
+            return $this->dataTablesResponse($request);
         }
 
         $introPage = Page::where('slug', '=', 'dommer/intro')->first();
