@@ -47,10 +47,6 @@ build:
   stage: build
   script:
     - ls -l
-    - php artisan route:cache
-    - php artisan config:cache
-    - php artisan view:cache
-    - chmod -R a+rX .
   artifacts:
     paths:
       - vendor/

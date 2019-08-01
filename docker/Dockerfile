@@ -34,6 +34,12 @@ COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
 COPY docker/sites-available $APACHE_CONFDIR/sites-available
 COPY . .
 
+# Optimize Laravel
+RUN php artisan route:cache \
+  && php artisan config:cache \
+  && php artisan view:cache \
+  && chmod -R a+rX .
+
 # Validate Apache config
 # RUN /docker-entrypoint.sh -t -D DUMP_VHOSTS
 
