@@ -31,4 +31,7 @@ if [ "$APP_ENV" == "production" ]; then
 	cp docker/opcache.ini $PHP_INI_DIR/conf.d/
 fi
 
+# Run new migrations, if any
+php artisan migrate
+
 exec apache2-foreground "$@"
