@@ -31,7 +31,12 @@ if [ "$APP_ENV" == "production" ]; then
 	cp docker/opcache.ini $PHP_INI_DIR/conf.d/
 fi
 
+echo Waiting for ${DB_HOST}:${DB_PORT}
+docker/wait-for-it.sh ${DB_HOST}:${DB_PORT} -t 30
+
 # Run new migrations, if any
 php artisan migrate
 
 exec apache2-foreground "$@"
+
+echo "Startup took $SECONDS seconds"

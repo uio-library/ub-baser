@@ -1,19 +1,53 @@
 language: php
-
+sudo: true
 php:
-  - 7.3
+  - 7.1
+
+env:
+  global:
+    - DOCKER_COMPOSE_VERSION=1.24.1
+    # GITHUB_TOKEN
+    - secure: "IMeat6cXR6lMSuD3XcAnKnobi7EKg0DyAk/H9xG0f3pM+cswQcsnWbg6lsUIDuVQic7setN1mhj3a4ZumixlnkaJwWRn/5MD9p6pK+T5up5EnhapzHyDEbY1F06p+JVPwLTXv3ATXEC8HxR2fPlmwXUbAwMPz/Nfgzabg8b2uXkH7oI51rnn6yWcb66vatQzesALO5alAGae9GxYoeU77ymvpT8QBjRNH1BAb7NuYniG6i27UIhXOUg1O5LtllJsxnHLxBpr1xvFZZ63x5Bq8z3+ID9CREWjSMKjbVG07R8R2nIcf0pgyEasSZ8/Hzr037xvwk+xaGxT7VGTlpHwJEOBBKca1lo2CbbQwPfFpd8dcfOkTbV7toD9oVyo7Cl01fxmiZQTxfSa2n1pfBk/OVehmriqC1C5B6ceSERn4V6dEwNdDhmNmTjLwb9kVF5QH/2byyl9iEFsqXieZg4frdc/sMgC3BTCFic4Fst1H8F15xJyimo7U0NLgTee/pk1amcCIRWSuP/Podu5D8ietMAApdFwIeA3Y2YLIka395eL5dRRdDGQMnnCJbjnxhf2zZm8cFqHOWQe/9FvrQxDarDrRZdtyexUCnkX2PQX9LIuSoD69ldEzjipjdX0i3ngBvCu1MTeN6w+waNxyfiY4RiG9Mga6tPPcrm85JS6NB4="
+    # SAUCE_USERNAME
+    - secure: "ojG3a4e7U97Oel+y0MmTey6UR5f2+jyqoIfCvgNogeEVMmmPKmncF+bkXOP2VTCIQ0gaYey0Znz2e12BRO328IR56c6dm/EQu/oVgIb7JX57tJMp6T+A3GeZi0CuCSfOaMmnipcjM0PDxvsLRl5zmT2BwR/S658GPAY5o9fvkg7UspgMy+n1WHXo5sFpVo4ajKhs6H/cvSYXQvJuwc1uJO5NHeevGOf9pu3akT07IKywmMPYGgJXqwg0B89FQyOZv5GWrsm3SnSbH/Hd5Q2A6XsBbbluGsSuKQKCSu3AlgQCWAK19meUw/rdjoIAkKmoqpbeb2L86eFdtbmvp9ShJID5Fn6ieXbtkTm8o5RUIhPy66oFRl1hR7YaV7izzHJSMbdhedvOBhBf2rHBE8fzfGViSZYDFGenjfk0c1sHqX7WUAwfcmVnfKNuNMgLy+J+5yRu1fcG1eVIrNS7ESq/q72ksGjrlalNghjwRFNcR6CtmlzGdXo48cNzTTVwoJj/EqRIIu2vqiXpieh5Hjvdlle3PbDoHdFw6XiQStC/OCgfsXLPRLHQIpr/yRxGzi08FrDY3FZ9ckgmm5xnaO/ptyk9f6jGkXmRS0QaoOy3EYZKTxbxNYLQtTOmHhiLRlnPokJFrzNe30v7dXU6xcqdXt9Z8xAEcLDItdIDCH7SIYo="
+    # SAUCE_ACCESS_KEY
+    - secure: "jdMXMLl2GQG1Bfu8DP+r62k3C0NJsUwMGUTK+bwYWtbNrhYyTU9uS9h5hfPpnecobRkqEk0sxvd8D9+3IJNuTx3HJ6TVGu+JS4kK70HcWzAaXoJBxY/oO7Gjvus6qFVS6nRUydfVM1M+nPToMFdbQVzB1Xo8s12d5HkNuarKzwQs22n0lDHmvaycbVltPvTZpXhSkMv8ZnX1GWGNtpiDh+85HJtexvuR9DIBmBCymnLRbXk5Pkgx/EWDA5BiIqTlpQ/lvCwo8JvzHxQVwWTGGvJE7Dk4DmPe1mg2ljDYpH3/sMO6rXOceyTPNFH4Wq2KdGcpX+7WF9dUgCgdEmAn/wcs0GTNlFrTWhaFV8LZdz43sw2CeOrwv2G0cAGuYv29L2L7gz3O1i/+ga6ELuiueCeatU4NyCN++TEmMEomQ+PvegbaRketbg/v9Qt7gLZRanYprxUSTp2LnaxtltDxg2G8CS9aGhVdsdtfWAgvY5yIlwmyVXgtSrJ9iyO5nqmD4Fs3A6bS6YBCElD0QJZmwuqMWz6R94sPZUYvc3W6s82KneAdiKWH8bw/9gvodQkd6fNTOSFBBM0W5caQmSlHJ+vYRfZK5ztVO50cHxXMEAZxLnS8jsU6S2JIpJCd2DkgLBwcvN6ss+noO39x9TA6+p5K+OyVfHr2om+dBkW790U="
+
+addons:
+  sauce_connect: true
+  apt:
+    packages:
+      - docker-ce
 
 services:
   docker
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  - docker-compose --version
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
 install:
   - docker --version
+  - docker-compose --version
   - php --version
   - curl -sS https://getcomposer.org/installer | php --
-  - php composer.phar install --no-interaction --no-dev
+  - php composer.phar install --no-interaction --no-dev --prefer-dist
   - npm install
   - npm run production
   - ./dev.sh up -d
 
+before_script:
+  - ./dev.sh ps
+  - ./dev.sh logs
+  - curl http://localhost/
+  - curl --insecure https://localhost/
+
 script:
-  - npm run test
+  - ls

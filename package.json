@@ -9,12 +9,15 @@
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "test": "node_modules/.bin/wdio wdio.conf.js"
+    "test": "node_modules/.bin/wdio tests/wdio.conf.js",
+    "test@sauce": "node_modules/.bin/wdio tests/wdio.sauce.conf.js"
   },
   "devDependencies": {
     "@wdio/cli": "^5.11.12",
     "@wdio/local-runner": "^5.11.12",
     "@wdio/mocha-framework": "^5.11.0",
+    "@wdio/sauce-service": "^5.11.1",
+    "@wdio/selenium-standalone-service": "^5.11.2",
     "@wdio/spec-reporter": "^5.11.7",
     "@wdio/sync": "^5.11.11",
     "acorn": "^6.2.1",
@@ -29,6 +32,7 @@
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10",
     "wdio-chromedriver-service": "^5.0.2",
+    "wdio-mochawesome-reporter": "^3.1.0",
     "webpack-bundle-analyzer": "^3.3.2"
   },
   "dependencies": {

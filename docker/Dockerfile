@@ -30,7 +30,6 @@ RUN mkdir -p \
     ./storage/logs \
   && chown -R www-data:www-data ./storage
 
-COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
 COPY docker/sites-available $APACHE_CONFDIR/sites-available
 COPY . .
 
@@ -39,4 +38,4 @@ COPY . .
 
 # 451MB
 
-CMD ["/docker-entrypoint.sh"]
+CMD ["/app/docker/entrypoint.sh"]
