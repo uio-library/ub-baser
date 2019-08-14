@@ -23,7 +23,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'rights'];
+    protected $fillable = ['name', 'email', 'password', 'rights', 'saml_id', 'last_login_at'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -40,6 +40,7 @@ class User extends Authenticatable
     protected $casts = [
         'rights' => 'array',
         'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime',
     ];
 
     public function admin()

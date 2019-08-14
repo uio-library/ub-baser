@@ -4,8 +4,20 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header">{{ __('UiO-innlogging') }}</div>
+                <div class="card-body">
+
+                     <a class="btn btn-primary" href="{{ route('saml2_login', 'uio') }}">Logg inn sikkert med Weblogin</a>
+
+                </div>
+            </div>
+
+
+
+            <div class="card">
+                <div class="card-header">{{ __('Lokal innlogging') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

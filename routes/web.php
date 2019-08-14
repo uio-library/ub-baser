@@ -50,4 +50,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('admin/pages', 'PageController@index');
 });
 
+Route::get('saml2/error', 'Auth\LoginController@samlError');
+
 Auth::routes();

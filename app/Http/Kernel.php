@@ -38,6 +38,12 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\Login::class,
         ],
 
+        'saml' => [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+
         'api' => [
             'throttle:60,1',
             'bindings',
