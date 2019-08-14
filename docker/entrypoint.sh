@@ -6,6 +6,10 @@ if [ -z "$SITE_CERTIFICATE" ] ; then
 	echo "Cannot start without a SITE_CERTIFICATE"
 	exit 1;
 fi
+if [ -z "$CA_CERTIFICATE" ] ; then
+	echo "Cannot start without a CA_CERTIFICATE"
+	exit 1;
+fi
 
 if [ -z "$SITE_CERTIFICATE_KEY" ] ; then
 	echo "Cannot start without a SITE_CERTIFICATE_KEY"
@@ -15,6 +19,7 @@ fi
 echo "Storing certificates in $APACHE_CONFDIR"
 
 echo -e $SITE_CERTIFICATE > $APACHE_CONFDIR/site.crt
+echo -e $CA_CERTIFICATE > $APACHE_CONFDIR/ca.crt
 echo -e $SITE_CERTIFICATE_KEY > $APACHE_CONFDIR/site.key
 
 # Optimize Laravel. These commands depend on the environment,
