@@ -5,6 +5,7 @@ namespace App\Providers;
 use Aacotroneo\Saml2\Events\Saml2LoginEvent;
 use Aacotroneo\Saml2\Events\Saml2LogoutEvent;
 use App\Listeners\Saml2Login;
+use App\Listeners\Saml2Logout;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;

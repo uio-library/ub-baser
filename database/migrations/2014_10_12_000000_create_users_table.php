@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('password', 60)->nullable();
             $table->string('saml_id')->nullable()->unique();
             $table->string('saml_session')->nullable();
-            $table->jsonb('rights');
+            $table->jsonb('rights')->default('[]');
             $table->dateTime('last_login_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

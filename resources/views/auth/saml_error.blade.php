@@ -4,20 +4,11 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card danger">
+                <div class="card bg-danger text-white">
                     <div class="card-header">Innloggingsproblem</div>
 
                     <p>Beklager, det oppsto et innloggingsproblem.</p>
-
-                    <ul>
-                        @foreach ($errors as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-
-                        @foreach ($error_details as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                    <p>{{ $error }}</p>
 
                 </div>
             </div>

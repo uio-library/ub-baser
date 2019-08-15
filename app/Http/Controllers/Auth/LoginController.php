@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -43,9 +45,44 @@ class LoginController extends Controller
     public function samlError()
     {
         return view('auth.saml_error', [
-            'errors' => session()->get('saml2_error', []),
-            'error_details' => session()->get('saml2_error_detail', []),
+             'error' => session()->get('saml2_error.last_error_reason', ''),
         ]);
+    }
+
+    public function samlRegister(Request $request)
+    {
+        if (\Auth::check()) {
+            return redirect('/');
+        }
+        return view('auth.saml_register', [
+            'data' => $request->session()->get('saml_response'),
+        ]);
+    }
+
+    public function samlStoreNewUser(Request $request)
+    {
+        $data = $request->session()->get('saml_response');
+
+        if (!$data || !$data['saml_id']) {
+            die('no saml data');
+        }
+
+        $user = User::firstOrNew([
+            'saml_id' => $data['saml_id'],
+        ]);
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+
+        $user->last_login_at = Carbon::now();
+        $user->saml_session = $data['saml_session'];
+
+        $user->save();
+
+        \Auth::login($user);
+
+        $request->session()->forget('saml_response');
+
+        return redirect('/')->with('status', 'Velkommen til UB-baser!');
     }
 
     /**

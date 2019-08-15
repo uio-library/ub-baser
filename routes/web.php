@@ -51,5 +51,7 @@ Route::group(['middleware' => 'admin'], function () {
 });
 
 Route::get('saml2/error', 'Auth\LoginController@samlError');
+Route::get('saml2/register', 'Auth\LoginController@samlRegister');
+Route::post('saml2/store', 'Auth\LoginController@samlStoreNewUser');
 
 Auth::routes();

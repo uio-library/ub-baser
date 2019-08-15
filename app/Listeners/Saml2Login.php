@@ -4,35 +4,41 @@ namespace App\Listeners;
 
 use Aacotroneo\Saml2\Events\Saml2LoginEvent;
 use App\User;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class Saml2Login
 {
+    protected $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     /**
      * Handle the event.
      *
-     * @param  Saml2LoginEvent  $event
+     * @param Saml2LoginEvent $event
+     * @param Request $request
      * @return void
      */
     public function handle(Saml2LoginEvent $event)
     {
         $data = $event->getSaml2User();
-        $uid = $data->getUserId();
         $attrs = $data->getAttributes();
 
-        dd($attrs);
+        $saml_id = $attrs['eduPersonPrincipalName'][0];
+        $user = User::where('saml_id', '=', $saml_id)->first();
 
-        $user = User::firstOrNew([
-            'saml_id' => $uid,
+        if (!is_null($user)) {
+            return \Auth::login($user);
+        }
+
+        $this->request->session()->put('saml_response', [
+            'saml_id' =>  $saml_id,
+            'saml_session' => $data->getSessionIndex(),
+            'name' => $attrs['cn'][0],
+            'email' => $attrs['mail'][0],
         ]);
-
-        $user->name = $attrs['FirstName'][0] . ' ' . $attrs['LastName'][0];
-        $user->email = $attrs['EmailAddress'][0];
-        $user->last_login_at = Carbon::now();
-        $user->saml_session = $data->getSessionIndex();
-
-        $user->save();
-
-        \Auth::login($user);
     }
 }
