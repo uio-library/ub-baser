@@ -16,6 +16,7 @@ class Saml2Logout
      */
     public function handle(Saml2LogoutEvent $event)
     {
+        \Log::info('Received SAML logout event.');
         // die('Got logout event');
 
         $user = \Auth::user();

@@ -24,6 +24,8 @@ class Saml2Login
      */
     public function handle(Saml2LoginEvent $event)
     {
+        \Log::info('Received SAML login event.');
+
         $data = $event->getSaml2User();
         $attrs = $data->getAttributes();
 
