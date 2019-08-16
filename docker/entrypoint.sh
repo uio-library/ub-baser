@@ -28,10 +28,6 @@ else
 fi
 
 # ----------------------------------------------------------------------------
-# Fix permissions
-chmod -R a+rX .
-
-# ----------------------------------------------------------------------------
 # Optimize Laravel
 # (These commands depend on the environment, so we cannot run them in Dockerfile)
 
@@ -63,6 +59,13 @@ docker/wait-for-it.sh ${DB_HOST}:${DB_PORT} -t 30
 # Run migrations, if any
 
 php artisan migrate --force
+
+# ----------------------------------------------------------------------------
+# Fix permissions
+# This should be done *after* any artisan command, to avoid being left with
+# files owned by root.
+chmod -R a+rX .
+chown -R www-data:www-data storage
 
 # ----------------------------------------------------------------------------
 # Apache time!
