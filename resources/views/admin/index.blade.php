@@ -2,9 +2,11 @@
 
 @section('content')
 
-<ol class="breadcrumb" style="margin-bottom: 5px;">
-  <li class="active">{{ trans('messages.admin') }}</li>
-</ol>
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">{{ trans('messages.admin') }}</li>
+    </ol>
+</nav>
 
 <h2>{{ trans('messages.admin') }}</h2>
 

@@ -2,23 +2,23 @@
 
 @section('content')
 
-<ol class="breadcrumb" style="margin-bottom: 5px;">
-  <li><a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a></li>
-  <li><a href="{{ action('Admin\UserController@index') }}">{{ trans('messages.manageusers') }}</a></li>
-  <li class="active">{{ $user->name }}</li>
-</ol>
-
-<h2>{{ $user->name }}</h2>
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ action('Admin\UserController@index') }}">{{ trans('messages.manageusers') }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ $user->name }}</li>
+    </ol>
+</nav>
 
 @include('shared.errors')
 
-<div class="panel panel-default">
+<div class="card my-3">
 
-    <div class="panel-heading">
-        <h3 class="panel-title">Rediger bruker</h3>
+    <div class="card-header">
+        Rediger bruker
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
 
         <form method="POST" action="{{ action('Admin\UserController@update', $user->id) }}">
             {!! csrf_field() !!}
@@ -34,6 +34,13 @@
                 <label for="emailInput" class="col-sm-2 form-control-label">{{ trans('messages.email') }}</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="emailInput" name="email" value="{{ old('email') ?: $user->email }}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="saml_idInput" class="col-sm-2 form-control-label">{{ trans('messages.saml_id') }}</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="saml_idInput" name="saml_id" value="{{ old('saml_id') ?: $user->saml_id }}">
                 </div>
             </div>
 
@@ -64,16 +71,16 @@
     </div>
 </div>
 
-<div class="panel panel-default">
+<div class="card border-danger my-3">
 
-    <div class="panel-heading">
-        <h3 class="panel-title">Slett bruker</h3>
+    <div class="card-header">
+        Slett bruker
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
 
         <form method="POST" action="{{ action('Admin\UserController@destroy', $user->id) }}">
-            {!! csrf_field() !!}
+            @csrf
 
             <div class="form-group row">
                 <div class="col-sm-12">

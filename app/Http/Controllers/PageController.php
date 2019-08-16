@@ -15,7 +15,7 @@ class PageController extends Controller
     public function index()
     {
         return response()->view('pages.index', [
-            'pages' => Page::get(),
+            'pages' => Page::orderBy('slug')->get(),
         ]);
     }
 

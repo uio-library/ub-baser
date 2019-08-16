@@ -2,18 +2,20 @@
 
 @section('content')
 
-<ol class="breadcrumb" style="margin-bottom: 5px;">
-  <li><a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a></li>
-  <li><a href="{{ action('Admin\UserController@index') }}">{{ trans('messages.manageusers') }}</a></li>
-  <li class="active">{{ trans('messages.createuser') }}</li>
-</ol>
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ action('Admin\UserController@index') }}">{{ trans('messages.manageusers') }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ trans('messages.createuser') }}</li>
+    </ol>
+</nav>
 
 <h2>{{ trans('messages.createuser') }}</h2>
 
 @include('shared.errors')
 
 <form method="POST" action="{{ action('Admin\UserController@store') }}">
-    {!! csrf_field() !!}
+    @csrf
 
     <div class="form-group row">
         <label for="nameInput" class="col-sm-2 form-control-label">{{ trans('messages.name') }}</label>

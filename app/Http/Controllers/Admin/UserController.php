@@ -70,12 +70,14 @@ class UserController extends Controller
         $user = is_null($id) ? new User() : User::findOrFail($id);
 
         $this->validate($request, [
-            'email' => 'required|unique:users,email' . (is_null($id) ? '' : ',' . $id) . '|max:255',
+            'email' => 'required|email:rfc|unique:users,email' . (is_null($id) ? '' : ',' . $id) . '|max:255',
             'name'  => 'required|max:255',
+            'saml_id' => 'nullable|email:rfc|unique:users,saml_id' . (is_null($id) ? '' : ',' . $id) . '|max:255',
         ]);
 
         $user->name = $request->get('name');
         $user->email = $request->get('email');
+        $user->saml_id = $request->get('saml_id');
         $user->rights = $this->rightsFromRequest($request);
 
         $user->save();

@@ -2,10 +2,12 @@
 
 @section('content')
 
-<ol class="breadcrumb" style="margin-bottom: 5px;">
-  <li><a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a></li>
-  <li class="active">{{ trans('messages.manageusers') }}</li>
-</ol>
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ trans('messages.manageusers') }}</li>
+    </ol>
+</nav>
 
 <h2>{{ trans('messages.manageusers') }}</h2>
 
