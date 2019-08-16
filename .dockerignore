@@ -3,3 +3,5 @@
 .git
 node_modules
 storage
+bootstrap/cache/config.php
+bootstrap/cache/routes.php

@@ -36,9 +36,9 @@ chmod -R a+rX .
 # (These commands depend on the environment, so we cannot run them in Dockerfile)
 
 if [ "$APP_ENV" == "production" ]; then
-	php artisan config:cache
-	php artisan route:cache
-	php artisan view:cache
+	php artisan config:cache  # stored in bootstrap/cache/config.php
+	php artisan route:cache  # stored in bootstrap/cache/routes.php
+	php artisan view:cache  # stored in storage/framework/views
 else
 	php artisan config:clear
 	php artisan route:clear
