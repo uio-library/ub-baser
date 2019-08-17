@@ -27,7 +27,7 @@ exports.config = {
     ],
 
     specs: [
-        './tests/specs/**/*.js'
+        './tests/selenium/specs/**/*.js'
     ],
     exclude: [
     ],

@@ -1,3 +1,5 @@
+const { exec } = require( 'child_process' );
+const chalk = require('chalk');
 const BASE_URL = process.env.BASE_URL || 'https://localhost'
 
 exports.config = {
@@ -22,7 +24,7 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './tests/specs/**/*.js'
+        './tests/selenium/specs/**/*.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -150,8 +152,21 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    // },
+    onPrepare: function (config, capabilities) {
+        console.info('Checking if Docker is running');
+
+        return new Promise(function(resolve, reject) {
+            exec('docker ps', {timeout: 5000}, (error, stdout, stderr) => {
+                if (error) {
+                    reject(new Error('Docker is not running!'));
+                    return;
+                }
+
+                resolve(stdout.trim());
+            });
+        });
+    },
+
     /**
      * Gets executed just before initialising the webdriver session and test framework. It allows you
      * to manipulate configurations depending on the capability or spec.
@@ -167,15 +182,17 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
-    // before: function (capabilities, specs) {
-    // },
+    before: function (capabilities, specs) {
+        // console.log(chalk.blue('BEFORE'));
+    },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {String} commandName hook command name
      * @param {Array} args arguments that command would receive
      */
-    // beforeCommand: function (commandName, args) {
-    // },
+    beforeCommand: function (commandName, args) {
+        // console.log(chalk.blue('BEFORE_COMMAND'));
+    },
     /**
      * Hook that gets executed before the suite starts
      * @param {Object} suite suite details
@@ -186,8 +203,9 @@ exports.config = {
      * Function to be executed before a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
      * @param {Object} test test details
      */
-    // beforeTest: function (test) {
-    // },
+    beforeTest: function (test) {
+        // console.log(chalk.blue('BEFORE_TEST'));
+    },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)

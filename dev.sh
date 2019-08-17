@@ -51,10 +51,10 @@ fi
 case $1 in
   laravel-logs)
     CMD="run --rm app tail -f /app/storage/logs/laravel-$(date +%Y-%m-%d).log"
-  ;;
+    ;;
   *)
     CMD="$@"
-  ;;
+    ;;
 esac
 
 # --------------------------------------------------------------------------------

@@ -4,7 +4,7 @@
 
 @section('content')
 
-        <ul>
+        <ul id="database_list">
             <li>
                 <a href="{{ action('LitteraturkritikkController@index') }}">Norsk litteraturkritikk</a>
             </li>
