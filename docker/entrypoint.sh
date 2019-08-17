@@ -3,28 +3,37 @@
 set -e
 
 # ----------------------------------------------------------------------------
-# Certificate handling
+# Apache setup
 
-if [ -z "$SITE_CERTIFICATE" ] ; then
-	echo "Cannot start without a SITE_CERTIFICATE"
-	exit 1;
-fi
+if [ "$APP_ENV" == "production" ]; then
 
-if [ -z "$SITE_CERTIFICATE_KEY" ] ; then
-	echo "Cannot start without a SITE_CERTIFICATE_KEY"
-	exit 1;
-fi
+	if [ -z "$SITE_CERTIFICATE" ] ; then
+		echo "Cannot start without a SITE_CERTIFICATE"
+		exit 1;
+	fi
 
-echo "Storing certificates in $APACHE_CONFDIR"
+	if [ -z "$CA_CERTIFICATE" ] ; then
+		echo "Cannot start without a CA_CERTIFICATE"
+		exit 1;
+	fi
 
-echo -e $SITE_CERTIFICATE > $APACHE_CONFDIR/site.crt
-echo -e $SITE_CERTIFICATE_KEY > $APACHE_CONFDIR/site.key
+	if [ -z "$SITE_CERTIFICATE_KEY" ] ; then
+		echo "Cannot start without a SITE_CERTIFICATE_KEY"
+		exit 1;
+	fi
 
-if [ -z "$CA_CERTIFICATE" ] ; then
-	echo "Warning: No CA_CERTIFICATE specified"
-	echo -e $SITE_CERTIFICATE > $APACHE_CONFDIR/ca.crt
-else
+	echo "Storing certificates in $APACHE_CONFDIR"
+
+	echo -e $SITE_CERTIFICATE > $APACHE_CONFDIR/site.crt
+	echo -e $SITE_CERTIFICATE_KEY > $APACHE_CONFDIR/site.key
 	echo -e $CA_CERTIFICATE > $APACHE_CONFDIR/ca.crt
+
+	a2ensite production
+
+else
+
+	a2ensite development
+
 fi
 
 # ----------------------------------------------------------------------------

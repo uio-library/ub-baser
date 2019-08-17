@@ -17,6 +17,7 @@ RUN apt-get update \
     && docker-php-ext-install pdo pdo_pgsql
 
 RUN a2enmod rewrite ssl
+RUN a2dissite 000-default
 
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && sed -i "s/memory_limit = 128M/memory_limit = 348M/" "$PHP_INI_DIR/php.ini"
@@ -30,6 +31,7 @@ RUN mkdir -p \
     ./storage/logs \
   && chown -R www-data:www-data ./storage
 
+COPY docker/include $APACHE_CONFDIR/include
 COPY docker/sites-available $APACHE_CONFDIR/sites-available
 COPY . .
 
