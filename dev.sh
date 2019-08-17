@@ -32,7 +32,7 @@ fi
 
 if [ ! -d "vendor" ]; then
 	curl -sS https://getcomposer.org/installer | php --
-	php composer.phar install --no-interaction --no-dev --prefer-dist --no-autoloader
+	php composer.phar install --no-interaction --no-dev --prefer-dist
 fi
 
 if [ ! -d "node_modules" ]; then

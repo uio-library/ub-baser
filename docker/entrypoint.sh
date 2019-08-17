@@ -2,6 +2,8 @@
 
 set -e
 
+echo "entrypoint.sh starting using env: ${APP_ENV}"
+
 # ----------------------------------------------------------------------------
 # Apache setup
 

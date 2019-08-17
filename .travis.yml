@@ -43,7 +43,7 @@ install:
 before_script:
   - ./dev.sh ps
   - ./dev.sh logs
-  - curl http://localhost:8080/
+  - curl --fail http://localhost:8080/
 
 script:
   - npm run test@sauce

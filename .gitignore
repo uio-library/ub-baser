@@ -6,7 +6,6 @@ Homestead.json
 .env
 .env.prod
 composer.phar
-composer.lock
 _ide_helper*
 tests/_output/*
 tests/_support/_generated/*
