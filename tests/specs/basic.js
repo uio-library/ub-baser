@@ -15,14 +15,6 @@ before(function () {
   console.log(proc.stdout);
 });
 
-describe('webdriver.io page', function () {
-    it('should have the right title', () => {
-        browser.url('/');
-        const title = browser.getTitle();
-        assert.strictEqual(title, 'UB-baser');
-    });
-});
-
 after(function () {
   console.log('Rollback migrations');
   const proc = spawnSync(
@@ -35,4 +27,13 @@ after(function () {
     }
   );
   console.log(proc.stdout);
+});
+
+
+describe('home page', function () {
+    it('should identify as UB-baser', () => {
+        browser.url('/');
+        const title = browser.getTitle();
+        assert.strictEqual(title, 'UB-baser');
+    });
 });

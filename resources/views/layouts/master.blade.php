@@ -18,6 +18,9 @@
 <body class="d-flex flex-column h-100">
 
     <header>
+        <div class="{{ App::environment() }}">
+            This is the '{{ App::environment() }}' environment
+        </div>
         <div class="uio-header">
             <div class="container">
                 <a href="https://www.uio.no/" title="Universitetet i Oslo"><img src="/images/uio-logo.svg" alt="Universitetet i Oslo"></a>

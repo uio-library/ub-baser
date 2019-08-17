@@ -2,21 +2,19 @@ version: '3'
 
 volumes:
   storage:
-  pgdata_dev:
+  pgdata_testing:
 
 services:
 
   db:
     build: ../postgres
     volumes:
-      - pgdata_dev:/var/lib/postgresql/data
-    ports:
-      - 5999:5432
-    container_name: ub-baser-db
+      - pgdata_testing:/var/lib/postgresql/data
+    container_name: ub-baser-db-testing
     environment:
-      - DB_DATABASE=ub-baser-dev
-      - DB_USERNAME=ub-baser-dev
-      - DB_PASSWORD=ub-baser-dev
+      - DB_DATABASE=ub-baser-test
+      - DB_USERNAME=ub-baser-test
+      - DB_PASSWORD=ub-baser-test
 
   app:
     image: ub-baser:latest
@@ -26,21 +24,21 @@ services:
       args:
         - GITHUB_TOKEN
     environment:
-      - APP_ENV=dev
+      - APP_ENV=testing
       - APP_DEBUG=true
       - DB_CONNECTION=pgsql
       - DB_HOST=db
       - DB_PORT=5432
-      - DB_DATABASE=ub-baser-dev
-      - DB_USERNAME=ub-baser-dev
-      - DB_PASSWORD=ub-baser-dev
+      - DB_DATABASE=ub-baser-test
+      - DB_USERNAME=ub-baser-test
+      - DB_PASSWORD=ub-baser-test
       - APP_KEY=DoesNotNeedToBeRandomInDevEnviro
     ports:
-      - 80:80
+      - 8080:80
+    container_name: ub-baser-app-testing
     volumes:
       - ../..:/app/
       - storage:/app/storage
       #- ../../storage:/app/storage
     depends_on:
       - db
-    container_name: ub-baser-app

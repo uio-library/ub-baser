@@ -32,7 +32,6 @@
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10",
     "wdio-chromedriver-service": "^5.0.2",
-    "wdio-mochawesome-reporter": "^3.1.0",
     "webpack-bundle-analyzer": "^3.3.2"
   },
   "dependencies": {

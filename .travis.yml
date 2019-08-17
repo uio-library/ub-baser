@@ -5,6 +5,7 @@ php:
 
 env:
   global:
+    - APP_ENV=testing
     - DOCKER_COMPOSE_VERSION=1.24.1
     # GITHUB_TOKEN
     - secure: "IMeat6cXR6lMSuD3XcAnKnobi7EKg0DyAk/H9xG0f3pM+cswQcsnWbg6lsUIDuVQic7setN1mhj3a4ZumixlnkaJwWRn/5MD9p6pK+T5up5EnhapzHyDEbY1F06p+JVPwLTXv3ATXEC8HxR2fPlmwXUbAwMPz/Nfgzabg8b2uXkH7oI51rnn6yWcb66vatQzesALO5alAGae9GxYoeU77ymvpT8QBjRNH1BAb7NuYniG6i27UIhXOUg1O5LtllJsxnHLxBpr1xvFZZ63x5Bq8z3+ID9CREWjSMKjbVG07R8R2nIcf0pgyEasSZ8/Hzr037xvwk+xaGxT7VGTlpHwJEOBBKca1lo2CbbQwPfFpd8dcfOkTbV7toD9oVyo7Cl01fxmiZQTxfSa2n1pfBk/OVehmriqC1C5B6ceSERn4V6dEwNdDhmNmTjLwb9kVF5QH/2byyl9iEFsqXieZg4frdc/sMgC3BTCFic4Fst1H8F15xJyimo7U0NLgTee/pk1amcCIRWSuP/Podu5D8ietMAApdFwIeA3Y2YLIka395eL5dRRdDGQMnnCJbjnxhf2zZm8cFqHOWQe/9FvrQxDarDrRZdtyexUCnkX2PQX9LIuSoD69ldEzjipjdX0i3ngBvCu1MTeN6w+waNxyfiY4RiG9Mga6tPPcrm85JS6NB4="
@@ -37,17 +38,12 @@ install:
   - docker --version
   - docker-compose --version
   - php --version
-  - curl -sS https://getcomposer.org/installer | php --
-  - php composer.phar install --no-interaction --no-dev --prefer-dist
-  - npm install
-  - npm run production
   - ./dev.sh up -d
 
 before_script:
   - ./dev.sh ps
   - ./dev.sh logs
-  - curl http://localhost/
-  - curl --insecure https://localhost/
+  - curl http://localhost:8080/
 
 script:
-  - ls
+  - npm run test@sauce
