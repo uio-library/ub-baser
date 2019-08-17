@@ -1,5 +1,6 @@
 const { exec } = require( 'child_process' );
-const chalk = require('chalk');
+const { runMigrations, rollbackMigrations, isDockerRunning } = require('./util')
+
 const BASE_URL = process.env.BASE_URL || 'https://localhost'
 
 exports.config = {
@@ -46,7 +47,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -71,7 +72,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'warn',
     //
     // Set specific log levels per logger
     // loggers:
@@ -153,18 +154,7 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      */
     onPrepare: function (config, capabilities) {
-        console.info('Checking if Docker is running');
-
-        return new Promise(function(resolve, reject) {
-            exec('docker ps', {timeout: 5000}, (error, stdout, stderr) => {
-                if (error) {
-                    reject(new Error('Docker is not running!'));
-                    return;
-                }
-
-                resolve(stdout.trim());
-            });
-        });
+        isDockerRunning();
     },
 
     /**
@@ -183,7 +173,7 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
     before: function (capabilities, specs) {
-        // console.log(chalk.blue('BEFORE'));
+        // console.log('___BEFORE');
     },
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -191,33 +181,38 @@ exports.config = {
      * @param {Array} args arguments that command would receive
      */
     beforeCommand: function (commandName, args) {
-        // console.log(chalk.blue('BEFORE_COMMAND'));
+        //
     },
     /**
      * Hook that gets executed before the suite starts
      * @param {Object} suite suite details
      */
-    // beforeSuite: function (suite) {
-    // },
+    beforeSuite: function (suite) {
+        // console.log(`BEFORE suite: ${suite.title}`);
+        return runMigrations();
+    },
     /**
      * Function to be executed before a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
      * @param {Object} test test details
      */
     beforeTest: function (test) {
+        // console.log('___BEFORE_TEST');
         // console.log(chalk.blue('BEFORE_TEST'));
     },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)
      */
-    // beforeHook: function () {
-    // },
+    beforeHook: function () {
+        //console.log('___BEFORE_HOOK');
+    },
     /**
      * Hook that gets executed _after_ a hook within the suite starts (e.g. runs after calling
      * afterEach in Mocha)
      */
-    // afterHook: function () {
-    // },
+    afterHook: function () {
+        //
+    },
     /**
      * Function to be executed after a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
      * @param {Object} test test details
@@ -228,8 +223,10 @@ exports.config = {
      * Hook that gets executed after the suite has ended
      * @param {Object} suite suite details
      */
-    // afterSuite: function (suite) {
-    // },
+    afterSuite: function (suite) {
+        // console.log(`AFTER suite: ${suite.title}`);
+        return rollbackMigrations();
+    },
     /**
      * Runs after a WebdriverIO command gets executed
      * @param {String} commandName hook command name
@@ -246,8 +243,8 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that ran
      */
-    // after: function (result, capabilities, specs) {
-    // },
+    after: function (result, capabilities, specs) {
+    },
     /**
      * Gets executed right after terminating the webdriver session.
      * @param {Object} config wdio configuration object

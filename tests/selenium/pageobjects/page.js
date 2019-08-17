@@ -16,7 +16,6 @@ class Page {
 	 * @return {void} This method runs a browser command.
 	 */
 	open( path, query = {}, fragment = '' ) {
-		console.log("YO")
 		const the_url = url.resolve( browser.options.baseUrl, path );
 		browser.url(
 			the_url,
