@@ -52,79 +52,79 @@
 </template>
 
 <script>
-    import SearchField from './SearchField'
+import SearchField from './SearchField'
 
-    export default {
-        name: "search-form",
+export default {
+  name: 'search-form',
 
-        components: {
-            SearchField,
-        },
+  components: {
+    SearchField
+  },
 
-        props: {
-            action: String,
-            initialQuery: Array,
-            schema: Object,
-            advancedSearch: Boolean,
-        },
+  props: {
+    action: String,
+    initialQuery: Array,
+    schema: Object,
+    advancedSearch: Boolean
+  },
 
-        computed: {
+  computed: {
 
-            allFields() {
-                let fields = [];
-                this.schema.fields.forEach(field => fields.push(field));
-                this.schema.groups.forEach(fieldGroup => {
-                    fieldGroup.fields.forEach(field => fields.push(field));
-                });
-                return fields;
-            },
+    allFields () {
+      const fields = []
+      this.schema.fields.forEach(field => fields.push(field))
+      this.schema.groups.forEach(fieldGroup => {
+        fieldGroup.fields.forEach(field => fields.push(field))
+      })
+      return fields
+    },
 
-            firstSearchField() {
-                for (let i = 0; i < this.allFields.length; i++) {
-                    if (this.allFields[i].search !== false) {
-                        return this.allFields[i].key;
-                    }
-                }
-                throw new Error('Found no search fields!');
-            },
-
-        },
-
-        data() {
-            return {
-                advanced: this.advancedSearch,
-                query: this.initialQuery.map(x => ({
-                    field: x.field,
-                    operator: x.operator,
-                    value: x.value,
-                })),
-                operators: [
-                    {label: 'matcher', value: 'eq'},
-                    {label: 'matcher ikke', value: 'neq'},
-                    {label: 'mangler verdi', value: 'isnull'},
-                    {label: 'har verdi', value: 'notnull'},
-                ],
-            }
-        },
-
-        methods: {
-
-            addField() {
-                this.query.push({
-                    field: this.firstSearchField,
-                    operator: 'eq',
-                    value: ''
-                });
-            }
-
-        },
-
-        mounted() {
-            if (!this.query.length) {
-                this.addField();
-            }
+    firstSearchField () {
+      for (let i = 0; i < this.allFields.length; i++) {
+        if (this.allFields[i].search !== false) {
+          return this.allFields[i].key
         }
+      }
+      throw new Error('Found no search fields!')
     }
+
+  },
+
+  data () {
+    return {
+      advanced: this.advancedSearch,
+      query: this.initialQuery.map(x => ({
+        field: x.field,
+        operator: x.operator,
+        value: x.value
+      })),
+      operators: [
+        { label: 'matcher', value: 'eq' },
+        { label: 'matcher ikke', value: 'neq' },
+        { label: 'mangler verdi', value: 'isnull' },
+        { label: 'har verdi', value: 'notnull' }
+      ]
+    }
+  },
+
+  methods: {
+
+    addField () {
+      this.query.push({
+        field: this.firstSearchField,
+        operator: 'eq',
+        value: ''
+      })
+    }
+
+  },
+
+  mounted () {
+    if (!this.query.length) {
+      this.addField()
+    }
+  }
+}
 </script>
 
 <style scoped lang="sass">

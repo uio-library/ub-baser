@@ -1,16 +1,14 @@
-const Page = require( './page' );
+const Page = require('./page')
 
 class HomePage extends Page {
+  get title () { return browser.getTitle() }
 
-    get title() { return browser.getTitle(); }
+  open () {
+    super.open('/')
+  }
 
-    open() {
-        super.open( '/' );
-    }
-
-    getDatabaseList() {
-    	return $('#database_list').$$('li');
-    }
-
+  getDatabaseList () {
+    return $('#database_list').$$('li')
+  }
 }
-module.exports = new HomePage();
+module.exports = new HomePage()

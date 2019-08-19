@@ -10,12 +10,12 @@
 </template>
 
 <script>
-    export default {
-        name: "simple-input",
-        props: {
-            name: String,
-            schema: Object,
-            value: Boolean,
-        }
-    }
+export default {
+  name: 'simple-input',
+  props: {
+    name: String,
+    schema: Object,
+    value: Boolean
+  }
+}
 </script>

@@ -8,23 +8,21 @@ import VueAxios from 'vue-axios'
  * code may be modified to fit the specific needs of your application.
  */
 
-window.Popper = require('popper.js').default;
-window.$ = window.jQuery = require('jquery');
+window.Popper = require('popper.js').default
+window.$ = window.jQuery = require('jquery')
 
-require('bootstrap');
+require('bootstrap')
 
 // require('selectize');
 
+require('datatables.net')
+require('datatables.net-dt')
+require('datatables.net-bs4')
 
-require('datatables.net');
-require('datatables.net-dt');
-require('datatables.net-bs4');
+require('bootstrap-select')
+require('bootstrap-select/dist/js/i18n/defaults-nb_NO.js')
 
-require('bootstrap-select');
-require('bootstrap-select/dist/js/i18n/defaults-nb_NO.js');
-
-require('selectize');
-
+require('selectize')
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -32,9 +30,9 @@ require('selectize');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-Vue.use(VueAxios, axios);
+Vue.use(VueAxios, axios)
 
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -42,12 +40,12 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * a simple convenience so we don't have to attach every token manually.
  */
 
-let token = document.head.querySelector('meta[name="csrf-token"]');
+const token = document.head.querySelector('meta[name="csrf-token"]')
 
 if (token) {
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')
 }
 
 /**

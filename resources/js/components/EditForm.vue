@@ -31,34 +31,33 @@
             <!--{{ json_encode( old($field['key'], $record->{$field['key']}) ) }}-->
         </div>
 
-
     </div>
 </template>
 
 <script>
-    import EditField from './EditField'
-    export default {
-        name: "edit-form",
-        components: {
-            EditField,
-        },
-        props: {
-            schema: {
-                type: Object,
-            },
-            values: {
-                type: Object,
-            }
-        },
-        computed: {
-            schemas() {
-                let out = [];
-                this.schema.fields.forEach(col => out[col.key] = col);
-                this.schema.groups.forEach(fieldGroup => {
-                    fieldGroup.fields.forEach(col => out[col.key] = col)
-                });
-                return out
-            }
-        }
+import EditField from './EditField'
+export default {
+  name: 'edit-form',
+  components: {
+    EditField
+  },
+  props: {
+    schema: {
+      type: Object
+    },
+    values: {
+      type: Object
     }
+  },
+  computed: {
+    schemas () {
+      const out = []
+      this.schema.fields.forEach(col => out[col.key] = col)
+      this.schema.groups.forEach(fieldGroup => {
+        fieldGroup.fields.forEach(col => out[col.key] = col)
+      })
+      return out
+    }
+  }
+}
 </script>

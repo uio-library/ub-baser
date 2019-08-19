@@ -4,9 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import Vue from './bootstrap';
-
-Vue.config.devtools = true;
+import Vue from './bootstrap'
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,13 +17,15 @@ Vue.config.devtools = true;
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-import DataTable from './components/DataTable.vue';
-import SearchForm from './components/SearchForm.vue';
-import EditForm from './components/EditForm.vue';
+import DataTable from './components/DataTable.vue'
+import SearchForm from './components/SearchForm.vue'
+import EditForm from './components/EditForm.vue'
 
-Vue.component('data-table', DataTable);
-Vue.component('search-form', SearchForm);
-Vue.component('edit-form', EditForm);
+Vue.config.devtools = true
+
+Vue.component('data-table', DataTable)
+Vue.component('search-form', SearchForm)
+Vue.component('edit-form', EditForm)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -33,6 +33,6 @@ Vue.component('edit-form', EditForm);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-});
+export default new Vue({
+  el: '#app'
+})

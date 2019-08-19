@@ -22,53 +22,53 @@
 </template>
 
 <script>
-    import { get } from 'lodash/object'
-    import VueSlider from 'vue-slider-component'
-    import 'vue-slider-component/theme/antd.css'
+import { get } from 'lodash/object'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
 
-    export default {
-        name: "range-slider-input",
+export default {
+  name: 'range-slider-input',
 
-        components: {
-            VueSlider,
-        },
+  components: {
+    VueSlider
+  },
 
-        props: {
-            name: String,
-            schema: Object,
-            value: String,
-        },
+  props: {
+    name: String,
+    schema: Object,
+    value: String
+  },
 
-        computed: {
-            minValue() {
-                return get(this.schema, 'search.options.minValue')
-            },
-            maxValue() {
-                return get(this.schema, 'search.options.maxValue')
-            },
-            valueAsArray() {
-                let val = this.value.split('-');
-                if (val.length !== 2 || !val[0].match(/-?[0-9]{1,4}/) || !val[1].match(/-?[0-9]{1,4}/) ) {
-                    // Return default value
-                    return [
-                        this.minValue,
-                        this.maxValue,
-                    ];
-                }
-                return [parseInt(val[0]), parseInt(val[1])];
-            },
-        },
-
-        mounted() {
-            // We might have inherited a value from another component, so validate
-            // and update it just in case.
-            this.$emit('value', `${this.valueAsArray[0]}-${this.valueAsArray[1]}`);
-        },
-
-        methods: {
-            onChange(newValue) {
-                this.$emit('value', `${newValue[0]}-${newValue[1]}`);
-            }
-        }
+  computed: {
+    minValue () {
+      return get(this.schema, 'search.options.minValue')
+    },
+    maxValue () {
+      return get(this.schema, 'search.options.maxValue')
+    },
+    valueAsArray () {
+      const val = this.value.split('-')
+      if (val.length !== 2 || !val[0].match(/-?[0-9]{1,4}/) || !val[1].match(/-?[0-9]{1,4}/)) {
+        // Return default value
+        return [
+          this.minValue,
+          this.maxValue
+        ]
+      }
+      return [parseInt(val[0]), parseInt(val[1])]
     }
+  },
+
+  mounted () {
+    // We might have inherited a value from another component, so validate
+    // and update it just in case.
+    this.$emit('value', `${this.valueAsArray[0]}-${this.valueAsArray[1]}`)
+  },
+
+  methods: {
+    onChange (newValue) {
+      this.$emit('value', `${newValue[0]}-${newValue[1]}`)
+    }
+  }
+}
 </script>

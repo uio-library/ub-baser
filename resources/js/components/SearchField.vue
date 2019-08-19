@@ -56,51 +56,51 @@
 </template>
 
 <script>
-    import { get } from 'lodash/object';
-    import * as components from './input';
+import { get } from 'lodash/object'
+import * as components from './input'
 
-    let fieldMap = null;
+let fieldMap = null
 
-    export default {
-        name: "search-field",
+export default {
+  name: 'search-field',
 
-        components: {
-            ...components,
-        },
+  components: {
+    ...components
+  },
 
-        props: {
-            advanced: Boolean,
-            index: Number,
-            schema: Object,
-            field: String,
-            operators: Array,
-            operator: String,
-            value: String,
-        },
+  props: {
+    advanced: Boolean,
+    index: Number,
+    schema: Object,
+    field: String,
+    operators: Array,
+    operator: String,
+    value: String
+  },
 
-        computed: {
-            currentSchema() {
-                if (fieldMap === null) {
-                    // Lazy-load field map
-                    fieldMap = new Map();
-                    this.schema.fields.forEach(field => fieldMap[field.key] = field);
-                    this.schema.groups.forEach(fieldGroup => {
-                        fieldGroup.fields.forEach(field => fieldMap[field.key] = field);
-                    })
-                }
-                return fieldMap[this.field];
-            },
-            currentType() {
-                let type = get(this.currentSchema, 'search.type', this.currentSchema.type);
-                return type.substr(0, 1).toUpperCase() + type.substr(1) + 'Input';
-            },
-            currentOperators() {
-                return this.operators.filter(
-                    op => this.currentSchema.search.operators.indexOf(op.value) !== -1
-                );
-            }
-        }
+  computed: {
+    currentSchema () {
+      if (fieldMap === null) {
+        // Lazy-load field map
+        fieldMap = new Map()
+        this.schema.fields.forEach(field => fieldMap[field.key] = field)
+        this.schema.groups.forEach(fieldGroup => {
+          fieldGroup.fields.forEach(field => fieldMap[field.key] = field)
+        })
+      }
+      return fieldMap[this.field]
+    },
+    currentType () {
+      const type = get(this.currentSchema, 'search.type', this.currentSchema.type)
+      return type.substr(0, 1).toUpperCase() + type.substr(1) + 'Input'
+    },
+    currentOperators () {
+      return this.operators.filter(
+        op => this.currentSchema.search.operators.indexOf(op.value) !== -1
+      )
     }
+  }
+}
 </script>
 
 <style scoped lang="sass">

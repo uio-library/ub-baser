@@ -11,19 +11,19 @@
 </template>
 
 <script>
-    import { get } from 'lodash/object';
+import { get } from 'lodash/object'
 
-    export default {
-        name: "simple-input",
-        props: {
-            name: String,
-            schema: Object,
-            value: String,
-        },
-        computed: {
-            placeholder() {
-                return get(this.schema, 'search.placeholder');
-            }
-        },
+export default {
+  name: 'simple-input',
+  props: {
+    name: String,
+    schema: Object,
+    value: String
+  },
+  computed: {
+    placeholder () {
+      return get(this.schema, 'search.placeholder')
     }
+  }
+}
 </script>

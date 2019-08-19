@@ -1,12 +1,10 @@
-const expect = require('chai').expect;
+const expect = require('chai').expect
 
-describe( 'Login', function () {
-
-  it( 'should be possible to login', function () {
-      expect( 'Hei' ).to.equal( 'Hei' );
-  } );
-
-} );
+describe('Login page', function () {
+  it('should let you log in', function () {
+    expect( 'Hei' ).to.equal( 'Hei' );
+  })
+})
 
 // describe('login page', function () {
 //     it('should identify as UB-baser', () => {

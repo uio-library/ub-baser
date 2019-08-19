@@ -17,29 +17,29 @@
 </template>
 
 <script>
-    import { get } from 'lodash/object';
-    import * as components from './input'
+import { get } from 'lodash/object'
+import * as components from './input'
 
-    export default {
-        name: "edit-field",
-        components: {
-            ...components,
-        },
-        props: [
-            'schema',
-            'value',
-        ],
-        computed: {
-            currentType () {
-                let type = this.schema.type;
-                return type.substr(0, 1).toUpperCase() + type.substr(1) + 'Input';
-            },
+export default {
+  name: 'edit-field',
+  components: {
+    ...components
+  },
+  props: [
+    'schema',
+    'value'
+  ],
+  computed: {
+    currentType () {
+      const type = this.schema.type
+      return type.substr(0, 1).toUpperCase() + type.substr(1) + 'Input'
+    },
 
-            name () {
-                return get(this.schema, 'edit.column', this.schema.key);
-            }
-        }
+    name () {
+      return get(this.schema, 'edit.column', this.schema.key)
     }
+  }
+}
 </script>
 
 <style scoped>
