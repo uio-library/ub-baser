@@ -23,5 +23,11 @@ class Page {
       (fragment ? ('#' + fragment) : '')
     )
   }
+
+  getLoggedInUser () {
+    const node = $('#user_name');
+    return node.isExisting() ? node.getText() : null;
+  }
 }
+
 module.exports = Page

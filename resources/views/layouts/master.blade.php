@@ -32,7 +32,7 @@
                 <div id="user">
                     @if (Auth::check())
                         {!! trans('messages.loggedinas', [
-                            'user' => '<a href="' . action('AccountController@index') . '">' . Auth::user()->name . '</a>'
+                            'user' => '<a href="' . action('AccountController@index') . '" id="user_name">' . Auth::user()->name . '</a>'
                         ]) !!}.
                         @can('admin')
                         <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a>
