@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
+    protected $logGroup = 'pages';
+
     /**
      * Display a listing of the resource.
      *
@@ -86,6 +88,12 @@ class PageController extends Controller
         $page->body = $request->body;
         $page->updated_by = $request->user()->id;
         $page->save();
+
+        $this->log(
+            'Oppdaterte <a href="%s">%s</a>.',
+            action('PageController@show', ['page' => $page->slug]),
+            $page->slug
+        );
 
         return redirect()->action('PageController@show', ['page' => $page->slug])
             ->with('status', 'Siden ble lagret.');

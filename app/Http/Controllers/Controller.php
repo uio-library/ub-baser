@@ -10,4 +10,18 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected $logGroup = null;
+
+    protected function log(...$args)
+    {
+        \Log::info(call_user_func_array(
+            'sprintf',
+            $args
+        ), [
+            'userId' => \Auth::user()->id,
+            'user' => \Auth::user()->name,
+            'group' => $this->logGroup,
+        ]);
+    }
 }

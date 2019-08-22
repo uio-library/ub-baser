@@ -2,7 +2,7 @@
 @section('db-title', 'Norsk litteraturkritikk')
 
 @section('header-part')
-: <a href="/norsk-litteraturkritikk">Norsk litteraturkritikk</a>
+: <a href="{{ action('LitteraturkritikkController@index') }}">Norsk litteraturkritikk</a>
 @endsection
 
 @section('head')

@@ -1,5 +1,6 @@
 <?php
 
+use App\Logging\CreateDatabaseLogger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 
@@ -36,7 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily'],
+            'channels' => ['daily', 'postgres'],
             'ignore_exceptions' => false,
         ],
 
@@ -51,6 +52,12 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
             'days' => 14,
+        ],
+
+        'postgres' => [
+            'driver' => 'custom',
+            'via' => CreateDatabaseLogger::class,
+            'days' => 120,
         ],
 
         'slack' => [

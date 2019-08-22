@@ -33,12 +33,12 @@
                     @if (Auth::check())
                         {!! trans('messages.loggedinas', [
                             'user' => '<a href="' . action('AccountController@index') . '" id="user_name">' . Auth::user()->name . '</a>'
-                        ]) !!}.
+                        ]) !!}
                         @can('admin')
-                        <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a>
+                        | <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a>
                         @endcan
-
-
+                        | <a href="{{ action('LogEntryController@index') }}">{{ trans('messages.logs') }}</a>
+                        |
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}

@@ -14,17 +14,11 @@ use Illuminate\Support\Arr;
 
 class LitteraturkritikkController extends RecordController
 {
-    /**
-     * @return array List of genders.
-     */
-    public static function getGenderList()
+    protected $logGroup = 'norsk_litteraturkritikk';
+
+    public function redir()
     {
-        return [
-            'f'  => 'Kvinne',
-            'm'  => 'Mann',
-            'u'  => 'Ukjent',
-            // etc...
-        ];
+        return redirect()->action('LitteraturkritikkController@index');
     }
 
     /**
@@ -313,6 +307,13 @@ class LitteraturkritikkController extends RecordController
 
         $record = $this->updateOrCreate($request, $schema);
 
+        $this->log(
+            'Opprettet <a href="%s">#%s (%s)</a>.',
+            action('LitteraturkritikkController@show', $record->id),
+            $record->id,
+            $record->tittel
+        );
+
         return redirect()->action('LitteraturkritikkController@show', $record->id)
             ->with('status', 'Posten ble opprettet.');
     }
@@ -352,8 +353,14 @@ class LitteraturkritikkController extends RecordController
     {
         $this->authorize('litteraturkritikk');
 
-        $this->updateOrCreate($request, $schema, $id);
+        $record = $this->updateOrCreate($request, $schema, $id);
 
+        $this->log(
+            'Oppdaterte <a href="%s">#%s (%s)</a>.',
+            action('LitteraturkritikkController@show', $record->id),
+            $record->id,
+            $record->tittel
+        );
         return redirect()->action('LitteraturkritikkController@show', $id)
             ->with('status', 'Posten ble lagret');
     }

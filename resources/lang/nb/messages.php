@@ -3,6 +3,7 @@
 return [
 
     'admin' => 'Admin',
+    'logs' => 'Logg',
     'confirm-deleteuser' => 'Jeg er sikker på at jeg ønsker å slette denne brukeren',
     'deleteuser' => 'Slett bruker',
     'edit' => 'Rediger',

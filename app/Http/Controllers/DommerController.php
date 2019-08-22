@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 
 class DommerController extends RecordController
 {
+    protected $logGroup = 'dommer';
+
     protected function getKilder()
     {
         $kilder = [];
@@ -118,6 +120,13 @@ class DommerController extends RecordController
 
         $record = $this->updateOrCreate($request);
 
+        $this->log(
+            'Opprettet <a href="%s">#%s (%s)</a>.',
+            action('DommerController@show', $record->id),
+            $record->id,
+            $record->navn
+        );
+
         return redirect()->action('DommerController@show', $record->id)
             ->with('status', 'Posten ble opprettet.');
     }
@@ -185,7 +194,14 @@ class DommerController extends RecordController
     {
         $this->authorize('dommer');
 
-        $this->updateOrCreate($request, $id);
+        $record = $this->updateOrCreate($request, $id);
+
+        $this->log(
+            'Oppdaterte <a href="%s">#%s (%s)</a>.',
+            action('DommerController@show', $record->id),
+            $record->id,
+            $record->navn
+        );
 
         return redirect()->action('DommerController@show', $id)
             ->with('status', 'Posten ble lagret');

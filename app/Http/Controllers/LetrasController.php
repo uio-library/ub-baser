@@ -12,6 +12,8 @@ use Illuminate\Support\Arr;
 
 class LetrasController extends RecordController
 {
+    protected $logGroup = 'letras';
+
     /**
      * Display a listing of the resource.
      *
@@ -174,6 +176,13 @@ class LetrasController extends RecordController
 
         $record = $this->updateOrCreate($request);
 
+        $this->log(
+            'Opprettet <a href="%s">#%s (%s)</a>.',
+            action('LetrasController@show', $record->id),
+            $record->id,
+            $record->tittel
+        );
+
         return redirect()->action('LetrasController@show', $record->id)
             ->with('status', 'Posten ble opprettet.');
     }
@@ -229,7 +238,14 @@ class LetrasController extends RecordController
     {
         $this->authorize('letras');
 
-        $this->updateOrCreate($request, $id);
+        $record = $this->updateOrCreate($request, $id);
+
+        $this->log(
+            'Oppdaterte <a href="%s">#%s (%s)</a>.',
+            action('LetrasController@show', $record->id),
+            $record->id,
+            $record->tittel
+        );
 
         return redirect()->action('LetrasController@show', $id)
             ->with('status', 'Posten ble lagret');

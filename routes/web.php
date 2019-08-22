@@ -15,6 +15,7 @@ Route::get('/', 'HomeController@index')->name('home');
 // User
 Route::group(['middleware' => 'auth'], function () {
     Route::get('account', 'AccountController@index');
+    Route::get('log', 'LogEntryController@index');
 });
 
 // Admin routes...

@@ -7,6 +7,20 @@ use Illuminate\Http\Request;
 
 class LitteraturkritikkPersonController extends RecordController
 {
+    protected $logGroup = 'norsk_litteraturkritikk';
+
+    /**
+     * @return array List of genders.
+     */
+    public static function getGenderList()
+    {
+        return [
+            'f'  => 'Kvinne',
+            'm'  => 'Mann',
+            'u'  => 'Ukjent',
+            // etc...
+        ];
+    }
 
     /**
      * Display the specified resource.
@@ -87,6 +101,13 @@ class LitteraturkritikkPersonController extends RecordController
         $person->wikidata_id = $request->get('wikidata_id');
 
         $person->save();
+
+        $this->log(
+            'Oppdaterte personen <a href="%s">#%s (%s)</a>.',
+            action('LitteraturkritikkPersonController@show', $person->id),
+            $person->id,
+            "{$person->etternavn}, {$person->fornavn}"
+        );
 
         \DB::unprepared('REFRESH MATERIALIZED VIEW litteraturkritikk_records_search');
 
