@@ -50,7 +50,7 @@
             <li>{!! $record->representation() !!}</li>
         @endforeach
     </ul>
-    <a href="{{ action('LitteraturkritikkController@index', ['f0' => 'forfatter', 'v0' => strval($person)])  }}">Vis som tabellvisning</a>
+    <a href="{{ action('LitteraturkritikkController@index', ['f0' => 'verk_forfatter', 'v0' => strval($person)])  }}">Vis som tabellvisning</a>
     @endif
 
     @if (count($person->records_as_kritiker))
