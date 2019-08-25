@@ -103,7 +103,7 @@ class LitteraturkritikkPersonController extends RecordController
         $person->save();
 
         $this->log(
-            'Oppdaterte personen <a href="%s">#%s (%s)</a>.',
+            'Oppdaterte <a href="%s">person #%s (%s)</a>.',
             action('LitteraturkritikkPersonController@show', $person->id),
             $person->id,
             "{$person->etternavn}, {$person->fornavn}"
@@ -131,6 +131,13 @@ class LitteraturkritikkPersonController extends RecordController
             return redirect()->back()
                 ->with('status', 'Manglet bekreftelse');
         }
+
+        $this->log(
+            'Slettet <a href="%s">person #%s (%s)</a>.',
+            action('LitteraturkritikkPersonController@show', $person->id),
+            $person->id,
+            "{$person->etternavn}, {$person->fornavn}"
+        );
 
         $person = Person::findOrFail($id);
         $person->records()->detach();

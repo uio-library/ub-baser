@@ -121,7 +121,7 @@ class DommerController extends RecordController
         $record = $this->updateOrCreate($request);
 
         $this->log(
-            'Opprettet <a href="%s">#%s (%s)</a>.',
+            'Opprettet <a href="%s">post #%s (%s)</a>.',
             action('DommerController@show', $record->id),
             $record->id,
             $record->navn
@@ -197,7 +197,7 @@ class DommerController extends RecordController
         $record = $this->updateOrCreate($request, $id);
 
         $this->log(
-            'Oppdaterte <a href="%s">#%s (%s)</a>.',
+            'Oppdaterte <a href="%s">post #%s (%s)</a>.',
             action('DommerController@show', $record->id),
             $record->id,
             $record->navn

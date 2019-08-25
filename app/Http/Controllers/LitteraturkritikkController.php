@@ -308,7 +308,7 @@ class LitteraturkritikkController extends RecordController
         $record = $this->updateOrCreate($request, $schema);
 
         $this->log(
-            'Opprettet <a href="%s">#%s (%s)</a>.',
+            'Opprettet <a href="%s">post #%s (%s)</a>.',
             action('LitteraturkritikkController@show', $record->id),
             $record->id,
             $record->tittel
@@ -356,7 +356,7 @@ class LitteraturkritikkController extends RecordController
         $record = $this->updateOrCreate($request, $schema, $id);
 
         $this->log(
-            'Oppdaterte <a href="%s">#%s (%s)</a>.',
+            'Oppdaterte <a href="%s">post #%s (%s)</a>.',
             action('LitteraturkritikkController@show', $record->id),
             $record->id,
             $record->tittel
@@ -390,7 +390,17 @@ class LitteraturkritikkController extends RecordController
                 // Validate existence
                 $person = Person::findOrFail($input['id']);
             } else {
-                $person = Person::firstOrCreate($input);
+                $person = Person::create([
+                    'etternavn' => $input['etternavn'],
+                    'fornavn' => $input['fornavn'],
+                    'kjonn' => $input['kjonn'],
+                ]);
+                $this->log(
+                    'Opprettet <a href="%s">person #%s (%s)</a>.',
+                    action('LitteraturkritikkPersonController@show', $person->id),
+                    $person->id,
+                    "{$person->etternavn}, {$person->fornavn}"
+                );
             }
             $idsWithPivotData[$person->id] = $input['pivot'];
         }
