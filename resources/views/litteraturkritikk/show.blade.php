@@ -72,9 +72,11 @@
 
         <div class="flex-grow-0 flex-shrink-0" style="width: 200px;">
             <div style="text-align: center; border: 1px solid #eee; border-radius: 3px;" class="px-4 py-3">
-                Funnet en feil<br>
-                i denne posten?<br>
-                <button class="btn btn-danger">Meld fra</button>
+                Er det feil i posten?<br>
+                <a href="mailto:norsklitteraturkritikk@ub.uio.no?subject=Feil%20i%20post&body=Hei%0A%0ADet%20ser%20ut%20som%20det%20er%20en%20feil%20i%20denne%20posten%3A%0A%0Ahttps%3A%2F%2Fub-baser.uio.no%2Fnorsk_litteraturkritikk%2F{{ $record->id }}%0A%0A%5BUtdyp%5D" class="btn btn-warning">
+                    <em class="fa fa-envelope-o"></em>
+                    Meld fra
+                </a>
             </div>
         </div>
     </div>
