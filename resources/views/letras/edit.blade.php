@@ -27,6 +27,8 @@ edit.blade.php
 
     </form>
 
+    {{--
+
     <div class="panel panel-default">
 
         <div class="panel-heading">
@@ -57,5 +59,6 @@ edit.blade.php
 
         </div>
     </div>
+    --}}
 
 @endsection
