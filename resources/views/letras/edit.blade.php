@@ -1,5 +1,3 @@
-edit.blade.php
-
 @extends('layouts.letras')
 
 @section('content')

@@ -24,22 +24,25 @@
         <div class="uio-header">
             <div class="container">
                 <a href="https://www.uio.no/" title="Universitetet i Oslo"><img src="/images/uio-logo.svg" alt="Universitetet i Oslo"></a>
-                <!-- Dette ser kanskje litt teit ut, men vi er pålagt å ha det her -->
             </div>
         </div>
         <div class="header">
             <div class="container">
                 <div id="user">
+                <a href="/" >UB-baser</a>
+
                     @if (Auth::check())
-                        {!! trans('messages.loggedinas', [
-                            'user' => '<a href="' . action('AccountController@index') . '" id="user_name">' . Auth::user()->name . '</a>'
-                        ]) !!}
                         @can('admin')
                         | <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a>
                         @endcan
+
                         | <a href="{{ action('LogEntryController@index') }}">{{ trans('messages.logs') }}</a>
-                        |
-                        <a href="{{ route('logout') }}"
+
+                        | {!! trans('messages.loggedinas', [
+                            'user' => '<a href="' . action('AccountController@index') . '" id="user_name">' . Auth::user()->name . '</a>'
+                        ]) !!}
+
+                        | <a href="{{ route('logout') }}"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
@@ -55,10 +58,12 @@
                     @endif
 
                 </div>
-
                 <h1>
-                    <a href="/">UB-baser</a>
-                    @yield('header-part', '')
+                    @hasSection('header')
+                        @yield('header')
+                    @else
+                        <a href="/">UB-baser</a>
+                    @endif
                 </h1>
             </div>
         </div>
@@ -92,7 +97,7 @@
                 @else
                     <ul class="list-unstyled">
                         <li>
-                            Basen driftes av <a href="https://www.ub.uio.no/">Universitetsbiblioteket</a>
+                            UB-baser er en tjeneste fra <a href="https://www.ub.uio.no/">Universitetsbiblioteket i Oslo</a>.
                             <br>&nbsp;
                         </li>
                     </ul>

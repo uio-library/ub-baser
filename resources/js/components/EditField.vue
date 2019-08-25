@@ -11,7 +11,7 @@
                 :schema="schema"
                 @value="$emit('value', $event)"
             ></component>
-            <tt>{{ this.currentType }}</tt>
+            <!--<tt>{{ this.currentType }}</tt>-->
         </td>
     </tr>
 </template>

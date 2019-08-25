@@ -62,8 +62,7 @@ class PagesTableSeeder extends Seeder
                 'permission' => 'dommer',
 
                 'title' => '',
-                'body' => '<h2>Dommers populærnavn</h2>
-                    <p>
+                'body' => '<p>
                         Dommenes populærnavn eller kallenavn er funnet i den juridiske litteraturen og i domsavsigelser hvor avgjørelsene er omtalt. Enkelte avgjørelser er oppført med flere populærnavn. Basen gir referanser til Norsk retstidende (Rt.), Rettens gang (RG) og Nordiske domme i sjøfartanliggende (ND). Basen utvikles av Juridisk bibliotek, Universitetet i Oslo
                     </p>
                     <p>
@@ -73,7 +72,24 @@ class PagesTableSeeder extends Seeder
                 'updated_by' => 1,
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
-            ],
+            ],[
+                'layout' => 'layouts.letras',
+                'slug' => 'letras/intro',
+                'permission' => 'letras',
+
+                'title' => '',
+                'body' => '
+                    <p lang="es">
+                        <em>Letras</em> un banco de datos con las traducciones noruegas de obras literarias en español. ¿Qué se traduce al noruego de la literaturas en español?
+                    </p>
+                    <p lang="nb">
+                        <em>Letras</em> er en liten database med informasjon om norske oversettelser av spansk og spanskamerikansk litteratur. En viktig ressurs for å få informasjon om hva blir oversatt i Norge fra de spansktalende land.
+                    </p>
+                ',
+                'updated_by' => 1,
+                'created_at' => '2015-12-13 13:32:23',
+                'updated_at' => '2015-12-13 13:32:23',
+            ]
         ]);
     }
 }

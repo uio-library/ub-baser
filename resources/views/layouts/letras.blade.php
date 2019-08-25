@@ -1,8 +1,8 @@
 @extends('layouts.master')
 @section('db-title', 'Letras')
 
-@section('header-part')
-: <a href="/letras">Letras</a>
+@section('header')
+<a href="{{ action('LetrasController@index') }}">Letras</a>
 @endsection
 
 @section('head')

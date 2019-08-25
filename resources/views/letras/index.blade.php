@@ -2,11 +2,17 @@
 
 @section('content')
 
-     @can('letras')
-         <p>
-             <a href="{{ action('LetrasController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
-         </p>
-     @endif
+    @can('letras')
+        <p>
+            <a href="{{ action('LetrasController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
+            &nbsp;
+            <a href="{{ action('PageController@edit', ['page' => 'letras/intro']) }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
+        </p>
+    @endif
+
+    <p>
+        {!! $intro !!}
+    </p>
 
      <div class="panel panel-default">
         <div class="panel-body">

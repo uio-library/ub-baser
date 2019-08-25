@@ -44,7 +44,7 @@
     @endif
 
     @if (count($person->records_as_forfatter))
-    <h3>Forfatter e.l. av verk omtalt i {{ count($person->records_as_forfatter ) }} kritikker</h3>
+    <h3>Omtalt i {{ count($person->records_as_forfatter ) }} {{ count($person->records_as_forfatter ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
     <ul>
         @foreach ($person->records_as_forfatter as $record)
             <li>{!! $record->representation() !!}</li>
@@ -54,7 +54,7 @@
     @endif
 
     @if (count($person->records_as_kritiker))
-        <h3>Skribent av {{ count($person->records_as_kritiker ) }} kritikker</h3>
+        <h3>Skribent av {{ count($person->records_as_kritiker ) }} {{ count($person->records_as_kritiker ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
         <ul>
             @foreach ($person->records_as_kritiker as $record)
                 <li>{!! $record->representation() !!}</li>

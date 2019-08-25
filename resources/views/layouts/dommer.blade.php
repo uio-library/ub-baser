@@ -1,10 +1,6 @@
 @extends('layouts.master')
 
-@section('header-part')
-: <a href="/dommer">Dommers populærnavn</a>
-@endsection
-
-@section('head')
-
+@section('header')
+<a href="{{ action('DommerController@index') }}">Dommers populærnavn</a>
 @endsection
 
