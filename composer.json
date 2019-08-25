@@ -16,6 +16,7 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "~5.8",
         "punic/punic": "^3.3",
+        "sentry/sentry-laravel": "1.1.1",
         "stevenmaguire/laravel-middleware-csp": "^0.1.1"
     },
     "require-dev": {
