@@ -23,7 +23,7 @@ class CreateDommerTable extends Migration
             $table->integer('aar')->unsigned();
             $table->integer('kilde_id')->unsigned();
             $table->integer('side')->unsigned();
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
