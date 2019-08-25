@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="autocomplete-input">
         <input type="text"
               class="form-control"
               autocomplete="off"
@@ -9,9 +9,29 @@
               :placeholder="placeholder"
               @input="$emit('value', $event.target.value)"
         >
+        <span class="autocomplete-icon" :class="{working: working}">
+          <em class="fa fa-magic"></em>
+        </span>
     </div>
 </template>
 
+
+<style>
+
+.autocomplete-input {
+  position: relative;
+}
+.autocomplete-icon {
+  position: absolute;
+  color: #888;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}
+.autocomplete-icon.working {
+  color: green;
+}
+</style>
 <script>
 import autocomplete from 'autocomplete.js'
 import { get } from 'lodash/object'
@@ -24,6 +44,11 @@ export default {
     name: String,
     schema: Object,
     value: String
+  },
+  data() {
+    return {
+      working: false,
+    }
   },
   computed: {
     placeholder () {
@@ -41,11 +66,20 @@ export default {
   },
   methods: {
     initAutocomplete () {
+      let cancel = null;
+
       const url = get(this.schema, 'search.options.target')
       search = autocomplete(this.$refs.input, {}, [
         {
           source: (query, callback) => {
+            //this.working = true
+            if (cancel) {
+              cancel.cancel()
+            }
+            cancel = this.$http.CancelToken.source();
+
             this.$http.get(url, {
+              cancelToken: cancel.token,
               params: {
                 field: this.schema.key,
                 q: query
@@ -54,9 +88,11 @@ export default {
               .then(
                 res => {
                   // let suggestions = countries.filter(n => n.label.toLowerCase().startsWith(text))
+                  //this.working = false
                   callback(res.data)
                 },
                 err => {
+                  //this.working = false
                   callback([])
                 }
               )
