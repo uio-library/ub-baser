@@ -20,12 +20,16 @@
                     <input type="text" v-model="person.fornavn" class="form-control" :disabled="person.id">
                 </td>
                 <td style="width:100px">
-                    <select v-model="person.kjonn" :id="`person_${schema.key}_${personIdx}`" :disabled="person.id">
-                        <option value="">(ingen verdi)</option>
-                        <option value="f">kvinne</option>
-                        <option value="m">mann</option>
-                        <option value="u">ukjent</option>
-                    </select>
+                    <selectize
+                      v-model="person.kjonn"
+                      :id="`person_${schema.key}_${personIdx}`"
+                      :disabled="person.id"
+                    >
+                      <option :value="null">(ingen verdi)</option>
+                      <option value="f">kvinne</option>
+                      <option value="m">mann</option>
+                      <option value="u">ukjent</option>
+                    </selectize>
                 </td>
                 <td>
                     <input type="text" v-model="person.pivot.pseudonym" class="form-control">
@@ -66,12 +70,14 @@
 
 <script>
 import { cloneDeep } from 'lodash/lang'
+import Selectize from 'vue2-selectize'
 import AutocompleteInput from './AutocompleteInput'
 
 export default {
   name: 'person-input',
   components: {
-    AutocompleteInput
+    Selectize,
+    AutocompleteInput,
   },
   props: {
     name: String,
@@ -139,7 +145,7 @@ export default {
         id: null,
         etternavn: '',
         fornavn: '',
-        kjonn: '',
+        kjonn: null,
         pivot: {
           person_role: this.schema.person_role,
           kommentar: '',

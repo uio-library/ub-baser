@@ -54,10 +54,11 @@
     "datatables.net-dt": "^1.10.19",
     "datatables.net-plugins": "^1.10.19",
     "froala-editor": "~2.0.3",
-    "jquery": "^3.2",
+    "jquery": "^3.4.1",
     "selectize": "~0.12.1",
     "vue": "^2.5.17",
     "vue-axios": "^2.1.4",
-    "vue-slider-component": "^3.0.38"
+    "vue-slider-component": "^3.0.38",
+    "vue2-selectize": "^1.1.7"
   }
 }
