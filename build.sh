@@ -10,6 +10,7 @@ if [ ! -f "composer.phar" ]; then
     curl -sS https://getcomposer.org/installer | php --
 fi
 
+rm -f composer.lock
 php composer.phar install --no-interaction --no-dev --no-autoloader
 php composer.phar dump-autoload --optimize
 
