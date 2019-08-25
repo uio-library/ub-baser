@@ -2,7 +2,7 @@
 
 set -e
 
-echo "entrypoint.sh starting using env: ${APP_ENV}"
+echo "entrypoint.sh starting using env: ${APP_ENV}, version: ${APP_VERSION}"
 
 # ----------------------------------------------------------------------------
 # Apache setup
@@ -70,6 +70,7 @@ docker/wait-for-it.sh ${DB_HOST}:${DB_PORT} -t 30
 # Run migrations, if any
 
 php artisan migrate --force
+php artisan ub-baser:deployed
 
 # ----------------------------------------------------------------------------
 # Fix permissions

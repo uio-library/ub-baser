@@ -19,6 +19,8 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImportDommerCommand::class,
         \App\Console\Commands\ImportLetrasCommand::class,
         \App\Console\Commands\ImportCommand::class,
+        \App\Console\Commands\PurgeLogs::class,
+        \App\Console\Commands\Deployed::class,
     ];
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Command;
+
 class PurgeLogs extends Command
 {
     protected function logInfo($msg)

@@ -2,6 +2,7 @@
 
 APP_ENV=${APP_ENV:-development}
 PROJECT_NAME="ub-baser-${APP_ENV}"
+APP_VERSION="$(git rev-parse HEAD)"
 
 if [ ! -f "docker/compose/${APP_ENV}.yml" ]; then
 	echo "------------------------------------"
