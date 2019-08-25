@@ -54,8 +54,11 @@ class LoginController extends Controller
         if (\Auth::check()) {
             return redirect('/');
         }
+
+        $samlResponse = $request->session()->get('saml_response');
+
         return view('auth.saml_register', [
-            'data' => $request->session()->get('saml_response'),
+            'data' => $samlResponse,
         ]);
     }
 
@@ -77,6 +80,13 @@ class LoginController extends Controller
         $user->saml_session = $data['saml_session'];
 
         $user->save();
+
+        $this->log(
+            'Opprettet ny bruker fra UiO-innlogging: <a href="%s">%s (%s)</a>.',
+            action('Admin\UserController@show', $user->id),
+            $user->name,
+            $user->email
+        );
 
         \Auth::login($user);
 

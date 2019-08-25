@@ -5,21 +5,25 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
+
             <div class="card">
                 <div class="card-header">{{ __('UiO-innlogging') }}</div>
                 <div class="card-body">
 
-                     <a class="btn btn-primary" href="{{ route('saml2_login', 'uio') }}">Logg inn sikkert med Weblogin</a>
+                    <a class="btn btn-primary" href="{{ route('saml2_login', 'uio') }}">
+                        <em class="fa fa-arrow-right"></em>
+                        Logg inn sikkert med Weblogin
+                    </a>
 
                 </div>
             </div>
 
 
 
-            <div class="card">
-                <div class="card-header">{{ __('Lokal innlogging') }}</div>
+            <div class="card my-3">
+                <div class="card-header"><a id="collapse1_toggle" href="#" onclick="$('#collapse1').toggleClass('collapse'); return false;">{{ __('Lokal innlogging (alternativ)') }}</a></div>
 
-                <div class="card-body">
+                <div class="card-body collapse" id="collapse1">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

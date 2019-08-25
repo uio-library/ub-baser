@@ -66,11 +66,11 @@ the `sites-available` folder:
 
 Make sure the development server is running:
 
-	./dev.sh up -d
+	APP_ENV=testing ./dev.sh up -d
 
 To run tests:
 
-	npm run test
+	APP_ENV=testing npm run test
 
 If you use Docker Machine:
 

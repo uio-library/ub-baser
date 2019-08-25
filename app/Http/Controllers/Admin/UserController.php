@@ -96,12 +96,38 @@ class UserController extends Controller
     {
         $user = $this->updateOrCreate($request);
 
+        $this->log(
+            'Opprettet ny bruker: <a href="%s">%s (%s)</a>.',
+            action('Admin\UserController@show', $user->id),
+            $user->name,
+            $user->email
+        );
+
         \Password::sendResetLink(['email' => $user->email], function (Message $message) {
             $message->subject('Velkommen til ub-baser');
         });
 
         return redirect()->action('Admin\UserController@index')
             ->with('status', 'En epost er sendt til brukeren med instruksjoner for å sette passord.');
+    }
+
+    /**
+     * Show a specific resource.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+
+        $data = [
+            'user'   => $user,
+            'rights' => AuthServiceProvider::$rights,
+        ];
+
+        return response()->view('admin.user.show', $data);
     }
 
     /**
@@ -133,7 +159,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->updateOrCreate($request, $id);
+        $user = $this->updateOrCreate($request, $id);
+
+        $this->log(
+            'Oppdaterte bruker: <a href="%s">%s (%s)</a>.',
+            action('Admin\UserController@show', $user->id),
+            $user->name,
+            $user->email
+        );
 
         return redirect()->action('Admin\UserController@index')
             ->with('status', 'Brukeren ble lagret');

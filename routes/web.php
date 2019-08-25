@@ -19,15 +19,16 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 // Admin routes...
+Route::get('admin/users/{id}', 'Admin\UserController@show')->where('id', '[0-9]+');
 Route::group(['middleware' => 'admin'], function () {
 
     Route::get('admin', 'Admin\AdminController@index');
     Route::get('admin/users', 'Admin\UserController@index');
     Route::get('admin/users/create', 'Admin\UserController@create');
-    Route::get('admin/users/{id}', 'Admin\UserController@edit');
-    Route::post('admin/users/{id}', 'Admin\UserController@update');
+    Route::get('admin/users/{id}/edit', 'Admin\UserController@edit')->where('id', '[0-9]+');
+    Route::post('admin/users/{id}', 'Admin\UserController@update')->where('id', '[0-9]+');
     Route::post('admin/users', 'Admin\UserController@store');
-    Route::post('admin/users/delete/{id}', 'Admin\UserController@destroy');
+    Route::post('admin/users/delete/{id}', 'Admin\UserController@destroy')->where('id', '[0-9]+');
 
     Route::get('admin/pages', 'PageController@index');
 });
