@@ -39,20 +39,20 @@ Route::post('saml2/store', 'Auth\LoginController@samlStoreNewUser');
 Auth::routes();
 
 // Norsk litteraturkritikk
+Route::get('norsk-litteraturkritikk', 'LitteraturkritikkController@redir');
+Route::get('norsk_litteraturkritikk', 'LitteraturkritikkController@index');
+Route::get('norsk_litteraturkritikk/autocomplete', 'LitteraturkritikkController@autocomplete');
+Route::get('norsk_litteraturkritikk/create', 'LitteraturkritikkController@create');
+Route::post('norsk_litteraturkritikk', 'LitteraturkritikkController@store');
+Route::get('norsk_litteraturkritikk/{id}', 'LitteraturkritikkController@show')->where('id', '[0-9]+');
+Route::get('norsk_litteraturkritikk/{id}/edit', 'LitteraturkritikkController@edit')->where('id', '[0-9]+');
+Route::put('norsk_litteraturkritikk/{id}', 'LitteraturkritikkController@update')->where('id', '[0-9]+');
 
-Route::get('norsk-litteraturkritikk', 'LitteraturkritikkController@index');
-Route::get('norsk-litteraturkritikk/autocomplete', 'LitteraturkritikkController@autocomplete');
-Route::get('norsk-litteraturkritikk/create', 'LitteraturkritikkController@create');
-Route::post('norsk-litteraturkritikk', 'LitteraturkritikkController@store');
-Route::get('norsk-litteraturkritikk/{id}', 'LitteraturkritikkController@show')->where('id', '[0-9]+');
-Route::get('norsk-litteraturkritikk/{id}/edit', 'LitteraturkritikkController@edit')->where('id', '[0-9]+');
-Route::put('norsk-litteraturkritikk/{id}', 'LitteraturkritikkController@update')->where('id', '[0-9]+');
-
-Route::post('norsk-litteraturkritikk/personer', 'LitteraturkritikkPersonController@store');
-Route::get('norsk-litteraturkritikk/personer/{id}', 'LitteraturkritikkPersonController@show')->where('id', '[0-9]+');
-Route::get('norsk-litteraturkritikk/personer/{id}/edit', 'LitteraturkritikkPersonController@edit')->where('id', '[0-9]+');
-Route::put('norsk-litteraturkritikk/personer/{id}', 'LitteraturkritikkPersonController@update')->where('id', '[0-9]+');
-Route::delete('norsk-litteraturkritikk/personer/{id}', 'LitteraturkritikkPersonController@destroy')->where('id', '[0-9]+');
+Route::post('norsk_litteraturkritikk/personer', 'LitteraturkritikkPersonController@store');
+Route::get('norsk_litteraturkritikk/personer/{id}', 'LitteraturkritikkPersonController@show')->where('id', '[0-9]+');
+Route::get('norsk_litteraturkritikk/personer/{id}/edit', 'LitteraturkritikkPersonController@edit')->where('id', '[0-9]+');
+Route::put('norsk_litteraturkritikk/personer/{id}', 'LitteraturkritikkPersonController@update')->where('id', '[0-9]+');
+Route::delete('norsk_litteraturkritikk/personer/{id}', 'LitteraturkritikkPersonController@destroy')->where('id', '[0-9]+');
 
 // Dommer
 
