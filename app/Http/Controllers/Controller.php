@@ -15,13 +15,17 @@ class Controller extends BaseController
 
     protected function log(...$args)
     {
+        $context = [
+            'group' => $this->logGroup,
+        ];
+        $user = \Auth::user();
+        if (!is_null($user)) {
+            $context['userId'] = $user->id;
+            $context['user'] = $user->name;
+        }
         \Log::info(call_user_func_array(
             'sprintf',
             $args
-        ), [
-            'userId' => \Auth::user()->id,
-            'user' => \Auth::user()->name,
-            'group' => $this->logGroup,
-        ]);
+        ), $context);
     }
 }
