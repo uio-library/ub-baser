@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use Aacotroneo\Saml2\Events\Saml2LoginEvent;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class Saml2Login
