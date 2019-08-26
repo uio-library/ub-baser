@@ -50,7 +50,8 @@ class Person extends \Eloquent
             ->where('person_role', '=', 'kritiker');
     }
 
-    function normalizedName() {
+    public function normalizedName()
+    {
         $names = [];
         if ($this->etternavn) {
             $names[] = $this->etternavn;
@@ -84,5 +85,4 @@ class Person extends \Eloquent
         }
         return '';
     }
-
 }

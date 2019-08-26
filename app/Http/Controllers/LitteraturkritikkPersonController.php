@@ -31,7 +31,7 @@ class LitteraturkritikkPersonController extends RecordController
      */
     public function show($id)
     {
-        \Debugbar::startMeasure('query','DB query');
+        \Debugbar::startMeasure('query', 'DB query');
         $data = [
             'person' => Person::withTrashed()->with(
                 'records_as_forfatter',
@@ -44,13 +44,11 @@ class LitteraturkritikkPersonController extends RecordController
         ];
         \Debugbar::stopMeasure('query');
 
-        \Debugbar::startMeasure('render','Time for rendering');
+        \Debugbar::startMeasure('render', 'Time for rendering');
         $view = response()->view('litteraturkritikk.persons.show', $data);
         \Debugbar::stopMeasure('render');
 
         return $view;
-
-
     }
 
     /**

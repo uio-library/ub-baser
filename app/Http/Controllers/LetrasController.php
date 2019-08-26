@@ -70,7 +70,6 @@ class LetrasController extends RecordController
         $data = [];
 
         switch ($fieldName) {
-
             default:
                 if ($term == '%') {
                     // Preload request

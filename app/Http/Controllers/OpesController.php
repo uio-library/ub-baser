@@ -10,15 +10,14 @@ use Illuminate\Http\Request;
 class OpesController extends RecordController
 {
     
-    // ny function laget 2 august 2016 
-    // henter ut verdier for alle publication for hver  
-    //  
+    // ny function laget 2 august 2016
+    // henter ut verdier for alle publication for hver
+    //
     protected function getPublications()
     {
         $publi = [];
         foreach (PubOpes::all() as $publi) {
             $publi[$publi->id] = $publi->Ser_Vol;
-    
         }
     
         return $publi;
@@ -46,14 +45,14 @@ class OpesController extends RecordController
             'sortColumn' => $q->sortColumn,
             'sortOrder' => $q->sortOrder,
         ];
-        // 
+        //
         $data['records'] = OpesRecord::paginate(50);
 
         /* $q->query
           ->join('opes_pub', 'opes.id', '=', 'opes_pub.opes_id')
           //join('opes', 'opes_pub.papy_id', '=', 'opes.id')
           ->select('opes_pub.*', 'opes.*')
-          // Dan henter verdier   opes_pub.Ser_Vol 
+          // Dan henter verdier   opes_pub.Ser_Vol
          // join('opes_pub', 'opes.id', '=', 'opes_pub.papy_id')
           // 'opes_pub', 'opes.id', '=', 'opes_pub.papy_id' */
 
@@ -62,8 +61,7 @@ class OpesController extends RecordController
         $data['publikasjoner'] = $this->getPublications();
 
 
-        return response()->view('opes.index', $data); 
-       
+        return response()->view('opes.index', $data);
     }
 
 
@@ -108,7 +106,7 @@ class OpesController extends RecordController
         $record->forlag = $request->get('forlag');
         $record->foretterord = $request->get('foretterord');
         $record->spraak = $request->get('spraak');
-        
+
         $record->save();
         return $record;
     } */
@@ -137,7 +135,7 @@ class OpesController extends RecordController
      * @return \Illuminate\Http\Response
      */
     
-/* 
+/*
     public function store(Request $request)
     {
         $this->authorize('opes');
@@ -147,11 +145,11 @@ class OpesController extends RecordController
     }
 */
 
-  public function show($id)
+    public function show($id)
     {
-    $record = OpesRecord::findOrFail($id);
+        $record = OpesRecord::findOrFail($id);
      
-     $data = [
+        $data = [
             'columns' => config('baser.opes.columns'),
             'record'  => $record,
         ];

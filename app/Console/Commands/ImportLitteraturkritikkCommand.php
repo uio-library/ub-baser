@@ -165,7 +165,9 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         // Trim all fields
         foreach (array_keys($record) as $k) {
             $record[$k] = trim($record[$k]);
-            if (empty($record[$k])) $record[$k] = null;
+            if (empty($record[$k])) {
+                $record[$k] = null;
+            }
         }
     }
 
@@ -180,7 +182,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         }, $value);
 
         // Filter out empty values
-        $value = array_values(array_filter($value, function($x) {
+        $value = array_values(array_filter($value, function ($x) {
             return !empty($x);
         }));
 
@@ -201,10 +203,15 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
     protected function normalizeKjonn($value)
     {
-        if (strtolower($value) == 'mann') return 'm';
-        elseif (strtolower($value) == 'kvinne') return 'f';
-        elseif (strtolower($value) == 'ukjent') return 'u';
-        else return null;
+        if (strtolower($value) == 'mann') {
+            return 'm';
+        } elseif (strtolower($value) == 'kvinne') {
+            return 'f';
+        } elseif (strtolower($value) == 'ukjent') {
+            return 'u';
+        } else {
+            return null;
+        }
     }
 
     public function processPerson(&$record, &$row, $role)
@@ -236,7 +243,6 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         }
 
         for ($i = 0; $i < count($etternavn_arr); $i++) {
-
             if (!isset($fornavn_arr[$i])) {
                 $fornavn_arr[$i] = null;
             }
@@ -283,7 +289,8 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         }
     }
 
-    public function processCreators(&$row) {
+    public function processCreators(&$row)
+    {
         $record = Record::findOrFail($row['id']);
         $record->persons()->detach();
 
@@ -314,7 +321,9 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             $force = false;
         }
 
-        if (!$this->ensureEmpty('litteraturkritikk_records', $force)) return;
+        if (!$this->ensureEmpty('litteraturkritikk_records', $force)) {
+            return;
+        }
 
         // ------
 
@@ -345,11 +354,11 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             'kritiker_pseudonym',    // pivot-egenskap
             'kritiker_kommentar',     // pivot-egenskap
         ];
-        $persons = array_map(function($x) use ($personColumns) {
+        $persons = array_map(function ($x) use ($personColumns) {
             return Arr::only($x, array_merge(['id'], $personColumns));
         }, $data);
 
-        $records = array_map(function($x) use ($personColumns) {
+        $records = array_map(function ($x) use ($personColumns) {
             return Arr::except($x, $personColumns);
         }, $data);
 
@@ -391,5 +400,4 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
         $this->comment('Import complete');
     }
-
 }

@@ -67,8 +67,12 @@ class ImportDommerCommand extends ImportCommand
             $force = false;
         }
 
-        if (!$this->ensureEmpty('dommer', $force)) return;
-        if (!$this->ensureEmpty('dommer_kilder', $force)) return;
+        if (!$this->ensureEmpty('dommer', $force)) {
+            return;
+        }
+        if (!$this->ensureEmpty('dommer_kilder', $force)) {
+            return;
+        }
 
         // ------
 

@@ -99,13 +99,10 @@ abstract class SearchRequest extends FormRequest
 
             if ($indexType == 'ts') {
                 $this->addTextSearchTerm($index, $operator, $value);
-
             } elseif ($indexType == 'range') {
                 $this->addRangeSearchTerm($index, $operator, $value);
-
             } elseif ($indexType == 'array') {
                 $this->addArraySearchTerm($index, $operator, $value);
-
             } else {
                 $this->addSimpleTerm($index, $operator, $value);
             }
@@ -123,7 +120,6 @@ abstract class SearchRequest extends FormRequest
                 break;
             default:
                 throw new \RuntimeException('Unsupported search operator');
-
         }
     }
 

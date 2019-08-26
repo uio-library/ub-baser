@@ -35,10 +35,8 @@ class PubOpes extends \Eloquent
         return $this->Year;
     }
 
-     public function __toString()
+    public function __toString()
     {
         return $this->Ser_vol;
     }
-
-
 }

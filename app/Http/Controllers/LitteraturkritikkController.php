@@ -77,7 +77,6 @@ class LitteraturkritikkController extends RecordController
         $data = [];
 
         switch ($fieldName) {
-
             case 'publikasjon':
             case 'spraak':
             case 'verk_spraak':
@@ -99,7 +98,6 @@ class LitteraturkritikkController extends RecordController
                         ];
                     }
                 } else {
-
                     if (in_array($fieldName, ['verk_tittel'])) {
                         $query = \DB::table('litteraturkritikk_records_search')
                             ->whereRaw("verk_tittel_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery", [$term]);
@@ -126,8 +124,15 @@ class LitteraturkritikkController extends RecordController
             case 'kritiker':
                 $personRolle = Arr::get($fieldDef, 'person_role');
                 $query = PersonView::select(
-                    'id', 'etternavn_fornavn', 'etternavn', 'fornavn', 'kjonn',
-                    'fodt', 'dod', 'bibsys_id', 'wikidata_id'
+                    'id',
+                    'etternavn_fornavn',
+                    'etternavn',
+                    'fornavn',
+                    'kjonn',
+                    'fodt',
+                    'dod',
+                    'bibsys_id',
+                    'wikidata_id'
                 )
                     ->whereRaw(
                         "any_field_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery",

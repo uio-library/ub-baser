@@ -39,7 +39,7 @@ class RecordController extends Controller
         $queryBuilder->take($request->length);
 
         $data = $queryBuilder->get()
-            ->map(function($row) {
+            ->map(function ($row) {
                 foreach ($row as $k => $v) {
                     if (is_array($v)) {
                         $row[$k] = implode(', ', $v);

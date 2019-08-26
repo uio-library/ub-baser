@@ -30,7 +30,8 @@ class DatabaseDumpCommand extends Command
     {
         $dumpCommand = 'mysqldump';
 
-        return sprintf('%s --user=%s --password=%s --host=%s --port=%s %s > %s',
+        return sprintf(
+            '%s --user=%s --password=%s --host=%s --port=%s %s > %s',
             $dumpCommand,
             escapeshellarg($config['username']),
             escapeshellarg($config['password']),
@@ -45,7 +46,8 @@ class DatabaseDumpCommand extends Command
     {
         $dumpCommand = 'pg_dump';
 
-        return sprintf('PGPASSWORD=%s %s -Fc --no-acl --no-owner --format=plain -h %s -U %s %s > %s',
+        return sprintf(
+            'PGPASSWORD=%s %s -Fc --no-acl --no-owner --format=plain -h %s -U %s %s > %s',
             escapeshellarg($config['password']),
             $dumpCommand,
             escapeshellarg($config['host']),

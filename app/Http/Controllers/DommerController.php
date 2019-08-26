@@ -172,7 +172,6 @@ class DommerController extends RecordController
                 ];
             }
             $values[$key] = old($key, $value);
-
         }
 
         return response()->view('dommer.edit', [

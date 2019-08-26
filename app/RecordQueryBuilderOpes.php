@@ -1,5 +1,6 @@
 <?php
 namespace App;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -21,7 +22,7 @@ class RecordQueryBuilderOpes
     }
     
 
-// Her bygges det opp en liste. den er baser paa kolonner definert i felles fila 
+// Her bygges det opp en liste. den er baser paa kolonner definert i felles fila
     public function make()
     {
         $this->query = (new $this->className())->newQuery();

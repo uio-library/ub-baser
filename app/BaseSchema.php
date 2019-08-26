@@ -93,7 +93,7 @@ abstract class BaseSchema implements \JsonSerializable
 
     public function keys(): array
     {
-        return array_map(function($col) {
+        return array_map(function ($col) {
             return $col['key'];
         }, $this->flat());
     }
@@ -103,7 +103,8 @@ abstract class BaseSchema implements \JsonSerializable
         return $this->schema;
     }
 
-    public function __get($key) {
+    public function __get($key)
+    {
         return $this->schema[$key];
     }
 }

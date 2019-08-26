@@ -57,7 +57,7 @@ class ImportCommand extends Command
         if ($count !== 0) {
             if ($force) {
                 $this->warn("Deleting $count rows from $tableName");
-            } else if (!$this->confirm("The '$tableName' table is not empty! Delete the $count existing rows? [y|N]")) {
+            } elseif (!$this->confirm("The '$tableName' table is not empty! Delete the $count existing rows? [y|N]")) {
                 return false;
             }
 

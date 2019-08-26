@@ -44,7 +44,7 @@ class ImportLetrasCommand extends ImportCommand
         $rows = $this->getData($filename);
 
         // Trim all values
-        $rows = array_map(function($row) {
+        $rows = array_map(function ($row) {
             return array_map(function ($col) {
                 return trim($col);
             }, $row);
@@ -73,7 +73,9 @@ class ImportLetrasCommand extends ImportCommand
             $force = false;
         }
 
-        if (!$this->ensureEmpty('letras', $force)) return;
+        if (!$this->ensureEmpty('letras', $force)) {
+            return;
+        }
 
         // -------------
 
