@@ -14,7 +14,7 @@ use Illuminate\Support\Arr;
 
 class LitteraturkritikkController extends RecordController
 {
-    protected $logGroup = 'norsk_litteraturkritikk';
+    protected $logGroup = 'norsk-litteraturkritikk';
 
     public function redir()
     {

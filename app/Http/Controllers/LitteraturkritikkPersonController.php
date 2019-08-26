@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class LitteraturkritikkPersonController extends RecordController
 {
-    protected $logGroup = 'norsk_litteraturkritikk';
+    protected $logGroup = 'norsk-litteraturkritikk';
 
     /**
      * @return array List of genders.
