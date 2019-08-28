@@ -28,16 +28,16 @@ export default {
   },
   props: {
     name: {
-      type: String
+      type: String,
     },
     schema: {
-      type: Object
+      type: Object,
     },
     value: {
-      type: Number
+      type: Number,
     },
   },
-  data() {
+  data () {
     return {
       values: [],
       failed: false,
@@ -53,24 +53,24 @@ export default {
     }
   },
   mounted () {
-    const url = get(this.schema, 'search.options.target');
+    const url = get(this.schema, 'search.options.target')
     this.$http.get(url, {
       params: {
-        field: this.schema.key
-      }
+        field: this.schema.key,
+      },
     }).then(res => {
-      this.values = res.data;
-    }).catch(err => {
-      this.failed = true;
+      this.values = res.data
+    }).catch(() => {
+      this.failed = true
     })
   },
   beforeDestroy () {
-    //this.destroySelectize()
+    // this.destroySelectize()
   },
   methods: {
     onInput ($event) {
-      this.$emit('value', Number($event));
-    }
+      this.$emit('value', Number($event))
+    },
   },
 }
 </script>

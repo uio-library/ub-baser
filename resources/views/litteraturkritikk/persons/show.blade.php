@@ -43,20 +43,20 @@
         </div>
     @endif
 
-    @if (count($person->records_as_forfatter))
-    <h3>Omtalt i {{ count($person->records_as_forfatter ) }} {{ count($person->records_as_forfatter ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
+    @if (count($person->recordsAsAuthor))
+    <h3>Omtalt i {{ count($person->recordsAsAuthor ) }} {{ count($person->recordsAsAuthor ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
     <ul>
-        @foreach ($person->records_as_forfatter as $record)
+        @foreach ($person->recordsAsAuthor as $record)
             <li>{!! $record->representation() !!}</li>
         @endforeach
     </ul>
     <a href="{{ action('LitteraturkritikkController@index', ['f0' => 'verk_forfatter', 'v0' => strval($person)])  }}">Vis som tabellvisning</a>
     @endif
 
-    @if (count($person->records_as_kritiker))
-        <h3>Skribent av {{ count($person->records_as_kritiker ) }} {{ count($person->records_as_kritiker ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
+    @if (count($person->recordsAsCritic))
+        <h3>Skribent av {{ count($person->recordsAsCritic ) }} {{ count($person->recordsAsCritic ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
         <ul>
-            @foreach ($person->records_as_kritiker as $record)
+            @foreach ($person->recordsAsCritic as $record)
                 <li>{!! $record->representation() !!}</li>
             @endforeach
         </ul>

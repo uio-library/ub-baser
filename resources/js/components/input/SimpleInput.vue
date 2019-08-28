@@ -18,17 +18,17 @@ export default {
   props: {
     name: String,
     schema: Object,
-    value: String
+    value: String,
   },
   computed: {
     placeholder () {
       return get(this.schema, 'search.placeholder')
-    }
+    },
   },
   methods: {
-    onInput(newValue) {
-      this.$emit('value', newValue);
-    }
-  }
+    onInput (newValue) {
+      this.$emit('value', newValue)
+    },
+  },
 }
 </script>

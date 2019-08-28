@@ -15,12 +15,12 @@ export default {
   props: {
     name: String,
     schema: Object,
-    value: Boolean
+    value: Boolean,
   },
   methods: {
     onInput ($event) {
-      this.$emit('value', $event.target.checked);
-    }
+      this.$emit('value', $event.target.checked)
+    },
   },
 }
 </script>

@@ -82,8 +82,8 @@ class CreateLitteraturkritikkTable extends Migration
             $table->integer('record_id')->unsigned();
             $table->integer('person_id')->unsigned();
             $table->text('person_role')->nullable();
-            $table->text('kommentar')->nullable();   // Foreløpig ikke i bruk, men innholdet fra verk_forfatter_kommentar og kritiker_kommentar kunne vært flyttet hit.
-            $table->text('pseudonym')->nullable();   // Foreløpig ikke i bruk, Innholdet fra verk_forfatter_pseudonym kunne vært flyttet hit.
+            $table->text('kommentar')->nullable();
+            $table->text('pseudonym')->nullable();
 
             $table->foreign('record_id')
                 ->references('id')
@@ -247,7 +247,7 @@ class CreateLitteraturkritikkTable extends Migration
         DB::unprepared('CREATE INDEX litteraturkritikk_kritiker_ts_idx ON litteraturkritikk_records_search USING gin(kritiker_ts)');
         DB::unprepared('CREATE INDEX litteraturkritikk_person_ts_idx ON litteraturkritikk_records_search USING gin(person_ts)');
 
-        Schema::table('litteraturkritikk_records_search', function($view) {
+        Schema::table('litteraturkritikk_records_search', function ($view) {
             $view->index('publikasjon');
             $view->index('verk_sjanger');
             $view->index('kritikktype');

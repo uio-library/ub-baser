@@ -12,6 +12,7 @@
                 <th>Rolle</th>
                 <th>Kommentar</th>
             </tr>
+            <!-- eslint-disable-next-line vue/require-v-for-key -->
             <tr v-for="(person, personIdx) in persons">
                 <td>
                     <input type="text" v-model="person.etternavn" class="form-control" :disabled="person.id !== null">
@@ -87,25 +88,25 @@ export default {
   props: {
     name: String,
     schema: Object,
-    value: Array
+    value: Array,
   },
   data () {
     return {
       mode: 'normal',
       persons: cloneDeep(this.value),
       newPersonValue: '',
-      selectedPerson: null
+      selectedPerson: null,
     }
   },
   computed: {
     personsJson () {
       return JSON.stringify(this.persons)
-    }
+    },
   },
   watch: {
     persons: (newValue) => {
       console.log('persons changed: ', newValue)
-    }
+    },
   },
   mounted () {
     this.initSelectize()
@@ -118,7 +119,7 @@ export default {
       this.persons.forEach((person, personIdx) => {
         $(`#person_${this.schema.key}_${personIdx}`).selectize({
           openOnFocus: true,
-          closeAfterSelect: true
+          closeAfterSelect: true,
         })
       })
     },
@@ -154,8 +155,8 @@ export default {
         pivot: {
           person_role: this.schema.person_role,
           kommentar: '',
-          pseudonym: ''
-        }
+          pseudonym: '',
+        },
       }
       if (this.selectedPerson) {
         person.id = this.selectedPerson.id
@@ -174,7 +175,7 @@ export default {
       this.persons.push(person)
       this.clearPerson()
       this.$nextTick(() => this.initSelectize())
-    }
-  }
+    },
+  },
 }
 </script>

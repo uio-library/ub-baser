@@ -145,15 +145,17 @@ class ImportLitteraturkritikkCommand extends ImportCommand
     }
 
 
-    function processRecordRow(&$record)
+    protected function processRecordRow(&$record)
     {
         $record['kritikktype'] = $this->processKritikktype($record['kritikktype']);
 
-        list($record['dato'], $record['kommentar']) = $this->mergeYearDate($record['aar'], $record['dato'], $record['kommentar']);
-
+        list($record['dato'], $record['kommentar']) = $this->mergeYearDate(
+            $record['aar'],
+            $record['dato'],
+            $record['kommentar']
+        );
 
         unset($record['aar']);
-
 
         // Normalize 'spraak' as valid ISO639 language code
 //        $lang = mb_strtolower($record['spraak']);
@@ -294,8 +296,10 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         $record = Record::findOrFail($row['id']);
         $record->persons()->detach();
 
-        $record->verk_forfatter_mfl = $this->extractMfl($row, $record, 'forfatter_etternavn') || $this->extractMfl($row, $record, 'forfatter_fornavn');
-        $record->kritiker_mfl = $this->extractMfl($row, $record, 'kritiker_etternavn') || $this->extractMfl($row, $record, 'kritiker_fornavn');
+        $record->verk_forfatter_mfl = $this->extractMfl($row, $record, 'forfatter_etternavn') ||
+            $this->extractMfl($row, $record, 'forfatter_fornavn');
+        $record->kritiker_mfl = $this->extractMfl($row, $record, 'kritiker_etternavn') ||
+            $this->extractMfl($row, $record, 'kritiker_fornavn');
 
         $this->processPerson($record, $row, 'forfatter');
         $this->processPerson($record, $row, 'kritiker');
@@ -395,8 +399,14 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
         $this->comment('Updating sequences');
 
-        \DB::unprepared('SELECT pg_catalog.setval(pg_get_serial_sequence(\'litteraturkritikk_records\', \'id\'), MAX(id)) FROM litteraturkritikk_records');
-        \DB::unprepared('SELECT pg_catalog.setval(pg_get_serial_sequence(\'litteraturkritikk_personer\', \'id\'), MAX(id)) FROM litteraturkritikk_personer');
+        \DB::unprepared(
+            "SELECT pg_catalog.setval(pg_get_serial_sequence('litteraturkritikk_records', 'id'), MAX(id))" .
+            " FROM litteraturkritikk_records"
+        );
+        \DB::unprepared(
+            "SELECT pg_catalog.setval(pg_get_serial_sequence('litteraturkritikk_personer', 'id'), MAX(id))" .
+            " FROM litteraturkritikk_personer"
+        );
 
         $this->comment('Import complete');
     }

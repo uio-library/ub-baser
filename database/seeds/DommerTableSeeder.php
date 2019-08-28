@@ -11,6 +11,5 @@ class DommerTableSeeder extends Seeder
      */
     public function run()
     {
-
     }
 }

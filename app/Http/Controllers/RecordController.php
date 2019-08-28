@@ -96,7 +96,6 @@ class RecordController extends Controller
         $queryBuilder = $request->queryBuilder;
         $requestedColumns = [];
         foreach ($request->columns as $k => $v) {
-
             // Check that only valid column names are requested
             if (!in_array($v['data'], $validColumnNames, true)) {
                 throw new \RuntimeException('Invalid column name requested: ' . $v['data']);
@@ -107,7 +106,6 @@ class RecordController extends Controller
 
         $queryBuilder->select(array_values($requestedColumns));
         foreach ($request->order as $order) {
-
             // Check that only valid column names are requested
             if (!isset($requestedColumns[(int) $order['column']])) {
                 throw new \RuntimeException('Invalid order by requested: ' . $order['column']);

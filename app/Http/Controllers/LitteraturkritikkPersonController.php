@@ -34,12 +34,12 @@ class LitteraturkritikkPersonController extends RecordController
         \Debugbar::startMeasure('query', 'DB query');
         $data = [
             'person' => Person::withTrashed()->with(
-                'records_as_forfatter',
-                'records_as_forfatter.forfattere',
-                'records_as_forfatter.kritikere',
-                'records_as_kritiker',
-                'records_as_kritiker.forfattere',
-                'records_as_kritiker.kritikere'
+                'recordsAsAuthor',
+                'recordsAsAuthor.forfattere',
+                'recordsAsAuthor.kritikere',
+                'recordsAsCritic',
+                'recordsAsCritic.forfattere',
+                'recordsAsCritic.kritikere'
             )->findOrFail($id),
         ];
         \Debugbar::stopMeasure('query');
@@ -84,10 +84,17 @@ class LitteraturkritikkPersonController extends RecordController
 
         $person = Person::findOrFail($id);
 
+        $maxYear = date('Y') + 1;
+
         $this->validate($request, [
+
+            // Lastname is required, firstname is optional
             'etternavn'    => 'required',
-            'fodt'   => 'nullable|numeric|max:2200', // Note: No negative limit, since we have authors like Menander who lived B.C.
-            'dod'   => 'nullable|numeric|max:2200',
+
+            // We don't allow dates in the future, but we don't enforce a minimum limit.
+            // Even negative values (B.C.) should be allowed.
+            'fodt'   => "nullable|numeric|max:{$maxYear}",
+            'dod'   => "nullable|numeric|max:{$maxYear}",
         ]);
 
         $person->etternavn = $request->get('etternavn');

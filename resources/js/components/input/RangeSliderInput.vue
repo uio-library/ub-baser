@@ -30,13 +30,13 @@ export default {
   name: 'range-slider-input',
 
   components: {
-    VueSlider
+    VueSlider,
   },
 
   props: {
     name: String,
     schema: Object,
-    value: String
+    value: String,
   },
 
   computed: {
@@ -52,11 +52,11 @@ export default {
         // Return default value
         return [
           this.minValue,
-          this.maxValue
+          this.maxValue,
         ]
       }
       return [parseInt(val[0]), parseInt(val[1])]
-    }
+    },
   },
 
   mounted () {
@@ -68,7 +68,7 @@ export default {
   methods: {
     onChange (newValue) {
       this.$emit('value', `${newValue[0]}-${newValue[1]}`)
-    }
-  }
+    },
+  },
 }
 </script>

@@ -30,4 +30,5 @@ PreCommit:
     enabled: true
     exclude:
       - '**/*.blade.php'
-
+  EsLint:
+    enabled: true

@@ -44,8 +44,12 @@ class Record extends \App\Record
      */
     public function persons()
     {
-        return $this->belongsToMany('App\Litteraturkritikk\Person', 'litteraturkritikk_record_person', 'record_id', 'person_id')
-            ->withPivot('person_role', 'kommentar', 'pseudonym');
+        return $this->belongsToMany(
+            'App\Litteraturkritikk\Person',
+            'litteraturkritikk_record_person',
+            'record_id',
+            'person_id'
+        )->withPivot('person_role', 'kommentar', 'pseudonym');
     }
 
     /**
@@ -123,7 +127,8 @@ class Record extends \App\Record
         $repr = '';
         $forfattere = [];
         foreach ($this->forfattere as $person) {
-            $forfattere[] = strval($person) . (($person->pivot->person_role != 'forfatter') ? ' (' . $person->pivot->person_role . ')' : '');
+            $personRole = ($person->pivot->person_role != 'forfatter') ? ' (' . $person->pivot->person_role . ')' : '';
+            $forfattere[] = strval($person) . $personRole;
         }
 
         $forfattere = implode($forfatter_delimiter, $forfattere);

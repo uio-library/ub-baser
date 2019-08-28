@@ -100,7 +100,10 @@ class LitteraturkritikkController extends RecordController
                 } else {
                     if (in_array($fieldName, ['verk_tittel'])) {
                         $query = \DB::table('litteraturkritikk_records_search')
-                            ->whereRaw("verk_tittel_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery", [$term]);
+                            ->whereRaw(
+                                "verk_tittel_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery",
+                                [$term]
+                            );
                     } else {
                         $query = \DB::table('litteraturkritikk_records_search')
                             ->where($fieldName, 'ilike', $term);

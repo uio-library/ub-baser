@@ -36,5 +36,4 @@ class DommerRecord extends Record
         'side' => 'string',
         'aar' => 'string',
     ];
-
 }

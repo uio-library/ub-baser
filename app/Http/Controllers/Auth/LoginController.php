@@ -106,7 +106,7 @@ class LoginController extends Controller
         $user = \Auth::user();
 
         if (!is_null($user->saml_session)) {
-            return redirect()->route('saml2_logout', 'uio');  // \Saml2::logout('/', $user->saml_id, $user->saml_session);
+            return redirect()->route('saml2_logout', 'uio');
         }
 
         return $this->localLogout($request);

@@ -15,7 +15,6 @@
     </div>
 </template>
 
-
 <style>
 
 .autocomplete-input {
@@ -41,9 +40,9 @@ export default {
   props: {
     name: String,
     schema: Object,
-    value: String
+    value: String,
   },
-  data() {
+  data () {
     return {
       working: false,
     }
@@ -51,7 +50,7 @@ export default {
   computed: {
     placeholder () {
       return get(this.schema, 'search.placeholder')
-    }
+    },
   },
   mounted () {
     this.initAutocomplete()
@@ -64,7 +63,7 @@ export default {
   },
   methods: {
     initAutocomplete () {
-      let cancel = null;
+      let cancel = null
 
       const url = get(this.schema, 'search.options.target')
       search = autocomplete(this.$refs.input, {}, [
@@ -74,14 +73,14 @@ export default {
             if (cancel) {
               cancel.cancel()
             }
-            cancel = this.$http.CancelToken.source();
+            cancel = this.$http.CancelToken.source()
 
             this.$http.get(url, {
               cancelToken: cancel.token,
               params: {
                 field: this.schema.key,
-                q: query
-              }
+                q: query,
+              },
             })
               .then(
                 res => {
@@ -95,8 +94,8 @@ export default {
                   callback([])
                 }
               )
-          }
-        }
+          },
+        },
       ])
         .on('autocomplete:selected', (event, suggestion, dataset, context) => {
           this.$emit('value', suggestion.value)
@@ -110,7 +109,7 @@ export default {
 
     focus () {
       this.$refs.input.focus()
-    }
-  }
+    },
+  },
 }
 </script>

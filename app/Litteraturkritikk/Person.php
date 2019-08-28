@@ -34,17 +34,21 @@ class Person extends \Eloquent
      */
     public function records()
     {
-        return $this->belongsToMany('App\Litteraturkritikk\Record', 'litteraturkritikk_record_person', 'person_id', 'record_id')
-            ->withPivot('person_role', 'kommentar', 'pseudonym');
+        return $this->belongsToMany(
+            'App\Litteraturkritikk\Record',
+            'litteraturkritikk_record_person',
+            'person_id',
+            'record_id'
+        )->withPivot('person_role', 'kommentar', 'pseudonym');
     }
 
-    public function records_as_forfatter()
+    public function recordsAsAuthor()
     {
         return $this->records()
             ->where('person_role', '!=', 'kritiker');
     }
 
-    public function records_as_kritiker()
+    public function recordsAsCritic()
     {
         return $this->records()
             ->where('person_role', '=', 'kritiker');

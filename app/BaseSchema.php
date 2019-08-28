@@ -45,7 +45,9 @@ abstract class BaseSchema implements \JsonSerializable
         }
 
         // Add autocomplete target if not set
-        if (in_array($field['type'], ['autocomplete', 'persons', 'select', 'tags']) && !Arr::has($field, 'search.options.target')) {
+        if (in_array($field['type'], ['autocomplete', 'persons', 'select', 'tags']) &&
+            !Arr::has($field, 'search.options.target')
+        ) {
             if (!Arr::has($options, 'autocompleTarget')) {
                 throw new \RuntimeException('initSchema: Option autocompleTarget is missing!');
             }

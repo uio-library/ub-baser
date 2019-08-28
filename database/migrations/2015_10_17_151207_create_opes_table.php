@@ -37,7 +37,7 @@ class CreateOpesTable extends Migration
             $table->string('navn');
             $table->foreign('opes_id')
                 ->references('id')->on('opes');
-        });
+         });
     }
 
     /**

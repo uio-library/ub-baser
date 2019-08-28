@@ -81,8 +81,12 @@ class ImportDommerCommand extends ImportCommand
 
         $this->comment('Updating sequences');
 
-        \DB::unprepared('SELECT pg_catalog.setval(pg_get_serial_sequence(\'dommer\', \'id\'), MAX(id)) FROM dommer');
-        \DB::unprepared('SELECT pg_catalog.setval(pg_get_serial_sequence(\'dommer_kilder\', \'id\'), MAX(id)) FROM dommer_kilder');
+        \DB::unprepared(
+            "SELECT pg_catalog.setval(pg_get_serial_sequence('dommer', 'id'), MAX(id)) FROM dommer"
+        );
+        \DB::unprepared(
+            "SELECT pg_catalog.setval(pg_get_serial_sequence('dommer_kilder', 'id'), MAX(id)) FROM dommer_kilder"
+        );
 
         $this->comment('Import complete');
     }
