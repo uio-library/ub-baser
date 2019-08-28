@@ -8,7 +8,8 @@
                     v-if="field.edit !== false"
                     :key="field.key"
                     :schema="schemas[field.key]"
-                    :value="values[field.key]"
+                    :value="currentValues[field.key]"
+                    @value="onValue(field.key, $event)"
             ></edit-field>
         </table>
 
@@ -24,7 +25,8 @@
                             v-if="field.edit !== false"
                             :key="field.key"
                             :schema="schemas[field.key]"
-                            :value="values[field.key]"
+                            :value="currentValues[field.key]"
+                            @value="onValue(field.key, $event)"
                     ></edit-field>
                 </table>
             </div>
@@ -36,6 +38,8 @@
 
 <script>
 import EditField from './EditField'
+import { cloneDeep } from 'lodash/lang'
+
 export default {
   name: 'edit-form',
   components: {
@@ -47,6 +51,17 @@ export default {
     },
     values: {
       type: Object
+    }
+  },
+  data() {
+    return {
+      currentValues: cloneDeep(this.values)
+    }
+  },
+  methods: {
+    onValue(key, newValue) {
+      console.log('[EditForm] Changed: ', key, newValue);
+      this.currentValues[key] = newValue;
     }
   },
   computed: {

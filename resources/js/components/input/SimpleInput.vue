@@ -5,7 +5,7 @@
                :name="name"
                :value="value"
                :placeholder="placeholder"
-               @input="$emit('value', $event.target.value)"
+               @input="onInput($event.target.value)"
         >
     </div>
 </template>
@@ -23,6 +23,11 @@ export default {
   computed: {
     placeholder () {
       return get(this.schema, 'search.placeholder')
+    }
+  },
+  methods: {
+    onInput(newValue) {
+      this.$emit('value', newValue);
     }
   }
 }

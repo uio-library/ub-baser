@@ -9,15 +9,14 @@
                 :name="name"
                 :value="value"
                 :schema="schema"
-                @value="$emit('value', $event)"
+                @value="onValue($event)"
             ></component>
-            <!--<tt>{{ this.currentType }}</tt>-->
+            <!-- <tt>[{{ this.currentType }}] {{ name}}: {{ value }}</tt>-->
         </td>
     </tr>
 </template>
 
 <script>
-import { get } from 'lodash/object'
 import * as components from './input'
 
 export default {
@@ -29,6 +28,12 @@ export default {
     'schema',
     'value'
   ],
+  methods: {
+    onValue (newValue) {
+      console.log('[EditField] New value: ', newValue)
+      this.$emit('value', newValue)
+    }
+  },
   computed: {
     currentType () {
       const type = this.schema.type
@@ -36,7 +41,7 @@ export default {
     },
 
     name () {
-      return get(this.schema, 'edit.column', this.schema.key)
+      return this.schema.key
     }
   }
 }

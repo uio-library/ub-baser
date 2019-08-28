@@ -14,16 +14,16 @@
             </tr>
             <tr v-for="(person, personIdx) in persons">
                 <td>
-                    <input type="text" v-model="person.etternavn" class="form-control" :disabled="person.id">
+                    <input type="text" v-model="person.etternavn" class="form-control" :disabled="person.id !== null">
                 </td>
                 <td>
-                    <input type="text" v-model="person.fornavn" class="form-control" :disabled="person.id">
+                    <input type="text" v-model="person.fornavn" class="form-control" :disabled="person.id !== null">
                 </td>
                 <td style="width:100px">
                     <selectize
                       v-model="person.kjonn"
                       :id="`person_${schema.key}_${personIdx}`"
-                      :disabled="person.id"
+                      :disabled="person.id  !== null"
                     >
                       <option :value="null">(ingen verdi)</option>
                       <option value="f">kvinne</option>
@@ -73,6 +73,11 @@ import { cloneDeep } from 'lodash/lang'
 import Selectize from 'vue2-selectize'
 import AutocompleteInput from './AutocompleteInput'
 
+/**
+ * Note: This component does not support two-way data-binding,
+ * Updating the `value` property will not update the component.
+ * This is ok as it's only used with editing, not with search.
+ */
 export default {
   name: 'person-input',
   components: {

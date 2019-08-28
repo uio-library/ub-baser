@@ -3,7 +3,7 @@
         <input type="checkbox"
                :name="name"
                :checked="value"
-               @input="$emit('value', $event.target.value)"
+               @input="onInput($event)"
         >
         {{ schema.help }}
     </div>
@@ -16,6 +16,11 @@ export default {
     name: String,
     schema: Object,
     value: Boolean
-  }
+  },
+  methods: {
+    onInput ($event) {
+      this.$emit('value', $event.target.checked);
+    }
+  },
 }
 </script>
