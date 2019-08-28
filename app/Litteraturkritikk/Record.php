@@ -11,8 +11,6 @@ class Record extends \App\Record
 
     public static $prefix = 'litteraturkritikk';
 
-
-
     /**
      * The table associated with the model.
      *

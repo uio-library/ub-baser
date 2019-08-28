@@ -1,7 +1,7 @@
 <template>
-    <div v-if="!currentSchema || !currentSchema.search || !currentSchema.search.operators" class="text-danger">
+    <div v-if="!currentSchema || !currentSchema.searchOptions || !currentSchema.searchOptions.operators" class="text-danger">
         <span v-if="!currentSchema">Error: No schema found for {{ field }}.</span>
-        <span v-else>Invalid: Schema for "{{ field }}" lacks "search" or "search.operators"</span>
+        <span v-else>Invalid: Schema for "{{ field }}" lacks "searchOptions" or "searchOptions.operators"</span>
     </div>
     <div v-else class="d-flex my-1">
         <div class="flex-grow-0">
@@ -12,13 +12,13 @@
             >
                 <option v-for="field in schema.fields"
                         :key="field.key"
-                        v-if="field.search && (advanced || !field.search.advanced)"
+                        v-if="field.searchable === 'simple' || (advanced && field.searchable === 'advanced')"
                         :value="field.key"
                 >{{ field.label }}</option>
 
                 <optgroup v-for="fieldGroup in schema.groups" :key="fieldGroup.label" :label="fieldGroup.label">
                     <option v-for="field in fieldGroup.fields"
-                            v-if="field.search && (advanced || !field.search.advanced)"
+                            v-if="field.searchable === 'simple' || (advanced && field.searchable === 'advanced')"
                             :value="field.key"
                     >{{ field.label }}</option>
                 </optgroup>
@@ -91,12 +91,12 @@ export default {
       return fieldMap[this.field]
     },
     currentType () {
-      const type = get(this.currentSchema, 'search.type', this.currentSchema.type)
+      const type = get(this.currentSchema, 'searchOptions.type', this.currentSchema.type)
       return type.substr(0, 1).toUpperCase() + type.substr(1) + 'Input'
     },
     currentOperators () {
       return this.operators.filter(
-        op => this.currentSchema.search.operators.indexOf(op.value) !== -1
+        op => this.currentSchema.searchOptions.operators.indexOf(op.value) !== -1
       )
     }
   }

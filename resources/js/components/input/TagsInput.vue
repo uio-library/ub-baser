@@ -38,7 +38,7 @@ export default {
         openOnFocus: true,
         closeAfterSelect: true,
         load: (query, callback) => {
-          const url = get(this.schema, 'search.options.target')
+          const url = get(this.schema, 'searchOptions.autocompleteUrl')
           this.$http.get(url, {
             params: {
               field: this.schema.key,

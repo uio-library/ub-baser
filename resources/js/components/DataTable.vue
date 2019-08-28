@@ -26,14 +26,14 @@
                 >
                     <option
                             v-for="field in schema.fields"
-                            v-if="field.display !== false"
+                            v-if="field.displayable !== false"
                             :value="field.key">{{ field.label }}</option>
 
                     <optgroup v-for="group in schema.groups" :key="group.label" :label="group.label">
 
                         <option
                                 v-for="field in group.fields"
-                                v-if="field.display !== false"
+                                v-if="field.displayable !== false"
                                 :value="field.key">{{ field.label }}</option>
 
                     </optgroup>
@@ -92,12 +92,12 @@ export default {
     },
 
     topLevelFields () {
-      return this.schema.fields.filter(field => field.display !== false)
+      return this.schema.fields.filter(field => field.displayable !== false)
     },
 
     groups () {
       return this.schema.groups.map(group => (
-        { label: group.label, span: group.fields.filter(field => field.display !== false).length }
+        { label: group.label, span: group.fields.filter(field => field.displayable !== false).length }
       ))
     },
 
@@ -115,11 +115,11 @@ export default {
       const columns = []
 
       const processField = (field) => {
-        if (field.display === false) {
+        if (field.displayable === false) {
           return
         }
         const col = {
-          data: get(field, 'display.column', field.key),
+          data: field.key,
           columnLabel: field.label,
           visible: this.visibleColumns.indexOf(field.key) !== -1,
           render: (data, type, row) => {
@@ -129,8 +129,8 @@ export default {
             return `<a href="${this.url}/${row.id}">${data}</a>`
           }
         }
-        if (get(field, 'display.columnClassName')) {
-          col.className = field.display.columnClassName
+        if (get(field, 'columnClassName')) {
+          col.className = field.columnClassName
         }
         columns.push(col)
       }

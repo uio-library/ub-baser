@@ -2,9 +2,9 @@
 
 namespace App\Letras;
 
-use App\BaseSchema;
+use App\Schema\Schema;
 
-class LetrasSchema extends BaseSchema
+class LetrasSchema extends Schema
 {
     public $prefix = 'letras';
 
@@ -15,9 +15,6 @@ class LetrasSchema extends BaseSchema
             [
                 'key' => 'id',
                 'type' => 'incrementing',
-                'display' => false,
-                'edit' => false,
-                'search' => false,
             ],
         ],
 
@@ -86,26 +83,20 @@ class LetrasSchema extends BaseSchema
                     [
                         'key' => 'utgivelsesaar2',
                         'type' => 'simple',
-                        'search' => [
-                            'advanced' => true,
-                        ],
                     ],
 
                     // Forlag
                     [
                         'key' => 'forlag',
                         'type' => 'simple',
-                        'search' => [
-                        ],
                     ],
 
                     // Forord/etterord
                     [
                         'key' => 'foretterord',
                         'type' => 'simple',
-                        'search' => [
-                            'advanced' => true,
-                        ],
+
+                        'searchable' => 'advanced',
                     ],
 
                     // Språk
@@ -120,10 +111,8 @@ class LetrasSchema extends BaseSchema
 
     public function __construct()
     {
-        $this->init([
-            'minYear' => 1789,
-            'maxYear' => (int)strftime('%Y'),
-            'autocompleTarget' => action('LetrasController@autocomplete'),
-        ]);
+        $this->schemaOptions['autocompleteUrl'] = action('LetrasController@autocomplete');
+
+        parent::__construct();
     }
 }

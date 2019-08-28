@@ -12,15 +12,15 @@
     @endif
 
     @foreach ($schema->groups as $group)
-        <h4 class="mt-4">{{ $group['label'] }}</h4>
+        <h4 class="mt-4">{{ $group->label }}</h4>
         <dl class="row">
-            @foreach ($group['fields'] as $field)
-                @if (!isset($field['display']) || $field['display'] !== false)
+            @foreach ($group->fields as $field)
+                @if ($field->displayable)
                     <dt class="col-sm-3 text-sm-right">
-                        {{ trans('letras.' . $field['key']) }}:
+                        {{ $field->label }}
                     </dt>
                     <dd class="col-sm-9">
-                        {{ $record->{$field['key']} }}
+                        {{ $record->{$field->key} }}
                     </dd>
                 @endif
             @endforeach

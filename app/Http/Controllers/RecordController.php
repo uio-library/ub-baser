@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\BaseSchema;
+use App\Schema\Schema;
 use App\Http\Requests\SearchRequest;
 use App\Record;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class RecordController extends Controller
 {
@@ -22,20 +22,21 @@ class RecordController extends Controller
      * Construct form arguments according to some schema.
      *
      * @param Record $record
-     * @param BaseSchema $schema
+     * @param Schema $schema
      * @return array
      */
-    protected function formArguments(Record $record, BaseSchema $schema)
+    protected function formArguments(Record $record, Schema $schema)
     {
         $values = [];
-        foreach ($schema->keyed() as $key => $col) {
-            if (Arr::has($col, 'edit.column')) {
-                $values[$key] = $record->{$col['edit']['column']};
-            } elseif (Arr::has($col, 'model_attribute')) {
-                $values[$key] = $record->{$col['model_attribute']};
+        foreach ($schema->keyed() as $key => $field) {
+            if ($field->has('column')) {
+                $value = $record->{$field->column};
+            } elseif ($field->has('modelAttribute')) {
+                $value = $record->{$field->modelAttribute};
             } else {
-                $values[$key] = old($key, $record->{$key});
+                $value = $record->{$key};
             }
+            $values[$key] = old($key, $value);
         }
 
         return [
@@ -49,60 +50,63 @@ class RecordController extends Controller
      * Store a newly created record, or update an existing one.
      *
      * @param Request $request
-     * @param BaseSchema $schema
+     * @param Schema $schema
      * @param Record $record
      */
-    protected function updateRecord(BaseSchema $schema, Record $record, Request $request)
+    protected function updateRecord(Schema $schema, Record $record, Request $request)
     {
         foreach ($schema->flat() as $field) {
-            if (Arr::get($field, 'edit') === false) {
+            if (!$field->editable) {
                 continue;
             }
-            $datatype = Arr::get($field, 'type', 'simple');
 
-            $newValue = $request->get(
-                $field['key'],
-                Arr::get($field, 'default')
-            );
+            $newValue = $request->get($field->key, $field->defaultValue);
 
-            if (in_array($datatype, ['simple', 'autocomplete', 'url', 'boolean', 'tags'])) {
-                $record->{$field['key']} = $newValue;
-            } elseif ($datatype == 'select') {
-                $record->{$field['edit']['column']} = $newValue;
-            } elseif ($datatype == 'persons') {
-                // Ignore, these are handled by the specific controller
-            } elseif ($datatype == 'incrementing') {
+            if (!$field->editable) {
                 // Ignore
-            } else {
-                throw new \RuntimeException("Unsupported datatype: $datatype");
+            } elseif ($field->type == 'persons') {
+                // Ignore, these are handled by the specific controller (for now)
+            } elseif ($field->has('column')) {
+                $record->{$field->getColumn()} = $newValue;
             }
         }
 
-        $record->updated_by = $request->user()->id;
         if (is_null($record->id)) {
             $record->created_by = $request->user()->id;
         }
+        $record->updated_by = $request->user()->id;
 
         $record->save();
     }
 
     /**
      * Generate JSON response for DataTables.
+     *
+     * @param SearchRequest $request
+     * @param Schema $schema
+     * @return JsonResponse
      */
-    protected function dataTablesResponse(SearchRequest $request, BaseSchema $schema)
+    protected function dataTablesResponse(SearchRequest $request, Schema $schema)
     {
-        $validColumnNames = array_keys($schema->keyed());
+        $fields = $schema->keyed();
 
         $queryBuilder = $request->queryBuilder;
         $requestedColumns = [];
+        $columnReverseMap = [];
         foreach ($request->columns as $k => $v) {
             // Check that only valid column names are requested
-            if (!in_array($v['data'], $validColumnNames, true)) {
+            if (!isset($fields[$v['data']])) {
                 throw new \RuntimeException('Invalid column name requested: ' . $v['data']);
             }
-            $requestedColumns[$k] = $v['data'];
+            $field = $fields[$v['data']];
+
+            $columnReverseMap[$field->getViewColumn()] = $field->key;
+            $requestedColumns[$k] = $field->getViewColumn();
         }
+
+        // Always include the id column
         $requestedColumns[] = 'id';
+        $columnReverseMap['id'] = 'id';
 
         $queryBuilder->select(array_values($requestedColumns));
         foreach ($request->order as $order) {
@@ -122,13 +126,17 @@ class RecordController extends Controller
         $queryBuilder->take($request->length);
 
         $data = $queryBuilder->get()
-            ->map(function ($row) {
-                foreach ($row as $k => $v) {
+            ->map(function ($row) use ($columnReverseMap) {
+                $out = [];
+                foreach ($row->toArray() as $k => $v) {
                     if (is_array($v)) {
-                        $row[$k] = implode(', ', $v);
+                        $v = implode(', ', $v);
+                    }
+                    if (isset($columnReverseMap[$k])) {
+                        $out[$columnReverseMap[$k]] = $v;
                     }
                 }
-                return $row;
+                return $out;
             });
 
         return response()->json([

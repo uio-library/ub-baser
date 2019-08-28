@@ -2,14 +2,14 @@
 
 namespace App\Http\Requests;
 
-use App\BaseSchema;
+use App\Schema\Schema;
 use App\Litteraturkritikk\LitteraturkritikkSchema;
 use App\Litteraturkritikk\RecordView;
 use Illuminate\Database\Eloquent\Builder;
 
 class LitteraturkritikkSearchRequest extends SearchRequest
 {
-    protected function getSchema(): BaseSchema
+    protected function getSchema(): Schema
     {
         return app(LitteraturkritikkSchema::class);
     }

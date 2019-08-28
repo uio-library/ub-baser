@@ -2,9 +2,9 @@
 
 namespace App\Dommer;
 
-use App\BaseSchema;
+use App\Schema\Schema;
 
-class DommerSchema extends BaseSchema
+class DommerSchema extends Schema
 {
     public $prefix = 'dommer';
 
@@ -15,9 +15,6 @@ class DommerSchema extends BaseSchema
             [
                 'key' => 'id',
                 'type' => 'incrementing',
-                'display' => false,
-                'edit' => false,
-                'search' => false,
             ],
 
             [
@@ -27,14 +24,11 @@ class DommerSchema extends BaseSchema
             [
                 'key' => 'kilde',
                 'type' => 'select',
-                // 'model_attribute' => 'kilde',
-                'display' => [
-                    'column' => 'kilde_navn',
-                ],
-                'edit' => [
-                    'column' => 'kilde_id',
-                ],
-                'search' => [
+
+                'column' => 'kilde_id',
+                'viewColumn' => 'kilde_navn',
+
+                'searchOptions' => [
                     'index' => [
                         'type'=> 'simple',
                         'column' => 'kilde_id',
@@ -56,8 +50,8 @@ class DommerSchema extends BaseSchema
 
     public function __construct()
     {
-        $this->init([
-            'autocompleTarget' => action('DommerController@autocomplete'),
-        ]);
+        $this->schemaOptions['autocompleteUrl'] = action('DommerController@autocomplete');
+
+        parent::__construct();
     }
 }

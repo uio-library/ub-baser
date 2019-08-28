@@ -153,7 +153,7 @@ export default {
         fornavn: '',
         kjonn: null,
         pivot: {
-          person_role: this.schema.person_role,
+          person_role: this.schema.personRole,
           kommentar: '',
           pseudonym: '',
         },

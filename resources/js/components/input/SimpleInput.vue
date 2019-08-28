@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     placeholder () {
-      return get(this.schema, 'search.placeholder')
+      return get(this.schema, 'searchOptions.placeholder')
     },
   },
   methods: {

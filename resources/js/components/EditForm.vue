@@ -5,7 +5,7 @@
         <table class="table table-borderless table-sm">
             <edit-field
                     v-for="field in schema.fields"
-                    v-if="field.edit !== false"
+                    v-if="field.editable"
                     :key="field.key"
                     :schema="schemas[field.key]"
                     :value="currentValues[field.key]"
@@ -22,7 +22,7 @@
                 <table class="table table-borderless table-sm">
                     <edit-field
                             v-for="field in group.fields"
-                            v-if="field.edit !== false"
+                            v-if="field.editable"
                             :key="field.key"
                             :schema="schemas[field.key]"
                             :value="currentValues[field.key]"
@@ -55,7 +55,18 @@ export default {
   },
   data() {
     return {
-      currentValues: cloneDeep(this.values)
+      currentValues () {
+        let values = cloneDeep(this.values)
+
+        // Cast all integers as strings (@see SelectInput)
+        Object.keys(values).forEach(key => {
+          if (typeof values[key] === 'number') {
+            values[key] = String(values[key])
+          }
+        })
+
+        return values
+      }
     }
   },
   methods: {

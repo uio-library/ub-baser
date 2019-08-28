@@ -41,10 +41,10 @@ export default {
 
   computed: {
     minValue () {
-      return get(this.schema, 'search.options.minValue')
+      return get(this.schema, 'searchOptions.minValue')
     },
     maxValue () {
-      return get(this.schema, 'search.options.maxValue')
+      return get(this.schema, 'searchOptions.maxValue')
     },
     valueAsArray () {
       const val = this.value.split('-')

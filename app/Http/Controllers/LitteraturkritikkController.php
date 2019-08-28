@@ -196,11 +196,10 @@ class LitteraturkritikkController extends RecordController
 
         // Sync persons
         $persons = [];
-        foreach ($schema->flat() as $col) {
-            $datatype = Arr::get($col, 'type', 'simple');
-            $newValue = $request->get($col['key'], Arr::get($col, 'default'));
+        foreach ($schema->flat() as $field) {
+            $newValue = $request->get($field->key, $field->defaultValue);
 
-            if ($datatype == 'persons') {
+            if ($field->type == 'persons') {
                 foreach (json_decode($newValue, true) as $input) {
                     $persons[] = $input;
                 }

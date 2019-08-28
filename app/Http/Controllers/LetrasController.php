@@ -61,8 +61,8 @@ class LetrasController extends RecordController
     public function autocomplete(Request $request, LetrasSchema $schema)
     {
         $fieldName = $request->get('field');
-        $columns = $schema->keyed();
-        if (!isset($columns[$fieldName])) {
+        $fields = $schema->keyed();
+        if (!isset($fields[$fieldName])) {
             throw new \RuntimeException('Invalid field');
         }
 

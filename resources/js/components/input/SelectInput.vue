@@ -34,7 +34,7 @@ export default {
       type: Object,
     },
     value: {
-      type: Number,
+      type: String,
     },
   },
   data () {
@@ -53,7 +53,7 @@ export default {
     }
   },
   mounted () {
-    const url = get(this.schema, 'search.options.target')
+    const url = get(this.schema, 'searchOptions.autocompleteUrl')
     this.$http.get(url, {
       params: {
         field: this.schema.key,
@@ -64,12 +64,9 @@ export default {
       this.failed = true
     })
   },
-  beforeDestroy () {
-    // this.destroySelectize()
-  },
   methods: {
     onInput ($event) {
-      this.$emit('value', Number($event))
+      this.$emit('value', $event)
     },
   },
 }

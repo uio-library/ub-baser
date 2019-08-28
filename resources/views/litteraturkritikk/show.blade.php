@@ -19,18 +19,18 @@
             </h2>
 
             @foreach ($schema->groups as $group)
-                <h4 class="mt-4">{{ $group['label'] }}</h4>
+                <h4 class="mt-4">{{ $group->label }}</h4>
                 <dl class="row">
-                    @foreach ($group['fields'] as $field)
-                        @if (!isset($field['display']) || $field['display'] !== false)
+                    @foreach ($group->fields as $field)
+                        @if ($field->displayable)
                             <dt class="col-sm-3 text-sm-right">
-                                {{ trans('litteraturkritikk.' . $field['key']) }}:
+                                {{ trans('litteraturkritikk.' . $field->key) }}:
                             </dt>
                             <dd class="col-sm-9">
 
-                                @if ($field['type'] == 'persons')
+                                @if ($field->type == 'persons')
 
-                                    @foreach ($record->{$field['model_attribute']} as $person)
+                                    @foreach ($record->{$field->modelAttribute} as $person)
                                         <a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
                                             $person->pivot->pseudonym ? ', under pseudonymet «' . $person->pivot->pseudonym . '»' : ''
                                         }}{{
@@ -39,17 +39,17 @@
                                             $person->pivot->kommentar ? ' (' . $person->pivot->kommentar . ')' : ''
                                         }}<br>
                                     @endforeach
-                                    @if ($record->{$field['key'] . '_mfl'})
+                                    @if ($record->{$field->key . '_mfl'})
                                         <em>mfl.</em>
                                     @endif
 
-                                @elseif (is_array($record->{$field['key']}))
+                                @elseif (is_array($record->{$field->key}))
 
-                                    {{ implode(', ', $record->{$field['key']}) }}
+                                    {{ implode(', ', $record->{$field->key}) }}
 
                                 @else
 
-                                    {{ $record->{$field['key']} }}
+                                    {{ $record->{$field->key} }}
 
                                 @endif
                             </dd>

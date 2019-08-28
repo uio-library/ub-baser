@@ -23,14 +23,14 @@ class DommerController extends RecordController
     public function index(DommerSearchRequest $request, DommerSchema $schema)
     {
         if ($request->wantsJson()) {
-            return $this->dataTablesResponse($request);
+            return $this->dataTablesResponse($request, $schema);
         }
 
         $introPage = Page::where('slug', '=', 'dommer/intro')->first();
         $intro = $introPage ? $introPage->body : '';
 
         return response()->view('dommer.index', [
-            'schema' => $schema->get(),
+            'schema' => $schema,
 
             'query' => $request->all(),
             'processedQuery' => $request->queryParts,
@@ -40,7 +40,7 @@ class DommerController extends RecordController
 
             'defaultColumns' => [
                 'navn',
-                'kilde_navn',
+                'kilde',
                 'aar',
                 'side',
             ],

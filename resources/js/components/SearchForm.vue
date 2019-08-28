@@ -81,7 +81,7 @@ export default {
 
     firstSearchField () {
       for (let i = 0; i < this.allFields.length; i++) {
-        if (this.allFields[i].search !== false) {
+        if (this.allFields[i].searchable !== 'disabled') {
           return this.allFields[i].key
         }
       }

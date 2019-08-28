@@ -2,9 +2,9 @@
 
 namespace App\Litteraturkritikk;
 
-use App\BaseSchema;
+use App\Schema\Schema;
 
-class LitteraturkritikkSchema extends BaseSchema
+class LitteraturkritikkSchema extends Schema
 {
     public $prefix = 'litteraturkritikk';
 
@@ -15,19 +15,18 @@ class LitteraturkritikkSchema extends BaseSchema
             [
                 'key' => 'id',
                 'type' => 'incrementing',
-                'display' => false,
-                'edit' => false,
-                'search' => false,
             ],
 
             // Søk i alle felt
             [
                 'key' => 'q',
                 'type' => 'simple',
-                'display' => false,
-                'edit' => false,
-                'search' => [
-                    'advanced' => false,
+
+                'displayable' => false,
+                'editable' => false,
+                'searchable' => 'simple',
+
+                'searchOptions' => [
                     'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc... Avslutt med * om du føler for å trunkere.',
                     'index' => ['type' => 'ts', 'ts_column' => 'any_field_ts'],
                     'operators' => ['eq', 'neq']
@@ -38,10 +37,12 @@ class LitteraturkritikkSchema extends BaseSchema
             [
                 'key' => 'person',
                 'type' => 'autocomplete',
-                'display' => false,
-                'edit' => false,
-                'search' => [
-                    'advanced' => false,
+
+                'displayable' => false,
+                'editable' => false,
+                'searchable' => 'simple',
+
+                'searchOptions' => [
                     'placeholder' => 'Fornavn og/eller etternavn',
                     'index' => ['type' => 'ts', 'ts_column' => 'person_ts'],
                     'operators' => ['eq', 'neq'],
@@ -60,9 +61,9 @@ class LitteraturkritikkSchema extends BaseSchema
                     [
                         'key' => 'verk_tittel',
                         'type' => 'autocomplete',
-                        'search' => [
+
+                        'searchOptions' => [
                             'placeholder' => 'Tittel på omtalt verk',
-                            'options' => [],
                             'index' => [
                                 'type' => 'ts',
                                 'column' => 'verk_tittel',
@@ -75,9 +76,11 @@ class LitteraturkritikkSchema extends BaseSchema
                     [
                         'key' => 'verk_forfatter',
                         'type' => 'persons',
-                        'model_attribute' => 'forfattere',
-                        'person_role' => 'forfatter',
-                        'search' => [
+
+                        'modelAttribute' => 'forfattere',
+                        'personRole' => 'forfatter',
+
+                        'searchOptions' => [
                             'type' => 'autocomplete',
                             'placeholder' => 'Fornavn og/eller etternavn',
                             'index' => [
@@ -98,20 +101,22 @@ class LitteraturkritikkSchema extends BaseSchema
                     [
                         'key' => 'verk_forfatter_mfl',
                         'type' => 'boolean',
+
+                        'displayable' => false,
+                        'searchable' => 'disabled',
+
+                        // 'default' => false,
                         'help' => 'Kryss av hvis det er flere personer som ikke er listet opp',
-                        'default' => false,
-                        'display' => false,
-                        'search' => false,
                     ],
 
                     // År
                     [
                         'key' => 'verk_dato',
                         'type' => 'simple',
-                        'display' => [
-                            'columnClassName' => 'dt-body-nowrap',
-                        ],
-                        'search' => [
+
+                        'columnClassName' => 'dt-body-nowrap',
+
+                        'searchOptions' => [
                             'type' => 'rangeslider',
                             'advanced' => true,
                             'index' => [
@@ -125,7 +130,8 @@ class LitteraturkritikkSchema extends BaseSchema
                     [
                         'key' => 'verk_sjanger',
                         'type' => 'autocomplete',
-                        'search' => [
+
+                        'searchOptions' => [
                             'placeholder' => 'Sjanger til det omtalte verket. F.eks. lyrikk, roman, ...',
                             'options' => [],
                             'index' => ['type' => 'simple', 'column' => 'verk_sjanger'],
@@ -136,27 +142,24 @@ class LitteraturkritikkSchema extends BaseSchema
                     [
                         'key' => 'verk_spraak',
                         'type' => 'autocomplete',
-                        'search' => [
-                            'advanced' => true,
-                        ],
+
+                        'searchable' => 'advanced',
                     ],
 
                     // Kommentar
                     [
                         'key' => 'verk_kommentar',
                         'type' => 'simple',
-                        'search' => [
-                            'advanced' => true,
-                        ],
+
+                        'searchable' => 'advanced',
                     ],
 
                     // Utgivelsessted
                     [
                         'key' => 'verk_utgivelsessted',
                         'type' => 'autocomplete',
-                        'search' => [
-                            'advanced' => true,
-                        ],
+
+                        'searchable' => 'advanced',
                     ],
 
                 ],
@@ -171,12 +174,13 @@ class LitteraturkritikkSchema extends BaseSchema
                     [
                         'key' => 'kritiker',
                         'type' => 'persons',
-                        'model_attribute' => 'kritikere',
-                        'person_role' => 'kritiker',
-                        'search' => [
+
+                        'modelAttribute' => 'kritikere',
+                        'personRole' => 'kritiker',
+
+                        'searchOptions' => [
                             'type' => 'autocomplete',
                             'placeholder' => 'Fornavn og/eller etternavn',
-                            'options' => [],
                             'index' => [
                                 'type' => 'ts',
                                 'column' => 'kritiker',
@@ -190,16 +194,17 @@ class LitteraturkritikkSchema extends BaseSchema
                         'key' => 'kritiker_mfl',
                         'type' => 'boolean',
                         'help' => 'Kryss av hvis det er flere personer som ikke er listet opp',
-                        'default' => false,
-                        'display' => false,
-                        'search' => false,
+                        // 'default' => false,
+                        'displayable' => false,
+                        'searchable' => 'disabled',
                     ],
 
                     // Publikasjon
                     [
                         'key' => 'publikasjon',
                         'type' => 'autocomplete',
-                        'search' => [
+
+                        'searchOptions' => [
                             'placeholder' => 'Publikasjon',
                             'index' => [
                                 'type' => 'simple',
@@ -212,8 +217,9 @@ class LitteraturkritikkSchema extends BaseSchema
                     [
                         'key' => 'kritikktype',
                         'type' => 'tags',
-                        'default' => [],
-                        'search' => [
+                        // 'default' => [],
+
+                        'searchOptions' => [
                             'type' => 'autocomplete',
                             'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...',
                             'index' => [
@@ -227,10 +233,10 @@ class LitteraturkritikkSchema extends BaseSchema
                     [
                         'key' => 'dato',
                         'type' => 'simple',
-                        'display' => [
-                            'columnClassName' => 'dt-body-nowrap',
-                        ],
-                        'search' => [
+
+                        'columnClassName' => 'dt-body-nowrap',
+
+                        'searchOptions' => [
                             'type' => 'rangeslider',
                             'index' => [
                                 'type' => 'range',
@@ -243,26 +249,23 @@ class LitteraturkritikkSchema extends BaseSchema
                     [
                         'key' => 'spraak',
                         'type' => 'autocomplete',
-                        'search' => [
-                            'advanced' => true,
-                        ],
+
+                        'searchable' => 'advanced',
                     ],
 
                     // Tittel
                     [
                         'key' => 'tittel',
                         'type' => 'simple',
-                        'search' => [
-                            'advanced' => true,
-                        ],
+
+                        'searchable' => 'advanced',
                     ],
 
                     [
                         'key' => 'utgivelsessted',
                         'type' => 'autocomplete',
-                        'search' => [
-                            'advanced' => true,
-                        ],
+
+                        'searchable' => 'advanced',
                     ],
                     [
                         'key' => 'aargang',
@@ -287,23 +290,20 @@ class LitteraturkritikkSchema extends BaseSchema
                     [
                         'key' => 'kommentar',
                         'type' => 'simple',
-                        'search' => [
-                            'advanced' => true,
-                        ],
+
+                        'searchable' => 'advanced',
                     ],
                     [
                         'key' => 'utgivelseskommentar',
                         'type' => 'simple',
-                        'search' => [
-                            'advanced' => true,
-                        ],
+
+                        'searchable' => 'advanced',
                     ],
                     [
                         'key' => 'fulltekst_url',
                         'type' => 'url',
-                        'search' => [
-                            'advanced' => true,
-                        ],
+
+                        'searchable' => 'advanced',
                     ],
                 ],
             ],
@@ -312,10 +312,10 @@ class LitteraturkritikkSchema extends BaseSchema
 
     public function __construct()
     {
-        $this->init([
-            'autocompleTarget' => action('LitteraturkritikkController@autocomplete'),
-            'minYear' => 1789,
-            'maxYear' => (int) strftime('%Y'),
-        ]);
+        $this->schemaOptions['autocompleteUrl'] = action('LitteraturkritikkController@autocomplete');
+        $this->schemaOptions['minYear'] = 1789;
+        $this->schemaOptions['maxYear'] = (int) strftime('%Y');
+
+        parent::__construct();
     }
 }

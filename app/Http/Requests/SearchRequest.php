@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\BaseSchema;
+use App\Schema\Schema;
+use App\Schema\SchemaField;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
@@ -15,7 +16,7 @@ abstract class SearchRequest extends FormRequest
     public $queryBuilder;
     protected $defaultOperator = 'eq';
 
-    abstract protected function getSchema(): BaseSchema;
+    abstract protected function getSchema(): Schema;
 
     abstract protected function makeQueryBuilder(): Builder;
 
@@ -46,7 +47,7 @@ abstract class SearchRequest extends FormRequest
      */
     protected function getInput(): array
     {
-        $fields = [];
+        $inputs = [];
         foreach ($this->all() as $key => $fieldName) {
             if (preg_match('/^f([0-9]+)$/', $key, $matches)) {
                 $idx = $matches[1];
@@ -54,7 +55,7 @@ abstract class SearchRequest extends FormRequest
                 $operator = Arr::get($this, "o$idx", $this->defaultOperator);
 
                 if (!is_null($value) || in_array($operator, ['isnull', 'notnull'])) {
-                    $fields[] = [
+                    $inputs[] = [
                         'field' => $fieldName,
                         'operator' => $operator,
                         'value' => $value,
@@ -63,14 +64,14 @@ abstract class SearchRequest extends FormRequest
             }
         }
 
-        $input = [];
-        foreach ($fields as $field) {
-            if (isset($this->fields[$field['field']])) {
-                $input[] = $field;
+        $out = [];
+        foreach ($inputs as $input) {
+            if (isset($this->fields[$input['field']])) {
+                $out[] = $input;
             }
         }
 
-        return $input;
+        return $out;
     }
 
     protected function main(): void
@@ -84,18 +85,18 @@ abstract class SearchRequest extends FormRequest
 
         foreach ($this->queryParts as $queryPart) {
             $field = $this->fields[$queryPart['field']];
-
-            $indexType = Arr::get($field, 'search.index.type');
-            $index = Arr::get($field, 'search.index');
-
             $operator = $queryPart['operator'];
             $value = $queryPart['value'];
 
-            if (is_null($index)) {
+            if ($field->has('searchOptions.index')) {
+                $index = $field->get('searchOptions.index');
+            } else {
                 $index = [
-                    'column' => $field['key'],
+                    'column' => $field->key,
                 ];
             }
+
+            $indexType = Arr::get($index, 'type');
 
             if ($indexType == 'ts') {
                 $this->addTextSearchTerm($index, $operator, $value);

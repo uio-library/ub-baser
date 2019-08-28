@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     placeholder () {
-      return get(this.schema, 'search.placeholder')
+      return get(this.schema, 'searchOptions.placeholder')
     },
   },
   mounted () {
@@ -65,7 +65,7 @@ export default {
     initAutocomplete () {
       let cancel = null
 
-      const url = get(this.schema, 'search.options.target')
+      const url = get(this.schema, 'searchOptions.autocompleteUrl')
       search = autocomplete(this.$refs.input, {}, [
         {
           source: (query, callback) => {
