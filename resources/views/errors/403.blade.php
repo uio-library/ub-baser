@@ -3,12 +3,15 @@
 @section('content')
 
 
-    <h2>403 Forbidden</h2>
+    <h2>Ingen tilgang</h2>
 
     <p>
-        Sorry, mate…
+        Beklager, du har ikke tilgang til å redigere siden.
     </p>
 
+    <p>
+        Kontakt oss hvis du mener at du skulle hatt tilgang, så fikser vi det!
+    </p>
 
 @endsection
 
