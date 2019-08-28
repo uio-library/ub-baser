@@ -173,15 +173,13 @@ class LitteraturkritikkController extends RecordController
      * Store a newly created record, or update an existing one.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
-     *
-     * @return Record
+     * @param LitteraturkritikkSchema $schema
+     * @param Record $record
+     * @throws \Illuminate\Validation\ValidationException
      */
-    protected function updateOrCreate(Request $request, LitteraturkritikkSchema $schema, $id = null)
+    protected function updateOrCreate(Request $request, LitteraturkritikkSchema $schema, Record $record)
     {
-        $isNew = is_null($id);
-        $record = $isNew ? new Record() : Record::findOrFail($id);
-
+        // Validate input
         $this->validate($request, [
             'kritikktype' => 'required',
             'dato' => [
@@ -190,42 +188,26 @@ class LitteraturkritikkController extends RecordController
             ],
         ]);
 
-        $persons = [];
+        // Update record
+        $this->updateRecord($schema, $record, $request);
 
+        // Sync persons
+        $persons = [];
         foreach ($schema->flat() as $col) {
-            if (Arr::get($col, 'edit') === false) {
-                continue;
-            }
             $datatype = Arr::get($col, 'type', 'simple');
             $newValue = $request->get($col['key'], Arr::get($col, 'default'));
 
-            if (in_array($datatype, ['simple', 'autocomplete', 'url', 'boolean', 'tags'])) {
-                $record->{$col['key']} = $newValue;
-            } elseif ($datatype == 'persons') {
+            if ($datatype == 'persons') {
                 foreach (json_decode($newValue, true) as $input) {
                     $persons[] = $input;
                 }
-            } elseif ($datatype == 'incrementing') {
-                // Ignore
-            } else {
-                throw new \RuntimeException("Unsupported datatype: $datatype");
             }
         }
-
-        $record->updated_by = $request->user()->id;
-        if ($isNew) {
-            $record->created_by = $request->user()->id;
-        }
-
-        $record->save();
-
-        // Sync persons
         $personsSyncData = $this->findOrCreatePersons($persons);
         $record->persons()->sync($personsSyncData);
 
+        // Refresh view
         \DB::unprepared('REFRESH MATERIALIZED VIEW litteraturkritikk_records_search');
-
-        return $record;
     }
 
     /**
@@ -243,25 +225,6 @@ class LitteraturkritikkController extends RecordController
         }
 
         return '';
-    }
-
-    protected function formArguments(Record $record, LitteraturkritikkSchema $schema)
-    {
-
-        $values = [];
-        foreach ($schema->keyed() as $key => $col) {
-            if (Arr::has($col, 'model_attribute')) {
-                $values[$key] = $record->{$col['model_attribute']};
-            } else {
-                $values[$key] = old($key, $record->{$key});
-            }
-        }
-
-        return [
-            'record' => $record,
-            'schema' => $schema,
-            'values' => $values,
-        ];
     }
 
     /**
@@ -310,7 +273,8 @@ class LitteraturkritikkController extends RecordController
     {
         $this->authorize('litteraturkritikk');
 
-        $record = $this->updateOrCreate($request, $schema);
+        $record = new Record();
+        $this->updateOrCreate($request, $schema, $record);
 
         $this->log(
             'Opprettet <a href="%s">post #%s (%s)</a>.',
@@ -357,8 +321,8 @@ class LitteraturkritikkController extends RecordController
     public function update(Request $request, LitteraturkritikkSchema $schema, $id)
     {
         $this->authorize('litteraturkritikk');
-
-        $record = $this->updateOrCreate($request, $schema, $id);
+        $record = Record::findOrFail($id);
+        $this->updateOrCreate($request, $schema, $record);
 
         $this->log(
             'Oppdaterte <a href="%s">post #%s (%s)</a>.',

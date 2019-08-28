@@ -151,15 +151,9 @@ class LetrasController extends RecordController
     {
         $this->authorize('letras');
 
-        $values = [];
-        foreach ($schema->keyed() as $key => $col) {
-            $values[$key] = old($key);
-        }
+        $data = $this->formArguments(new LetrasRecord(), $schema);
 
-        return response()->view('letras.create', [
-            'schema' => $schema,
-            'values' => $values,
-        ]);
+        return response()->view('letras.create', $data);
     }
 
     /**
@@ -213,16 +207,9 @@ class LetrasController extends RecordController
 
         $record = LetrasRecord::findOrFail($id);
 
-        $values = [];
-        foreach ($schema->keyed() as $key => $col) {
-            $values[$key] = old($key, $record->{$key});
-        }
+        $data = $this->formArguments($record, $schema);
 
-        return response()->view('letras.edit', [
-            'record' => $record,
-            'schema' => $schema,
-            'values' => $values,
-        ]);
+        return response()->view('letras.edit', $data);
     }
 
     /**

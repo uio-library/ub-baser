@@ -2,34 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Dommer\DommerKilde;
 use App\Dommer\DommerRecord;
-use App\Dommer\DommerRecordView;
 use App\Dommer\DommerSchema;
 use App\Http\Requests\DommerSearchRequest;
 use App\Page;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class DommerController extends RecordController
 {
     protected $logGroup = 'dommer';
-
-    protected function getKilder()
-    {
-        $kilder = [];
-        foreach (DommerKilde::all() as $kilde) {
-            $kilder[$kilde->id] = $kilde->navn;
-        }
-
-        return $kilder;
-    }
 
     /**
      * Display a listing of the resource.
      *
      * @param DommerSearchRequest $request
      * @param DommerSchema $schema
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(DommerSearchRequest $request, DommerSchema $schema)
     {
@@ -64,45 +53,36 @@ class DommerController extends RecordController
     /**
      * Store a newly created record, or update an existing one.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
-     *
-     * @return DommerRecord
+     * @param Request $request
+     * @param DommerSchema $schema
+     * @param DommerRecord $record
      */
-    protected function updateOrCreate(Request $request, $id = null)
+    protected function updateOrCreate(Request $request, DommerSchema $schema, DommerRecord $record)
     {
-        $record = is_null($id) ? new DommerRecord() : DommerRecord::findOrFail($id);
-
+        // Validate
         $this->validate($request, [
-            'navn'     => 'required|unique:dommer,navn' . (is_null($id) ? '' : ',' . $id) . '|max:255',
+            'navn'     => 'required|unique:dommer,navn' . (is_null($record->id) ? '' : ',' . $record->id) . '|max:255',
             'aar'      => 'required|digits:4',
             'side'     => 'required|numeric|min:1|max:9999',
-            'kilde_id' => 'required|numeric',
+            'kilde'    => 'required|numeric',
         ]);
 
-        $record->navn = $request->get('navn');
-        $record->aar = $request->get('aar');
-        $record->side = $request->get('side');
-        $record->kilde_id = $request->get('kilde_id');
-
-        $record->save();
-
-        return $record;
+        // Update
+        $this->updateRecord($schema, $record, $request);
+        // $record->kilde_id = $request->get('kilde_id');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param DommerSchema $schema
+     * @return Response
      */
-    public function create()
+    public function create(DommerSchema $schema)
     {
         $this->authorize('dommer');
 
-        $data = [
-            'columns' => config('baser.dommer.columns'),
-            'kilder'  => $this->getKilder(),
-        ];
+        $data = $this->formArguments(new DommerRecord(), $schema);
 
         return response()->view('dommer.create', $data);
     }
@@ -110,15 +90,16 @@ class DommerController extends RecordController
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param DommerSchema $schema
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request, DommerSchema $schema)
     {
         $this->authorize('dommer');
 
-        $record = $this->updateOrCreate($request);
+        $record = new DommerRecord();
+        $this->updateOrCreate($request, $schema, $record);
 
         $this->log(
             'Opprettet <a href="%s">post #%s (%s)</a>.',
@@ -135,16 +116,13 @@ class DommerController extends RecordController
      * Display the specified resource.
      *
      * @param int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
-        $data = [
+        return response()->view('dommer.show', [
             'record' => DommerRecord::findOrFail($id),
-        ];
-
-        return response()->view('dommer.show', $data);
+        ]);
     }
 
     /**
@@ -152,9 +130,7 @@ class DommerController extends RecordController
      *
      * @param DommerSchema $schema
      * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return Response
      */
     public function edit(DommerSchema $schema, $id)
     {
@@ -162,38 +138,24 @@ class DommerController extends RecordController
 
         $record = DommerRecord::findOrFail($id);
 
-        $values = [];
-        foreach ($schema->keyed() as $key => $col) {
-            $value = $record->{$key};
-            if ($key == 'kilde') {
-                $value = [
-                    'id' => $value->id,
-                    'label' => $value->navn,
-                ];
-            }
-            $values[$key] = old($key, $value);
-        }
+        $data = $this->formArguments($record, $schema);
 
-        return response()->view('dommer.edit', [
-            'record' => $record,
-            'schema' => $schema,
-            'values' => $values,
-        ]);
+        return response()->view('dommer.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param DommerSchema $schema
+     * @param int $id
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, DommerSchema $schema, $id)
     {
         $this->authorize('dommer');
-
-        $record = $this->updateOrCreate($request, $id);
+        $record = DommerRecord::findOrFail($id);
+        $this->updateOrCreate($request, $schema, $record);
 
         $this->log(
             'Oppdaterte <a href="%s">post #%s (%s)</a>.',
@@ -210,8 +172,6 @@ class DommerController extends RecordController
      * Remove the specified resource from storage.
      *
      * @param int $id
-     *
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
@@ -220,6 +180,12 @@ class DommerController extends RecordController
         //
     }
 
+    /**
+     * Autocomplete a field. Currently hard-coded for "kilde", but could easily be expanded if needed.
+     *
+     * @param Request $request
+     * @return Response
+     */
     public function autocomplete(Request $request)
     {
         $rows = \DB::table('dommer_kilder')
