@@ -9,8 +9,8 @@
               :placeholder="placeholder"
               @input="$emit('value', $event.target.value)"
         >
-        <span class="autocomplete-icon" :class="{working: working}">
-          <em class="fa fa-magic"></em>
+        <span class="autocomplete-icon" v-if="working">
+          <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
         </span>
     </div>
 </template>
@@ -23,13 +23,11 @@
 }
 .autocomplete-icon {
   position: absolute;
-  color: #888;
-  top: 10px;
-  right: 10px;
-  z-index: 10;
-}
-.autocomplete-icon.working {
   color: green;
+  top: 4px;
+  right: 6px;
+  z-index: 10;
+  font-size: 130%;
 }
 </style>
 <script>
@@ -72,7 +70,7 @@ export default {
       search = autocomplete(this.$refs.input, {}, [
         {
           source: (query, callback) => {
-            //this.working = true
+            this.working = true
             if (cancel) {
               cancel.cancel()
             }
@@ -87,12 +85,13 @@ export default {
             })
               .then(
                 res => {
-                  // let suggestions = countries.filter(n => n.label.toLowerCase().startsWith(text))
-                  //this.working = false
+                  this.working = false
                   callback(res.data)
                 },
                 err => {
-                  //this.working = false
+                  if (!this.$http.isCancel(err)) {
+                    this.working = false
+                  }
                   callback([])
                 }
               )
