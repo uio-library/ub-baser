@@ -9,11 +9,11 @@
     @include('shared.errors')
 
     <form method="POST" action="{{ action('LetrasController@store') }}" class="form-horizontal">
-        {!! csrf_field() !!}
+        @csrf
 
         <edit-form
-                :schema="{{ json_encode($schema) }}"
-                :values="{{ json_encode($values) }}"
+            :schema="{{ json_encode($schema) }}"
+            :values="{{ json_encode($values) }}"
         ></edit-form>
 
         <div class="form-group">

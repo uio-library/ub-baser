@@ -9,12 +9,12 @@
     @include('shared.errors')
 
     <form method="POST" action="{{ action('DommerController@update', $record->id) }}" class="form-horizontal">
-        {!! csrf_field() !!}
+        @csrf
         <input type="hidden" name="_method" value="PUT">
 
         <edit-form
-                :schema="{{ json_encode($schema) }}"
-                :values="{{ json_encode($values) }}"
+            :schema="{{ json_encode($schema) }}"
+            :values="{{ json_encode($values) }}"
         ></edit-form>
 
         <div class="form-group">

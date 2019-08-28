@@ -23,5 +23,7 @@
         "vue"
     ],
     "rules": {
+        "comma-dangle": ["error", "always-multiline"],
+        "standard/no-callback-literal": "off"
     }
 }
