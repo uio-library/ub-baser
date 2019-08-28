@@ -27,7 +27,7 @@ class DommerSchema extends BaseSchema
             [
                 'key' => 'kilde',
                 'type' => 'select',
-                'model_attribute' => 'kilde',
+                // 'model_attribute' => 'kilde',
                 'display' => [
                     'column' => 'kilde_navn',
                 ],
@@ -37,7 +37,7 @@ class DommerSchema extends BaseSchema
                 'search' => [
                     'index' => [
                         'type'=> 'simple',
-                        'column' => 'kilde_navn',
+                        'column' => 'kilde_id',
                     ],
                 ],
             ],

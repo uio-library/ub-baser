@@ -25,4 +25,16 @@ class DommerRecord extends Record
     {
         return action('DommerController@show', $this->id);
     }
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        // To simplify editing, we cast these as strings
+        'side' => 'string',
+        'aar' => 'string',
+    ];
+
 }
