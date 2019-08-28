@@ -16,20 +16,35 @@ class RecordController extends Controller
         $this->middleware('auth', ['only' => ['create', 'edit', 'store', 'update', 'destroy']]);
     }
 
-    protected function dataTablesResponse(SearchRequest $request)
+    /**
+     * Generate JSON response for DataTables.
+     */
+    protected function dataTablesResponse(SearchRequest $request, BaseSchema $schema)
     {
+        $validColumnNames = array_keys($schema->keyed());
+
         $queryBuilder = $request->queryBuilder;
         $requestedColumns = [];
         foreach ($request->columns as $k => $v) {
+
+            // Check that only valid column names are requested
+            if (!in_array($v['data'], $validColumnNames, true)) {
+                throw new \RuntimeException('Invalid column name requested: ' . $v['data']);
+            }
             $requestedColumns[$k] = $v['data'];
         }
         $requestedColumns[] = 'id';
 
         $queryBuilder->select(array_values($requestedColumns));
         foreach ($request->order as $order) {
-            $col = $requestedColumns[$order['column']];
-            $col = preg_replace('/[^a-z_]/', '', $col);
+
+            // Check that only valid column names are requested
+            if (!isset($requestedColumns[(int) $order['column']])) {
+                throw new \RuntimeException('Invalid order by requested: ' . $order['column']);
+            }
+            $col = $requestedColumns[(int) $order['column']];
             $dir = ($order['dir'] == 'asc') ? 'asc' : 'desc';
+
             $queryBuilder->orderByRaw("$col $dir NULLS LAST");
         }
 
