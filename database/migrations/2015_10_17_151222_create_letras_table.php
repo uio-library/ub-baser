@@ -1,10 +1,13 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
+use App\Traits\MigrationHelper;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateLetrasTable extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -14,7 +17,9 @@ class CreateLetrasTable extends Migration
     {
         Schema::dropIfExists('letras');
         Schema::create('letras', function (Blueprint $table) {
-            $table->increments('id');
+
+            $this->addCommonFields($table);
+
             $table->string('forfatter')->nullable();
             $table->string('land')->nullable();
             $table->string('tittel')->nullable();
@@ -27,9 +32,6 @@ class CreateLetrasTable extends Migration
             $table->string('forlag')->nullable();
             $table->string('foretterord')->nullable();
             $table->string('spraak')->nullable();
-            
-            $table->timestamps();
-            $table->softDeletes();
 
             $table->index('forfatter');
             $table->index('tittel');

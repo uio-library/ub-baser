@@ -1,10 +1,13 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
+use App\Traits\MigrationHelper;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateLitteraturkritikkTable extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -19,25 +22,7 @@ class CreateLitteraturkritikkTable extends Migration
 
         Schema::create('litteraturkritikk_records', function (Blueprint $table) {
 
-            # ------------------------------------------------------------------------------------------------
-            # Meta
-
-            $table->increments('id');
-            $table->timestamps();
-            $table->softDeletes();
-
-            $table->integer('created_by')->unsigned()->nullable();
-            $table->integer('updated_by')->unsigned()->nullable();
-
-            $table->foreign('created_by')
-                ->references('id')
-                ->on('users')
-                ->onDelete('set null');
-
-            $table->foreign('updated_by')
-                ->references('id')
-                ->on('users')
-                ->onDelete('set null');
+            $this->addCommonFields($table);
 
             # ------------------------------------------------------------------------------------------------
             # Kritikken

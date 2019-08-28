@@ -1,10 +1,13 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
+use App\Traits\MigrationHelper;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateOpesTable extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -13,14 +16,14 @@ class CreateOpesTable extends Migration
     public function up()
     {
         Schema::create('opes', function (Blueprint $table) {
-            $table->increments('id');
+
+            $this->addCommonFields($table);
+
             $table->string('navn');
             $table->integer('aar')->unsigned();
             $table->integer('kilde_id')->unsigned();
             $table->integer('side')->unsigned();
             $table->string('note');
-            $table->timestamps();
-            $table->softDeletes(); // blir ikke onterlig slettet - se paa eloquent
 
             $table->index('navn');
             $table->index('aar');
