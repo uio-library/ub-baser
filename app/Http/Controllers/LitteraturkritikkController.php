@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LitteraturkritikkSearchRequest;
-use App\Litteraturkritikk\KritikkType;
 use App\Litteraturkritikk\LitteraturkritikkSchema;
 use App\Litteraturkritikk\Person;
 use App\Litteraturkritikk\PersonView;
@@ -158,9 +157,19 @@ class LitteraturkritikkController extends RecordController
                 break;
 
             case 'kritikktype':
-                foreach (KritikkType::where('navn', 'ilike', $term)->select('navn')->get() as $res) {
+                # Ref: https://stackoverflow.com/a/31757242/489916
+                # for the #>> '{}' magick
+                $results = \DB::select("
+                    select
+                      distinct jd.value #>> '{}' as value
+                    from
+                      litteraturkritikk_records,
+                      jsonb_array_elements(litteraturkritikk_records.kritikktype) as jd
+                    order by value
+                ");
+                foreach ($results as $row) {
                     $data[] = [
-                        'value' => $res->navn
+                        'value' => $row->value,
                     ];
                 }
                 break;

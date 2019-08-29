@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Litteraturkritikk\KritikkType;
 use App\Litteraturkritikk\Person;
 use App\Litteraturkritikk\Record;
 use Illuminate\Support\Arr;
@@ -330,11 +329,6 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         }
 
         // ------
-
-        $kritikktyper = [];
-        foreach (KritikkType::all() as $kilde) {
-            $kritikktyper[mb_strtolower($kilde->navn)] = $kilde->id;
-        }
 
         $data = $this->getData($filename);
 
