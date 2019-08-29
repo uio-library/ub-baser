@@ -239,7 +239,7 @@ class LitteraturkritikkSchema extends Schema
                         ],
                     ],
 
-                    // År
+                    // Dato
                     [
                         'key' => 'dato',
                         'type' => 'simple',

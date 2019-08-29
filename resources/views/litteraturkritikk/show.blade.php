@@ -20,6 +20,28 @@
 
             @foreach ($schema->groups as $group)
                 <h4 class="mt-4">{{ $group->label }}</h4>
+
+                <div class="py-2">
+                    @if ($group->label == 'Kritikken' && $record->fulltekst_url)
+                        <a href="{{ $record->fulltekst_url }}" class="btn btn-outline-success btn-sm">
+                            <em class="fa fa-eye"></em>
+                            Vis fulltekst i NB
+                        </a>
+                    @else
+                        <a href="https://www.nb.no/search?{{ $record->nationalLibrarySearchLink($group->label) }}" class="btn btn-outline-success btn-sm">
+                            <em class="fa fa-search"></em>
+                            Søk etter fulltekst i NB
+                        </a>
+                    @endif
+
+                    @if ($group->label == 'Verket')
+                        <a href="https://bibsys-almaprimo.hosted.exlibrisgroup.com/primo-explore/search?{{ $record->oriaSearchLink() }}" class="btn btn-outline-success btn-sm">
+                            <em class="fa fa-search"></em>
+                            Søk i Oria
+                        </a>
+                    @endif
+                </div>
+
                 <dl class="row">
                     @foreach ($group->fields as $field)
                         @if ($field->displayable)
@@ -57,10 +79,11 @@
                         @endif
                     @endforeach
                 </dl>
+
             @endforeach
 
             @if (Auth::check())
-                <h3>Metadata</h3>
+                <h4 class="mt-4">Metadata</h4>
                 <dl class="row">
                     <dt class="col-sm-3 text-sm-right">Opprettet:</dt>
                     <dd class="col-sm-9">{{ $record->created_at }} av {{ $record->createdBy ? $record->createdBy->name : ' (import)' }}</dd>
@@ -71,11 +94,10 @@
         </div>
 
         <div class="flex-grow-0 flex-shrink-0" style="width: 200px;">
-            <div style="text-align: center; border: 1px solid #eee; border-radius: 3px;" class="px-4 py-3">
-                Er det feil i posten?<br>
-                <a href="mailto:norsklitteraturkritikk@ub.uio.no?subject=Feil%20i%20post&body=Hei%0A%0ADet%20ser%20ut%20som%20det%20er%20en%20feil%20i%20denne%20posten%3A%0A%0Ahttps%3A%2F%2Fub-baser.uio.no%2Fnorsk_litteraturkritikk%2F{{ $record->id }}%0A%0A%5BUtdyp%5D" class="btn btn-warning">
+            <div class="px-4 py-3">
+                <a href="mailto:norsklitteraturkritikk@ub.uio.no?subject=Feil%20i%20post&body=Hei%0A%0ADet%20ser%20ut%20som%20det%20er%20en%20feil%20i%20denne%20posten%3A%0A%0Ahttps%3A%2F%2Fub-baser.uio.no%2Fnorsk_litteraturkritikk%2F{{ $record->id }}%0A%0A%5BUtdyp%5D" class="btn btn-outline-primary">
                     <em class="fa fa-envelope-o"></em>
-                    Meld fra
+                    Meld fra om feil
                 </a>
             </div>
         </div>

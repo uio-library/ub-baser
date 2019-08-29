@@ -3,7 +3,6 @@
 namespace App\Litteraturkritikk;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Arr;
 
 class Record extends \App\Record
 {
@@ -213,5 +212,105 @@ class Record extends \App\Record
         $repr .= $verk;
 
         return $repr;
+    }
+
+    public function isNewspaper()
+    {
+        return Publications::isNewspaper($this->publikasjon);
+    }
+
+    public function isJournal()
+    {
+        return Publications::isJournal($this->publikasjon);
+    }
+
+    public function oriaSearchLink(): string
+    {
+        // Oria syntax is of course weird and non-standard to the point
+        // that we cannot use a single http_build_query call.
+
+        $queries = [];
+        $forfatter = $this->forfattere()->first();
+        if (!is_null($forfatter)) {
+            $queries[] = http_build_query(['query' => "creator,contains,{$forfatter->etternavn}"]);
+        }
+        if ($this->verk_tittel) {
+            $queries[] = http_build_query(['query' => "title,contains,{$this->verk_tittel}"]);
+        }
+
+        $queries[] = http_build_query([
+            'tab' => 'default_tab',
+            'search_scope' => 'default_scope',
+            'vid' => 'UIO',
+            'mode' => 'advanced',
+        ]);
+
+        return implode('&', $queries);
+    }
+
+    public function nationalLibrarySearchLink(string $group): string
+    {
+        $query = ['q' => []];
+
+
+        if ($group == 'Kritikken') {
+
+            $dato = $this->dato;
+
+            if ($this->isNewspaper()) {
+                $query['mediatype'] = 'aviser';
+                $query['series'] = $this->publikasjon;
+            } elseif ($this->isJournal()) {
+                $query['mediatype'] = 'tidsskrift';
+                $query['title'] = $this->publikasjon;
+            }
+
+        } else {
+
+            $dato = $this->verk_dato;
+
+            $query['mediatype'] = 'bøker';
+
+            if ($this->verk_tittel) {
+                $query['title'] = $this->verk_tittel;
+            }
+
+        }
+
+        if ($dato && strlen($dato) <= 10) {
+            $query['fromDate'] = str_replace('-', '', $dato);
+            $query['toDate'] = str_replace('-', '', $dato);
+            if (strlen($dato) == 4) {
+                $query['fromDate'] = "{$dato}0101";
+                $query['toDate'] = "{$dato}1231";
+            }
+        }
+
+        if ($group == 'Kritikken') {
+
+            if ($this->nummer) {
+                $query['q'][] = $this->nummer;
+            }
+
+            $kritiker = $this->kritikere()->first();
+            if (!is_null($kritiker) && !$kritiker->pivot->pseudonym && !preg_match('/(anonym|ukjent)/', $kritiker->etternavn)) {
+                $query['q'][] = $kritiker->etternavn;
+            }
+            $forfatter = $this->forfattere()->first();
+            if (!is_null($forfatter)) {
+                $query['q'][] = $forfatter->etternavn;
+            }
+
+        } else {
+            $forfatter = $this->forfattere()->first();
+            if (!is_null($forfatter)) {
+                $query['name'] = $forfatter->etternavn;
+            }
+        }
+
+
+        $query['q'] = implode(' ', $query['q']);
+
+        return http_build_query($query);
     }
 }
