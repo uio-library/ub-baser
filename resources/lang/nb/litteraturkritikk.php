@@ -3,6 +3,8 @@
 return [
 
     'id' => 'ID',
+    'created_at' => 'Opprettet',
+    'updated_at' => 'Sist endret',
     'q' => 'Alle felt',
     'person' => 'Person (forfatter, kritiker e.a.)',
 

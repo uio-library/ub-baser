@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'created_at' => 'Opprettet',
+    'updated_at' => 'Sist endret',
+
     // Verket
     'forfatter' => 'Forfatter (Escritor)',
     'land' => 'Land (País)',

@@ -48,6 +48,16 @@ class LitteraturkritikkSchema extends Schema
                     'operators' => ['eq', 'neq'],
                 ]
             ],
+
+            // Sist endret
+            [
+                'key' => 'updated_at',
+                'type' => 'simple',
+                'editable' => false,
+                'searchable' => 'disabled',
+
+                'columnClassName' => 'dt-body-nowrap',
+            ],
         ],
 
         'groups' => [
