@@ -62,11 +62,9 @@ class RecordController extends Controller
 
             $newValue = $request->get($field->key, $field->defaultValue);
 
-            if (!$field->editable) {
-                // Ignore
-            } elseif ($field->type == 'persons') {
+            if ($field->type == 'persons') {
                 // Ignore, these are handled by the specific controller (for now)
-            } elseif ($field->has('column')) {
+            } else {
                 $record->{$field->getColumn()} = $newValue;
             }
         }
