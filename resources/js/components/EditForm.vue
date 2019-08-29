@@ -54,19 +54,17 @@ export default {
     }
   },
   data() {
-    return {
-      currentValues () {
-        let values = cloneDeep(this.values)
+    let values = cloneDeep(this.values)
 
-        // Cast all integers as strings (@see SelectInput)
-        Object.keys(values).forEach(key => {
-          if (typeof values[key] === 'number') {
-            values[key] = String(values[key])
-          }
-        })
-
-        return values
+    // Cast all integers as strings (@see SelectInput)
+    Object.keys(values).forEach(key => {
+      if (typeof values[key] === 'number') {
+        values[key] = String(values[key])
       }
+    })
+
+    return {
+      currentValues: values
     }
   },
   methods: {
