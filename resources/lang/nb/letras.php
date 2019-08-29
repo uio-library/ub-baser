@@ -1,6 +1,8 @@
 <?php
 
 return [
+    // Meta
+    'id' => 'ID',
     'created_at' => 'Opprettet',
     'updated_at' => 'Sist endret',
 

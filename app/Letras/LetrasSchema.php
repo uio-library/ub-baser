@@ -15,6 +15,17 @@ class LetrasSchema extends Schema
             [
                 'key' => 'id',
                 'type' => 'incrementing',
+                'displayable' => true,
+            ],
+
+            // Sist endret
+            [
+                'key' => 'created_at',
+                'type' => 'simple',
+                'editable' => false,
+                'searchable' => 'disabled',
+
+                'columnClassName' => 'dt-body-nowrap',
             ],
 
             // Sist endret
