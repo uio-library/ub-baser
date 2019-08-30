@@ -209,6 +209,12 @@ export default {
             .attr('tabindex', '0')
             .on('mousedown', () => { drag = false })
             .on('mousemove', () => { drag = true })
+            .on('keypress', $event => {
+              if ($event.keyCode === 13) {
+                const link = this.url + '/' + data.id
+                window.location = link
+              }
+            })
             .on('click', $event => {
               const link = this.url + '/' + data.id
               if (drag) {
