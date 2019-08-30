@@ -126,7 +126,7 @@ export default {
             if (data === null) {
               data = '–'
             }
-            return `<a href="${this.url}/${row.id}">${data}</a>`
+            return data
           }
         }
         if (get(field, 'columnClassName')) {
@@ -163,6 +163,7 @@ export default {
     },
 
     initTable () {
+      let drag = false
       const table = $(this.$refs.theTable).DataTable({
         language: {
           sEmptyTable: 'Ingen data tilgjengelig i tabellen',
@@ -176,7 +177,7 @@ export default {
           sProcessing: 'Laster...',
           sSearch: 'S&oslash;k:',
           sUrl: '',
-          sZeroRecords: 'Ingen poster matcher s&oslash;ket',
+          sZeroRecords: 'Ingen treff',
           oPaginate: {
             sFirst: 'F&oslash;rste',
             sPrevious: 'Forrige',
@@ -186,7 +187,7 @@ export default {
           oAria: {
             sSortAscending: ': aktiver for å sortere kolonnen stigende',
             sSortDescending: ': aktiver for å sortere kolonnen synkende'
-          }
+          },
         },
         pageLength: 50,
         lengthMenu: [10, 50, 100, 500, 1000],
@@ -201,32 +202,26 @@ export default {
 
         searching: false,
         processing: true,
-        serverSide: true
+        serverSide: true,
+        // Make the tr elements focusable
+        createdRow: (row, data, dataIndex) => {
+          $(row)
+            .attr('tabindex', '0')
+            .on('mousedown', () => { drag = false })
+            .on('mousemove', () => { drag = true })
+            .on('click', $event => {
+              const link = this.url + '/' + data.id
+              if (drag) {
+                return;
+              }
+              if ($event.ctrlKey || $event.metaKey) {
+                window.location = link
+              } else {
+                window.open(link, '_blank')
+              }
+            })
+        },
       })
-
-      // Allow clicking anywhere in a table cell
-      let drag = false
-      $(this.$refs.theTable)
-        .on('mousedown', () => { drag = false })
-        .on('mousemove', () => { drag = true })
-        .on('mouseup', 'tbody > tr > td', function ($event) {
-          // 'this' refers to the current <td>
-          const link = $(this).find('a').attr('href')
-
-          if ($event.originalEvent.target.tagName === 'A') {
-            // Let browser handle
-          } else if (drag) {
-            // pass
-          } else if ($event.which !== 1) {
-            // Pass
-          } else if ($event.ctrlKey || $event.metaKey) {
-            window.open(link, '_blank')
-            return false
-          } else {
-            window.location = link
-            return false
-          }
-        })
 
       return table
     }
