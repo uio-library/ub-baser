@@ -99,8 +99,8 @@ export default {
         value: x.value
       })),
       operators: [
-        { label: 'matcher', value: 'eq' },
-        { label: 'matcher ikke', value: 'neq' },
+        { label: 'inneholder', value: 'eq' },
+        { label: 'inneholder ikke', value: 'neq' },
         { label: 'mangler verdi', value: 'isnull' },
         { label: 'har verdi', value: 'notnull' }
       ]
