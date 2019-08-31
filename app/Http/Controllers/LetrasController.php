@@ -104,7 +104,7 @@ class LetrasController extends RecordController
      */
     protected function updateOrCreate(Request $request, $id = null)
     {
-        $record = is_null($id) ? new LetrasRecord() : LetrasRecord::findOrFail($id);
+        $record = $id === null ? new LetrasRecord() : LetrasRecord::findOrFail($id);
 
         $this->validate($request, [
 //            'forfatter'     => 'required' . (is_null($id) ? '' : ',' . $id) . '|max:255',

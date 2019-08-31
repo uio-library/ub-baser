@@ -231,7 +231,7 @@ class Record extends \App\Record
 
         $queries = [];
         $forfatter = $this->forfattere()->first();
-        if (!is_null($forfatter)) {
+        if ($forfatter !== null) {
             $queries[] = http_build_query(['query' => "creator,contains,{$forfatter->etternavn}"]);
         }
         if ($this->verk_tittel) {
@@ -293,17 +293,17 @@ class Record extends \App\Record
             }
 
             $kritiker = $this->kritikere()->first();
-            if (!is_null($kritiker) && !$kritiker->pivot->pseudonym && !preg_match('/(anonym|ukjent)/', $kritiker->etternavn)) {
+            if ($kritiker !== null && !$kritiker->pivot->pseudonym && !preg_match('/(anonym|ukjent)/', $kritiker->etternavn)) {
                 $query['q'][] = $kritiker->etternavn;
             }
             $forfatter = $this->forfattere()->first();
-            if (!is_null($forfatter)) {
+            if ($forfatter !== null) {
                 $query['q'][] = $forfatter->etternavn;
             }
 
         } else {
             $forfatter = $this->forfattere()->first();
-            if (!is_null($forfatter)) {
+            if ($forfatter !== null) {
                 $query['name'] = $forfatter->etternavn;
             }
         }

@@ -69,7 +69,7 @@ class RecordController extends Controller
             }
         }
 
-        if (is_null($record->id)) {
+        if ($record->id === null) {
             $record->created_by = $request->user()->id;
         }
         $record->updated_by = $request->user()->id;

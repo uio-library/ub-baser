@@ -31,7 +31,7 @@ class Saml2Login
         $saml_id = $attrs['eduPersonPrincipalName'][0];
         $user = User::where('saml_id', '=', $saml_id)->first();
 
-        if (!is_null($user)) {
+        if ($user !== null) {
             $user->last_login_at = Carbon::now();
             $user->save();
             return \Auth::login($user);

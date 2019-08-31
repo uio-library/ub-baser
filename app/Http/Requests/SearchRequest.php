@@ -54,7 +54,7 @@ abstract class SearchRequest extends FormRequest
                 $value = Arr::get($this, "v$idx");
                 $operator = Arr::get($this, "o$idx", $this->defaultOperator);
 
-                if (!is_null($value) || in_array($operator, ['isnull', 'notnull'])) {
+                if ($value !== null || in_array($operator, ['isnull', 'notnull'])) {
                     $inputs[] = [
                         'field' => $fieldName,
                         'operator' => $operator,

@@ -64,7 +64,7 @@ class Person extends \Eloquent
             $names[] = $this->fornavn;
         }
         $nn = implode(', ', $names);
-        if (!is_null($this->fodt)) {
+        if ($this->fodt !== null) {
             $nn .= ', ' . $this->fodt . '-' . ($this->dod ?: '');
         }
 

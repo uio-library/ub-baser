@@ -67,12 +67,12 @@ class UserController extends Controller
      */
     protected function updateOrCreate(Request $request, $id = null)
     {
-        $user = is_null($id) ? new User() : User::findOrFail($id);
+        $user = $id === null ? new User() : User::findOrFail($id);
 
         $this->validate($request, [
-            'email' => 'required|email:rfc|unique:users,email' . (is_null($id) ? '' : ',' . $id) . '|max:255',
+            'email' => 'required|email:rfc|unique:users,email' . ($id === null ? '' : ',' . $id) . '|max:255',
             'name'  => 'required|max:255',
-            'saml_id' => 'nullable|email:rfc|unique:users,saml_id' . (is_null($id) ? '' : ',' . $id) . '|max:255',
+            'saml_id' => 'nullable|email:rfc|unique:users,saml_id' . ($id === null ? '' : ',' . $id) . '|max:255',
         ]);
 
         $user->name = $request->get('name');

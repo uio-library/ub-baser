@@ -61,7 +61,7 @@ class DommerController extends RecordController
     {
         // Validate
         $this->validate($request, [
-            'navn'     => 'required|unique:dommer,navn' . (is_null($record->id) ? '' : ',' . $record->id) . '|max:255',
+            'navn'     => 'required|unique:dommer,navn' . ($record->id === null ? '' : ',' . $record->id) . '|max:255',
             'aar'      => 'required|digits:4',
             'side'     => 'required|numeric|min:1|max:9999',
             'kilde'    => 'required|numeric',

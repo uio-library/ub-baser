@@ -19,7 +19,7 @@ class Controller extends BaseController
             'group' => $this->logGroup,
         ];
         $user = \Auth::user();
-        if (!is_null($user)) {
+        if ($user !== null) {
             $context['userId'] = $user->id;
             $context['user'] = $user->name;
         }
