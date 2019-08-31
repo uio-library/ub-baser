@@ -34,16 +34,16 @@
                             <span class="badge badge-{{ strtolower($entry->level_name) != 'error' ? strtolower($entry->level_name) : 'danger' }}">{{ $entry->level_name }}</span>
                         </td>
                         <td>
-                            <?php
-                            if (strpos($entry->message, PHP_EOL) !== false) {
-                                $spl = explode(PHP_EOL, htmlspecialchars($entry->message));
-                                $i0 = array_shift($spl);
-                                echo '<div><a href="#" onclick="$(this).parent().next(\'.message-collapsed\').toggle(); return false;">' . $i0 . '</a></div>';
-                                echo '<div class="message-collapsed" style="display:none;">' . implode('<br>', $spl) . '</div>';
-                            } else {
-                                echo $entry->message;
-                            }
-                            ?>
+                            @if (count($entry->lines) == 1)
+                                {{ $entry->lines[0] }}
+                            @else
+                                <div>
+                                    <a href="#" onclick="$(this).parent().next('.message-collapsed').toggle(); return false;">{{ $entry->lines[0] }}</a>
+                                </div>
+                                <div class="message-collapsed" style="display: none;">
+                                    {{ implode('<br>', $entry->lines) }}
+                                </div>
+                            @endif
                         </td>
                         <td style="white-space:nowrap; text-align: right; padding-right: 20px;">
                             @if (\Illuminate\Support\Arr::has($entry->context, 'user'))

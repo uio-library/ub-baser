@@ -62,7 +62,7 @@ export default {
       }))
     },
     schemas () {
-      let out = this.fields.reduce((out, field) => { out[field.key] = field; return out })
+      let out = this.fields.reduce((out, field) => { out[field.key] = field; return out }, {})
       this.groups.forEach(fieldGroup => {
         out = fieldGroup.fields.reduce((out, field) => { out[field.key] = field; return out }, out)
       })

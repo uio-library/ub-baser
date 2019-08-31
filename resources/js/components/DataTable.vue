@@ -26,7 +26,7 @@
                 >
                     <option
                             v-for="field in fields"
-                            :key="field-key"
+                            :key="field.key"
                             :value="field.key">{{ field.label }}</option>
 
                     <optgroup v-for="group in groups" :key="group.label" :label="group.label">

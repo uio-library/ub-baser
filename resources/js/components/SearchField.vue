@@ -100,7 +100,7 @@ export default {
       )
     },
     fields () {
-      return this.fields.filter(field => this.fieldIsVisible(field))
+      return this.schema.fields.filter(field => this.fieldIsVisible(field))
     },
     groups () {
       return this.schema.groups.map(group => ({
