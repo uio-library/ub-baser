@@ -60,5 +60,5 @@ function isDockerRunning () {
 module.exports = {
   runMigrations,
   rollbackMigrations,
-  isDockerRunning
+  isDockerRunning,
 }

@@ -10,15 +10,14 @@
                 :value="field"
                 @input="$emit('field', $event.target.value)"
             >
-                <option v-for="field in schema.fields"
+                <option v-for="field in fields"
                         :key="field.key"
-                        v-if="field.searchable === 'simple' || (advanced && field.searchable === 'advanced')"
                         :value="field.key"
                 >{{ field.label }}</option>
 
-                <optgroup v-for="fieldGroup in schema.groups" :key="fieldGroup.label" :label="fieldGroup.label">
+                <optgroup v-for="fieldGroup in groups" :key="fieldGroup.label" :label="fieldGroup.label">
                     <option v-for="field in fieldGroup.fields"
-                            v-if="field.searchable === 'simple' || (advanced && field.searchable === 'advanced')"
+                            :key="field.key"
                             :value="field.key"
                     >{{ field.label }}</option>
                 </optgroup>
@@ -33,6 +32,7 @@
                 @input="$emit('operator', $event.target.value)"
             >
                 <option v-for="option in currentOperators"
+                        :key="option.value"
                         :value="option.value"
                 >{{ option.label }}</option>
             </select>
@@ -65,7 +65,7 @@ export default {
   name: 'search-field',
 
   components: {
-    ...components
+    ...components,
   },
 
   props: {
@@ -75,7 +75,7 @@ export default {
     field: String,
     operators: Array,
     operator: String,
-    value: String
+    value: String,
   },
 
   computed: {
@@ -83,9 +83,9 @@ export default {
       if (fieldMap === null) {
         // Lazy-load field map
         fieldMap = new Map()
-        this.schema.fields.forEach(field => fieldMap[field.key] = field)
+        fieldMap = this.schema.fields.reduce((out, field) => { out[field.key] = field; return out }, fieldMap)
         this.schema.groups.forEach(fieldGroup => {
-          fieldGroup.fields.forEach(field => fieldMap[field.key] = field)
+          fieldMap = fieldGroup.fields.reduce((out, field) => { out[field.key] = field; return out }, fieldMap)
         })
       }
       return fieldMap[this.field]
@@ -98,8 +98,23 @@ export default {
       return this.operators.filter(
         op => this.currentSchema.searchOptions.operators.indexOf(op.value) !== -1
       )
-    }
-  }
+    },
+    fields () {
+      return this.fields.filter(field => this.fieldIsVisible(field))
+    },
+    groups () {
+      return this.schema.groups.map(group => ({
+        label: group.label,
+        fields: group.fields.filter(field => this.fieldIsVisible(field)),
+      }))
+    },
+  },
+
+  methods: {
+    fieldIsVisible (field) {
+      return field.searchable === 'simple' || (this.advanced && field.searchable === 'advanced')
+    },
+  },
 }
 </script>
 

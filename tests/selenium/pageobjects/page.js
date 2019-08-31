@@ -25,8 +25,8 @@ class Page {
   }
 
   getLoggedInUser () {
-    const node = $('#user_name');
-    return node.isExisting() ? node.getText() : null;
+    const node = $('#user_name')
+    return node.isExisting() ? node.getText() : null
   }
 }
 

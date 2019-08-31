@@ -16,18 +16,18 @@ exports.config = {
       browserName: 'firefox',
       'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
       build: process.env.TRAVIS_BUILD_NUMBER,
-      trustAllSSLCertificates: true
+      trustAllSSLCertificates: true,
     },
     {
       browserName: 'chrome',
       'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
       build: process.env.TRAVIS_BUILD_NUMBER,
-      trustAllSSLCertificates: true
-    }
+      trustAllSSLCertificates: true,
+    },
   ],
 
   specs: [
-    './tests/selenium/specs/**/*.js'
+    './tests/selenium/specs/**/*.js',
   ],
   exclude: [
   ],
@@ -47,6 +47,6 @@ exports.config = {
   reporters: ['spec'],
   mochaOpts: {
     ui: 'bdd',
-    timeout: 60000
-  }
+    timeout: 60000,
+  },
 }

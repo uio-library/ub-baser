@@ -58,14 +58,14 @@ export default {
   name: 'search-form',
 
   components: {
-    SearchField
+    SearchField,
   },
 
   props: {
     action: String,
     initialQuery: Array,
     schema: Object,
-    advancedSearch: Boolean
+    advancedSearch: Boolean,
   },
 
   computed: {
@@ -86,7 +86,7 @@ export default {
         }
       }
       throw new Error('Found no search fields!')
-    }
+    },
 
   },
 
@@ -96,14 +96,14 @@ export default {
       query: this.initialQuery.map(x => ({
         field: x.field,
         operator: x.operator,
-        value: x.value
+        value: x.value,
       })),
       operators: [
         { label: 'inneholder', value: 'eq' },
         { label: 'inneholder ikke', value: 'neq' },
         { label: 'mangler verdi', value: 'isnull' },
-        { label: 'har verdi', value: 'notnull' }
-      ]
+        { label: 'har verdi', value: 'notnull' },
+      ],
     }
   },
 
@@ -113,9 +113,9 @@ export default {
       this.query.push({
         field: this.firstSearchField,
         operator: 'eq',
-        value: ''
+        value: '',
       })
-    }
+    },
 
   },
 
@@ -123,7 +123,7 @@ export default {
     if (!this.query.length) {
       this.addField()
     }
-  }
+  },
 }
 </script>
 

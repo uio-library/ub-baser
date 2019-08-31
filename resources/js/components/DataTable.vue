@@ -25,15 +25,15 @@
                         data-style-base="form-control form-control-sm"
                 >
                     <option
-                            v-for="field in schema.fields"
-                            v-if="field.displayable !== false"
+                            v-for="field in fields"
+                            :key="field-key"
                             :value="field.key">{{ field.label }}</option>
 
-                    <optgroup v-for="group in schema.groups" :key="group.label" :label="group.label">
+                    <optgroup v-for="group in groups" :key="group.label" :label="group.label">
 
                         <option
                                 v-for="field in group.fields"
-                                v-if="field.displayable !== false"
+                                :key="field.key"
                                 :value="field.key">{{ field.label }}</option>
 
                     </optgroup>
@@ -42,12 +42,12 @@
 
             <table ref="theTable" class="table hover" style="width:100%">
                 <thead>
-                    <tr v-if="schema.groups.length">
-                        <th v-for="field in topLevelFields"></th>
-                        <th v-for="group in groups" :colspan="group.span">{{ group.label }}</th>
+                    <tr v-if="groups.length">
+                        <th v-for="field in fields" :key="field.key"></th>
+                        <th v-for="group in groups" :key="group.label" :colspan="group.fields.length">{{ group.label }}</th>
                     </tr>
                     <tr>
-                        <th v-for="col in columns">
+                        <th v-for="col in columns" :key="col.data">
                             {{ col.columnLabel }}
                         </th>
                     </tr>
@@ -67,37 +67,40 @@ export default {
   name: 'data-table',
   props: {
     schema: {
-      type: Object
+      type: Object,
     },
     defaultColumns: {
-      type: Array
+      type: Array,
     },
     order: {
-      type: Array
+      type: Array,
     },
     url: {
-      type: String
+      type: String,
     },
     prefix: {
-      type: String
+      type: String,
     },
     query: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   computed: {
+
+    fields () {
+      return this.schema.fields.filter(field => field.displayable !== false)
+    },
 
     storageKey () {
       return `ub-baser-${this.prefix}-columns`
     },
 
-    topLevelFields () {
-      return this.schema.fields.filter(field => field.displayable !== false)
-    },
-
     groups () {
       return this.schema.groups.map(group => (
-        { label: group.label, span: group.fields.filter(field => field.displayable !== false).length }
+        {
+          label: group.label,
+          fields: group.fields.filter(field => field.displayable !== false),
+        }
       ))
     },
 
@@ -127,7 +130,7 @@ export default {
               data = '–'
             }
             return data
-          }
+          },
         }
         if (get(field, 'columnClassName')) {
           col.className = field.columnClassName
@@ -152,7 +155,7 @@ export default {
       }
 
       return order.map(item => [keys.indexOf(item.key), item.direction])
-    }
+    },
 
   },
 
@@ -182,11 +185,11 @@ export default {
             sFirst: 'F&oslash;rste',
             sPrevious: 'Forrige',
             sNext: 'Neste',
-            sLast: 'Siste'
+            sLast: 'Siste',
           },
           oAria: {
             sSortAscending: ': aktiver for å sortere kolonnen stigende',
-            sSortDescending: ': aktiver for å sortere kolonnen synkende'
+            sSortDescending: ': aktiver for å sortere kolonnen synkende',
           },
         },
         pageLength: 50,
@@ -195,7 +198,7 @@ export default {
           url: this.url,
           data: (input) => {
             return Object.assign({}, input, this.query)
-          }
+          },
         },
         columns: this.columns,
         order: this.defaultOrder,
@@ -218,7 +221,7 @@ export default {
             .on('click', $event => {
               const link = this.url + '/' + data.id
               if (drag) {
-                return;
+                return
               }
               if ($event.ctrlKey || $event.metaKey) {
                 window.location = link
@@ -230,7 +233,7 @@ export default {
       })
 
       return table
-    }
+    },
   },
 
   mounted () {
@@ -276,7 +279,7 @@ export default {
       $(this.$refs.spinner).hide()
       $(this.$refs.main).css('opacity', '1')
     })
-  }
+  },
 }
 
 </script>

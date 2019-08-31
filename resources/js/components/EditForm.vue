@@ -4,8 +4,7 @@
         <!-- Top level fields -->
         <table class="table table-borderless table-sm">
             <edit-field
-                    v-for="field in schema.fields"
-                    v-if="field.editable"
+                    v-for="field in fields"
                     :key="field.key"
                     :schema="schemas[field.key]"
                     :value="currentValues[field.key]"
@@ -14,7 +13,7 @@
         </table>
 
         <!-- Grouped fields -->
-        <div class="panel panel-default" v-for="group in schema.groups" :key="group.label" v-if="group.display !== false">
+        <div class="panel panel-default" v-for="group in groups" :key="group.label">
             <div class="panel-heading">
                 <h4 class="panel-title">{{ group.label }}</h4>
             </div>
@@ -22,7 +21,6 @@
                 <table class="table table-borderless table-sm">
                     <edit-field
                             v-for="field in group.fields"
-                            v-if="field.editable"
                             :key="field.key"
                             :schema="schemas[field.key]"
                             :value="currentValues[field.key]"
@@ -43,18 +41,36 @@ import { cloneDeep } from 'lodash/lang'
 export default {
   name: 'edit-form',
   components: {
-    EditField
+    EditField,
   },
   props: {
     schema: {
-      type: Object
+      type: Object,
     },
     values: {
-      type: Object
-    }
+      type: Object,
+    },
   },
-  data() {
-    let values = cloneDeep(this.values)
+  computed: {
+    fields () {
+      return this.schema.fields.filter(field => field.editable)
+    },
+    groups () {
+      return this.schema.groups.map(group => ({
+        label: group.label,
+        fields: group.fields.filter(field => field.editable),
+      }))
+    },
+    schemas () {
+      let out = this.fields.reduce((out, field) => { out[field.key] = field; return out })
+      this.groups.forEach(fieldGroup => {
+        out = fieldGroup.fields.reduce((out, field) => { out[field.key] = field; return out }, out)
+      })
+      return out
+    },
+  },
+  data () {
+    const values = cloneDeep(this.values)
 
     // Cast all integers as strings (@see SelectInput)
     Object.keys(values).forEach(key => {
@@ -64,24 +80,14 @@ export default {
     })
 
     return {
-      currentValues: values
+      currentValues: values,
     }
   },
   methods: {
-    onValue(key, newValue) {
-      console.log('[EditForm] Changed: ', key, newValue);
-      this.currentValues[key] = newValue;
-    }
+    onValue (key, newValue) {
+      console.log('[EditForm] Changed: ', key, newValue)
+      this.currentValues[key] = newValue
+    },
   },
-  computed: {
-    schemas () {
-      const out = []
-      this.schema.fields.forEach(col => out[col.key] = col)
-      this.schema.groups.forEach(fieldGroup => {
-        fieldGroup.fields.forEach(col => out[col.key] = col)
-      })
-      return out
-    }
-  }
 }
 </script>

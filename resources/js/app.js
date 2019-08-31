@@ -34,5 +34,5 @@ Vue.component('edit-form', EditForm)
  */
 
 export default new Vue({
-  el: '#app'
+  el: '#app',
 })

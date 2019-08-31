@@ -22,17 +22,17 @@ import * as components from './input'
 export default {
   name: 'edit-field',
   components: {
-    ...components
+    ...components,
   },
   props: [
     'schema',
-    'value'
+    'value',
   ],
   methods: {
     onValue (newValue) {
       console.log('[EditField] New value: ', newValue)
       this.$emit('value', newValue)
-    }
+    },
   },
   computed: {
     currentType () {
@@ -42,8 +42,8 @@ export default {
 
     name () {
       return this.schema.key
-    }
-  }
+    },
+  },
 }
 </script>
 

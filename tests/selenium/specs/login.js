@@ -5,7 +5,7 @@ describe('Login page', function () {
   it('should let you log in', function () {
     LoginPage.open()
     expect(LoginPage.getLoggedInUser()).to.equal(null)
-    LoginPage.loginAs('admin@example.org', 'secret');
+    LoginPage.loginAs('admin@example.org', 'secret')
     expect(LoginPage.getLoggedInUser()).to.equal('Georg Sverdrup')
   })
 })
