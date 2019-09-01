@@ -35,7 +35,7 @@
                         </td>
                         <td>
                             @if (count($entry->lines) == 1)
-                                {{ $entry->lines[0] }}
+                                {!! $entry->lines[0] !!}
                             @else
                                 <div>
                                     <a href="#" onclick="$(this).parent().next('.message-collapsed').toggle(); return false;">{{ $entry->lines[0] }}</a>
