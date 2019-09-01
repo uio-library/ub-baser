@@ -224,9 +224,9 @@ export default {
                 return
               }
               if ($event.ctrlKey || $event.metaKey) {
-                window.location = link
-              } else {
                 window.open(link, '_blank')
+              } else {
+                window.location = link
               }
             })
         },
