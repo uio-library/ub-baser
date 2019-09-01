@@ -53,7 +53,7 @@
 
                 <autocomplete-input
                         :value="newPersonValue"
-                        :schema="{type:'autocomplete', 'key': 'person'}"
+                        :schema="newPersonSchema"
                         ref="newperson"
                         @value="newPersonValue=$event"
                         @selected="selectedPerson=$event"
@@ -71,6 +71,7 @@
 
 <script>
 import { cloneDeep } from 'lodash/lang'
+import { get } from 'lodash/object'
 import Selectize from 'vue2-selectize'
 import AutocompleteInput from './AutocompleteInput'
 
@@ -99,6 +100,15 @@ export default {
     }
   },
   computed: {
+    newPersonSchema () {
+      return {
+        type: 'autocomplete',
+        key: 'person',
+        searchOptions: {
+          autocompleteUrl: get(this.schema, 'searchOptions.autocompleteUrl'),
+        },
+      }
+    },
     personsJson () {
       return JSON.stringify(this.persons)
     },
