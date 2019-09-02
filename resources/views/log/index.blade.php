@@ -41,7 +41,7 @@
                                     <a href="#" onclick="$(this).parent().next('.message-collapsed').toggle(); return false;">{{ $entry->lines[0] }}</a>
                                 </div>
                                 <div class="message-collapsed" style="display: none;">
-                                    {{ implode('<br>', $entry->lines) }}
+                                    {!! implode('<br>', array_slice($entry->lines, 1)) !!}
                                 </div>
                             @endif
                         </td>

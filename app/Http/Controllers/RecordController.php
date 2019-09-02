@@ -55,6 +55,8 @@ class RecordController extends Controller
      */
     protected function updateRecord(Schema $schema, Record $record, Request $request)
     {
+        $changes = [];
+
         foreach ($schema->flat() as $field) {
             if (!$field->editable) {
                 continue;
@@ -65,6 +67,20 @@ class RecordController extends Controller
             if ($field->type == 'persons') {
                 // Ignore, these are handled by the specific controller (for now)
             } else {
+                if ($record->id) {
+                    // Keep a record of changes
+                    $oldValueStr = json_encode($record->{$field->getColumn()}, JSON_UNESCAPED_UNICODE);
+                    $newValueStr = json_encode($newValue, JSON_UNESCAPED_UNICODE);
+                    if ($oldValueStr !== $newValueStr) {
+                        if ($oldValueStr === 'null') {
+                            $changes[] = "La til '{$field->key}': $newValueStr";
+                        } elseif ($newValueStr === 'null') {
+                            $changes[] = "Fjernet '{$field->key}': $oldValueStr";
+                        } else {
+                            $changes[] = "Endret '{$field->key}' fra $oldValueStr til $newValueStr";
+                        }
+                    }
+                }
                 $record->{$field->getColumn()} = $newValue;
             }
         }
@@ -72,9 +88,13 @@ class RecordController extends Controller
         if ($record->id === null) {
             $record->created_by = $request->user()->id;
         }
-        $record->updated_by = $request->user()->id;
+        if ($record->id === null or count($changes) > 0) {
+            $record->updated_by = $request->user()->id;
+        }
 
         $record->save();
+
+        return $changes;
     }
 
     /**

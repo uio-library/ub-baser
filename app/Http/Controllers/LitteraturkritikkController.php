@@ -189,7 +189,7 @@ class LitteraturkritikkController extends RecordController
      * @param Record $record
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function updateOrCreate(Request $request, LitteraturkritikkSchema $schema, Record $record)
+    protected function updateOrCreate(Request $request, LitteraturkritikkSchema $schema, Record $record) : array
     {
         // Validate input
         $this->validate($request, [
@@ -201,7 +201,7 @@ class LitteraturkritikkController extends RecordController
         ]);
 
         // Update record
-        $this->updateRecord($schema, $record, $request);
+        $changes = $this->updateRecord($schema, $record, $request);
 
         // Sync persons
         $persons = [];
@@ -214,11 +214,12 @@ class LitteraturkritikkController extends RecordController
                 }
             }
         }
-        $personsSyncData = $this->findOrCreatePersons($persons);
-        $record->persons()->sync($personsSyncData);
+        $changes = array_merge($changes, $this->syncPersons($record, $persons));
 
         // Refresh view
-        \DB::unprepared('REFRESH MATERIALIZED VIEW litteraturkritikk_records_search');
+        \DB::unprepared('REFRESH MATERIALIZED VIEW CONCURRENTLY litteraturkritikk_records_search');
+
+        return $changes;
     }
 
     /**
@@ -333,13 +334,13 @@ class LitteraturkritikkController extends RecordController
     {
         $this->authorize('litteraturkritikk');
         $record = Record::findOrFail($id);
-        $this->updateOrCreate($request, $schema, $record);
+        $changes = $this->updateOrCreate($request, $schema, $record);
 
         $this->log(
-            'Oppdaterte <a href="%s">post #%s (%s)</a>.',
-            action('LitteraturkritikkController@show', $record->id),
+            "Oppdaterte post #%s\n%s\n<a href=\"%s\">[Post]</a>",
             $record->id,
-            $record->tittel
+            implode("\n", $changes),
+            action('LitteraturkritikkController@show', $record->id)
         );
         return redirect()->action('LitteraturkritikkController@show', $id)
             ->with('status', 'Posten ble lagret');
@@ -358,32 +359,100 @@ class LitteraturkritikkController extends RecordController
     }
 
     /**
-     * Looks up IDs of persons from names, creates new person when not found.
-     * @param array $inputs
+     * Sync persons for a record.
+     * (The most messy method in UB-baser?)
+     *
+     * @param Record $record
+     * @param array $input
      * @return array
      */
-    protected function findOrCreatePersons(array $inputs): array
+    protected function syncPersons(Record $record, array $input): array
     {
-        $idsWithPivotData = [];
-        foreach ($inputs as $input) {
-            if (isset($input['id'])) {
-                // Validate existence
-                $person = Person::findOrFail($input['id']);
-            } else {
-                $person = Person::create([
-                    'etternavn' => $input['etternavn'],
-                    'fornavn' => $input['fornavn'],
-                    'kjonn' => $input['kjonn'],
-                ]);
-                $this->log(
-                    'Opprettet <a href="%s">person #%s (%s)</a>.',
-                    action('LitteraturkritikkPersonController@show', $person->id),
-                    $person->id,
-                    "{$person->etternavn}, {$person->fornavn}"
-                );
-            }
-            $idsWithPivotData[$person->id] = $input['pivot'];
+        // Apologies.
+        // Initially, the plan was to use the Eloquent sync() method here, but it doesn't
+        // support attaching the same model multiple times with different pivot data, so
+        // it can't be used to attach the same author multiple times with different roles.
+        // Therefore we have to get our hands a bit dirty here.
+
+        $changes = [];
+        $names = [];
+
+        // Make a list of current persons
+        $currentPersons = [];
+        foreach ($record->persons as $person) {
+            $names[$person->id] = (string) $person;
+            $currentPersons[] = [
+                'record_id' => $record->id,
+                'person_id' => $person->id,
+                'person_role' => $person->pivot->person_role,
+                'kommentar' => $person->pivot->kommentar,
+                'pseudonym' => $person->pivot->pseudonym,
+            ];
         }
-        return $idsWithPivotData;
+
+        // Make a list of new persons
+        $persons = [];
+        foreach ($input as $inputValue) {
+            $person = $this->findOrCreatePerson($inputValue);
+            $names[$person->id] = (string) $person;
+            $persons[] = [
+                'record_id' => $record->id,
+                'person_id' => $person->id,
+                'person_role' => $inputValue['pivot']['person_role'],
+                'kommentar' => $inputValue['pivot']['kommentar'],
+                'pseudonym' => $inputValue['pivot']['pseudonym'],
+            ];
+        }
+
+        // Compare the two to figure out which updates we need to do on
+        // the record-person pivot table.
+        $delete = array_udiff($currentPersons, $persons, function ($a, $b) {
+            return strcmp(json_encode($a), json_encode($b));
+        });
+        $insert = array_udiff($persons, $currentPersons, function ($a, $b) {
+            return strcmp(json_encode($a), json_encode($b));
+        });
+
+        // Delete relations that no longer exist
+        foreach ($delete as $recordPerson) {
+            \DB::table('litteraturkritikk_record_person')
+                ->where($recordPerson)
+                ->delete();
+            $changes[] = "Fjernet {$names[$recordPerson['person_id']]} (Rolle: {$recordPerson['person_role']}, " .
+                "pseudonym: {$recordPerson['pseudonym']}, kommentar: {$recordPerson['kommentar']})";
+        }
+
+        // Insert new ones
+        foreach ($insert as $recordPerson) {
+            \DB::table('litteraturkritikk_record_person')
+                ->insert($recordPerson);
+            $changes[] = "La til {$names[$recordPerson['person_id']]} (Rolle: {$recordPerson['person_role']}, " .
+                "pseudonym: {$recordPerson['pseudonym']}, kommentar: {$recordPerson['kommentar']})";
+        }
+
+        return $changes;
+    }
+
+    protected function findOrCreatePerson(array $input)
+    {
+        if (isset($input['id'])) {
+            // It *should* exist. If not, the input is invalid and it's ok to throw an error.
+            return Person::findOrFail($input['id']);
+        }
+
+        $person = Person::create([
+            'etternavn' => $input['etternavn'],
+            'fornavn' => $input['fornavn'],
+            'kjonn' => $input['kjonn'],
+        ]);
+
+        $this->log(
+            'Opprettet <a href="%s">person #%s (%s)</a>.',
+            action('LitteraturkritikkPersonController@show', $person->id),
+            $person->id,
+            "{$person->etternavn}, {$person->fornavn}"
+        );
+
+        return $person;
     }
 }
