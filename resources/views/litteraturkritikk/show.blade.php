@@ -27,6 +27,11 @@
                             <em class="fa fa-eye"></em>
                             Vis fulltekst i NB
                         </a>
+                    @elseif ($group->label == 'Verket' && $record->verk_fulltekst_url)
+                        <a href="{{ $record->verk_fulltekst_url }}" class="btn btn-outline-success btn-sm">
+                            <em class="fa fa-eye"></em>
+                            Vis fulltekst i NB
+                        </a>
                     @else
                         <a href="https://www.nb.no/search?{{ $record->nationalLibrarySearchLink($group->label) }}" class="btn btn-outline-success btn-sm">
                             <em class="fa fa-search"></em>

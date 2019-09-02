@@ -172,6 +172,14 @@ class LitteraturkritikkSchema extends Schema
                         'searchable' => 'advanced',
                     ],
 
+                    // Fulltekst-URL
+                    [
+                        'key' => 'verk_fulltekst_url',
+                        'type' => 'url',
+
+                        'searchable' => 'advanced',
+                    ],
+
                 ],
             ],
 

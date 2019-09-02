@@ -28,6 +28,7 @@ return [
 
     'kritiker' => 'Kritiker',
     'kritiker_mfl' => 'mfl.',
+    'kritiker_kjonn' => 'Kritikers kjønn',
 
     'etternavn' => 'Etternavn',
     'fornavn' => 'Fornavn',
@@ -43,8 +44,10 @@ return [
     'verk_spraak' => 'Språk',
     'verk_kommentar' => 'Kommentar',
     'verk_utgivelsessted' => 'Utgivelsessted',
+    'verk_fulltekst_url' => 'Fulltekst-URL',
 
     'verk_forfatter' => 'Forfatter',
     'verk_forfatter_mfl' => 'mfl.',
+    'forfatter_kjonn' => 'Forfatters kjønn',
 
 ];
