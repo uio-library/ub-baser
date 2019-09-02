@@ -387,6 +387,7 @@ class LitteraturkritikkController extends RecordController
                 'person_role' => $person->pivot->person_role,
                 'kommentar' => $person->pivot->kommentar,
                 'pseudonym' => $person->pivot->pseudonym,
+                'posisjon' => $person->pivot->posisjon,
             ];
         }
 
@@ -401,6 +402,7 @@ class LitteraturkritikkController extends RecordController
                 'person_role' => $inputValue['pivot']['person_role'],
                 'kommentar' => $inputValue['pivot']['kommentar'],
                 'pseudonym' => $inputValue['pivot']['pseudonym'],
+                'posisjon' => $inputValue['pivot']['posisjon'],
             ];
         }
 
@@ -419,7 +421,7 @@ class LitteraturkritikkController extends RecordController
                 ->where($recordPerson)
                 ->delete();
             $changes[] = "Fjernet {$names[$recordPerson['person_id']]} (Rolle: {$recordPerson['person_role']}, " .
-                "pseudonym: {$recordPerson['pseudonym']}, kommentar: {$recordPerson['kommentar']})";
+                "pseudonym: {$recordPerson['pseudonym']}, kommentar: {$recordPerson['kommentar']}, posisjon: {$recordPerson['posisjon']})";
         }
 
         // Insert new ones
@@ -427,7 +429,7 @@ class LitteraturkritikkController extends RecordController
             \DB::table('litteraturkritikk_record_person')
                 ->insert($recordPerson);
             $changes[] = "La til {$names[$recordPerson['person_id']]} (Rolle: {$recordPerson['person_role']}, " .
-                "pseudonym: {$recordPerson['pseudonym']}, kommentar: {$recordPerson['kommentar']})";
+                "pseudonym: {$recordPerson['pseudonym']}, kommentar: {$recordPerson['kommentar']}, posisjon: {$recordPerson['posisjon']})";
         }
 
         return $changes;

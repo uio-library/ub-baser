@@ -39,7 +39,7 @@ class Person extends \Eloquent
             'litteraturkritikk_record_person',
             'person_id',
             'record_id'
-        )->withPivot('person_role', 'kommentar', 'pseudonym');
+        )->withPivot('person_role', 'kommentar', 'pseudonym', 'posisjon');
     }
 
     public function recordsAsAuthor()

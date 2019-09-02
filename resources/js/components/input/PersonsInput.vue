@@ -8,8 +8,8 @@
                 <th>Etternavn</th>
                 <th>Fornavn</th>
                 <th>Kjønn</th>
-                <th>Pseudonym</th>
                 <th>Rolle</th>
+                <th>Pseudonym</th>
                 <th>Kommentar</th>
             </tr>
             <!-- eslint-disable-next-line vue/require-v-for-key -->
@@ -33,10 +33,10 @@
                     </selectize>
                 </td>
                 <td>
-                    <input type="text" v-model="person.pivot.pseudonym" class="form-control">
+                    <input type="text" v-model="person.pivot.person_role" class="form-control">
                 </td>
                 <td>
-                    <input type="text" v-model="person.pivot.person_role" class="form-control">
+                    <input type="text" v-model="person.pivot.pseudonym" class="form-control">
                 </td>
                 <td>
                     <input type="text" v-model="person.pivot.kommentar" class="form-control">
@@ -166,6 +166,7 @@ export default {
           person_role: this.schema.personRole,
           kommentar: '',
           pseudonym: '',
+          posisjon: this.persons.length ? Number(this.persons[this.persons.length - 1].pivot.posisjon) + 1 : 1,
         },
       }
       if (this.selectedPerson) {

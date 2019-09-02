@@ -46,8 +46,8 @@ class Record extends \App\Record
             'litteraturkritikk_record_person',
             'record_id',
             'person_id'
-        )->withPivot('person_role', 'kommentar', 'pseudonym')
-         ->orderBy('litteraturkritikk_record_person.id', 'asc');
+        )->withPivot('person_role', 'kommentar', 'pseudonym', 'posisjon')
+         ->orderBy('litteraturkritikk_record_person.posisjon', 'asc');
     }
 
     /**
