@@ -336,12 +336,14 @@ class LitteraturkritikkController extends RecordController
         $record = Record::findOrFail($id);
         $changes = $this->updateOrCreate($request, $schema, $record);
 
-        $this->log(
-            "Oppdaterte post #%s\n%s\n<a href=\"%s\">[Post]</a>",
-            $record->id,
-            implode("\n", $changes),
-            action('LitteraturkritikkController@show', $record->id)
-        );
+        if (count($changes) != 0) {
+            $this->log(
+                "Oppdaterte post #%s\n%s\n<a href=\"%s\">[Post]</a>",
+                $record->id,
+                implode("\n", $changes),
+                action('LitteraturkritikkController@show', $record->id)
+            );
+        }
         return redirect()->action('LitteraturkritikkController@show', $id)
             ->with('status', 'Posten ble lagret');
     }
