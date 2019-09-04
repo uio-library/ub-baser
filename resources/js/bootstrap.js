@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import * as Sentry from '@sentry/browser'
+
+if (process.env.MIX_SENTRY_DSN) {
+  Sentry.init({ dsn: process.env.MIX_SENTRY_DSN })
+}
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
