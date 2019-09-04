@@ -25,12 +25,12 @@
                     @if ($group->label == 'Kritikken' && $record->fulltekst_url)
                         <a href="{{ $record->fulltekst_url }}" class="btn btn-outline-success btn-sm">
                             <em class="fa fa-eye"></em>
-                            Vis fulltekst i NB
+                            Vis fulltekst
                         </a>
                     @elseif ($group->label == 'Verket' && $record->verk_fulltekst_url)
                         <a href="{{ $record->verk_fulltekst_url }}" class="btn btn-outline-success btn-sm">
                             <em class="fa fa-eye"></em>
-                            Vis fulltekst i NB
+                            Vis fulltekst
                         </a>
                     @else
                         <a href="https://www.nb.no/search?{{ $record->nationalLibrarySearchLink($group->label) }}" class="btn btn-outline-success btn-sm">
@@ -69,6 +69,10 @@
                                     @if ($record->{$field->key . '_mfl'})
                                         <em>mfl.</em>
                                     @endif
+
+                                @elseif ($field->type == 'url')
+
+                                    <a href="{{ $record->{$field->key} }}">{{ $record->{$field->key} }}</a>
 
                                 @elseif (is_array($record->{$field->key}))
 
