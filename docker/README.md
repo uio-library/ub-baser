@@ -166,12 +166,12 @@ with the following content:
 	```
 
 
-## 4. Add configuration to `.env.prod`
+## 4. Add configuration to `.env`
 
 	Copy the template file:
 
 	```sh
-	cp .env.prod.example .env.prod
+	cp .env.prod.example .env
 	```
 
 	and add database settings and a ssl certificate.
@@ -199,7 +199,7 @@ with the following content:
 - [ ] Define a handy alias, for instance in .bashrc:
 
 	```
-	alias RUN="docker run --rm -it --env-file .env.prod -v ub-baser_storage:/app/storage -v "$(pwd)"/initial-import:/initial-import ub-baser:latest"
+	alias RUN="docker run --rm -it --env-file .env -v ub-baser_storage:/app/storage -v "$(pwd)"/initial-import:/initial-import ub-baser:latest"
 	```
 
 - [ ] Run database migrations and add seed data:
