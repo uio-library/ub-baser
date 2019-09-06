@@ -23,15 +23,19 @@
 
                 <div class="py-2">
                     @if ($group->label == 'Kritikken' && $record->fulltekst_url)
-                        <a href="{{ $record->fulltekst_url }}" class="btn btn-outline-success btn-sm">
-                            <em class="fa fa-eye"></em>
-                            Vis fulltekst
-                        </a>
+                        @foreach (explode(' ', $record->fulltekst_url) as $n => $url)
+                            <a href="{{ $url }}" class="btn btn-outline-success btn-sm">
+                                <em class="fa fa-eye"></em>
+                                Vis fulltekst ({{ $n + 1 }})
+                            </a>
+                        @endforeach
                     @elseif ($group->label == 'Verket' && $record->verk_fulltekst_url)
-                        <a href="{{ $record->verk_fulltekst_url }}" class="btn btn-outline-success btn-sm">
-                            <em class="fa fa-eye"></em>
-                            Vis fulltekst
-                        </a>
+                        @foreach (explode(' ', $record->verk_fulltekst_url) as $n => $url)
+                            <a href="{{ $url }}" class="btn btn-outline-success btn-sm">
+                                <em class="fa fa-eye"></em>
+                                Vis fulltekst ({{ $n + 1 }})
+                            </a>
+                        @endforeach
                     @else
                         <a href="https://www.nb.no/search?{{ $record->nationalLibrarySearchLink($group->label) }}" class="btn btn-outline-success btn-sm">
                             <em class="fa fa-search"></em>
@@ -71,8 +75,9 @@
                                     @endif
 
                                 @elseif ($field->type == 'url')
-
-                                    <a href="{{ $record->{$field->key} }}">{{ $record->{$field->key} }}</a>
+                                    @foreach (explode(' ', $record->{$field->key}) as $url)
+                                        <a href="{{ $url }}">{{ $url }}</a><br>
+                                    @endforeach
 
                                 @elseif (is_array($record->{$field->key}))
 
