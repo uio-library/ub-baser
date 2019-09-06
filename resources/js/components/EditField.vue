@@ -11,6 +11,11 @@
                 :schema="schema"
                 @value="onValue($event)"
             ></component>
+            <div v-if="schema.help"><small class="text-muted text-small">
+              <em class="fa fa-info-circle"></em>
+              {{ schema.help }}
+            </small></div>
+            <div v-else><small class="text-muted text-small">&nbsp;</small></div>
             <!-- <tt>[{{ this.currentType }}] {{ name}}: {{ value }}</tt>-->
         </td>
     </tr>

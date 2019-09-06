@@ -116,7 +116,7 @@ class LitteraturkritikkSchema extends Schema
                         'searchable' => 'disabled',
 
                         // 'default' => false,
-                        'help' => 'Kryss av hvis det er flere personer som ikke er listet opp',
+                        'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
                     ],
 
                     // År
@@ -176,6 +176,7 @@ class LitteraturkritikkSchema extends Schema
                     [
                         'key' => 'verk_fulltekst_url',
                         'type' => 'url',
+                        'help' => 'Flere verdier skilles med mellomrom',
 
                         'searchable' => 'advanced',
                     ],
@@ -211,7 +212,7 @@ class LitteraturkritikkSchema extends Schema
                     [
                         'key' => 'kritiker_mfl',
                         'type' => 'boolean',
-                        'help' => 'Kryss av hvis det er flere personer som ikke er listet opp',
+                        'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
                         // 'default' => false,
                         'displayable' => false,
                         'searchable' => 'disabled',
@@ -288,22 +289,27 @@ class LitteraturkritikkSchema extends Schema
                     [
                         'key' => 'aargang',
                         'type' => 'simple',
+                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).'
                     ],
                     [
                         'key' => 'bind',
                         'type' => 'simple',
+                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).'
                     ],
                     [
                         'key' => 'hefte',
                         'type' => 'simple',
+                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).'
                     ],
                     [
                         'key' => 'nummer',
                         'type' => 'simple',
+                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).'
                     ],
                     [
                         'key' => 'sidetall',
                         'type' => 'simple',
+                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).'
                     ],
                     [
                         'key' => 'kommentar',
@@ -320,6 +326,7 @@ class LitteraturkritikkSchema extends Schema
                     [
                         'key' => 'fulltekst_url',
                         'type' => 'url',
+                        'help' => 'Flere verdier skilles med mellomrom',
 
                         'searchable' => 'advanced',
                     ],

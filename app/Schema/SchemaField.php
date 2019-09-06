@@ -42,6 +42,7 @@ abstract class SchemaField implements JsonSerializable
         $this->data['editable'] = true;
         $this->data['defaultValue'] = null;
         $this->data['searchOptions'] = [];
+        $this->data['help'] = null;
     }
 
     /**
@@ -191,6 +192,16 @@ abstract class SchemaField implements JsonSerializable
     public function getViewColumn(): string
     {
         return $this->get('viewColumn', $this->getColumn());
+    }
+
+    /**
+     * Set help text shown when editing the field.
+     *
+     * @param string $value
+     */
+    public function setHelp(string $value): void
+    {
+        $this->data['help'] = $value;
     }
 
     /**

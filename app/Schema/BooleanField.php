@@ -13,9 +13,4 @@ class BooleanField extends SchemaField
         // Defaults
         $this->data['defaultValue'] = false;
     }
-
-    public function setHelp($value)
-    {
-        $this->data['help'] = $value;
-    }
 }

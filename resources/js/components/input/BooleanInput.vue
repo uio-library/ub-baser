@@ -1,11 +1,10 @@
 <template>
-    <div style="padding: 10px 0">
+    <div>
         <input type="checkbox"
                :name="name"
                :checked="value"
                @input="onInput($event)"
         >
-        {{ schema.help }}
     </div>
 </template>
 
