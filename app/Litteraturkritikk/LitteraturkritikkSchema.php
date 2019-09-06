@@ -259,7 +259,7 @@ class LitteraturkritikkSchema extends Schema
                             'type' => 'rangeslider',
                             'index' => [
                                 'type' => 'range',
-                                'column' => 'aar_numeric',
+                                'column' => 'dato',
                             ],
                         ],
                     ],
