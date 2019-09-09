@@ -236,7 +236,7 @@ class LitteraturkritikkSchema extends Schema
                     [
                         'key' => 'kritikktype',
                         'type' => 'tags',
-                        // 'default' => [],
+                        'defaultValue' => [],
 
                         'searchOptions' => [
                             'type' => 'autocomplete',

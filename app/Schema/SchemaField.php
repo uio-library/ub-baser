@@ -184,6 +184,16 @@ abstract class SchemaField implements JsonSerializable
         $this->data['viewColumn'] = $value;
     }
 
+    /**
+     * Set a default value (any datatype).
+     *
+     * @param mixed $value
+     */
+    public function setDefaultValue($value): void
+    {
+        $this->data['defaultValue'] = $value;
+    }
+
     public function getColumn()
     {
         return $this->get('column', $this->key);
