@@ -193,10 +193,10 @@ class LitteraturkritikkController extends RecordController
     {
         // Validate input
         $this->validate($request, [
-            'kritikktype' => 'required',
+            // 'kritikktype' => 'required',
             'dato' => [
                 'nullable',
-                'regex:/^(?:u\.å\.|n\.d\.|[0-9]{4}(-[0-9]{2})?(-[0-9]{2})?)$/',
+                // 'regex:/^(?:u\.å\.|n\.d\.|[0-9]{4}(-[0-9]{2})?(-[0-9]{2})?)$/',
             ],
         ]);
 
