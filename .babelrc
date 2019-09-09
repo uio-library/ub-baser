@@ -1,0 +1,17 @@
+{
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "debug": true,
+                "modules": false,
+                "forceAllTransforms": true,
+                "useBuiltIns": "entry",
+                "corejs": "3",
+                "targets": {
+                    "ie": "11"
+                }
+            }
+        ]
+    ]
+}
