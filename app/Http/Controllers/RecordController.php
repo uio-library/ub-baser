@@ -19,6 +19,23 @@ class RecordController extends Controller
     }
 
     /**
+     * Get old value if present (after a validation error) and transform it if necessary.
+     *
+     * @param SchemaField $field
+     * @param string $key
+     * @return string $default
+     */
+    protected function old($field, $key, $default) {
+        if (old($key) !== null) {
+            $value = old($key);
+            if ($field->type === 'persons') {
+                $value = json_decode($value, true);
+            }
+        }
+        return $default;
+    }
+
+    /**
      * Construct form arguments according to some schema.
      *
      * @param Record $record
@@ -36,7 +53,7 @@ class RecordController extends Controller
             } else {
                 $value = $record->{$key};
             }
-            $values[$key] = old($key, $value);
+            $values[$key] = $this->old($field, $key, $value);
         }
 
         return [
