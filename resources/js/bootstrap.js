@@ -1,10 +1,20 @@
+
+
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import * as Sentry from '@sentry/browser'
+import * as Integrations from '@sentry/integrations'
 
 if (process.env.MIX_SENTRY_DSN) {
-  Sentry.init({ dsn: process.env.MIX_SENTRY_DSN })
+  Sentry.init({
+    dsn: process.env.MIX_SENTRY_DSN,
+    integrations: [new Integrations.Vue({
+      Vue,
+      attachProps: true,
+      logErrors: true,
+    })],
+  })
 }
 
 /**
