@@ -177,6 +177,9 @@ abstract class SearchRequest extends FormRequest
     protected function addRangeSearchTerm(array $index, string $operator, ?string $value): void
     {
         $value = explode('-', $value);
+        if (count($value) != 2) {
+            return;
+        }
 
         switch ($operator) {
             case 'eq':
