@@ -49,6 +49,8 @@ Route::post('norsk-litteraturkritikk', 'LitteraturkritikkController@store');
 Route::get('norsk-litteraturkritikk/{id}', 'LitteraturkritikkController@show');
 Route::get('norsk-litteraturkritikk/{id}/edit', 'LitteraturkritikkController@edit');
 Route::put('norsk-litteraturkritikk/{id}', 'LitteraturkritikkController@update');
+Route::delete('norsk-litteraturkritikk/{id}', 'LitteraturkritikkController@destroy');
+Route::post('norsk-litteraturkritikk/{id}/restore', 'LitteraturkritikkController@restore');
 
 Route::post('norsk-litteraturkritikk/personer', 'LitteraturkritikkPersonController@store');
 Route::get('norsk-litteraturkritikk/personer/{id}', 'LitteraturkritikkPersonController@show');

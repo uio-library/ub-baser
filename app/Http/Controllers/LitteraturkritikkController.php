@@ -304,7 +304,11 @@ class LitteraturkritikkController extends RecordController
      */
     public function show(LitteraturkritikkSchema $schema, $id)
     {
-        $record = Record::findOrFail($id);
+        if (\Auth::check()) {
+            $record = Record::withTrashed()->findOrFail($id);
+        } else {
+            $record = Record::findOrFail($id);
+        }
 
         $data = [
             'title' => $record->tittel ?: '#' . $record->id,
@@ -352,7 +356,34 @@ class LitteraturkritikkController extends RecordController
      */
     public function destroy($id)
     {
-        //
+        $record = Record::findOrFail($id);
+
+        $record->delete();
+
+        // Refresh view
+        \DB::unprepared('REFRESH MATERIALIZED VIEW CONCURRENTLY litteraturkritikk_records_search');
+
+        return redirect()->action('LitteraturkritikkController@show', $id);
+    }
+
+    /**
+     * Restore the specified resource from trash.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $record = Record::withTrashed()->findOrFail($id);
+
+        $record->restore();
+
+        // Refresh view
+        \DB::unprepared('REFRESH MATERIALIZED VIEW CONCURRENTLY litteraturkritikk_records_search');
+
+        return redirect()->action('LitteraturkritikkController@show', $id)
+            ->with('status', 'Posten ble gjenopprettet');
     }
 
     /**

@@ -2,21 +2,63 @@
 
 @section('content')
 
-    <p>
-        <a href="{{ URL::previous() }}"><i class="fa fa-arrow-circle-left"></i> Tilbake</a>
+    <div class="pb-3">
+
+        <a href="{{ URL::previous() }}" class="btn btn-outline-primary">
+            <em class="fa fa-arrow-circle-left"></em>
+            Tilbake
+        </a>
+
+        <a href="mailto:norsklitteraturkritikk@ub.uio.no?subject=Feil%20i%20post&body=Hei%0A%0ADet%20ser%20ut%20som%20det%20er%20en%20feil%20i%20denne%20posten%3A%0A%0Ahttps%3A%2F%2Fub-baser.uio.no%2Fnorsk_litteraturkritikk%2F{{ $record->id }}%0A%0A%5BUtdyp%5D" class="btn btn-outline-primary">
+            <em class="fa fa-envelope-o"></em>
+            Meld fra om feil
+        </a>
+
         @can('litteraturkritikk')
-        &nbsp;
-        <a href="{{ action('LitteraturkritikkController@edit', $record->id) }}"><i class="fa fa-edit"></i> Rediger post</a>
-        @endif
-    </p>
+
+            <a href="{{ action('LitteraturkritikkController@edit', $record->id) }}" class="btn btn-outline-primary">
+                <i class="fa fa-edit"></i>
+                Rediger post
+            </a>
+
+            @if ($record->trashed())
+                <form style="display: inline-block" action="{{ action('LitteraturkritikkController@restore', $record->id) }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger btn-xs">
+                        <em class="fa fa-undo"></em>
+                        Gjenopprett
+                    </button>
+                </form>
+            @else
+                <form style="display: inline-block" action="{{ action('LitteraturkritikkController@destroy', $record->id) }}" method="post">
+                    @csrf
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-outline-danger btn-xs">
+                        <em class="fa fa-trash"></em>
+                        Slett
+                    </button>
+                </form>
+            @endif
+        @endcan
+    </div>
 
 
     <div class="d-flex flex-column flex-sm-row">
 
         <div class="flex-grow-1">
-            <h2>
-                Post {{ $record->id }}
-            </h2>
+            @if ($record->trashed())
+                <h2>
+                    <s>Post {{ $record->id }}</s>
+                </h2>
+                <div class="alert alert-danger" role="alert">
+                    Denne posten er mykslettet og vises ikke i søk eller for ikke-innloggede brukere.
+                    Du kan imidlertid enkelt gjenopprette den om du ønsker det.
+                </div>
+            @else
+                <h2>
+                    Post {{ $record->id }}
+                </h2>
+            @endif
 
             @foreach ($schema->groups as $group)
                 <h4 class="mt-4">{{ $group->label }}</h4>
@@ -103,18 +145,14 @@
                     <dd class="col-sm-9">{{ $record->created_at }} av {{ $record->createdBy ? $record->createdBy->name : ' (import)' }}</dd>
                     <dt class="col-sm-3 text-sm-right">Sist endret:</dt>
                     <dd class="col-sm-9">{{ $record->updated_at }} av {{ $record->updatedBy ? $record->updatedBy->name : ' (import)' }}</dd>
+                    @if ($record->deleted_at)
+                    <dt class="col-sm-3 text-sm-right">Slettet:</dt>
+                    <dd class="col-sm-9">{{ $record->deleted_at }}</dd>
+                    @endif
                 </dl>
             @endif
         </div>
 
-        <div class="flex-grow-0 flex-shrink-0" style="width: 200px;">
-            <div class="px-4 py-3">
-                <a href="mailto:norsklitteraturkritikk@ub.uio.no?subject=Feil%20i%20post&body=Hei%0A%0ADet%20ser%20ut%20som%20det%20er%20en%20feil%20i%20denne%20posten%3A%0A%0Ahttps%3A%2F%2Fub-baser.uio.no%2Fnorsk_litteraturkritikk%2F{{ $record->id }}%0A%0A%5BUtdyp%5D" class="btn btn-outline-primary">
-                    <em class="fa fa-envelope-o"></em>
-                    Meld fra om feil
-                </a>
-            </div>
-        </div>
     </div>
 
 @endsection
