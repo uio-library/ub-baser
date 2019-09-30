@@ -2,6 +2,10 @@
 
 @section('content')
 
+    <p style="float:right">
+        <a href="/norsk-litteraturkritikk/veiledning" target="veiledning">Redigeringsveiledning</a> (åpner i nytt vindu/ny fane)
+    </p>
+
     <h2>
         Rediger post {{ $record->id }}
     </h2>
