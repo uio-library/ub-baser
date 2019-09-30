@@ -184,6 +184,49 @@ table.dataTable
   tbody th.dt-body-nowrap, tbody td.dt-body-nowrap
     white-space: nowrap
 
+  th.sorting_asc,  th.sorting_desc
+    font-style: italic
+
+
+  thead
+
+
+    .sorting:before, .sorting_asc:before, .sorting_desc:before
+      opacity: 0
+
+    .sorting:after
+      content: "\25ba"
+      transform: rotate(-90deg)
+      font-style: normal
+      opacity: 0.01
+      transition: opacity .3s
+
+    .sorting:hover, .sorting_asc:hover, .sorting_desc:hover
+      color: #2771bb
+
+    .sorting:hover:after
+      opacity: 0.3
+
+    .sorting_asc:after
+      content: "\25ba"
+      transform: rotate(-90deg)
+      font-style: normal
+      opacity: 1
+      transition: transform .3s, opacity .3s
+
+    .sorting_asc:hover:after
+      color: #2771bb
+      // transform: rotate(90deg)
+      // opacity: 0.3
+
+    .sorting_desc:after
+      content: "\25ba"
+      transform: rotate(90deg)
+      font-style: normal
+      opacity: 1
+      transition: opacity .3s
+
+
 div.dataTables_wrapper
   > div
     display: flex
@@ -200,7 +243,6 @@ div.dataTables_wrapper
 
     label
       margin-bottom: 0
-
 
 /*******************************************************************
  * Algolia
