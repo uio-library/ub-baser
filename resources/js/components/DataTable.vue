@@ -175,7 +175,7 @@ export default {
           sInfoFiltered: '(filtrert fra _MAX_ totalt antall poster)',
           sInfoPostFix: '',
           sInfoThousands: ' ',
-          sLengthMenu: 'Vis _MENU_ poster',
+          sLengthMenu: 'Vis _MENU_ poster per side',
           sLoadingRecords: 'Laster...',
           sProcessing: 'Laster...',
           sSearch: 'S&oslash;k:',
