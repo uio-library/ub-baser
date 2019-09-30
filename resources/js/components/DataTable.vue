@@ -200,9 +200,9 @@ export default {
         dom: '<"top"ilp<"clear">>rt<"bottom"ilp<"clear">>',
 
         language: {
-          sEmptyTable: 'Ingen data tilgjengelig i tabellen',
-          sInfo: 'Viser _START_ til _END_ av _TOTAL_ poster',
-          sInfoEmpty: 'Viser 0 til 0 av 0 poster',
+          sEmptyTable: 'Ingen poster funnet.',
+          sInfo: 'Viser _START_ til _END_ av _TOTAL_ poster.',
+          sInfoEmpty: 'Viser 0 til 0 av 0 poster.',
           sInfoFiltered: '(filtrert fra _MAX_ totalt antall poster)',
           sInfoPostFix: '',
           sInfoThousands: ' ',
