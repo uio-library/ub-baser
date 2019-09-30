@@ -14,7 +14,7 @@
             {!! $intro !!}
         </div>
 
-        <div class="panel panel-default">
+        <div class="panel panel-default" style="margin-bottom: 1.6em;">
             <div class="panel-body">
                 <search-form
                         action="{{ action('LitteraturkritikkController@index') }}"
