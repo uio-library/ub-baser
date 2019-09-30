@@ -15,12 +15,12 @@
         <div ref="main" style="opacity: 0">
 
             <div ref="columnSelectorWrapper"  class="d-flex align-items-center">
-                <div class="flex-grow-0">
+                <div class="flex-grow-0 pr-2">
                     Vis kolonner:
                 </div>
                 <select multiple
                         ref="columnSelector"
-                        class="selectpicker col flex-grow-1"
+                        class="selectpicker flex-grow-0"
                         data-style=""
                         data-style-base="form-control form-control-sm"
                 >
@@ -168,6 +168,10 @@ export default {
     initTable () {
       let drag = false
       const table = $(this.$refs.theTable).DataTable({
+
+        // Define which table control elements should appear and in what order.
+        dom: '<"top"ilp<"clear">>rt<"bottom"ilp<"clear">>',
+
         language: {
           sEmptyTable: 'Ingen data tilgjengelig i tabellen',
           sInfo: 'Viser _START_ til _END_ av _TOTAL_ poster',
@@ -261,19 +265,19 @@ export default {
       // Let's first get a reference to the row above the table. This row contains
       // two cells, the first one containing "Vis X poster", the second one being empty
       // (it's used for the search box that we have disabled above).
-      const $tableWrapper = $(table.containers()[0])
-      const $tableHeader = $tableWrapper.find('> .row:first')
+      // const $tableWrapper = $(table.containers()[0])
+      // const $tableHeader = $tableWrapper.find('> .row:first')
 
-      // Swap the columns, so that the empty cell comes first.
-      // We will use this for our column selector.
-      const $container = $tableHeader.find('> div:last').detach()
-      $tableHeader.prepend($container)
+      // // Swap the columns, so that the empty cell comes first.
+      // // We will use this for our column selector.
+      // const $container = $tableHeader.find('> div:last').detach()
+      // $tableHeader.prepend($container)
 
-      // Then move our column selector into it
-      $container.append($(this.$refs.columnSelectorWrapper).detach())
+      // // Then move our column selector into it
+      // $container.append($(this.$refs.columnSelectorWrapper).detach())
 
-      // Right-align the "Vis X poster" cell (which is now the last cell)
-      $tableHeader.find('> div:last').addClass('text-right')
+      // // Right-align the "Vis X poster" cell (which is now the last cell)
+      // $tableHeader.find('> div:last').addClass('text-right')
 
       // We're ready!
       $(this.$refs.spinner).hide()
