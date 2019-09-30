@@ -55,6 +55,7 @@
     "sass": "^1.22.10",
     "sass-loader": "^7.3.1",
     "selectize": "~0.12.1",
+    "tooltipster": "^4.2.7",
     "vue": "^2.5.17",
     "vue-axios": "^2.1.4",
     "vue-slider-component": "^3.0.40",

@@ -46,7 +46,7 @@
                         <th v-for="field in fields" :key="field.key"></th>
                         <th v-for="group in groups" :key="group.label" :colspan="group.fields.length">{{ group.label }}</th>
                     </tr>
-                    <tr>
+                    <tr class="tooltipster">
                         <th v-for="col in columns" :key="col.data">
                             {{ col.columnLabel }}
                         </th>
@@ -167,6 +167,33 @@ export default {
 
     initTable () {
       let drag = false
+
+      $(document).ready(function() {
+          $('.tooltipster th').tooltipster({
+            maxWidth: 250,
+            delay: 800,
+            theme: 'tooltipster-borderless',
+            content: 'Loading...',
+            // 'instance' is basically the tooltip. More details in the "Object-oriented Tooltipster" section.
+            functionBefore: function(instance, helper) {
+              var $origin = $(helper.origin)
+              var order = table.order()
+              var label = $origin.text()
+              var currentIdx = table.column($origin[0]).index()
+              label = label.charAt(0).toLowerCase() + label.substring(1)
+              if (order.length && order[0][0] == currentIdx) {
+                if (order[0][1] == 'asc') {
+                  instance.content('Tabellen er sortert etter denne kolonnen. Trykk for å endre til synkende rekkefølge.')
+                } else {
+                  instance.content('Tabellen er sortert etter denne kolonnen. Trykk for å endre til stigende rekkefølge.')
+                }
+              } else {
+               instance.content('Trykk for å sortere etter denne kolonnnen (stigende rekkefølge).')
+              }
+            }
+          });
+      });
+
       const table = $(this.$refs.theTable).DataTable({
 
         // Define which table control elements should appear and in what order.

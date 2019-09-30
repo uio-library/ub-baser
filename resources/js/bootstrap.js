@@ -40,6 +40,10 @@ require('bootstrap-select/dist/js/i18n/defaults-nb_NO.js')
 
 require('selectize')
 
+require('tooltipster')
+require('tooltipster/dist/css/tooltipster.bundle.min.css')
+require('tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css')
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
