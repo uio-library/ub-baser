@@ -58,7 +58,7 @@ class LitteraturkritikkController extends RecordController
                 'dato',
             ],
             'order' => [
-                ['key' => 'verk_dato', 'direction' => 'desc'],
+                ['key' => 'dato', 'direction' => 'asc'],
             ]
         ]);
     }
