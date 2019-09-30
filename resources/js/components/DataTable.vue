@@ -183,12 +183,12 @@ export default {
               label = label.charAt(0).toLowerCase() + label.substring(1)
               if (order.length && order[0][0] == currentIdx) {
                 if (order[0][1] == 'asc') {
-                  instance.content('Tabellen er sortert etter denne kolonnen. Trykk for å endre til synkende rekkefølge.')
+                  instance.content('Sortert i stigende rekkefølge. Trykk for å endre til synkende.')
                 } else {
-                  instance.content('Tabellen er sortert etter denne kolonnen. Trykk for å endre til stigende rekkefølge.')
+                  instance.content('Sortert i synkende rekkefølge. Trykk for å endre til stigende.')
                 }
               } else {
-               instance.content('Trykk for å sortere etter denne kolonnnen (stigende rekkefølge).')
+               instance.content('Trykk for å sortere etter denne kolonnen (stigende rekkefølge).')
               }
             }
           });
