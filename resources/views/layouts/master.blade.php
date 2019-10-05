@@ -67,6 +67,7 @@
                 </h1>
             </div>
         </div>
+        @yield('header_after')
     </header>
 
     <main id="app" class="flex-shrink-0">

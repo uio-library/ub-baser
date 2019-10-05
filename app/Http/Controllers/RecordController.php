@@ -128,6 +128,7 @@ class RecordController extends Controller
         $queryBuilder = $request->queryBuilder;
         $requestedColumns = [];
         $columnReverseMap = [];
+        $columnOrderMap = [];
         foreach ($request->columns as $k => $v) {
             // Check that only valid column names are requested
             if (!isset($fields[$v['data']])) {
@@ -137,25 +138,41 @@ class RecordController extends Controller
 
             $columnReverseMap[$field->getViewColumn()] = $field->key;
             $requestedColumns[$k] = $field->getViewColumn();
+            $columnOrderMap[$k] = $field->get('searchOptions.index.column', $field->getColumn());
         }
 
         // Always include the id column
-        $requestedColumns[] = 'id';
-        $columnReverseMap['id'] = 'id';
+        if (!in_array($schema->primaryId, array_values($requestedColumns))) {
+            $requestedColumns[] = $schema->primaryId;
+            $columnReverseMap[$schema->primaryId] = $schema->primaryId;
+        }
+
 
         $queryBuilder->select(array_values($requestedColumns));
+
         foreach ($request->order as $order) {
             // Check that only valid column names are requested
             if (!isset($requestedColumns[(int) $order['column']])) {
                 throw new \RuntimeException('Invalid order by requested: ' . $order['column']);
             }
-            $col = $requestedColumns[(int) $order['column']];
+            $col = $columnOrderMap[(int) $order['column']];
             $dir = ($order['dir'] == 'asc') ? 'asc' : 'desc';
 
-            $queryBuilder->orderByRaw("$col $dir NULLS LAST");
+            $queryBuilder->orderByRaw("$col $dir");  //  NULLS LAST");
         }
 
-        $recordCount = (int) $queryBuilder->count();
+        if (count($request->queryParts) > 0) {
+            // Get exact count
+            $recordCount = (int) $queryBuilder->count();
+        } else {
+            // count(*) can be quite slow for large tables. We can do with a much faster estimate
+            // #postgres_specific
+            $res = \DB::select(
+                'SELECT reltuples::bigint FROM pg_catalog.pg_class WHERE relname = ?',
+                [$queryBuilder->getModel()->getTable()]
+            );
+            $recordCount = (int) $res[0]->reltuples;
+        }
 
         $queryBuilder->skip($request->start);
         $queryBuilder->take($request->length);

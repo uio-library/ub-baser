@@ -27,6 +27,7 @@ class AuthServiceProvider extends ServiceProvider
         'letras',
         'opes',
         'dommer',
+        'bibsys',
     ];
 
     /**

@@ -88,13 +88,9 @@ abstract class SearchRequest extends FormRequest
             $operator = $queryPart['operator'];
             $value = $queryPart['value'];
 
-            if ($field->has('searchOptions.index')) {
-                $index = $field->get('searchOptions.index');
-            } else {
-                $index = [
-                    'column' => $field->key,
-                ];
-            }
+            $index = $field->get('searchOptions.index', [
+                'column' => $field->key,
+            ]);
 
             $indexType = Arr::get($index, 'type');
 
@@ -154,15 +150,24 @@ abstract class SearchRequest extends FormRequest
         if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
             // Phrase
             $value = Str::substr($value, 1, Str::length($value) - 1);
+        } elseif (Str::startsWith($value, '*')) {
+            // Prefix / ending wildcard
+            $value = '%' . trim($value, '*') . '%';
         } elseif (Str::endsWith($value, '*')) {
             // Prefix / ending wildcard
-            $value = $value . '%';
+            $value = rtrim($value, '*') . '%';
+        } else if ($operator == 'ex') {
+            // exact search
+            $value = $value;
         } else {
-            // Keyword
-            $value = '%' . $value . '%';
+            // right-truncate by default
+            $value = $value . '%';
         }
 
         switch ($operator) {
+            case 'ex':
+                $this->queryBuilder->whereRaw($index['column'] . '= ?', [mb_strtolower($value)]);
+                break;
             case 'eq':
                 $this->queryBuilder->where($index['column'], 'ilike', $value);
                 break;

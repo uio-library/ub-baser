@@ -53,6 +53,7 @@
 
 <script>
 import SearchField from './SearchField'
+import { get } from 'lodash/object'
 
 export default {
   name: 'search-form',
@@ -82,7 +83,7 @@ export default {
     firstSearchField () {
       for (let i = 0; i < this.allFields.length; i++) {
         if (this.allFields[i].searchable !== 'disabled') {
-          return this.allFields[i].key
+          return this.allFields[i]
         }
       }
       throw new Error('Found no search fields!')
@@ -99,6 +100,7 @@ export default {
         value: x.value,
       })),
       operators: [
+        { label: 'lik', value: 'ex' },
         { label: 'inneholder', value: 'eq' },
         { label: 'inneholder ikke', value: 'neq' },
         { label: 'mangler verdi', value: 'isnull' },
@@ -110,9 +112,10 @@ export default {
   methods: {
 
     addField () {
+      console.log(this.firstSearchField)
       this.query.push({
-        field: this.firstSearchField,
-        operator: 'eq',
+        field: this.firstSearchField.key,
+        operator: get(this.firstSearchField, 'searchOptions.operators.0', 'eq'),
         value: '',
       })
     },

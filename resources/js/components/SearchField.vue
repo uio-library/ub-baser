@@ -110,6 +110,16 @@ export default {
     },
   },
 
+  watch: {
+    currentOperators (operators) {
+      const values = operators.map(x => x.value)
+      if (values.indexOf(this.operator) === -1) {
+        console.log('Operator no longer part of menu. Resetting to:', values[0])
+        this.$emit('operator', values[0])
+      }
+    }
+  },
+
   methods: {
     fieldIsVisible (field) {
       return field.searchable === 'simple' || (this.advanced && field.searchable === 'advanced')

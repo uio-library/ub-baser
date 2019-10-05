@@ -78,6 +78,12 @@ Route::get('letras/{id}', 'LetrasController@show');
 Route::get('letras/{id}/edit', 'LetrasController@edit');
 Route::put('letras/{id}', 'LetrasController@update');
 
+// Bibsys
+
+Route::get('bibsys', 'BibsysController@index');
+Route::get('bibsys/autocomplete', 'BibsysController@autocomplete');
+Route::get('bibsys/{dokid}', 'BibsysController@show');
+
 // Opes
 
 Route::resource('opes', 'OpesController');

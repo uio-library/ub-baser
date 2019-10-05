@@ -124,6 +124,7 @@ export default {
         const col = {
           data: field.key,
           columnLabel: field.label,
+          orderable: field.orderable,
           visible: this.visibleColumns.indexOf(field.key) !== -1,
           render: (data, type, row) => {
             if (data === null) {
@@ -208,7 +209,7 @@ export default {
           sInfoThousands: ' ',
           sLengthMenu: 'Vis _MENU_ poster per side',
           sLoadingRecords: 'Laster...',
-          sProcessing: 'Laster...',
+          sProcessing: '<div class="spinner"></div>',
           sSearch: 'S&oslash;k:',
           sUrl: '',
           sZeroRecords: 'Ingen treff',
@@ -245,12 +246,12 @@ export default {
             .on('mousemove', () => { drag = true })
             .on('keypress', $event => {
               if ($event.keyCode === 13) {
-                const link = this.url + '/' + data.id
+                const link = this.url + '/' + data[this.schema.primaryId]
                 window.location = link
               }
             })
             .on('click', $event => {
-              const link = this.url + '/' + data.id
+              const link = this.url + '/' + data[this.schema.primaryId]
               if (drag) {
                 return
               }

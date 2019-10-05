@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 abstract class Schema implements \JsonSerializable
 {
     public $prefix;
+    public $primaryId = 'id';
 
     protected $schema;
     protected $schemaOptions = [
@@ -56,6 +57,11 @@ abstract class Schema implements \JsonSerializable
         return $out;
     }
 
+    /**
+     * Return an array of SchemaField indexed by the field keys.
+     *
+     * @return SchemaField[]
+     */
     public function keyed(): array
     {
         $fields = $this->flat();
@@ -79,6 +85,7 @@ abstract class Schema implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
+            'primaryId' => $this->primaryId,
             'fields' => $this->fields,
             'groups' => $this->groups,
         ];

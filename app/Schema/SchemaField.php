@@ -40,6 +40,7 @@ abstract class SchemaField implements JsonSerializable
         $this->data['displayable'] = true;
         $this->data['searchable'] = self::SEARCH_SIMPLE;
         $this->data['editable'] = true;
+        $this->data['orderable'] = true;
         $this->data['defaultValue'] = null;
         $this->data['searchOptions'] = [];
         $this->data['help'] = null;
@@ -145,6 +146,16 @@ abstract class SchemaField implements JsonSerializable
     }
 
     /**
+     * Set whether the field should be orderable or not.
+     *
+     * @param bool $value
+     */
+    public function setOrderable(bool $value): void
+    {
+        $this->data['orderable'] = $value;
+    }
+
+    /**
      * Set whether the field should be displayed or not.
      *
      * @param bool $value
@@ -240,10 +251,10 @@ abstract class SchemaField implements JsonSerializable
      * Get an attribute using "dot" notation.
      *
      * @param string $key
-     * @param string|null $default
+     * @param mixed $default
      * @return mixed
      */
-    public function get(string $key, string $default = null)
+    public function get(string $key, $default = null)
     {
         return Arr::get($this->data, $key, $default);
     }
