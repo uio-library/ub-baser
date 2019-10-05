@@ -26,9 +26,9 @@ if [ "$APP_ENV" == "production" ]; then
 
 	echo "Storing certificates in $APACHE_CONFDIR"
 
-	echo -e $SITE_CERTIFICATE > $APACHE_CONFDIR/site.crt
-	echo -e $SITE_CERTIFICATE_KEY > $APACHE_CONFDIR/site.key
-	echo -e $CA_CERTIFICATE > $APACHE_CONFDIR/ca.crt
+	echo -e "-----BEGIN CERTIFICATE-----\n${CA_CERTIFICATE}\n-----END CERTIFICATE-----" > $APACHE_CONFDIR/ca.crt
+	echo -e "-----BEGIN CERTIFICATE-----\n${SITE_CERTIFICATE}\n-----END CERTIFICATE-----" > $APACHE_CONFDIR/site.crt
+	echo -e "-----BEGIN PRIVATE KEY-----\n${SITE_CERTIFICATE_KEY}\n-----END PRIVATE KEY-----" > $APACHE_CONFDIR/site.key
 
 	a2ensite production
 
