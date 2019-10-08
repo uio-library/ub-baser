@@ -14,7 +14,6 @@ abstract class SearchRequest extends FormRequest
     protected $fields;
     public $queryParts;
     public $queryBuilder;
-    protected $defaultOperator = 'eq';
 
     abstract protected function getSchema(): Schema;
 
@@ -49,29 +48,26 @@ abstract class SearchRequest extends FormRequest
     {
         $inputs = [];
         foreach ($this->all() as $key => $fieldName) {
-            if (preg_match('/^f([0-9]+)$/', $key, $matches)) {
-                $idx = $matches[1];
-                $value = Arr::get($this, "v$idx");
-                $operator = Arr::get($this, "o$idx", $this->defaultOperator);
-
-                if ($value !== null || in_array($operator, ['isnull', 'notnull'])) {
-                    $inputs[] = [
-                        'field' => $fieldName,
-                        'operator' => $operator,
-                        'value' => $value,
-                    ];
-                }
+            if (!preg_match('/^f([0-9]+)$/', $key, $matches)) {
+                continue;
             }
-        }
+            $idx = $matches[1];
+            $value = Arr::get($this, "v$idx");
+            $operator = Arr::get($this, "o$idx");
 
-        $out = [];
-        foreach ($inputs as $input) {
-            if (isset($this->fields[$input['field']])) {
-                $out[] = $input;
+            if ($value === null && !in_array($operator, ['isnull', 'notnull'])) {
+                continue;
             }
+            if (!isset($this->fields[$fieldName])) {
+                continue;
+            }
+            $inputs[] = [
+                'field' => $fieldName,
+                'operator' => $operator,
+                'value' => $value,
+            ];
         }
-
-        return $out;
+        return $inputs;
     }
 
     protected function main(): void
@@ -86,6 +82,9 @@ abstract class SearchRequest extends FormRequest
         foreach ($this->queryParts as $queryPart) {
             $field = $this->fields[$queryPart['field']];
             $operator = $queryPart['operator'];
+            if (!$operator) {
+                $operator = $field->getDefaultSearchOperator();
+            }
             $value = $queryPart['value'];
 
             $index = $field->get('searchOptions.index', [

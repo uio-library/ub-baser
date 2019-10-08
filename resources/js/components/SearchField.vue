@@ -25,7 +25,7 @@
         </div>
 
         <div v-if="advanced" class="flex-grow-0 mx-1">
-            <select v-if="advanced"
+            <select
                 class="form-control field-select"
                 :name="`o${index}`"
                 :value="operator"

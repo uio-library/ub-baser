@@ -215,6 +215,11 @@ abstract class SchemaField implements JsonSerializable
         return $this->get('viewColumn', $this->getColumn());
     }
 
+    public function getDefaultSearchOperator()
+    {
+        return $this->get('searchOptions.operators.0', 'eq');
+    }
+
     /**
      * Set help text shown when editing the field.
      *
