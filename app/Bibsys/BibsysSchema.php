@@ -38,7 +38,6 @@ class BibsysSchema extends Schema
                         'type' => 'simple',
 
                         'searchOptions' => [
-                            'index' => ['column' => 'lower(objektid)'],
                             'operators' => ['ex'],
                         ],
                         'orderable' => false,
@@ -75,7 +74,6 @@ class BibsysSchema extends Schema
                         'key' => 'dokid',
                         'type' => 'simple',
                         'searchOptions' => [
-                            'index' => ['column' => 'lower(dokid)'],
                             'operators' => ['ex'],
                         ],
                         'orderable' => true,
@@ -87,7 +85,6 @@ class BibsysSchema extends Schema
                         'type' => 'simple',
                         'orderable' => false,
                         'searchOptions' => [
-                            'index' => ['column' => 'lower(strekkode)'],
                             'operators' => ['ex'],
                         ],
                         'orderable' => false,
@@ -206,7 +203,6 @@ class BibsysSchema extends Schema
                         'key' => 'seriedokid',
                         'type' => 'simple',
                         'searchOptions' => [
-                            'index' => ['column' => 'lower(seriedokid)'],
                             'operators' => ['ex'],
                         ],
                         'orderable' => false,

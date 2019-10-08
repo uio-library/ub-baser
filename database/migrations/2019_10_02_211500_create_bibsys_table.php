@@ -76,14 +76,14 @@ class CreateBibsysTable extends Migration
         // Create indices for use with {field} = lower(?)
         foreach (['dokid', 'objektid', 'seriedokid', 'strekkode'] as $field) {
             DB::unprepared("
-                CREATE INDEX bibsys_search_${field}_idx ON bibsys_search(lower(${field}))
+                CREATE INDEX bibsys_search_${field}_idx ON bibsys_search(${field})
             ");
         }
 
         // Create indices for use with {field} ~~ lower(?*)
         foreach (['avdeling', 'samling'] as $field) {
             DB::unprepared("
-                CREATE INDEX bibsys_search_${field}_idx ON bibsys_search(lower(${field}) text_pattern_ops)
+                CREATE INDEX bibsys_search_${field}_idx ON bibsys_search(${field} text_pattern_ops)
             ");
         }
 

@@ -213,6 +213,11 @@ class ImportBibsysCommand extends ImportCommand
                     if ($keys[$k] == 'intern_bemerkning_lukket') {
                         // skip
                     } else {
+                        // Normalize ID fields as lowercase
+                        if (in_array($keys[$k], ['objektid', 'dokid', 'seriedokid', 'strekkode'])) {
+                            $value = mb_strtolower($value);
+                        }
+
                         $row[$keys[$k]] = ($value === '') ? null : $value;
                     }
                 }
