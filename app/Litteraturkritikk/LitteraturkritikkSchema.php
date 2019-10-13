@@ -48,16 +48,6 @@ class LitteraturkritikkSchema extends Schema
                     'operators' => ['eq', 'neq'],
                 ]
             ],
-
-            // Sist endret
-            [
-                'key' => 'updated_at',
-                'type' => 'simple',
-                'editable' => false,
-                'searchable' => 'disabled',
-
-                'columnClassName' => 'dt-body-nowrap',
-            ],
         ],
 
         'groups' => [
@@ -331,6 +321,60 @@ class LitteraturkritikkSchema extends Schema
                         'searchable' => 'advanced',
                     ],
                 ],
+            ],
+
+            // Posten
+            [
+                'label' => 'Databaseposten',
+
+                'fields' => [
+
+                    // Opprettet
+                    [
+                        'key' => 'created_at',
+                        'type' => 'simple',
+                        'editable' => false,
+                        'searchable' => 'disabled',
+
+                        'columnClassName' => 'dt-body-nowrap',
+                    ],
+
+                    // Sist endret
+                    [
+                        'key' => 'updated_at',
+                        'type' => 'simple',
+                        'editable' => false,
+                        'searchable' => 'disabled',
+
+                        'columnClassName' => 'dt-body-nowrap',
+                    ],
+
+                    // Korrekturstatus
+                    [
+                        'key' => 'korrekturstatus',
+                        'type' => 'enum',
+                        'values' => [
+                            ['id' => 1, 'label' => 'Ikke korrekturlest'],
+                            ['id' => 2, 'label' => 'Må korrekturleses mot fysisk materiale'],
+                            ['id' => 3, 'label' => 'Korrekturlest mot fysisk materiale'],
+                            ['id' => 4, 'label' => 'Korrekturlest og lenket til digitalt materiale'],
+                        ],
+                        'searchOptions' => [
+                            'operators' => ['ex']
+                        ],
+                        'columnClassName' => 'dt-body-nowrap',
+                    ],
+
+                    // Slettet
+                    [
+                        'key' => 'deleted_at',
+                        'type' => 'simple',
+                        'editable' => false,
+                        'searchable' => 'disabled',
+
+                        'columnClassName' => 'dt-body-nowrap',
+                    ],
+                ]
             ],
         ],
     ];

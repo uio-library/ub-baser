@@ -78,7 +78,7 @@
                                 Vis fulltekst ({{ $n + 1 }})
                             </a>
                         @endforeach
-                    @else
+                    @elseif ($group->label != 'Databaseposten')
                         <a href="https://www.nb.no/search?{{ $record->nationalLibrarySearchLink($group->label) }}" class="btn btn-outline-success btn-sm">
                             <em class="fa fa-search"></em>
                             Søk etter fulltekst i NB
@@ -121,9 +121,27 @@
                                         <a href="{{ $url }}">{{ $url }}</a><br>
                                     @endforeach
 
+                                @elseif ($field->type == 'enum')
+
+                                    {{ $field->formatValue($record->{$field->key}) }}
+
                                 @elseif (is_array($record->{$field->key}))
 
                                     {{ implode(', ', $record->{$field->key}) }}
+
+                                @elseif ($field->key == 'created_at')
+
+                                    {{ $record->{$field->key} }}
+                                    av {{ $record->createdBy ? $record->createdBy->name : ' (import)' }}
+
+                                @elseif ($field->key == 'updated_at')
+
+                                    {{ $record->{$field->key} }}
+                                    av {{ $record->updatedBy ? $record->updatedBy->name : ' (import)' }}
+
+                                @elseif ($field->key == 'deleted_at')
+
+                                    {{ $record->{$field->key} ?: 'Nei' }}
 
                                 @else
 
@@ -138,19 +156,6 @@
 
             @endforeach
 
-            @if (Auth::check())
-                <h4 class="mt-4">Metadata</h4>
-                <dl class="row">
-                    <dt class="col-sm-3 text-sm-right">Opprettet:</dt>
-                    <dd class="col-sm-9">{{ $record->created_at }} av {{ $record->createdBy ? $record->createdBy->name : ' (import)' }}</dd>
-                    <dt class="col-sm-3 text-sm-right">Sist endret:</dt>
-                    <dd class="col-sm-9">{{ $record->updated_at }} av {{ $record->updatedBy ? $record->updatedBy->name : ' (import)' }}</dd>
-                    @if ($record->deleted_at)
-                    <dt class="col-sm-3 text-sm-right">Slettet:</dt>
-                    <dd class="col-sm-9">{{ $record->deleted_at }}</dd>
-                    @endif
-                </dl>
-            @endif
         </div>
 
     </div>

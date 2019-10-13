@@ -5,6 +5,8 @@ return [
     'id' => 'ID',
     'created_at' => 'Opprettet',
     'updated_at' => 'Sist endret',
+    'deleted_at' => 'Slettet',
+    'korrekturstatus' => 'Korrekturstatus',
     'q' => 'Alle felt',
     'person' => 'Person (forfatter, kritiker e.a.)',
 
