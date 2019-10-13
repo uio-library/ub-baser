@@ -1,0 +1,3 @@
+- name: Add host key
+  shell:
+    cmd: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
