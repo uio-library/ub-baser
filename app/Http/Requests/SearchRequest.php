@@ -146,33 +146,61 @@ abstract class SearchRequest extends FormRequest
 
     protected function addSimpleTerm(array $index, string $operator, ?string $value): void
     {
-        if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
-            // Phrase
-            $value = Str::substr($value, 1, Str::length($value) - 1);
-        } elseif (Str::startsWith($value, '*')) {
-            // Prefix / ending wildcard
-            $value = '%' . trim($value, '*') . '%';
-        } elseif (Str::endsWith($value, '*')) {
-            // Prefix / ending wildcard
-            $value = rtrim($value, '*') . '%';
+
+        if ($operator == 'eq' || $operator == 'like') {
+            if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
+                // Phrase
+                $value = Str::substr($value, 1, Str::length($value) - 1);
+                $operator = 'ex';
+            } elseif (Str::startsWith($value, '*')) {
+                // Prefix / ending wildcard
+                $value = '%' . trim($value, '*') . '%';
+            } elseif (Str::endsWith($value, '*')) {
+                // Prefix / ending wildcard
+                $value = rtrim($value, '*') . '%';
+            } else {
+                // right-truncate by default
+                $value = $value . '%';
+            }
         } else if ($operator == 'ex') {
-            // exact search
-            $value = $value;
-        } else {
-            // right-truncate by default
-            $value = $value . '%';
+            if (Str::endsWith($value, '*')) {
+                // Prefix / ending wildcard
+                $value = rtrim($value, '*') . '%';
+                $operator = 'like';
+            }
+        }
+
+        if (isset($index['case'])) {
+            if ($index['case'] == Schema::UPPER_CASE) {
+                $value = mb_strtoupper($value);
+            }
+            if ($index['case'] == Schema::LOWER_CASE) {
+                $value = mb_strtolower($value);
+            }
         }
 
         switch ($operator) {
+
+            // Exact match operator, we use raw to support complex column arguments like e.g. "lower(name)"
             case 'ex':
-                $this->queryBuilder->whereRaw($index['column'] . '= ?', [mb_strtolower($value)]);
+                $this->queryBuilder->whereRaw($index['column'] . ' = ?', [$value]);
                 break;
+
+            // Like operator
+            case 'like':
+                $this->queryBuilder->whereRaw($index['column'] . ' like ?', [$value]);
+                break;
+
+            // Standard ilike operator
             case 'eq':
-                $this->queryBuilder->where($index['column'], 'ilike', $value);
+                $this->queryBuilder->whereRaw($index['column'] . ' ilike ?', [$value]);
                 break;
+
+            // Negated standard ilike operator
             case 'neq':
-                $this->queryBuilder->where($index['column'], 'not ilike', $value);
+                $this->queryBuilder->whereRaw($index['column'] . ' not ilike ?', [$value]);
                 break;
+
             default:
                 $this->checkNull($index['column'], $operator);
         }

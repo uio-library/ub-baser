@@ -6,6 +6,9 @@ use Illuminate\Support\Arr;
 
 abstract class Schema implements \JsonSerializable
 {
+    const UPPER_CASE = 'UPPER_CASE';
+    const LOWER_CASE = 'LOWER_CASE';
+
     public $prefix;
     public $primaryId = 'id';
 

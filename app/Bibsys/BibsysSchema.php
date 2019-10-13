@@ -18,7 +18,29 @@ class BibsysSchema extends Schema
 
                 'displayable' => false,
                 'editable' => false,
-                'searchable' => 'simple',
+
+                // ------------------------------
+                /*
+                 Note for the future:
+                 When a text index search is combined with ORDER and LIMIT by some other field,
+                 the text index is not utilized in Postgres 11. In Postgres 12, this seems to have
+                 improved. Let's try again when USIT deploys Postgres 12.
+
+                Fast:
+                    select bibsys_search.* from bibsys_search
+                    where plainto_tsquery('simple', '841106991') @@ any_field_ts
+                    ORDER BY dokid DESC;
+
+                Slow:
+
+                    select bibsys_search.* from bibsys_search
+                    where plainto_tsquery('simple', '841106991') @@ any_field_ts
+                    ORDER BY dokid DESC LIMIT 10;
+
+                */
+
+                'searchable' => 'disabled',
+                // ------------------------------
 
                 'searchOptions' => [
                     'placeholder' => 'Du kan søke etter objektid, dokid, knyttid, avdeling, samling, tekst i MARC-posten, osv.',
@@ -39,6 +61,7 @@ class BibsysSchema extends Schema
 
                         'searchOptions' => [
                             'operators' => ['ex'],
+                            'index' => ['column' => 'objektid', 'case' => Schema::LOWER_CASE],
                         ],
                         'orderable' => false,
                     ],
@@ -47,21 +70,21 @@ class BibsysSchema extends Schema
                         'key' => 'title_statement',
                         'type' => 'simple',
                         'orderable' => false,
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                     ],
 
                     [
                         'key' => 'pub_date',
                         'type' => 'simple',
                         'orderable' => false,
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                     ],
 
                     [
                         'key' => 'marc_record',
                         'type' => 'simple',
                         'orderable' => false,
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                     ],
                 ]
             ],
@@ -75,6 +98,7 @@ class BibsysSchema extends Schema
                         'type' => 'simple',
                         'searchOptions' => [
                             'operators' => ['ex'],
+                            'index' => ['column' => 'dokid', 'case' => Schema::LOWER_CASE],
                         ],
                         'orderable' => true,
                     ],
@@ -86,6 +110,7 @@ class BibsysSchema extends Schema
                         'orderable' => false,
                         'searchOptions' => [
                             'operators' => ['ex'],
+                            'index' => ['column' => 'strekkode', 'case' => Schema::LOWER_CASE],
                         ],
                         'orderable' => false,
                     ],
@@ -95,7 +120,7 @@ class BibsysSchema extends Schema
                         'key' => 'status',
                         'type' => 'autocomplete',
                         'orderable' => false,
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                     ],
 
                     // Avdeling
@@ -103,6 +128,11 @@ class BibsysSchema extends Schema
                         'key' => 'avdeling',
                         'type' => 'autocomplete',
                         'orderable' => false,
+                        'searchOptions' => [
+                            'operators' => ['ex'],
+                            'placeholder' => 'Du kan høyretrunkere med *',
+                            'index' => ['column' => 'lower(avdeling)', 'case' => Schema::LOWER_CASE],
+                        ],
                     ],
 
                     // Samling
@@ -110,6 +140,11 @@ class BibsysSchema extends Schema
                         'key' => 'samling',
                         'type' => 'autocomplete',
                         'orderable' => false,
+                        'searchOptions' => [
+                            'placeholder' => 'Du kan høyretrunkere med *',
+                            'operators' => ['ex'],
+                            'index' => ['column' => 'lower(samling)', 'case' => Schema::LOWER_CASE],
+                        ],
                     ],
 
                     // Hyllesignatur
@@ -117,6 +152,11 @@ class BibsysSchema extends Schema
                         'key' => 'hyllesignatur',
                         'type' => 'simple',
                         'orderable' => false,
+                        'searchOptions' => [
+                            'placeholder' => 'Du kan høyretrunkere med *',
+                            'operators' => ['ex'],
+                            'index' => ['column' => 'lower(hyllesignatur)', 'case' => Schema::LOWER_CASE],
+                        ],
                     ],
 
                     // Deponert
@@ -124,7 +164,7 @@ class BibsysSchema extends Schema
                         'key' => 'deponert',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                         'orderable' => false,
                     ],
 
@@ -132,7 +172,7 @@ class BibsysSchema extends Schema
                         'key' => 'lokal_anmerkning',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                         'orderable' => false,
                     ],
 
@@ -140,7 +180,7 @@ class BibsysSchema extends Schema
                         'key' => 'beholdning',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                         'orderable' => false,
                     ],
 
@@ -148,7 +188,7 @@ class BibsysSchema extends Schema
                         'key' => 'utlaanstype',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                         'orderable' => false,
                     ],
 
@@ -156,7 +196,7 @@ class BibsysSchema extends Schema
                         'key' => 'lisensbetingelser',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                         'orderable' => false,
                     ],
 
@@ -164,7 +204,7 @@ class BibsysSchema extends Schema
                         'key' => 'tilleggsplassering',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                         'orderable' => false,
                     ],
 
@@ -172,7 +212,7 @@ class BibsysSchema extends Schema
                         'key' => 'intern_bemerkning_aapen',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                         'orderable' => false,
                     ],
 
@@ -187,7 +227,7 @@ class BibsysSchema extends Schema
                         'key' => 'bestillingstype',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                         'orderable' => false,
                     ],
 
@@ -195,7 +235,7 @@ class BibsysSchema extends Schema
                         'key' => 'statusdato',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                         'orderable' => false,
                     ],
 
@@ -204,6 +244,7 @@ class BibsysSchema extends Schema
                         'type' => 'simple',
                         'searchOptions' => [
                             'operators' => ['ex'],
+                            'index' => ['column' => 'seriedokid', 'case' => Schema::LOWER_CASE],
                         ],
                         'orderable' => false,
                     ],
@@ -212,7 +253,7 @@ class BibsysSchema extends Schema
                         'key' => 'har_hefter',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'searchable' => 'disabled',
                         'orderable' => false,
                     ],
 

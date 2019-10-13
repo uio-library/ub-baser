@@ -73,17 +73,17 @@ class CreateBibsysTable extends Migration
                 ON b.objektid = d.objektid
         ");
 
-        // Create indices for use with {field} = lower(?)
+        // Create indices for use exact queries combined with ORDER BY dokid
         foreach (['dokid', 'objektid', 'seriedokid', 'strekkode'] as $field) {
             DB::unprepared("
-                CREATE INDEX bibsys_search_${field}_idx ON bibsys_search(${field})
+                CREATE INDEX bibsys_search_${field}_idx ON bibsys_search(${field}, dokid)
             ");
         }
 
-        // Create indices for use with {field} ~~ lower(?*)
-        foreach (['avdeling', 'samling'] as $field) {
+        // Create indices for LIKE queries: {field} ~~ lower(?*), combined with ORDER BY dokid
+        foreach (['avdeling', 'samling', 'hyllesignatur'] as $field) {
             DB::unprepared("
-                CREATE INDEX bibsys_search_${field}_idx ON bibsys_search(${field} text_pattern_ops)
+                CREATE INDEX bibsys_search_${field}_idx ON bibsys_search(lower(${field}) text_pattern_ops, dokid)
             ");
         }
 
@@ -108,13 +108,6 @@ class CreateBibsysTable extends Migration
      */
     public function down()
     {
-        // Drop indices for use with {field} = lower(?)
-        foreach (['dokid', 'objektid', 'seriedokid', 'strekkode', 'avdeling', 'samling', 'any_field'] as $field) {
-            DB::unprepared("DROP INDEX bibsys_search_${field}_idx");
-        }
-        // DB::unprepared('DROP INDEX bibsys_search_avdeling_idx');
-        // DB::unprepared('DROP INDEX bibsys_search_samling_idx');
-        // DB::unprepared('DROP INDEX bibsys_search_pub_date_idx');
         DB::unprepared('DROP MATERIALIZED VIEW bibsys_search');
         Schema::dropIfExists('bibsys_dok');
         Schema::dropIfExists('bibsys');
