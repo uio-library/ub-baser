@@ -21,16 +21,17 @@ abstract class SchemaField implements JsonSerializable
 
     public $data = [];
 
-    public static $types = [
+    public static $types = array(
         'autocomplete' => AutocompleteField::class,
         'boolean' => BooleanField::class,
         'incrementing' => IncrementingField::class,
         'persons' => PersonsField::class,
         'select' => SelectField::class,
+        'enum' => EnumField::class,
         'simple' => SimpleField::class,
         'tags' => TagsField::class,
         'url' => UrlField::class,
-    ];
+    );
 
     public function __construct()
     {
