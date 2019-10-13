@@ -118,7 +118,7 @@ class BibsysSchema extends Schema
                     // Status
                     [
                         'key' => 'status',
-                        'type' => 'autocomplete',
+                        'type' => 'simple',
                         'orderable' => false,
                         'searchable' => 'disabled',
                     ],
@@ -126,7 +126,7 @@ class BibsysSchema extends Schema
                     // Avdeling
                     [
                         'key' => 'avdeling',
-                        'type' => 'autocomplete',
+                        'type' => 'simple',
                         'orderable' => false,
                         'searchOptions' => [
                             'operators' => ['ex'],
@@ -138,7 +138,7 @@ class BibsysSchema extends Schema
                     // Samling
                     [
                         'key' => 'samling',
-                        'type' => 'autocomplete',
+                        'type' => 'simple',
                         'orderable' => false,
                         'searchOptions' => [
                             'placeholder' => 'Du kan høyretrunkere med *',

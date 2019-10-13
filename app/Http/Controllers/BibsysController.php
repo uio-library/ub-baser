@@ -81,6 +81,10 @@ class BibsysController extends RecordController
         if (!isset($fields[$fieldName])) {
             throw new \RuntimeException('Invalid field');
         }
+        $field = $fields[$fieldName];
+        $index = $field->get('searchOptions.index', [
+            'column' => $field->key,
+        ]);
 
         $term = $request->get('q') . '%';
         $data = [];
@@ -90,16 +94,14 @@ class BibsysController extends RecordController
                 if ($term == '%') {
                     // Preload request
                     $rows = \DB::table('bibsys_search')
-                        ->select($fieldName)
-                        ->distinct()
-                        ->groupBy($fieldName)
+                        ->select($field->getColumn())
+                        ->groupBy($field->getColumn())
                         ->get();
                 } else {
                     $rows = \DB::table('bibsys_search')
-                        ->select($fieldName)
-                        ->distinct()
-                        ->where($fieldName, 'ilike', $term)
-                        ->groupBy($fieldName)
+                        ->select($field->getColumn())
+                        ->whereRaw($index['column'] . ' like ?', [$term])
+                        ->groupBy($field->getColumn())
                         ->get();
                 }
                 foreach ($rows as $row) {
