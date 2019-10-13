@@ -14,6 +14,9 @@
             <li>
                 <a href="{{ action('DommerController@index') }}">Dommers populærnavn</a>
             </li>
+            <li>
+                <a href="{{ action('BibsysController@index') }}">Bibsys-arkiv UBO</a>
+            </li>
         </ul>
 
 @endsection
