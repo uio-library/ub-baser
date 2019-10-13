@@ -24,6 +24,7 @@ class Record extends \App\Record
      */
     protected $casts = [
         'kritikktype' => 'array',
+        'tags' => 'array',
     ];
 
     public function createdBy()

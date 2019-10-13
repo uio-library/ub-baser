@@ -230,7 +230,7 @@ class LitteraturkritikkSchema extends Schema
 
                         'searchOptions' => [
                             'type' => 'autocomplete',
-                            'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...',
+                            'placeholder' => '',
                             'index' => [
                                 'type' => 'array',
                                 'column' => 'kritikktype',
@@ -319,6 +319,22 @@ class LitteraturkritikkSchema extends Schema
                         'help' => 'Flere verdier skilles med mellomrom',
 
                         'searchable' => 'advanced',
+                    ],
+
+                    // Emneord
+                    [
+                        'key' => 'tags',
+                        'type' => 'tags',
+                        'defaultValue' => [],
+
+                        'searchOptions' => [
+                            'type' => 'autocomplete',
+                            'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...',
+                            'index' => [
+                                'type' => 'array',
+                                'column' => 'tags',
+                            ],
+                        ],
                     ],
                 ],
             ],

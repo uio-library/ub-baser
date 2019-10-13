@@ -11,6 +11,7 @@ return [
     'person' => 'Person (forfatter, kritiker e.a.)',
 
     'kritikktype' => 'Type',
+    'tags' => 'Emneord',
     'utgivelsessted' => 'Utgivelsessted',
     'spraak' => 'Språk',
 

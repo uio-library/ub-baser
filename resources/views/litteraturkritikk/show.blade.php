@@ -127,7 +127,12 @@
 
                                 @elseif (is_array($record->{$field->key}))
 
-                                    {{ implode(', ', $record->{$field->key}) }}
+                                    @foreach ($record->{$field->key} as $value)
+                                        <a class="badge badge-primary" href="{{ action('LitteraturkritikkController@index', [
+                                            'f0' => $field->getColumn(),
+                                            'v0' => $value,
+                                        ]) }}">{{ $value }}</a>
+                                    @endforeach
 
                                 @elseif ($field->key == 'created_at')
 

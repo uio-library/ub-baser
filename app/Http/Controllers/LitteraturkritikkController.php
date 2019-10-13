@@ -157,6 +157,7 @@ class LitteraturkritikkController extends RecordController
                 break;
 
             case 'kritikktype':
+            case 'tags':
                 # Ref: https://stackoverflow.com/a/31757242/489916
                 # for the #>> '{}' magick
                 $results = \DB::select("
@@ -164,7 +165,7 @@ class LitteraturkritikkController extends RecordController
                       distinct jd.value #>> '{}' as value
                     from
                       litteraturkritikk_records,
-                      jsonb_array_elements(litteraturkritikk_records.kritikktype) as jd
+                      jsonb_array_elements(litteraturkritikk_records.${fieldName}) as jd
                     order by value
                 ");
                 foreach ($results as $row) {
