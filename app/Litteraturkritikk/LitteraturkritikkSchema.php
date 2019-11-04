@@ -54,7 +54,7 @@ class LitteraturkritikkSchema extends Schema
 
             // Verket
             [
-                'label' => 'Verket',
+                'label' => 'Omtale av',
                 'fields' => [
 
                     // Tittel

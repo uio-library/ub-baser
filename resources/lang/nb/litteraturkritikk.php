@@ -19,7 +19,7 @@ return [
     'tittel' => 'Kritikkens tittel',
     'kommentar' => 'Kommentar',
     'publikasjon' => 'Publikasjon',
-    'dato' => 'Utgitt',
+    'dato' => 'Utgivelsesdato',
     'aargang' => 'Årgang',
     'bind' => 'Bind',
     'hefte' => 'Hefte',
@@ -42,7 +42,7 @@ return [
     'wikidata_id' => 'Wikidata-ID',
 
     'verk_tittel' => 'Tittel',
-    'verk_dato' => 'Utgitt',
+    'verk_dato' => 'Utgivelsesår',
     'verk_sjanger' => 'Sjanger',
     'verk_spraak' => 'Språk',
     'verk_kommentar' => 'Kommentar',
