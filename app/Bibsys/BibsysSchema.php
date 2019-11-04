@@ -100,7 +100,7 @@ class BibsysSchema extends Schema
                             'operators' => ['ex'],
                             'index' => ['column' => 'dokid', 'case' => Schema::LOWER_CASE],
                         ],
-                        'orderable' => true,
+                        'orderable' => false,
                     ],
 
                     // Strekkode

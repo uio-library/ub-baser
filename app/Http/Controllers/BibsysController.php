@@ -51,7 +51,6 @@ class BibsysController extends RecordController
 
             ],
             'order' => [
-                ['key' => 'dokid', 'direction' => 'asc'],
             ],
         ]);
     }

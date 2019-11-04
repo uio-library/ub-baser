@@ -150,7 +150,7 @@ class RecordController extends Controller
 
         $queryBuilder->select(array_values($requestedColumns));
 
-        foreach ($request->order as $order) {
+        foreach ($request->get('order', []) as $order) {
             // Check that only valid column names are requested
             if (!isset($requestedColumns[(int) $order['column']])) {
                 throw new \RuntimeException('Invalid order by requested: ' . $order['column']);

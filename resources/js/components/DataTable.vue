@@ -150,11 +150,6 @@ export default {
       const keys = this.columns.map(col => col.data)
       const order = this.order.filter(item => this.visibleColumns.indexOf(item.key) !== -1)
 
-      if (!order.length) {
-        // Fallback to asc sort on first column
-        return [[0, 'asc']]
-      }
-
       return order.map(item => [keys.indexOf(item.key), item.direction])
     },
 
