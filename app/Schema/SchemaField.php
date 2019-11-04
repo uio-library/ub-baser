@@ -221,6 +221,11 @@ abstract class SchemaField implements JsonSerializable
         return $this->get('searchOptions.operators.0', 'eq');
     }
 
+    public function getModelAttribute(): string
+    {
+        return $this->get('modelAttribute', $this->key);
+    }
+
     /**
      * Set help text shown when editing the field.
      *

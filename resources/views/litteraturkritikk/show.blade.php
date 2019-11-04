@@ -95,7 +95,7 @@
 
                 <dl class="row">
                     @foreach ($group->fields as $field)
-                        @if ($field->displayable)
+                        @if ($field->displayable && !empty($record->{$field->getModelAttribute()}))
                             <dt class="col-sm-3 text-sm-right">
                                 {{ trans('litteraturkritikk.' . $field->key) }}:
                             </dt>
