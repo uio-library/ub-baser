@@ -91,10 +91,6 @@ export default {
       return this.schema.fields.filter(field => field.displayable !== false)
     },
 
-    storageKey () {
-      return `ub-baser-${this.prefix}-columns`
-    },
-
     groups () {
       return this.schema.groups.map(group => (
         {
@@ -105,13 +101,7 @@ export default {
     },
 
     visibleColumns () {
-      let visible = this.defaultColumns
-
-      if (sessionStorage.getItem(this.storageKey) !== null) {
-        visible = JSON.parse(sessionStorage.getItem(this.storageKey))
-      }
-
-      return visible
+      return this.getSessionValue('columns', this.defaultColumns)
     },
 
     columns () {
@@ -148,14 +138,27 @@ export default {
 
     defaultOrder () {
       const keys = this.columns.map(col => col.data)
-      const order = this.order.filter(item => this.visibleColumns.indexOf(item.key) !== -1)
-
+      let order = this.getSessionValue('order', this.order)
+      order = order.filter(item => this.visibleColumns.indexOf(item.key) !== -1)
       return order.map(item => [keys.indexOf(item.key), item.direction])
     },
 
   },
 
   methods: {
+
+    getSessionValue (name, defaultValue) {
+      const key = `ub-baser-${this.prefix}-${name}`
+      if (sessionStorage.getItem(key) !== null) {
+        return JSON.parse(sessionStorage.getItem(key))
+      }
+      return defaultValue
+    },
+
+    storeSessionValue (name, value) {
+      const key = `ub-baser-${this.prefix}-${name}`
+      sessionStorage.setItem(key, JSON.stringify(value))
+    },
 
     initColumnSelector () {
       return $(this.$refs.columnSelector).val(this.visibleColumns)
@@ -219,7 +222,7 @@ export default {
             sSortDescending: ': aktiver for å sortere kolonnen synkende',
           },
         },
-        pageLength: 50,
+        pageLength: this.getSessionValue('page-length', 50),
         lengthMenu: [10, 50, 100, 500, 1000],
         ajax: {
           url: this.url,
@@ -272,10 +275,7 @@ export default {
     $columnSelector.on('change', () => {
       const visibleColumns = $columnSelector.val() // array of keys
 
-      sessionStorage.setItem(
-        this.storageKey,
-        JSON.stringify(visibleColumns)
-      )
+      this.storeSessionValue('columns', visibleColumns)
 
       this.columns.forEach((col, idx) => {
         const visible = visibleColumns.indexOf(col.data) !== -1
@@ -305,6 +305,17 @@ export default {
       // We're ready!
       $(this.$refs.spinner).hide()
       $(this.$refs.main).css('opacity', '1')
+    })
+
+    table.on('length', (e, settings, len) => {
+      this.storeSessionValue('page-length', len)
+    })
+
+    table.on('order', () => {
+      let order = table.order()
+      // Map indices to key names before storing
+      order = order.map(item => ({key: this.columns[item[0]].data, direction: item[1]}))
+      this.storeSessionValue('order', order)
     })
   },
 }
