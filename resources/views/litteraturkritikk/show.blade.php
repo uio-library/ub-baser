@@ -71,7 +71,7 @@
                                 Vis fulltekst ({{ $n + 1 }})
                             </a>
                         @endforeach
-                    @elseif ($group->label == 'Verket' && $record->verk_fulltekst_url)
+                    @elseif ($group->label == 'Omtale av' && $record->verk_fulltekst_url)
                         @foreach (explode(' ', $record->verk_fulltekst_url) as $n => $url)
                             <a href="{{ $url }}" class="btn btn-outline-success btn-sm">
                                 <em class="fa fa-eye"></em>
@@ -85,7 +85,7 @@
                         </a>
                     @endif
 
-                    @if ($group->label == 'Verket')
+                    @if ($group->label == 'Omtale av')
                         <a href="https://bibsys-almaprimo.hosted.exlibrisgroup.com/primo-explore/search?{{ $record->oriaSearchLink() }}" class="btn btn-outline-success btn-sm">
                             <em class="fa fa-search"></em>
                             Søk i Oria
