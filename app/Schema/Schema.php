@@ -9,6 +9,10 @@ abstract class Schema implements \JsonSerializable
     const UPPER_CASE = 'UPPER_CASE';
     const LOWER_CASE = 'LOWER_CASE';
 
+    const DATATYPE_STRING = 'string';
+    const DATATYPE_INT = 'int';
+    const DATATYPE_BOOL = 'bool';
+
     public $prefix;
     public $primaryId = 'id';
 

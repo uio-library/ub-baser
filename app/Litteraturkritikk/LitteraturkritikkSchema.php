@@ -369,6 +369,7 @@ class LitteraturkritikkSchema extends Schema
                     [
                         'key' => 'korrekturstatus',
                         'type' => 'enum',
+                        'datatype' => Schema::DATATYPE_INT,
                         'values' => [
                             ['id' => 1, 'label' => 'Ikke korrekturlest'],
                             ['id' => 2, 'label' => 'Må korrekturleses mot fysisk materiale'],

@@ -81,6 +81,13 @@ class RecordController extends Controller
 
             $newValue = $request->get($field->key, $field->defaultValue);
 
+            if ($field->datatype === Schema::DATATYPE_BOOL) {
+                $newValue = ($newValue === 'on');
+            }
+            if ($field->datatype === Schema::DATATYPE_INT) {
+                $newValue = intval($newValue);
+            }
+
             if ($field->type == 'persons') {
                 // Ignore, these are handled by the specific controller (for now)
             } else {

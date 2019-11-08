@@ -12,5 +12,7 @@ class BooleanField extends SchemaField
 
         // Defaults
         $this->data['defaultValue'] = false;
+
+        $this->data['datatype'] = Schema::DATATYPE_BOOL;
     }
 }

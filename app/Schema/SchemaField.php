@@ -43,6 +43,7 @@ abstract class SchemaField implements JsonSerializable
         $this->data['editable'] = true;
         $this->data['orderable'] = true;
         $this->data['defaultValue'] = null;
+        $this->data['datatype'] = Schema::DATATYPE_STRING;
         $this->data['searchOptions'] = [];
         $this->data['help'] = null;
     }
@@ -234,6 +235,16 @@ abstract class SchemaField implements JsonSerializable
     public function setHelp(string $value): void
     {
         $this->data['help'] = $value;
+    }
+
+    /**
+     * Set datatype.
+     *
+     * @param string $value
+     */
+    public function setDatatype(string $value): void
+    {
+        $this->data['datatype'] = $value;
     }
 
     /**
