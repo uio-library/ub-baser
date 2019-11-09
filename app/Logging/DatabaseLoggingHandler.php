@@ -8,7 +8,7 @@ use Monolog\Handler\AbstractProcessingHandler;
 
 class DatabaseLoggingHandler extends AbstractProcessingHandler
 {
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         LogEntry::create([
             'channel'    => Arr::get($record, 'channel'),

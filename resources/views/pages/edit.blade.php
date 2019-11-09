@@ -23,7 +23,7 @@
 <script type="text/javascript">
 
   $(function() {
-    $('textarea#froala-editor').froalaEditor({
+    new FroalaEditor('textarea#froala-editor', {
       linkAutoPrefix: '',
       linkEditButtons: ['linkEdit', 'linkRemove'],
       linkInsertButtons: ['linkBack'],
