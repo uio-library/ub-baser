@@ -124,9 +124,6 @@
     </footer>
 
     <script src="{{ mix('js/app.js') }}"></script>
-    @if (Auth::check())
-        <script src="{{ mix('js/editing.js') }}"></script>
-    @endif
     @yield('script')
 </body>
 </html>
