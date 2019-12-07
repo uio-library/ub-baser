@@ -28,7 +28,7 @@
         <data-table
                 v-once
                 url="{{ action('DommerController@index') }}"
-                prefix="letras"
+                prefix="dommer"
                 :schema="{{ json_encode($schema) }}"
                 :default-columns="{{ json_encode($defaultColumns) }}"
                 :order="{{ json_encode($order) }}"
