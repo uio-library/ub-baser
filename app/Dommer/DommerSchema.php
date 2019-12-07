@@ -7,6 +7,7 @@ use App\Schema\Schema;
 class DommerSchema extends Schema
 {
     public $prefix = 'dommer';
+    public $view = 'dommer_view';
 
     protected $schema = [
         'fields' => [

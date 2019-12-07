@@ -69,7 +69,9 @@ class DommerController extends RecordController
 
         // Update
         $this->updateRecord($schema, $record, $request);
-        // $record->kilde_id = $request->get('kilde_id');
+
+        // Refresh view
+        \DB::unprepared('REFRESH MATERIALIZED VIEW CONCURRENTLY dommer_view');
     }
 
     /**
