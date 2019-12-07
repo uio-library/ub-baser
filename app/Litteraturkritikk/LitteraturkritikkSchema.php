@@ -7,6 +7,7 @@ use App\Schema\Schema;
 class LitteraturkritikkSchema extends Schema
 {
     public $prefix = 'litteraturkritikk';
+    public $view = 'litteraturkritikk_records_search';
 
     protected $schema = [
         'fields' => [

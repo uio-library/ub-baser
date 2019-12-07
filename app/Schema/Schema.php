@@ -14,6 +14,7 @@ abstract class Schema implements \JsonSerializable
     const DATATYPE_BOOL = 'bool';
 
     public $prefix;
+    public $view;
     public $primaryId = 'id';
 
     protected $schema;
@@ -101,6 +102,11 @@ abstract class Schema implements \JsonSerializable
     public function get(): array
     {
         return $this->jsonSerialize();
+    }
+
+    public function __isset($key)
+    {
+        return isset($this->keyed()[$key]);
     }
 
     public function __get($key)

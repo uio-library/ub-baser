@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LitteraturkritikkSearchRequest;
+use App\Litteraturkritikk\Autocompleter;
 use App\Litteraturkritikk\LitteraturkritikkSchema;
 use App\Litteraturkritikk\Person;
 use App\Litteraturkritikk\PersonView;
@@ -10,6 +11,7 @@ use App\Litteraturkritikk\Record;
 use App\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 
 class LitteraturkritikkController extends RecordController
 {
@@ -63,123 +65,22 @@ class LitteraturkritikkController extends RecordController
         ]);
     }
 
-    public function autocomplete(Request $request, LitteraturkritikkSchema $schema)
+    public function autocomplete(Request $request, LitteraturkritikkSchema $schema, Autocompleter $autocompleter)
     {
         $fieldName = $request->get('field');
-        $fields = $schema->keyed();
-        if (!isset($fields[$fieldName])) {
-            throw new \RuntimeException('Invalid field');
-        }
-        $fieldDef = $fields[$fieldName];
-
-        $term = $request->get('q') . '%';
-        $data = [];
-
-        switch ($fieldName) {
-            case 'publikasjon':
-            case 'spraak':
-            case 'verk_spraak':
-            case 'verk_sjanger':
-            case 'verk_tittel':
-            case 'utgivelsessted':
-            case 'verk_utgivelsessted':
-                if ($term == '%') {
-                    // Preload request
-                    $rows = \DB::table('letras')
-                        ->select($fieldName)
-                        ->distinct()
-                        ->groupBy($fieldName)
-                        ->get();
-
-                    foreach ($rows as $row) {
-                        $data[] = [
-                            'value' => $row->{$fieldName},
-                        ];
-                    }
-                } else {
-                    if (in_array($fieldName, ['verk_tittel'])) {
-                        $query = \DB::table('litteraturkritikk_records_search')
-                            ->whereRaw(
-                                "verk_tittel_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery",
-                                [$term]
-                            );
-                    } else {
-                        $query = \DB::table('litteraturkritikk_records_search')
-                            ->where($fieldName, 'ilike', $term);
-                    }
-
-                    foreach ($query->groupBy($fieldName)
-                                 ->select([$fieldName, \DB::raw('COUNT(*) AS cnt')])
-                                 ->orderBy('cnt', 'desc')
-                                 ->limit(25)
-                                 ->get() as $res) {
-                        $data[] = [
-                            'value' => $res->{$fieldName},
-                            'count' => $res->cnt,
-                        ];
-                    }
-                }
-                break;
-
-            case 'person':
-            case 'verk_forfatter':
-            case 'kritiker':
-                $personRolle = Arr::get($fieldDef, 'person_role');
-                $query = PersonView::select(
-                    'id',
-                    'etternavn_fornavn',
-                    'etternavn',
-                    'fornavn',
-                    'kjonn',
-                    'fodt',
-                    'dod',
-                    'bibsys_id',
-                    'wikidata_id'
-                )
-                    ->whereRaw(
-                        "any_field_ts @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery",
-                        [$term]
-                    );
-                if ($personRolle) {
-                    $query->whereRaw('? = ANY(roller)', [$personRolle]);
-                } else {
-                    // Skjul personer som ikke er i bruk
-                    $query->whereRaw('CARDINALITY(roller) != 0');
-                }
-
-                foreach ($query->limit(25)->get() as $res) {
-                    $data[] = [
-                        'id' => $res->id,
-                        'value' => $res->etternavn_fornavn,
-                        'record' => $res,
-                    ];
-                }
-                break;
-
-            case 'kritikktype':
-            case 'tags':
-                # Ref: https://stackoverflow.com/a/31757242/489916
-                # for the #>> '{}' magick
-                $results = \DB::select("
-                    select
-                      distinct jd.value #>> '{}' as value
-                    from
-                      litteraturkritikk_records,
-                      jsonb_array_elements(litteraturkritikk_records.${fieldName}) as jd
-                    order by value
-                ");
-                foreach ($results as $row) {
-                    $data[] = [
-                        'value' => $row->value,
-                    ];
-                }
-                break;
-
-            default:
-                throw new \ErrorException('Unknown search field');
+        if (!isset($schema->{$fieldName})) {
+            throw ValidationException::withMessages([
+                'field' => ['Invalid field'],
+            ]);
         }
 
-        return response()->json($data);
+        return response()->json(
+            $autocompleter->complete(
+                $schema,
+                $schema->{$fieldName},
+                $request->get('q')
+            )
+        );
     }
 
     /**
@@ -188,7 +89,7 @@ class LitteraturkritikkController extends RecordController
      * @param \Illuminate\Http\Request $request
      * @param LitteraturkritikkSchema $schema
      * @param Record $record
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     protected function updateOrCreate(Request $request, LitteraturkritikkSchema $schema, Record $record) : array
     {
