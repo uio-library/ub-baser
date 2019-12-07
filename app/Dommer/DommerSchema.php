@@ -38,6 +38,16 @@ class DommerSchema extends Schema
             [
                 'key' => 'aar',
                 'type' => 'simple',
+
+                'columnClassName' => 'dt-body-nowrap',
+
+                'searchOptions' => [
+                    'type' => 'rangeslider',
+                    'index' => [
+                        'type' => 'range',
+                        'column' => 'aar',
+                    ],
+                ],
             ],
             [
                 'key' => 'side',
@@ -51,6 +61,8 @@ class DommerSchema extends Schema
     public function __construct()
     {
         $this->schemaOptions['autocompleteUrl'] = action('DommerController@autocomplete');
+        $this->schemaOptions['minYear'] = 1848;
+        $this->schemaOptions['maxYear'] = 2012;
 
         parent::__construct();
     }
