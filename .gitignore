@@ -12,6 +12,4 @@ tests/_support/_generated/*
 storage/debugbar
 public/mix-manifest.json
 public/fonts
-package-lock.json
-yarn.lock
 composer.lock
