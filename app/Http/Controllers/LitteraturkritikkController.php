@@ -361,6 +361,12 @@ class LitteraturkritikkController extends RecordController
 
         $record->delete();
 
+        $this->log(
+            'Slettet <a href="%s">post #%s</a>.',
+            action('LitteraturkritikkController@show', $record->id),
+            $record->id
+        );
+
         // Refresh view
         \DB::unprepared('REFRESH MATERIALIZED VIEW CONCURRENTLY litteraturkritikk_records_search');
 
@@ -379,6 +385,12 @@ class LitteraturkritikkController extends RecordController
         $record = Record::withTrashed()->findOrFail($id);
 
         $record->restore();
+
+        $this->log(
+            'Gjenopprettet <a href="%s">post #%s</a>.',
+            action('LitteraturkritikkController@show', $record->id),
+            $record->id
+        );
 
         // Refresh view
         \DB::unprepared('REFRESH MATERIALIZED VIEW CONCURRENTLY litteraturkritikk_records_search');
