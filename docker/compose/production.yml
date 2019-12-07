@@ -21,3 +21,4 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+        max_attempts: 20
