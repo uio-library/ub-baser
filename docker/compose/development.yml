@@ -14,9 +14,9 @@ services:
       - 5999:5432
     container_name: ub-baser-db
     environment:
-      - DB_DATABASE=ub-baser-dev
-      - DB_USERNAME=ub-baser-dev
-      - DB_PASSWORD=ub-baser-dev
+      - POSTGRES_USER=ub-baser-dev
+      - POSTGRES_PASSWORD=ub-baser-dev
+      - POSTGRES_INITDB_ARGS=--no-locale --encoding=UTF8
 
   app:
     image: ub-baser:latest

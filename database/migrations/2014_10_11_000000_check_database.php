@@ -21,12 +21,25 @@ class CheckDatabase extends Migration
             );
         }
 
+
+        // Validate default collation
+        $desiredCollation = 'C';
+        $dbname = \DB::connection()->getDatabaseName();
+        $res = \DB::select('select datcollate from pg_database where datname = ?', [$dbname]);
+        $collation = $res[0]->datcollate;
+
+        if ($collation != $desiredCollation) {
+            throw new \RuntimeException(
+                "The database collation $collation differs from the expected collation $desiredCollation."
+            );
+        }
+
         // Validate collation support
-        $desiredCollation = 'nb_NO.utf8';
-        $res = \DB::select('SELECT * FROM pg_collation where collname = ?', [$desiredCollation]);
+        $additionalCollation = 'nb_NO.utf8';
+        $res = \DB::select('SELECT * FROM pg_collation where collname = ?', [$additionalCollation]);
         if (!count($res)) {
             throw new \RuntimeException(
-                "The database does not have the $desiredCollation collation. " .
+                "The database does not have the $additionalCollation collation. " .
                 "Please create it before migrating the database. " .
                 "See instructions in the readme.md file."
             );
