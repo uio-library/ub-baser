@@ -63,8 +63,8 @@ fi
 # ----------------------------------------------------------------------------
 # Wait for Postgres
 
-echo Waiting for ${DB_HOST}:${DB_PORT}
-docker/wait-for-it.sh ${DB_HOST}:${DB_PORT} -t 30
+echo Waiting for ${POSTGRES_HOST}:${POSTGRES_PORT}
+docker/wait-for-it.sh ${POSTGRES_HOST}:${POSTGRES_PORT} -t 30
 
 # ----------------------------------------------------------------------------
 # Run migrations, if any
