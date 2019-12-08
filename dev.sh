@@ -33,6 +33,9 @@ fi
 
 if [ ! -d "vendor" ]; then
 	curl -sS https://getcomposer.org/installer | php --
+    if [ ! -z "$GITHUB_TOKEN" ]; then
+        php composer.phar config github-oauth.github.com "$GITHUB_TOKEN"
+    fi
 	php composer.phar install --no-interaction --no-dev --prefer-dist
 fi
 
