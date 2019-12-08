@@ -28,12 +28,11 @@ services:
     environment:
       - APP_ENV=dev
       - APP_DEBUG=true
-      - DB_CONNECTION=pgsql
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_DATABASE=ub-baser-dev
-      - DB_USERNAME=ub-baser-dev
-      - DB_PASSWORD=ub-baser-dev
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DATABASE=ub-baser-dev
+      - POSTGRES_USER=ub-baser-dev
+      - POSTGRES_PASSWORD=ub-baser-dev
       - APP_KEY=DoesNotNeedToBeRandomInDevEnviro
     ports:
       - 80:80
