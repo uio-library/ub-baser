@@ -8,6 +8,7 @@ class BibsysSchema extends Schema
 {
     public $prefix = 'bibsys';
     public $primaryId = 'dokid';
+    public $costLimit = 20000;
 
     protected $schema = [
         'fields' => [
@@ -39,7 +40,7 @@ class BibsysSchema extends Schema
 
                 */
 
-                'searchable' => 'disabled',
+                // 'searchable' => 'disabled',
                 // ------------------------------
 
                 'searchOptions' => [

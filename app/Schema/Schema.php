@@ -16,6 +16,7 @@ abstract class Schema implements \JsonSerializable
     public $prefix;
     public $view;
     public $primaryId = 'id';
+    public $costLimit = 0;
 
     protected $schema;
     protected $schemaOptions = [

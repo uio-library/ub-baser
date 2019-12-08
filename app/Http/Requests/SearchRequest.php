@@ -13,6 +13,8 @@ abstract class SearchRequest extends FormRequest
 {
     protected $fields;
     public $queryParts;
+
+    /** @var \Illuminate\Database\Eloquent\Builder */
     public $queryBuilder;
 
     abstract protected function getSchema(): Schema;

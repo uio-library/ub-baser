@@ -63,6 +63,9 @@
 
 <script>
 import { get } from 'lodash/object'
+
+let lastResponse = {};
+
 export default {
   name: 'data-table',
   props: {
@@ -200,7 +203,7 @@ export default {
 
         language: {
           sEmptyTable: 'Ingen poster funnet.',
-          sInfo: 'Viser _START_ til _END_ av _TOTAL_ poster.',
+          sInfo: '<span class="datatables-info-message">...</span>',
           sInfoEmpty: 'Viser 0 til 0 av 0 poster.',
           sInfoFiltered: '(filtrert fra _MAX_ totalt antall poster)',
           sInfoPostFix: '',
@@ -221,6 +224,18 @@ export default {
             sSortAscending: ': aktiver for å sortere kolonnen stigende',
             sSortDescending: ': aktiver for å sortere kolonnen synkende',
           },
+        },
+        drawCallback: function (settings) {
+          let info = table.page.info();
+          let msg = `Viser post ${info.start+1} til ${info.end}`;
+          if (lastResponse) {
+            if (lastResponse.unknownCount) {
+              msg += ' av mange';
+            } else {
+              msg += ` av ${lastResponse.recordsTotal}`;
+            }
+            $('.datatables-info-message').text(msg);
+          }
         },
         pageLength: this.getSessionValue('page-length', 50),
         lengthMenu: [10, 50, 100, 500, 1000],
@@ -316,6 +331,10 @@ export default {
       // Map indices to key names before storing
       order = order.map(item => ({key: this.columns[item[0]].data, direction: item[1]}))
       this.storeSessionValue('order', order)
+    })
+
+    table.on('xhr', ( e, settings, json, xhr ) => {
+      lastResponse = json;
     })
   },
 }
