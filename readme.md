@@ -1,9 +1,9 @@
 [![Build Status](https://img.shields.io/travis/scriptotek/ub-baser.svg?style=flat-square)](https://travis-ci.org/scriptotek/ub-baser)
 [![StyleCI](https://styleci.io/repos/44453446/shield)](https://styleci.io/repos/44453446)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/scriptotek/ub-baser.svg?style=flat-square)](https://scrutinizer-ci.com/g/scriptotek/ub-baser/?branch=master)
-[![Code Climate](https://img.shields.io/codeclimate/github/scriptotek/ub-baser.svg?style=flat-square)](https://codeclimate.com/github/scriptotek/ub-baser)
-[![Codacy](https://img.shields.io/codacy/917a1e933d9044c0ba899514b59f29d2.svg?style=flat-square)](https://www.codacy.com/app/danmichaelo/ub-baser)
-
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/scriptotek/ub-baser)](https://codeclimate.com/github/scriptotek/ub-baser)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e7a0f0adfff2428f8bf457eca41580e4)](https://www.codacy.com/manual/danmichaelo/ub-baser)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=scriptotek_ub-baser&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=scriptotek_ub-baser)
 
 ## UB-baser
 
