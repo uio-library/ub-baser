@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Schema\Schema;
-use App\Schema\SchemaField;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
@@ -42,7 +41,6 @@ abstract class SearchRequest extends FormRequest
      * Turns ['input1field' => 'A', 'input1value' => 'B', 'input2field' => 'C', 'input2value' => 'D', ...]
      * into ['A' => 'B', 'C' => 'D', ...] and [['A', 'B'], ['C', 'D']].
      *
-     * @param \Illuminate\Http\Request $request
      *
      * @return array
      */
@@ -136,10 +134,10 @@ abstract class SearchRequest extends FormRequest
 
         switch ($operator) {
             case 'eq':
-                $this->queryBuilder->whereRaw($index['ts_column'] . ' @@ ' . $query, [$value]);
+                $this->queryBuilder->whereRaw($index['ts_column'].' @@ '.$query, [$value]);
                 break;
             case 'neq':
-                $this->queryBuilder->whereRaw('NOT ' . $index['ts_column'] . ' @@ ' . $query, [$value]);
+                $this->queryBuilder->whereRaw('NOT '.$index['ts_column'].' @@ '.$query, [$value]);
                 break;
             default:
                 $this->checkNull($index['column'], $operator);
@@ -156,18 +154,18 @@ abstract class SearchRequest extends FormRequest
                 $operator = 'ex';
             } elseif (Str::startsWith($value, '*')) {
                 // Prefix / ending wildcard
-                $value = '%' . trim($value, '*') . '%';
+                $value = '%'.trim($value, '*').'%';
             } elseif (Str::endsWith($value, '*')) {
                 // Prefix / ending wildcard
-                $value = rtrim($value, '*') . '%';
+                $value = rtrim($value, '*').'%';
             } else {
                 // right-truncate by default
-                $value = $value . '%';
+                $value = $value.'%';
             }
         } else if ($operator == 'ex') {
             if (Str::endsWith($value, '*')) {
                 // Prefix / ending wildcard
-                $value = rtrim($value, '*') . '%';
+                $value = rtrim($value, '*').'%';
                 $operator = 'like';
             }
         }
@@ -185,22 +183,22 @@ abstract class SearchRequest extends FormRequest
 
             // Exact match operator, we use raw to support complex column arguments like e.g. "lower(name)"
             case 'ex':
-                $this->queryBuilder->whereRaw($index['column'] . ' = ?', [$value]);
+                $this->queryBuilder->whereRaw($index['column'].' = ?', [$value]);
                 break;
 
             // Like operator
             case 'like':
-                $this->queryBuilder->whereRaw($index['column'] . ' like ?', [$value]);
+                $this->queryBuilder->whereRaw($index['column'].' like ?', [$value]);
                 break;
 
             // Standard ilike operator
             case 'eq':
-                $this->queryBuilder->whereRaw($index['column'] . ' ilike ?', [$value]);
+                $this->queryBuilder->whereRaw($index['column'].' ilike ?', [$value]);
                 break;
 
             // Negated standard ilike operator
             case 'neq':
-                $this->queryBuilder->whereRaw($index['column'] . ' not ilike ?', [$value]);
+                $this->queryBuilder->whereRaw($index['column'].' not ilike ?', [$value]);
                 break;
 
             default:
@@ -234,11 +232,11 @@ abstract class SearchRequest extends FormRequest
         switch ($operator) {
             case 'eq':
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-                $this->queryBuilder->whereRaw($index['column'] . ' ~@ ?', [$value]);
+                $this->queryBuilder->whereRaw($index['column'].' ~@ ?', [$value]);
                 break;
             case 'neq':
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-                $this->queryBuilder->whereRaw('NOT ' . $index['column'] . ' ~@ ?', [$value]);
+                $this->queryBuilder->whereRaw('NOT '.$index['column'].' ~@ ?', [$value]);
                 break;
             default:
                 $this->checkNull($index['column'], $operator);

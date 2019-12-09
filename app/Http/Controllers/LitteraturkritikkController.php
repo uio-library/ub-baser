@@ -6,11 +6,9 @@ use App\Http\Requests\LitteraturkritikkSearchRequest;
 use App\Litteraturkritikk\Autocompleter;
 use App\Litteraturkritikk\LitteraturkritikkSchema;
 use App\Litteraturkritikk\Person;
-use App\Litteraturkritikk\PersonView;
 use App\Litteraturkritikk\Record;
 use App\Page;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 
 class LitteraturkritikkController extends RecordController
@@ -175,7 +173,7 @@ class LitteraturkritikkController extends RecordController
      * @param \Illuminate\Http\Request $request
      *
      * @param LitteraturkritikkSchema $schema
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request, LitteraturkritikkSchema $schema)
@@ -213,7 +211,7 @@ class LitteraturkritikkController extends RecordController
         }
 
         $data = [
-            'title' => $record->tittel ?: '#' . $record->id,
+            'title' => $record->tittel ?: '#'.$record->id,
             'schema' => $schema,
             'record' => $record,
         ];
@@ -228,7 +226,7 @@ class LitteraturkritikkController extends RecordController
      * @param LitteraturkritikkSchema $schema
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, LitteraturkritikkSchema $schema, $id)
@@ -254,7 +252,7 @@ class LitteraturkritikkController extends RecordController
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
@@ -279,7 +277,7 @@ class LitteraturkritikkController extends RecordController
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function restore($id)
     {
@@ -350,10 +348,10 @@ class LitteraturkritikkController extends RecordController
 
         // Compare the two to figure out which updates we need to do on
         // the record-person pivot table.
-        $delete = array_udiff($currentPersons, $persons, function ($a, $b) {
+        $delete = array_udiff($currentPersons, $persons, function($a, $b) {
             return strcmp(json_encode($a), json_encode($b));
         });
-        $insert = array_udiff($persons, $currentPersons, function ($a, $b) {
+        $insert = array_udiff($persons, $currentPersons, function($a, $b) {
             return strcmp(json_encode($a), json_encode($b));
         });
 
@@ -362,7 +360,7 @@ class LitteraturkritikkController extends RecordController
             \DB::table('litteraturkritikk_record_person')
                 ->where($recordPerson)
                 ->delete();
-            $changes[] = "Fjernet {$names[$recordPerson['person_id']]} (Rolle: {$recordPerson['person_role']}, " .
+            $changes[] = "Fjernet {$names[$recordPerson['person_id']]} (Rolle: {$recordPerson['person_role']}, ".
                 "pseudonym: {$recordPerson['pseudonym']}, kommentar: {$recordPerson['kommentar']}, posisjon: {$recordPerson['posisjon']})";
         }
 
@@ -370,7 +368,7 @@ class LitteraturkritikkController extends RecordController
         foreach ($insert as $recordPerson) {
             \DB::table('litteraturkritikk_record_person')
                 ->insert($recordPerson);
-            $changes[] = "La til {$names[$recordPerson['person_id']]} (Rolle: {$recordPerson['person_role']}, " .
+            $changes[] = "La til {$names[$recordPerson['person_id']]} (Rolle: {$recordPerson['person_role']}, ".
                 "pseudonym: {$recordPerson['pseudonym']}, kommentar: {$recordPerson['kommentar']}, posisjon: {$recordPerson['posisjon']})";
         }
 

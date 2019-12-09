@@ -134,7 +134,7 @@ class Autocompleter
         }
 
         $query = \DB::table($schema->view)
-            ->where($field->key, 'ilike', $term . '%');
+            ->where($field->key, 'ilike', $term.'%');
 
         return $this->getResults($query, $field->key);
 

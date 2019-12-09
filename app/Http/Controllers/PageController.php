@@ -79,7 +79,7 @@ class PageController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Page                $page
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Page $page)
     {

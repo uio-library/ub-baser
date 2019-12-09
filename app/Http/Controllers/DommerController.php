@@ -61,7 +61,7 @@ class DommerController extends RecordController
     {
         // Validate
         $this->validate($request, [
-            'navn'     => 'required|unique:dommer,navn' . ($record->id === null ? '' : ',' . $record->id) . '|max:255',
+            'navn'     => 'required|unique:dommer,navn'.($record->id === null ? '' : ','.$record->id).'|max:255',
             'aar'      => 'required|digits:4',
             'side'     => 'required|numeric|min:1|max:9999',
             'kilde'    => 'required|numeric',
@@ -94,7 +94,7 @@ class DommerController extends RecordController
      *
      * @param Request $request
      * @param DommerSchema $schema
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, DommerSchema $schema)
     {
@@ -151,7 +151,7 @@ class DommerController extends RecordController
      * @param Request $request
      * @param DommerSchema $schema
      * @param int $id
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, DommerSchema $schema, $id)
     {

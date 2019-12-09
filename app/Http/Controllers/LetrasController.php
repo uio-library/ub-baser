@@ -6,9 +6,7 @@ use App\Http\Requests\LetrasSearchRequest;
 use App\Letras\LetrasRecord;
 use App\Letras\LetrasSchema;
 use App\Page;
-use App\RecordQBuilderLetras;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class LetrasController extends RecordController
 {
@@ -66,7 +64,7 @@ class LetrasController extends RecordController
             throw new \RuntimeException('Invalid field');
         }
 
-        $term = $request->get('q') . '%';
+        $term = $request->get('q').'%';
         $data = [];
 
         switch ($fieldName) {
@@ -100,6 +98,7 @@ class LetrasController extends RecordController
     /**
      * Show the form for creating a new resource.
      *
+     * @param integer $id
      * @return \Illuminate\Http\Response
      */
     protected function updateOrCreate(Request $request, $id = null)
@@ -161,7 +160,7 @@ class LetrasController extends RecordController
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -218,7 +217,7 @@ class LetrasController extends RecordController
      * @param \Illuminate\Http\Request $request
      * @param int                      $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {

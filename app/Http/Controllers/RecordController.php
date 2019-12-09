@@ -22,7 +22,7 @@ class RecordController extends Controller
     /**
      * Get old value if present (after a validation error) and transform it if necessary.
      *
-     * @param SchemaField $field
+     * @param \App\Schema\SchemaField $field
      * @param string $key
      * @return string $default
      */
@@ -140,7 +140,7 @@ class RecordController extends Controller
         foreach ($request->columns as $k => $v) {
             // Check that only valid column names are requested
             if (!isset($fields[$v['data']])) {
-                throw new \RuntimeException('Invalid column name requested: ' . $v['data']);
+                throw new \RuntimeException('Invalid column name requested: '.$v['data']);
             }
             $field = $fields[$v['data']];
 
@@ -160,12 +160,12 @@ class RecordController extends Controller
         foreach ($request->get('order', []) as $order) {
             // Check that only valid column names are requested
             if (!isset($requestedColumns[(int) $order['column']])) {
-                throw new \RuntimeException('Invalid order by requested: ' . $order['column']);
+                throw new \RuntimeException('Invalid order by requested: '.$order['column']);
             }
             $col = $columnOrderMap[(int) $order['column']];
             $dir = ($order['dir'] == 'asc') ? 'asc' : 'desc';
 
-            $queryBuilder->orderByRaw("$col $dir");  //  NULLS LAST");
+            $queryBuilder->orderByRaw("$col $dir"); //  NULLS LAST");
         }
 
         $recordCount = $this->getRecordCount($request, $queryBuilder, $schema->costLimit);
@@ -174,7 +174,7 @@ class RecordController extends Controller
         $queryBuilder->take($request->length + 1);
 
         $data = $queryBuilder->get()
-            ->map(function ($row) use ($columnReverseMap) {
+            ->map(function($row) use ($columnReverseMap) {
                 $out = [];
                 foreach ($row->toArray() as $k => $v) {
                     if (is_array($v)) {
@@ -235,7 +235,7 @@ class RecordController extends Controller
 
         if ($costLimit) {
             $plan = json_decode(\DB::select(
-                'explain (format json, timing false) ' . $queryBuilder->toSql(),
+                'explain (format json, timing false) '.$queryBuilder->toSql(),
                 $queryBuilder->getBindings()
             )[0]->{'QUERY PLAN'});
             $cost = (int) $plan[0]->Plan->{'Total Cost'};

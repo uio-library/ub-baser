@@ -41,7 +41,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         foreach (self::$rights as $right) {
-            $gate->define($right, function ($user) use ($right) {
+            $gate->define($right, function($user) use ($right) {
                 return in_array($right, $user->rights);
             });
         }

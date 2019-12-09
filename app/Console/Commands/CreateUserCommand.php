@@ -45,10 +45,10 @@ class CreateUserCommand extends Command
         $user->rights = $this->option('admin') ? ['admin'] : [];
         $user->save();
 
-        \Password::sendResetLink($credentials, function (Message $message) {
+        \Password::sendResetLink($credentials, function(Message $message) {
             $message->subject('Velkommen til ub-baser');
         });
 
-        $this->info('User created, email sent to ' . $user->email . '.');
+        $this->info('User created, email sent to '.$user->email.'.');
     }
 }

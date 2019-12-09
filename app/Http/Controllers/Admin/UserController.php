@@ -49,7 +49,7 @@ class UserController extends Controller
     {
         $rights = [];
         foreach (AuthServiceProvider::$rights as $r) {
-            if ($request->get('right-' . $r)) {
+            if ($request->get('right-'.$r)) {
                 $rights[] = $r;
             }
         }
@@ -70,9 +70,9 @@ class UserController extends Controller
         $user = $id === null ? new User() : User::findOrFail($id);
 
         $this->validate($request, [
-            'email' => 'required|email:rfc|unique:users,email' . ($id === null ? '' : ',' . $id) . '|max:255',
+            'email' => 'required|email:rfc|unique:users,email'.($id === null ? '' : ','.$id).'|max:255',
             'name'  => 'required|max:255',
-            'saml_id' => 'nullable|email:rfc|unique:users,saml_id' . ($id === null ? '' : ',' . $id) . '|max:255',
+            'saml_id' => 'nullable|email:rfc|unique:users,saml_id'.($id === null ? '' : ','.$id).'|max:255',
         ]);
 
         $user->name = $request->get('name');
@@ -90,7 +90,7 @@ class UserController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -103,7 +103,7 @@ class UserController extends Controller
             $user->email
         );
 
-        \Password::sendResetLink(['email' => $user->email], function (Message $message) {
+        \Password::sendResetLink(['email' => $user->email], function(Message $message) {
             $message->subject('Velkommen til ub-baser');
         });
 
@@ -155,7 +155,7 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {

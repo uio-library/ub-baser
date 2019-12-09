@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BibsysSearchRequest;
-use App\Bibsys\BibsysDokument;
 use App\Bibsys\BibsysView;
 use App\Bibsys\BibsysSchema;
 use App\Page;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class BibsysController extends RecordController
 {
@@ -73,7 +71,7 @@ class BibsysController extends RecordController
         return response()->view('bibsys.show', $data);
     }
 
-    public function autocomplete(Request $request,  BibsysSchema $schema)
+    public function autocomplete(Request $request, BibsysSchema $schema)
     {
         $fieldName = $request->get('field');
         $fields = $schema->keyed();
@@ -85,7 +83,7 @@ class BibsysController extends RecordController
             'column' => $field->key,
         ]);
 
-        $term = $request->get('q') . '%';
+        $term = $request->get('q').'%';
         $data = [];
 
         switch ($fieldName) {
@@ -99,7 +97,7 @@ class BibsysController extends RecordController
                 } else {
                     $rows = \DB::table('bibsys_search')
                         ->select($field->getColumn())
-                        ->whereRaw($index['column'] . ' like ?', [$term])
+                        ->whereRaw($index['column'].' like ?', [$term])
                         ->groupBy($field->getColumn())
                         ->get();
                 }

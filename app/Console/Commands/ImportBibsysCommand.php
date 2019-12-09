@@ -2,9 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-
 class ImportBibsysCommand extends ImportCommand
 {
     protected $recordBuffer = [];
@@ -49,12 +46,12 @@ class ImportBibsysCommand extends ImportCommand
         foreach (glob($marcFiles) as $filename) {
             $this->comment("Importing $filename");
             $fn = fopen($filename, "r");
-            while(! feof($fn)) {
+            while (!feof($fn)) {
                 $result = rtrim(fgets($fn));
 
                 if ($result === "^") {
                     if ($objektId != '') {
-                        $this->storeRecord($objektId, trim($marcRecord), trim($marcRecordText) , $titleStatement, $pubDate);
+                        $this->storeRecord($objektId, trim($marcRecord), trim($marcRecordText), $titleStatement, $pubDate);
                     }
                     $marcRecord = '';
                     $marcRecordText = '';
@@ -70,8 +67,8 @@ class ImportBibsysCommand extends ImportCommand
 
                 if (substr($result, 0, 1) === '$') {
                     $bf = substr($result, 1, 1);
-                    $marcRecord .= ' ' . $result;
-                    $marcRecordText .= ' ' . mb_substr($result, 2);
+                    $marcRecord .= ' '.$result;
+                    $marcRecordText .= ' '.mb_substr($result, 2);
                     if ($marcField == '245') {
                         if ($bf == 'b') {
                             $delim = ' : ';
@@ -80,7 +77,7 @@ class ImportBibsysCommand extends ImportCommand
                         } else {
                             $delim = ' ';
                         }
-                        $titleStatement .= $delim . mb_substr($result, 2);
+                        $titleStatement .= $delim.mb_substr($result, 2);
                     }
                     if ($marcField == '260' && $bf == 'c') {
                         $pubDate = mb_substr($result, 2);
@@ -92,11 +89,11 @@ class ImportBibsysCommand extends ImportCommand
                     $marcField = '000';
                     $objektId = mb_substr($result, 5);
                     $marcRecord .= "\n$result";
-                    $marcRecordText .= ' ' . mb_substr($result, 5);
+                    $marcRecordText .= ' '.mb_substr($result, 5);
                 } elseif (preg_match('/^\*([0-9]{3})/', $result, $matches)) {
                     $marcField = $matches[1];
                     $marcRecord .= "\n$result";
-                    $marcRecordText .= ' ' . mb_substr($result, 8);
+                    $marcRecordText .= ' '.mb_substr($result, 8);
                 }
                 if (preg_match('/^\*245..\$a/', $result)) {
                     $marcField = '245';
@@ -112,6 +109,13 @@ class ImportBibsysCommand extends ImportCommand
         $this->flushRecordBuffer();
     }
 
+    /**
+     * @param string $objektId
+     * @param string $marcRecord
+     * @param string $marcRecordText
+     * @param string $titleStatement
+     * @param string $pubDate
+     */
     public function storeRecord($objektId, $marcRecord, $marcRecordText, $titleStatement, $pubDate)
     {
         $row = [

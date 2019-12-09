@@ -2,9 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-
 class ImportLetrasCommand extends ImportCommand
 {
 
@@ -44,14 +41,14 @@ class ImportLetrasCommand extends ImportCommand
         $rows = $this->getData($filename);
 
         // Trim all values
-        $rows = array_map(function ($row) {
-            return array_map(function ($col) {
+        $rows = array_map(function($row) {
+            return array_map(function($col) {
                 return trim($col);
             }, $row);
         }, $rows);
 
         if (\DB::table('letras')->insert($rows)) {
-            $this->comment('Imported ' . count($rows) . ' records');
+            $this->comment('Imported '.count($rows).' records');
         }
     }
 

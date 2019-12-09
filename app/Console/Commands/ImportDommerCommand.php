@@ -45,7 +45,7 @@ class ImportDommerCommand extends ImportCommand
     {
         $data = $this->getData($filename);
         if (\DB::table('dommer')->insert($data)) {
-            $this->comment('Imported ' . count($data) . ' records');
+            $this->comment('Imported '.count($data).' records');
         }
     }
 

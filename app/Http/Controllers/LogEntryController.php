@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\LogEntry;
-use App\Logging\DatabaseLoggingHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Monolog\Logger;
@@ -25,13 +24,13 @@ class LogEntryController extends Controller
         $filters = [];
 
         if ($request->has('user')) {
-            $query->where('context', '@>', '{"user": "' . $request->user . '"}');
-            $filters[] = 'user:' . $request->user;
+            $query->where('context', '@>', '{"user": "'.$request->user.'"}');
+            $filters[] = 'user:'.$request->user;
         }
 
         if ($request->has('group')) {
-            $query->where('context', '@>', '{"group": "' . $request->group . '"}');
-            $filters[] = 'group:' . $request->group;
+            $query->where('context', '@>', '{"group": "'.$request->group.'"}');
+            $filters[] = 'group:'.$request->group;
         }
 
         return response()->view('log.index', [

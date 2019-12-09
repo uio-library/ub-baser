@@ -27,7 +27,7 @@ class Person extends \Eloquent
      *
      * @var array
      */
-    protected $fillable = ['etternavn', 'fornavn', 'kjonn', 'fodt', 'dod', 'bibsys_id', 'wikidata_id',];
+    protected $fillable = ['etternavn', 'fornavn', 'kjonn', 'fodt', 'dod', 'bibsys_id', 'wikidata_id', ];
 
     /**
      * The records this person belongs to.
@@ -65,7 +65,7 @@ class Person extends \Eloquent
         }
         $nn = implode(', ', $names);
         if ($this->fodt !== null) {
-            $nn .= ', ' . $this->fodt . '-' . ($this->dod ?: '');
+            $nn .= ', '.$this->fodt.'-'.($this->dod ?: '');
         }
 
         return $nn;

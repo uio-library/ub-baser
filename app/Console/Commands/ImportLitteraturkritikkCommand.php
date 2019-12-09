@@ -80,7 +80,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         if (empty($out)) {
             $out = [];
         } else {
-            $out = array_map(function ($t) {
+            $out = array_map(function($t) {
                 return mb_strtolower(trim($t));
             }, explode(',', $out));
         }
@@ -118,21 +118,21 @@ class ImportLitteraturkritikkCommand extends ImportCommand
                 if (isset($months[$matches[2]])) {
                     $dato_out .= sprintf('-%02d-%02d', $months[$matches[2]], $matches[1]);
                 } else {
-                    $this->error('Invalid month: ' . $matches[2]);
+                    $this->error('Invalid month: '.$matches[2]);
                 }
             } elseif (preg_match('/^([a-z]{3})/', $dato, $matches)) {
                 if (isset($months[$matches[1]])) {
                     $dato_out .= sprintf('-%02d', $months[$matches[1]]);
                 } else {
-                    $this->error('Invalid month: ' . $matches[1]);
+                    $this->error('Invalid month: '.$matches[1]);
                 }
             } else {
                 if (empty($kommentar_out)) {
-                    $kommentar_out = 'Publiseringsdato: ' . $dato;
+                    $kommentar_out = 'Publiseringsdato: '.$dato;
                 } else {
-                    $kommentar_out .= '. Publiseringsdato: ' . $dato;
+                    $kommentar_out .= '. Publiseringsdato: '.$dato;
                 }
-                $this->error('Dato: ' . $dato . '. Kommentar: ' . $kommentar_out);
+                $this->error('Dato: '.$dato.'. Kommentar: '.$kommentar_out);
             }
         }
 
@@ -178,18 +178,21 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         $value = preg_split('/(,\s?|\s+og\s+)/', $value);
 
         // Trim
-        $value = array_map(function ($t) {
+        $value = array_map(function($t) {
             return trim($t);
         }, $value);
 
         // Filter out empty values
-        $value = array_values(array_filter($value, function ($x) {
+        $value = array_values(array_filter($value, function($x) {
             return !empty($x);
         }));
 
         return $value;
     }
 
+    /**
+     * @param string $column
+     */
     protected function extractMfl(&$row, $record, $column)
     {
         if (preg_match('/m\.?\s?fl\./', $row[$column])) {
@@ -215,16 +218,19 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         }
     }
 
+    /**
+     * @param string $role
+     */
     public function processPerson(&$record, &$row, $role)
     {
         $rowId = $row['id'];
 
-        $etternavn = $row[$role . '_etternavn'];
-        $fornavn = $row[$role . '_fornavn'];
-        $kjonn = $row[$role . '_kjonn'];
+        $etternavn = $row[$role.'_etternavn'];
+        $fornavn = $row[$role.'_fornavn'];
+        $kjonn = $row[$role.'_kjonn'];
 
-        $kommentar = Arr::get($row, $role . '_kommentar');
-        $pseudonym  = Arr::get($row, $role . '_pseudonym');
+        $kommentar = Arr::get($row, $role.'_kommentar');
+        $pseudonym = Arr::get($row, $role.'_pseudonym');
 
         $etternavn_arr = $this->splitTrimAndFilterEmpty($etternavn);
         $fornavn_arr = $this->splitTrimAndFilterEmpty($fornavn);
@@ -271,7 +277,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             $kjonn = $this->normalizeKjonn($kjonn);
             if ($person->kjonn && $kjonn && $person->kjonn != $kjonn) {
                 $this->error(
-                    "[$rowId] Person {$person->id} ({$person->etternavn}, {$person->fornavn}) " .
+                    "[$rowId] Person {$person->id} ({$person->etternavn}, {$person->fornavn}) ".
                     "har registrert flere verdier for kjonn: <$person->kjonn> og <$kjonn>"
                 );
             }
@@ -344,19 +350,19 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             'forfatter_etternavn',
             'forfatter_fornavn',
             'forfatter_kjonn',
-            'forfatter_kommentar',  // pivot-egenskap
+            'forfatter_kommentar', // pivot-egenskap
 
             'kritiker_etternavn',
             'kritiker_fornavn',
             'kritiker_kjonn',
-            'kritiker_pseudonym',    // pivot-egenskap
-            'kritiker_kommentar',     // pivot-egenskap
+            'kritiker_pseudonym', // pivot-egenskap
+            'kritiker_kommentar', // pivot-egenskap
         ];
-        $persons = array_map(function ($x) use ($personColumns) {
+        $persons = array_map(function($x) use ($personColumns) {
             return Arr::only($x, array_merge(['id'], $personColumns));
         }, $data);
 
-        $records = array_map(function ($x) use ($personColumns) {
+        $records = array_map(function($x) use ($personColumns) {
             return Arr::except($x, $personColumns);
         }, $data);
 
@@ -369,7 +375,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         $chunks = array_chunk($records, 1000);
         foreach ($chunks as $chunk) {
             if (\DB::table('litteraturkritikk_records')->insert($chunk)) {
-                $this->comment('Imported ' . count($chunk) . ' records');
+                $this->comment('Imported '.count($chunk).' records');
             }
         }
 
@@ -394,11 +400,11 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         $this->comment('Updating sequences');
 
         \DB::unprepared(
-            "SELECT pg_catalog.setval(pg_get_serial_sequence('litteraturkritikk_records', 'id'), MAX(id))" .
+            "SELECT pg_catalog.setval(pg_get_serial_sequence('litteraturkritikk_records', 'id'), MAX(id))".
             " FROM litteraturkritikk_records"
         );
         \DB::unprepared(
-            "SELECT pg_catalog.setval(pg_get_serial_sequence('litteraturkritikk_personer', 'id'), MAX(id))" .
+            "SELECT pg_catalog.setval(pg_get_serial_sequence('litteraturkritikk_personer', 'id'), MAX(id))".
             " FROM litteraturkritikk_personer"
         );
 

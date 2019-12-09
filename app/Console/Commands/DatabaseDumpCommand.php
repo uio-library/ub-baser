@@ -2,10 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Password;
 use Symfony\Component\Process\Process;
 
 class DatabaseDumpCommand extends Command
@@ -60,7 +58,7 @@ class DatabaseDumpCommand extends Command
     public function getCommand($destinationFile)
     {
         $conn = $this->option('database') ?: config('database.default');
-        $config = config('database.connections.' . $conn);
+        $config = config('database.connections.'.$conn);
 
         switch ($config['driver']) {
             case 'mysql':
@@ -68,7 +66,7 @@ class DatabaseDumpCommand extends Command
             case 'pgsql':
                 return $this->getPostgresCommand($config, $destinationFile);
             default:
-                throw new \Exception('Unsupported database: ' . $conn);
+                throw new \Exception('Unsupported database: '.$conn);
         }
     }
 
@@ -98,13 +96,13 @@ class DatabaseDumpCommand extends Command
         $process->setTimeout(60);
         $process->run();
         if (!$process->isSuccessful()) {
-            $this->error('Could not dump database to ' . $destinationFile);
+            $this->error('Could not dump database to '.$destinationFile);
             $this->error($process->getErrorOutput());
 
             return;
         }
 
         $this->filterOutOperatorDefinitions($destinationFile);
-        $this->info('Database dumped successfully to ' . $destinationFile);
+        $this->info('Database dumped successfully to '.$destinationFile);
     }
 }

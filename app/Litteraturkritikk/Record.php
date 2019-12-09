@@ -48,7 +48,7 @@ class Record extends \App\Record
             'record_id',
             'person_id'
         )->withPivot('person_role', 'kommentar', 'pseudonym', 'posisjon')
-         ->orderBy('litteraturkritikk_record_person.posisjon', 'asc');
+            ->orderBy('litteraturkritikk_record_person.posisjon', 'asc');
     }
 
     /**
@@ -126,8 +126,8 @@ class Record extends \App\Record
         $repr = '';
         $forfattere = [];
         foreach ($this->forfattere as $person) {
-            $personRole = ($person->pivot->person_role != 'forfatter') ? ' (' . $person->pivot->person_role . ')' : '';
-            $forfattere[] = strval($person) . $personRole;
+            $personRole = ($person->pivot->person_role != 'forfatter') ? ' ('.$person->pivot->person_role.')' : '';
+            $forfattere[] = strval($person).$personRole;
         }
 
         $forfattere = implode($forfatter_delimiter, $forfattere);
@@ -138,10 +138,10 @@ class Record extends \App\Record
             $repr .= $forfatter_verk_delimiter;
         }
         if ($this->verk_tittel) {
-            $repr .= '«' . $this->verk_tittel . '»';
+            $repr .= '«'.$this->verk_tittel.'»';
         }
         if ($this->verk_dato) {
-            $repr .= ' (' . $this->verk_dato . ')';
+            $repr .= ' ('.$this->verk_dato.')';
         }
 
         return $repr;
@@ -161,7 +161,7 @@ class Record extends \App\Record
         $repr .= $kritikere ?: 'ukjent';
 
         if ($this->dato) {
-            $repr .= ' (' . $this->dato . ')';
+            $repr .= ' ('.$this->dato.')';
         }
 
         if (strlen($repr) && $this->tittel) {
@@ -169,7 +169,7 @@ class Record extends \App\Record
         }
 
         if ($this->tittel) {
-            $repr .= '«' . $this->tittel . '»';
+            $repr .= '«'.$this->tittel.'»';
         }
 
         if (strlen($repr) && $this->publikasjon) {
@@ -177,13 +177,13 @@ class Record extends \App\Record
         }
 
         if ($this->publikasjon) {
-            $repr .= '<em>' . $this->publikasjon . '</em>';
+            $repr .= '<em>'.$this->publikasjon.'</em>';
         }
         if ($this->bind) {
-            $repr .= ' bd. ' . $this->bind . '';
+            $repr .= ' bd. '.$this->bind.'';
         }
         if ($this->nummer) {
-            $repr .= ' nr. ' . $this->nummer . '';
+            $repr .= ' nr. '.$this->nummer.'';
         }
 
         if (strlen($repr)) {
@@ -195,7 +195,7 @@ class Record extends \App\Record
 
     public function representation()
     {
-        $repr = '<a href="' . action('LitteraturkritikkController@show', $this->id) . '">';
+        $repr = '<a href="'.action('LitteraturkritikkController@show', $this->id).'">';
 
         $repr .= $this->formatKritikk();
         $kritikktype = $this->preferredKritikktype($this->kritikktype);
@@ -203,10 +203,10 @@ class Record extends \App\Record
 
         $repr .= '</a><br>';
 
-        $repr .= ' ' . $this->formatKritikkType($kritikktype);
+        $repr .= ' '.$this->formatKritikkType($kritikktype);
 
         if ($kritikktype && $verk) {
-            $repr .= ' ' . $this->kritikktypeSkilleord($kritikktype) . ': ';
+            $repr .= ' '.$this->kritikktypeSkilleord($kritikktype).': ';
         } elseif ($verk) {
             $repr .= 'Om: ';
         }

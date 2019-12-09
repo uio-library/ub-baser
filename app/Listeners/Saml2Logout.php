@@ -3,8 +3,6 @@
 namespace App\Listeners;
 
 use Aacotroneo\Saml2\Events\Saml2LogoutEvent;
-use App\User;
-use Carbon\Carbon;
 
 class Saml2Logout
 {

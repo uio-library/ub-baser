@@ -43,7 +43,7 @@ abstract class Schema implements \JsonSerializable
         $keys = [];
         foreach ($this->keys() as $key) {
             if (in_array($key, $keys)) {
-                throw new \RuntimeException('Schema key "' . $key . '" is not unique!');
+                throw new \RuntimeException('Schema key "'.$key.'" is not unique!');
             }
             $keys[] = $key;
         }
@@ -86,7 +86,7 @@ abstract class Schema implements \JsonSerializable
      */
     public function keys(): array
     {
-        return array_map(function ($field) {
+        return array_map(function($field) {
             return $field->key;
         }, $this->flat());
     }

@@ -23,7 +23,7 @@ class ImportCommand extends Command
         $nFields = count($this->fields);
 
         if ($nFields != count($data[0])) {
-            throw new \ErrorException('Expected ' . $nFields . ' fields, got ' . count($data[0]) . ' fields.');
+            throw new \ErrorException('Expected '.$nFields.' fields, got '.count($data[0]).' fields.');
         }
 
         for ($i = 0; $i < $nRecords; $i++) {
@@ -39,7 +39,7 @@ class ImportCommand extends Command
     public function getData($filename)
     {
         $data = json_decode(file_get_contents($filename));
-        $this->comment('Read ' . count($data) . ' records from ' . $filename);
+        $this->comment('Read '.count($data).' records from '.$filename);
 
         $data = $this->mapToFields($data);
 

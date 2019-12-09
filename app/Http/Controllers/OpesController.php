@@ -3,7 +3,6 @@ namespace App\Http\Controllers;
 
 use App\PubOpes;
 use App\OpesRecord;
-use App\Page;
 use App\RecordQueryBuilderOpes;
 use Illuminate\Http\Request;
 
@@ -57,7 +56,7 @@ class OpesController extends RecordController
           // 'opes_pub', 'opes.id', '=', 'opes_pub.papy_id' */
 
 
-          // vi vet ikke hva dette er....
+            // vi vet ikke hva dette er....
         $data['publikasjoner'] = $this->getPublications();
 
 

@@ -68,10 +68,10 @@ abstract class SchemaField implements JsonSerializable
         foreach ($data as $key => $value) {
             if (in_array($key, ['type', 'key', 'searchOptions'])) {
                 // pass
-            } elseif (method_exists($field, 'set' . Str::ucfirst($key))) {
-                $field->{'set' . Str::ucfirst($key)}($value, $schemaOptions);
+            } elseif (method_exists($field, 'set'.Str::ucfirst($key))) {
+                $field->{'set'.Str::ucfirst($key)}($value, $schemaOptions);
             } else {
-                throw new \RuntimeException('Unknown schema attribute: ' . $key);
+                throw new \RuntimeException('Unknown schema attribute: '.$key);
             }
         }
 
@@ -89,7 +89,7 @@ abstract class SchemaField implements JsonSerializable
     public static function newFieldFromType(string $fieldType, string $schemaPrefix, string $key): SchemaField
     {
         if (!isset(static::$types[$fieldType])) {
-            throw new \RuntimeException('Schema contains field of unrecognized type: ' . $fieldType);
+            throw new \RuntimeException('Schema contains field of unrecognized type: '.$fieldType);
         }
 
         $field = new static::$types[$fieldType]();
@@ -132,7 +132,7 @@ abstract class SchemaField implements JsonSerializable
             self::SEARCH_ADVANCED,
             self::SEARCH_DISABLED,
         ])) {
-            throw new \RuntimeException('Invalid value for "searchable": ' . $value);
+            throw new \RuntimeException('Invalid value for "searchable": '.$value);
         }
         $this->data['searchable'] = $value;
     }

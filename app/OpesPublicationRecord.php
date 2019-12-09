@@ -15,29 +15,29 @@ class OpesPublicationRecord extends Record
     public function papyrusid()
     {
 
-         $repr = $this->papyrusid;
-         return $repr;
+            $repr = $this->papyrusid;
+            return $repr;
     }
 
     public function Ser_Vol()
     {
 
         $repr = $this->Ser_Vol;
-         return $repr;
+            return $repr;
     }
 
     public function Editor()
     {
 
         $repr = $this->id2;
-         return $repr;
+            return $repr;
     }
 
     public function Year()
     {
 
         $repr = $this->Year;
-         return $repr;
+            return $repr;
     }
 
 
@@ -45,14 +45,14 @@ class OpesPublicationRecord extends Record
     {
 
         $repr = $this->Pg_No;
-         return $repr;
+            return $repr;
     }
 
     public function Photo()
     {
 
         $repr = $this->Photo;
-         return $repr;
+            return $repr;
     }
 
 
@@ -60,14 +60,14 @@ class OpesPublicationRecord extends Record
     {
 
         $repr = $this->SB;
-         return $repr;
+            return $repr;
     }
 
     public function Corrections()
     {
 
         $repr = $this->Corrections;
-         return $repr;
+            return $repr;
     }
 
 
@@ -75,14 +75,14 @@ class OpesPublicationRecord extends Record
     {
 
         $repr = $this->Preferred_Citation;
-         return $repr;
+            return $repr;
     }
 
     public function DDBDP_PMichCitation()
     {
 
         $repr = $this->DDBDP_PMichCitation;
-         return $repr;
+            return $repr;
     }
 
 
@@ -90,7 +90,7 @@ class OpesPublicationRecord extends Record
     {
 
         $repr = $this->DDBDP_OMichCitation;
-         return $repr;
+            return $repr;
     }
 
 
@@ -98,20 +98,20 @@ class OpesPublicationRecord extends Record
     {
 
         $repr = $this->Perseus_URL;
-         return $repr;
+            return $repr;
     }
 
     public function DDBDP_P_REP()
     {
 
         $repr = $this->DDBDP_P_REP;
-         return $repr;
+            return $repr;
     }
 
     public function DDBDP_O_REP()
     {
 
         $repr = $this->DDBDP_O_REP;
-         return $repr;
+            return $repr;
     }
 }
