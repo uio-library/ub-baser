@@ -3,10 +3,10 @@
 @section('content')
 
 <p>
-	<a href="{{ URL::previous() }}"><i class="fa fa-arrow-circle-left"></i> Tilbake</a>
+	<a href="{{ URL::previous() }}"><em class="fa fa-arrow-circle-left"></em> Tilbake</a>
 	@can('dommer')
 		&nbsp;
-		<a href="{{ action('DommerController@edit', $record->id) }}"><i class="fa fa-edit"></i> Rediger post</a>
+		<a href="{{ action('DommerController@edit', $record->id) }}"><em class="fa fa-edit"></em> Rediger post</a>
 	@endcan
 </p>
 

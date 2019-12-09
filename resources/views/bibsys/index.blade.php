@@ -4,7 +4,7 @@
 
     @can('bibsys')
         <p>
-            <a href="{{ action('PageController@edit', ['page' => 'bibsys/intro']) }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
+            <a href="{{ action('PageController@edit', ['page' => 'bibsys/intro']) }}"><em class="fa fa-edit"></em> Rediger introtekst</a>
         </p>
     @endif
 

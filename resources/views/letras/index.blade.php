@@ -4,9 +4,9 @@
 
     @can('letras')
         <p>
-            <a href="{{ action('LetrasController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
+            <a href="{{ action('LetrasController@create') }}"><em class="fa fa-file"></em> Opprett ny post</a>
             &nbsp;
-            <a href="{{ action('PageController@edit', ['page' => 'letras/intro']) }}"><i class="fa fa-edit"></i> Rediger introtekst</a>
+            <a href="{{ action('PageController@edit', ['page' => 'letras/intro']) }}"><em class="fa fa-edit"></em> Rediger introtekst</a>
         </p>
     @endif
 

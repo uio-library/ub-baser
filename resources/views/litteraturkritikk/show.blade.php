@@ -17,7 +17,7 @@
         @can('litteraturkritikk')
 
             <a href="{{ action('LitteraturkritikkController@edit', $record->id) }}" class="btn btn-outline-primary">
-                <i class="fa fa-edit"></i>
+                <em class="fa fa-edit"></em>
                 Rediger post
             </a>
 

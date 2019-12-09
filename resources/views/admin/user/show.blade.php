@@ -20,25 +20,26 @@
 
 
     <table class="table">
+        <caption class="sr-only">Liste over brukere</caption>
         <tbody>
             <tr>
-                <td>Navn</td>
+                <th scope="row">Navn</th>
                 <td>{{ $user->name }}</td>
             </tr>
             <tr>
-                <td>E-post</td>
+                <th scope="row">E-post</th>
                 <td>{{ $user->email }}</td>
             </tr>
             <tr>
-                <td>Registrert</td>
+                <th scope="row">Registrert</th>
                 <td>{{ $user->created_at }}</td>
             </tr>
             <tr>
-                <td>Sist innlogget</td>
+                <th scope="row">Sist innlogget</th>
                 <td>{{ $user->last_login_at }}</td>
             </tr>
             <tr>
-                <td>Tilganger</td>
+                <th scope="row">Tilganger</th>
                 <td>{{ implode(', ', $user->rights) }}</td>
             </tr>
         </tbody>

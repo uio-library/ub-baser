@@ -4,7 +4,7 @@
 
     @can($page->permission)
         <p>
-            <a href="{{ action('PageController@edit', ['page' => $page->slug]) }}"><i class="fa fa-edit"></i> Rediger tekst</a>
+            <a href="{{ action('PageController@edit', ['page' => $page->slug]) }}"><em class="fa fa-edit"></em> Rediger tekst</a>
         </p>
     @endif
     <div class="fr-view">

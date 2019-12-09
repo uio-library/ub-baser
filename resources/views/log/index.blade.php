@@ -25,12 +25,19 @@
 
         </div>
             <table class="table table-striped table-sm">
+                <caption class="sr-only">Liste over loggmeldinger</caption>
+                <tr>
+                    <th scope="col">Tidspunkt</th>
+                    <th scope="col">Nivå</th>
+                    <th scope="col">Melding</th>
+                    <th scope="col">Kategorier</th>
+                </tr>
                 @foreach ($entries as $entry)
                     <tr>
-                        <td valign="top" style="white-space:nowrap; padding-left: 20px">
+                        <td style="white-space: nowrap; vertical-align: top;">
                             <small style="white-space:nowrap">{{ $entry->time }}</small>
                         </td>
-                        <td valign="top" style="white-space:nowrap">
+                        <td style="white-space: nowrap; vertical-align: top;">
                             <span class="badge badge-{{ strtolower($entry->level_name) != 'error' ? strtolower($entry->level_name) : 'danger' }}">{{ $entry->level_name }}</span>
                         </td>
                         <td>

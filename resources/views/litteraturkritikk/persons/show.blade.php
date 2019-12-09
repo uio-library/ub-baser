@@ -4,7 +4,7 @@
 
     <p>
         @can('litteraturkritikk')
-        <a href="{{ action('LitteraturkritikkPersonController@edit', $person->id) }}"><i class="fa fa-edit"></i> Rediger person</a>
+        <a href="{{ action('LitteraturkritikkPersonController@edit', $person->id) }}"><em class="fa fa-edit"></em> Rediger person</a>
         @endcan
     </p>
 

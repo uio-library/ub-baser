@@ -4,17 +4,17 @@ index.blade.php
 @section('content')
 
         <p>
-             
+
             @can('opes')
-                <a href="{{ action('OpesController@create') }}"><i class="fa fa-file"></i> Opprett ny post</a>
-                
-                 
+                <a href="{{ action('OpesController@create') }}"><em class="fa fa-file"></em> Opprett ny post</a>
+
+
             @endif
-          
-           
+
+
         </p>
 
-        
+
 
 
       <div class="panel panel-default">
@@ -30,28 +30,28 @@ index.blade.php
                             <input type="text" class="form-control" id="inv_no" name="inv_no" value="{{ array_get($query, 'inv_no') }}">
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="type_of_text_file" class="col-sm-2 control-label">{{ trans('opes.type_of_text_file') }}</label>
                         <div class="col-sm-2">
                         <input type="text" class="form-control" id="type_of_text_file" name="type_of_text_file" value="{{ array_get($query, 'type_of_text_file') }}">
                         </div>
-                                      
+
                     </div>
                     <div class="form-group">
                         <label for="ti" class="col-sm-2 control-label"></label>
                         <div class="col-sm-2">
-                            <button type="submit" class="btn btn-primary btn-block"><i class="zmdi zmdi-search"></i> {{ trans('messages.search') }}</button>
+                            <button type="submit" class="btn btn-primary btn-block"><em class="zmdi zmdi-search"></em> {{ trans('messages.search') }}</button>
                         </div>
-                    </div>                  
+                    </div>
                 </form>
             </div>
         </div>
-  
 
 
 
-       <div class="container">  
+
+       <div class="container">
     <table border="0" cellpadding="0" cellspacing="0" class="table table-striped">
     @if(count($records)>0) {{-- If there is data then display it --}}
     <thead>
@@ -62,9 +62,9 @@ index.blade.php
           {{ trans($prefix . '.' . $column['field']) }}
           @if ($sortColumn == $column['field'])
             @if ($sortOrder == 'asc')
-              <i class="zmdi zmdi-sort-amount-asc"></i>
+              <em class="zmdi zmdi-sort-amount-asc"></em>
             @else
-              <i class="zmdi zmdi-sort-amount-desc"></i>
+              <em class="zmdi zmdi-sort-amount-desc"></em>
             @endif
           @endif
         </a>
@@ -74,7 +74,7 @@ index.blade.php
   </thead>
     <tbody>
     @foreach ($records as $record)
-    
+
     <tr>
                 <td>
                     <a href="{{ action('OpesController@show', $record->id) }}">
@@ -88,13 +88,13 @@ index.blade.php
                 <td>
                         {{ $record->type_of_text_file }}
                 </td>
-                
+
     </tr>
     @endforeach
     </tbody>
     <tr>
       <td colspan="2">
-        <div class="pagination">{!! str_replace('/?', '?', $records->render()) !!}</div>      
+        <div class="pagination">{!! str_replace('/?', '?', $records->render()) !!}</div>
       </td>
     </tr>
     @else
@@ -106,6 +106,6 @@ index.blade.php
   </div>
 </body>
 
-       
+
 
 @endsection

@@ -10,7 +10,7 @@
               @input="$emit('value', $event.target.value)"
         >
         <span class="autocomplete-icon" v-if="working">
-          <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+          <em class="fa fa-circle-o-notch fa-spin fa-fw"></em>
         </span>
     </div>
 </template>
