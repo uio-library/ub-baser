@@ -8,9 +8,7 @@ class ImportDommerCommand extends ImportCommand
         'navn',
         'aar',
         'side',
-        'note',
         'kilde_id',
-        'id',
     ];
 
     /**
@@ -75,6 +73,10 @@ class ImportDommerCommand extends ImportCommand
 
         $this->fillDommerKilderTable();
         $this->importDommerTable($filename);
+
+        $this->comment('Refreshing views');
+
+        \DB::unprepared('REFRESH MATERIALIZED VIEW dommer_view');
 
         $this->comment('Updating sequences');
 
