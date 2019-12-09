@@ -2,10 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Password;
 use Symfony\Component\Process\Process;
 
 class DatabaseDumpCommand extends Command

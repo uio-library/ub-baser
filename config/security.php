@@ -17,7 +17,7 @@ return [
                     "'self'",
                 ],
                 'img-src' => [
-                    "'self'"
+                    "'self'",
                 ],
                 'script-src' => [
                     "'self'",
@@ -27,7 +27,7 @@ return [
                     "'self'",
                     "'unsafe-inline'",
                 ],
-            ]
+            ],
         ],
     ],
 ];

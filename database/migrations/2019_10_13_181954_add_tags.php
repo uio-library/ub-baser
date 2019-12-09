@@ -1,15 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddTags extends Migration
 {
     protected function dropView()
     {
         DB::unprepared('DROP MATERIALIZED VIEW litteraturkritikk_records_search');
-
     }
 
     protected function recreateView($withTags)
@@ -40,7 +39,7 @@ class AddTags extends Migration
                 || TO_TSVECTOR('simple', COALESCE(r.kommentar, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.utgivelseskommentar, ''))
                 || TO_TSVECTOR('simple', r.kritikktype::text)
-                " . ($withTags ? "|| TO_TSVECTOR('simple', r.tags::text)" : "") . "
+                " . ($withTags ? "|| TO_TSVECTOR('simple', r.tags::text)" : '') . "
                 || TO_TSVECTOR('simple', COALESCE(r.verk_tittel, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.verk_dato, ''))
                 || TO_TSVECTOR('simple', COALESCE(r.verk_kommentar, ''))

@@ -1,15 +1,14 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\PubOpes;
 use App\OpesRecord;
-use App\Page;
+use App\PubOpes;
 use App\RecordQueryBuilderOpes;
 use Illuminate\Http\Request;
 
 class OpesController extends RecordController
 {
-    
     // ny function laget 2 august 2016
     // henter ut verdier for alle publication for hver
     //
@@ -19,23 +18,17 @@ class OpesController extends RecordController
         foreach (PubOpes::all() as $publi) {
             $publi[$publi->id] = $publi->Ser_Vol;
         }
-    
+
         return $publi;
     }
-
-
-
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    
-
     public function index(Request $request)
     {
-        
         $q = new RecordQueryBuilderOpes($request, 'opes', OpesRecord::class);
         $q->make();
         $data = [
@@ -56,21 +49,11 @@ class OpesController extends RecordController
          // join('opes_pub', 'opes.id', '=', 'opes_pub.papy_id')
           // 'opes_pub', 'opes.id', '=', 'opes_pub.papy_id' */
 
-
-          // vi vet ikke hva dette er....
+        // vi vet ikke hva dette er....
         $data['publikasjoner'] = $this->getPublications();
-
 
         return response()->view('opes.index', $data);
     }
-
-
-
-
-
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -116,7 +99,7 @@ class OpesController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     /* public function create()
     {
         $this->authorize('opes');
@@ -126,7 +109,6 @@ class OpesController extends RecordController
         return response()->view('opes.create', $data);
     } */
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -134,28 +116,30 @@ class OpesController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
-    
-/*
-    public function store(Request $request)
-    {
-        $this->authorize('opes');
-        $record = $this->updateOrCreate($request);
-        return redirect()->action('OpesController@show', $record->id)
-            ->with('status', 'Posten ble opprettet.');
-    }
-*/
+
+    /*
+        public function store(Request $request)
+        {
+            $this->authorize('opes');
+            $record = $this->updateOrCreate($request);
+            return redirect()->action('OpesController@show', $record->id)
+                ->with('status', 'Posten ble opprettet.');
+        }
+    */
 
     public function show($id)
     {
         $record = OpesRecord::findOrFail($id);
-     
+
         $data = [
             'columns' => config('baser.opes.columns'),
             'record'  => $record,
         ];
+
         return response()->view('opes.show', $data);
     }
-    /**
+
+    /*
      * Show the form for editing the specified resource.
      *
      * @param int $id
@@ -173,7 +157,7 @@ class OpesController extends RecordController
         return response()->view('opes.edit', $data);
     } */
 
-    /**
+    /*
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -181,7 +165,7 @@ class OpesController extends RecordController
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     /* public function update(Request $request, $id)
     {
         $this->authorize('opes');

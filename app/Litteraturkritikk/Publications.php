@@ -2,11 +2,9 @@
 
 namespace App\Litteraturkritikk;
 
-use Illuminate\Support\Arr;
-
-class Publications {
-
-    static protected $newspapers = [
+class Publications
+{
+    protected static $newspapers = [
         'Aftenposten',
         'VG',
         'Tidens Tegn',
@@ -328,7 +326,7 @@ class Publications {
         'Ny Tid',
     ];
 
-    static protected $unclassified = [
+    protected static $unclassified = [
         'Mot Dag',
         'Unglyden',
         'Stavangeren',
@@ -1243,11 +1241,13 @@ class Publications {
         'Øvre Smaalenene',
     ];
 
-    static public function isNewspaper($value) {
+    public static function isNewspaper($value)
+    {
         return in_array($value, self::$newspapers, true);
     }
 
-    static public function isJournal($value) {
+    public static function isJournal($value)
+    {
         return in_array($value, self::$journals, true);
     }
 }

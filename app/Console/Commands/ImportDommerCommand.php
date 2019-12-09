@@ -2,9 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Dommer\DommerRecord;
-use Carbon\Carbon;
-
 class ImportDommerCommand extends ImportCommand
 {
     protected $fields = [

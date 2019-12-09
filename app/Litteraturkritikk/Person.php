@@ -27,7 +27,7 @@ class Person extends \Eloquent
      *
      * @var array
      */
-    protected $fillable = ['etternavn', 'fornavn', 'kjonn', 'fodt', 'dod', 'bibsys_id', 'wikidata_id',];
+    protected $fillable = ['etternavn', 'fornavn', 'kjonn', 'fodt', 'dod', 'bibsys_id', 'wikidata_id'];
 
     /**
      * The records this person belongs to.
@@ -87,6 +87,7 @@ class Person extends \Eloquent
         if ($this->kjonn == 'u') {
             return 'ukjent';
         }
+
         return '';
     }
 }

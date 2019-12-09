@@ -74,6 +74,7 @@ class Record extends \App\Record
         if ($name == 'debatt') {
             $name = 'Debatt';
         }
+
         return ucfirst($name);
     }
 
@@ -254,9 +255,7 @@ class Record extends \App\Record
     {
         $query = ['q' => []];
 
-
         if ($group == 'Kritikken') {
-
             $dato = $this->dato;
 
             if ($this->isNewspaper()) {
@@ -266,9 +265,7 @@ class Record extends \App\Record
                 $query['mediatype'] = 'tidsskrift';
                 $query['title'] = $this->publikasjon;
             }
-
         } else {
-
             $dato = $this->verk_dato;
 
             $query['mediatype'] = 'bøker';
@@ -276,7 +273,6 @@ class Record extends \App\Record
             if ($this->verk_tittel) {
                 $query['title'] = $this->verk_tittel;
             }
-
         }
 
         if ($dato && strlen($dato) <= 10) {
@@ -289,7 +285,6 @@ class Record extends \App\Record
         }
 
         if ($group == 'Kritikken') {
-
             if ($this->nummer) {
                 $query['q'][] = $this->nummer;
             }
@@ -302,14 +297,12 @@ class Record extends \App\Record
             if ($forfatter !== null) {
                 $query['q'][] = $forfatter->etternavn;
             }
-
         } else {
             $forfatter = $this->forfattere()->first();
             if ($forfatter !== null) {
                 $query['name'] = $forfatter->etternavn;
             }
         }
-
 
         $query['q'] = implode(' ', $query['q']);
 

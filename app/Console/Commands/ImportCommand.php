@@ -33,6 +33,7 @@ class ImportCommand extends Command
             }
             $data[$i] = $row;
         }
+
         return $data;
     }
 

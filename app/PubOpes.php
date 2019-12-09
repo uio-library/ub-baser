@@ -29,7 +29,7 @@ class PubOpes extends \Eloquent
     {
         return $this->Editor;
     }
-    
+
     public function Year()
     {
         return $this->Year;

@@ -2,13 +2,9 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\PageController;
-use App\Page;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use PDOException;
 
 class RouteServiceProvider extends ServiceProvider
 {

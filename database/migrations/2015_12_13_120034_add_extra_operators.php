@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddExtraOperators extends Migration
@@ -12,7 +11,7 @@ class AddExtraOperators extends Migration
      */
     public function up()
     {
-        /**
+        /*
          * Problem: The question mark operators can't be used in parameterised queries.
          * Solution: Define new operators that can be used in parameterised queries.
          *

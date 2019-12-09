@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class OptimizeBibsysIndices extends Migration
 {
@@ -33,7 +31,6 @@ class OptimizeBibsysIndices extends Migration
                 CREATE INDEX bibsys_search_${field}_idx ON bibsys_search(lower(${field}))
             ");
         }
-
     }
 
     /**

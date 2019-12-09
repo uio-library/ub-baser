@@ -21,7 +21,6 @@ class CreateDommerTable extends Migration
         });
 
         Schema::create('dommer', function (Blueprint $table) {
-
             $this->addCommonFields($table);
 
             $table->string('navn');
@@ -40,7 +39,7 @@ class CreateDommerTable extends Migration
                 ->references('id')->on('dommer_kilder');
         });
 
-        DB::unprepared("
+        DB::unprepared('
             CREATE VIEW dommer_view AS
                 SELECT
                     d.*,
@@ -50,7 +49,7 @@ class CreateDommerTable extends Migration
 
                 JOIN dommer_kilder AS kilder
                     ON d.kilde_id = kilder.id
-        ");
+        ');
     }
 
     /**

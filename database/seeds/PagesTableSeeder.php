@@ -23,7 +23,7 @@ class PagesTableSeeder extends Seeder
                 'updated_by' => 1,
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
-            ],[
+            ], [
                 'layout' => 'layouts.litteraturkritikk',
                 'slug' => 'norsk-litteraturkritikk/om',
                 'permission' => 'litteraturkritikk',
@@ -34,7 +34,7 @@ class PagesTableSeeder extends Seeder
                 'updated_by' => 1,
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
-            ],[
+            ], [
                 'layout' => 'layouts.litteraturkritikk',
                 'slug' => 'norsk-litteraturkritikk/kilder',
                 'permission' => 'litteraturkritikk',
@@ -45,7 +45,7 @@ class PagesTableSeeder extends Seeder
                 'updated_by' => 1,
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
-            ],[
+            ], [
                 'layout' => 'layouts.litteraturkritikk',
                 'slug' => 'norsk-litteraturkritikk/felter',
                 'permission' => 'litteraturkritikk',
@@ -56,7 +56,7 @@ class PagesTableSeeder extends Seeder
                 'updated_by' => 1,
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
-            ],[
+            ], [
                 'layout' => 'layouts.dommer',
                 'slug' => 'dommer/intro',
                 'permission' => 'dommer',
@@ -72,7 +72,7 @@ class PagesTableSeeder extends Seeder
                 'updated_by' => 1,
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
-            ],[
+            ], [
                 'layout' => 'layouts.letras',
                 'slug' => 'letras/intro',
                 'permission' => 'letras',
@@ -89,7 +89,7 @@ class PagesTableSeeder extends Seeder
                 'updated_by' => 1,
                 'created_at' => '2015-12-13 13:32:23',
                 'updated_at' => '2015-12-13 13:32:23',
-            ]
+            ],
         ]);
     }
 }

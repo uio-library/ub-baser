@@ -99,7 +99,6 @@ class LetrasSchema extends Schema
                         'type' => 'simple',
                     ],
 
-
                     // Utgivelsesår
                     [
                         'key' => 'utgivelsesaar2',

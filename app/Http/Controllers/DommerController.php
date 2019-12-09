@@ -17,7 +17,8 @@ class DommerController extends RecordController
      * Display a listing of the resource.
      *
      * @param DommerSearchRequest $request
-     * @param DommerSchema $schema
+     * @param DommerSchema        $schema
+     *
      * @return Response
      */
     public function index(DommerSearchRequest $request, DommerSchema $schema)
@@ -46,14 +47,14 @@ class DommerController extends RecordController
             ],
             'order' => [
                 ['key' => 'aar', 'direction' => 'desc'],
-            ]
+            ],
         ]);
     }
 
     /**
      * Store a newly created record, or update an existing one.
      *
-     * @param Request $request
+     * @param Request      $request
      * @param DommerSchema $schema
      * @param DommerRecord $record
      */
@@ -78,6 +79,7 @@ class DommerController extends RecordController
      * Show the form for creating a new resource.
      *
      * @param DommerSchema $schema
+     *
      * @return Response
      */
     public function create(DommerSchema $schema)
@@ -92,8 +94,9 @@ class DommerController extends RecordController
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param Request      $request
      * @param DommerSchema $schema
+     *
      * @return Response
      */
     public function store(Request $request, DommerSchema $schema)
@@ -118,6 +121,7 @@ class DommerController extends RecordController
      * Display the specified resource.
      *
      * @param int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -131,7 +135,8 @@ class DommerController extends RecordController
      * Show the form for editing the specified resource.
      *
      * @param DommerSchema $schema
-     * @param int $id
+     * @param int          $id
+     *
      * @return Response
      */
     public function edit(DommerSchema $schema, $id)
@@ -148,9 +153,10 @@ class DommerController extends RecordController
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param Request      $request
      * @param DommerSchema $schema
-     * @param int $id
+     * @param int          $id
+     *
      * @return Response
      */
     public function update(Request $request, DommerSchema $schema, $id)
@@ -186,6 +192,7 @@ class DommerController extends RecordController
      * Autocomplete a field. Currently hard-coded for "kilde", but could easily be expanded if needed.
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function autocomplete(Request $request)

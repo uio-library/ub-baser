@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Schema\Schema;
-use App\Letras\LetrasSchema;
 use App\Letras\LetrasRecord;
+use App\Letras\LetrasSchema;
+use App\Schema\Schema;
 use Illuminate\Database\Eloquent\Builder;
 
 class LetrasSearchRequest extends SearchRequest

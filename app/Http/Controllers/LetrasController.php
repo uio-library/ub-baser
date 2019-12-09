@@ -6,9 +6,7 @@ use App\Http\Requests\LetrasSearchRequest;
 use App\Letras\LetrasRecord;
 use App\Letras\LetrasSchema;
 use App\Page;
-use App\RecordQBuilderLetras;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class LetrasController extends RecordController
 {
@@ -18,10 +16,10 @@ class LetrasController extends RecordController
      * Display a listing of the resource.
      *
      * @param LetrasSearchRequest $request
-     * @param LetrasSchema $schema
+     * @param LetrasSchema        $schema
+     *
      * @return \Illuminate\Http\Response
      */
-
     public function index(LetrasSearchRequest $request, LetrasSchema $schema)
     {
         if ($request->wantsJson()) {
@@ -53,7 +51,7 @@ class LetrasController extends RecordController
             ],
             'order' => [
                 ['key' => 'utgivelsesaar', 'direction' => 'desc'],
-            ]
+            ],
 
         ]);
     }
@@ -134,7 +132,6 @@ class LetrasController extends RecordController
         $record->foretterord = $request->get('foretterord');
         $record->spraak = $request->get('spraak');
 
-
         $record->save();
 
         return $record;
@@ -144,8 +141,10 @@ class LetrasController extends RecordController
      * Show the form for creating a new resource.
      *
      * @param LetrasSchema $schema
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function create(LetrasSchema $schema)
     {
@@ -196,10 +195,11 @@ class LetrasController extends RecordController
      * Show the form for editing the specified resource.
      *
      * @param LetrasSchema $schema
-     * @param int $id
+     * @param int          $id
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(LetrasSchema $schema, $id)
     {

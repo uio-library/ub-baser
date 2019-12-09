@@ -7,9 +7,9 @@ class SchemaGroup implements \JsonSerializable
     public $label;
     public $fields;
 
-    public static function make(array $data, string $schemaPrefix, array $options): SchemaGroup
+    public static function make(array $data, string $schemaPrefix, array $options): self
     {
-        $schemaGroup = new SchemaGroup();
+        $schemaGroup = new self();
         $schemaGroup->label = $data['label'];
         $schemaGroup->fields = SchemaFields::make($data['fields'], $schemaPrefix, $options);
 
@@ -17,10 +17,12 @@ class SchemaGroup implements \JsonSerializable
     }
 
     /**
-     * Specify data which should be serialized to JSON
+     * Specify data which should be serialized to JSON.
+     *
      * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     *
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *               which is a value of any type other than a resource.
      */
     public function jsonSerialize()
     {
