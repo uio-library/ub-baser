@@ -6,11 +6,9 @@ use App\Http\Requests\LitteraturkritikkSearchRequest;
 use App\Litteraturkritikk\Autocompleter;
 use App\Litteraturkritikk\LitteraturkritikkSchema;
 use App\Litteraturkritikk\Person;
-use App\Litteraturkritikk\PersonView;
 use App\Litteraturkritikk\Record;
 use App\Page;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 
 class LitteraturkritikkController extends RecordController
@@ -27,7 +25,8 @@ class LitteraturkritikkController extends RecordController
      *
      *
      * @param LitteraturkritikkSearchRequest $request
-     * @param LitteraturkritikkSchema $schema
+     * @param LitteraturkritikkSchema        $schema
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(LitteraturkritikkSearchRequest $request, LitteraturkritikkSchema $schema)
@@ -61,7 +60,7 @@ class LitteraturkritikkController extends RecordController
             ],
             'order' => [
                 ['key' => 'dato', 'direction' => 'asc'],
-            ]
+            ],
         ]);
     }
 
@@ -87,8 +86,9 @@ class LitteraturkritikkController extends RecordController
      * Store a newly created record, or update an existing one.
      *
      * @param \Illuminate\Http\Request $request
-     * @param LitteraturkritikkSchema $schema
-     * @param Record $record
+     * @param LitteraturkritikkSchema  $schema
+     * @param Record                   $record
+     *
      * @throws ValidationException
      */
     protected function updateOrCreate(Request $request, LitteraturkritikkSchema $schema, Record $record) : array
@@ -140,8 +140,10 @@ class LitteraturkritikkController extends RecordController
      * Show the form for creating a new resource.
      *
      * @param LitteraturkritikkSchema $schema
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function create(LitteraturkritikkSchema $schema)
     {
@@ -173,10 +175,11 @@ class LitteraturkritikkController extends RecordController
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
+     * @param LitteraturkritikkSchema  $schema
      *
-     * @param LitteraturkritikkSchema $schema
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request, LitteraturkritikkSchema $schema)
     {
@@ -200,7 +203,7 @@ class LitteraturkritikkController extends RecordController
      * Display the specified resource.
      *
      * @param LitteraturkritikkSchema $schema
-     * @param int $id
+     * @param int                     $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -225,11 +228,12 @@ class LitteraturkritikkController extends RecordController
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param LitteraturkritikkSchema $schema
-     * @param int $id
+     * @param LitteraturkritikkSchema  $schema
+     * @param int                      $id
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, LitteraturkritikkSchema $schema, $id)
     {
@@ -245,6 +249,7 @@ class LitteraturkritikkController extends RecordController
                 action('LitteraturkritikkController@show', $record->id)
             );
         }
+
         return redirect()->action('LitteraturkritikkController@show', $id)
             ->with('status', 'Posten ble lagret');
     }
@@ -302,10 +307,11 @@ class LitteraturkritikkController extends RecordController
 
     /**
      * Sync persons for a record.
-     * (The most messy method in UB-baser?)
+     * (The most messy method in UB-baser?).
      *
      * @param Record $record
-     * @param array $input
+     * @param array  $input
+     *
      * @return array
      */
     protected function syncPersons(Record $record, array $input): array

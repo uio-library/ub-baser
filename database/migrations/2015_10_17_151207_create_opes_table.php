@@ -16,7 +16,6 @@ class CreateOpesTable extends Migration
     public function up()
     {
         Schema::create('opes', function (Blueprint $table) {
-
             $this->addCommonFields($table);
 
             $table->string('navn');
@@ -30,14 +29,14 @@ class CreateOpesTable extends Migration
             $table->index('side');
         });
 
-         /** opes_id i opes_pub sin record maa kunne ha samme verdi    **/
-         Schema::create('opes_pub', function (Blueprint $table) {
+        /* opes_id i opes_pub sin record maa kunne ha samme verdi    **/
+        Schema::create('opes_pub', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('opes_id')->unsigned();
             $table->string('navn');
             $table->foreign('opes_id')
                 ->references('id')->on('opes');
-         });
+        });
     }
 
     /**

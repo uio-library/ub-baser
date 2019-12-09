@@ -53,7 +53,7 @@ class PurgeLogs extends Command
         if ($deleted > 0) {
             $this->logInfo("{$deleted} loggmeldinger eldre enn {$days} dager ble slettet automatisk.");
         } else {
-            $this->info("Ingen loggmeldinger ble slettet");
+            $this->info('Ingen loggmeldinger ble slettet');
         }
     }
 }

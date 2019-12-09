@@ -63,6 +63,7 @@ abstract class Schema implements \JsonSerializable
                 $out[] = $field;
             }
         }
+
         return $out;
     }
 
@@ -78,6 +79,7 @@ abstract class Schema implements \JsonSerializable
         foreach ($fields as &$field) {
             $out[$field->key] = $field;
         }
+
         return $out;
     }
 

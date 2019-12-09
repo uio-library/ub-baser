@@ -21,7 +21,7 @@ abstract class SchemaField implements JsonSerializable
 
     public $data = [];
 
-    public static $types = array(
+    public static $types = [
         'autocomplete' => AutocompleteField::class,
         'boolean' => BooleanField::class,
         'incrementing' => IncrementingField::class,
@@ -31,7 +31,7 @@ abstract class SchemaField implements JsonSerializable
         'simple' => SimpleField::class,
         'tags' => TagsField::class,
         'url' => UrlField::class,
-    );
+    ];
 
     public function __construct()
     {
@@ -51,12 +51,13 @@ abstract class SchemaField implements JsonSerializable
     /**
      * Factory method to initialize a schema field from JSON data.
      *
-     * @param array $data
+     * @param array  $data
      * @param string $schemaPrefix
-     * @param array $schemaOptions
+     * @param array  $schemaOptions
+     *
      * @return SchemaField
      */
-    public static function make(array $data, string $schemaPrefix, array $schemaOptions): SchemaField
+    public static function make(array $data, string $schemaPrefix, array $schemaOptions): self
     {
         $field = static::newFieldFromType($data['type'], $schemaPrefix, $data['key']);
 
@@ -84,9 +85,10 @@ abstract class SchemaField implements JsonSerializable
      * @param string $fieldType
      * @param string $schemaPrefix
      * @param string $key
+     *
      * @return mixed
      */
-    public static function newFieldFromType(string $fieldType, string $schemaPrefix, string $key): SchemaField
+    public static function newFieldFromType(string $fieldType, string $schemaPrefix, string $key): self
     {
         if (!isset(static::$types[$fieldType])) {
             throw new \RuntimeException('Schema contains field of unrecognized type: ' . $fieldType);
@@ -248,10 +250,12 @@ abstract class SchemaField implements JsonSerializable
     }
 
     /**
-     * Specify data which should be serialized to JSON
+     * Specify data which should be serialized to JSON.
+     *
      * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     *
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *               which is a value of any type other than a resource.
      */
     public function jsonSerialize(): array
     {
@@ -261,7 +265,8 @@ abstract class SchemaField implements JsonSerializable
     /**
      * Check if an attribute exist using "dot" notation.
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return bool
      */
     public function has(string $key): bool
@@ -273,7 +278,8 @@ abstract class SchemaField implements JsonSerializable
      * Get an attribute using "dot" notation.
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function get(string $key, $default = null)
@@ -282,9 +288,10 @@ abstract class SchemaField implements JsonSerializable
     }
 
     /**
-     * Dynamically retrieve attribute
+     * Dynamically retrieve attribute.
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return mixed
      */
     public function __get($key)

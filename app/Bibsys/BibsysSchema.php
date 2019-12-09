@@ -46,7 +46,7 @@ class BibsysSchema extends Schema
                 'searchOptions' => [
                     'placeholder' => 'Du kan søke etter objektid, dokid, knyttid, avdeling, samling, tekst i MARC-posten, osv.',
                     'index' => ['type' => 'ts', 'ts_column' => 'any_field_ts'],
-                    'operators' => ['eq', 'neq']
+                    'operators' => ['eq', 'neq'],
                 ],
             ],
         ],
@@ -87,7 +87,7 @@ class BibsysSchema extends Schema
                         'orderable' => false,
                         'searchable' => 'disabled',
                     ],
-                ]
+                ],
             ],
             [
                 'label' => 'Dokumentpost',

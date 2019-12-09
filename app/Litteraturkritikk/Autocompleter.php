@@ -51,6 +51,7 @@ class Autocompleter
                 'value' => $row->{$field->key},
             ];
         }
+
         return $data;
     }
 
@@ -98,6 +99,7 @@ class Autocompleter
                 'record' => $res,
             ];
         }
+
         return $data;
     }
 
@@ -107,8 +109,8 @@ class Autocompleter
             return [];
         }
 
-        # Ref: https://stackoverflow.com/a/31757242/489916
-        # for the #>> '{}' magick
+        // Ref: https://stackoverflow.com/a/31757242/489916
+        // for the #>> '{}' magick
         $results = \DB::select("
             select
                 distinct jd.value #>> '{}' as value
@@ -124,6 +126,7 @@ class Autocompleter
                 'value' => $row->value,
             ];
         }
+
         return $data;
     }
 
@@ -137,7 +140,6 @@ class Autocompleter
             ->where($field->key, 'ilike', $term . '%');
 
         return $this->getResults($query, $field->key);
-
     }
 
     protected function completeWorkTitle(Schema $schema, SchemaField $field, string $term)
@@ -172,6 +174,7 @@ class Autocompleter
                 'count' => $res->cnt,
             ];
         }
+
         return $data;
     }
 }

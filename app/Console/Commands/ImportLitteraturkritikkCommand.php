@@ -9,7 +9,6 @@ use Punic\Language;
 
 class ImportLitteraturkritikkCommand extends ImportCommand
 {
-
     protected $fields = [
         'id',
 
@@ -143,7 +142,6 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         return [$dato_out, $kommentar_out];
     }
 
-
     protected function processRecordRow(&$record)
     {
         $record['kritikktype'] = $this->processKritikktype($record['kritikktype']);
@@ -197,8 +195,10 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             $row[$column] = preg_replace('/m\.?\s?fl\./', '', $row[$column]);
             $row[$column] = trim($row[$column]);
             $this->info(sprintf('Replaced "%s" → "%s"', $oldValue, $row[$column]));
+
             return true;
         }
+
         return false;
     }
 
@@ -211,7 +211,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         } elseif (strtolower($value) == 'ukjent') {
             return 'u';
         } else {
-            return null;
+            return;
         }
     }
 
@@ -224,7 +224,7 @@ class ImportLitteraturkritikkCommand extends ImportCommand
         $kjonn = $row[$role . '_kjonn'];
 
         $kommentar = Arr::get($row, $role . '_kommentar');
-        $pseudonym  = Arr::get($row, $role . '_pseudonym');
+        $pseudonym = Arr::get($row, $role . '_pseudonym');
 
         $etternavn_arr = $this->splitTrimAndFilterEmpty($etternavn);
         $fornavn_arr = $this->splitTrimAndFilterEmpty($fornavn);
@@ -338,7 +338,6 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 //        $allespraak['nynorsk'] = 'nn';
 //        $allespraak['bokmål (innslag av nynorsk)'] = 'nb';
 
-
         // Separate out 'person' columns
         $personColumns = [
             'forfatter_etternavn',
@@ -381,10 +380,10 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             $this->processCreators($row);
         }
         foreach ($this->stats['forfatter'] as $k => $v) {
-            print "Forfatter: $k : $v\n";
+            echo "Forfatter: $k : $v\n";
         }
         foreach ($this->stats['kritiker'] as $k => $v) {
-            print "Kritiker: $k : $v\n";
+            echo "Kritiker: $k : $v\n";
         }
 
         $this->comment('Refreshing views');
@@ -395,11 +394,11 @@ class ImportLitteraturkritikkCommand extends ImportCommand
 
         \DB::unprepared(
             "SELECT pg_catalog.setval(pg_get_serial_sequence('litteraturkritikk_records', 'id'), MAX(id))" .
-            " FROM litteraturkritikk_records"
+            ' FROM litteraturkritikk_records'
         );
         \DB::unprepared(
             "SELECT pg_catalog.setval(pg_get_serial_sequence('litteraturkritikk_personer', 'id'), MAX(id))" .
-            " FROM litteraturkritikk_personer"
+            ' FROM litteraturkritikk_personer'
         );
 
         $this->comment('Import complete');

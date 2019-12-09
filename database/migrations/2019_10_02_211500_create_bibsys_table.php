@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateBibsysTable extends Migration
 {
@@ -88,9 +88,9 @@ class CreateBibsysTable extends Migration
         }
 
         // Create GIN index for any_field_ts
-        DB::unprepared("
+        DB::unprepared('
             CREATE INDEX bibsys_search_any_field_idx ON bibsys_search USING GIN (any_field_ts)
-        ");
+        ');
 
         // DB::unprepared("
         //     CREATE INDEX bibsys_search_samling_idx ON bibsys_search USING gin (samling gin_trgm_ops);

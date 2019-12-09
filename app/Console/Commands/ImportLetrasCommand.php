@@ -2,12 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-
 class ImportLetrasCommand extends ImportCommand
 {
-
     protected $fields = [
         'id',
         'forfatter',

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Schema\Schema;
 use App\Http\Requests\SearchRequest;
 use App\Record;
+use App\Schema\Schema;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,16 +23,19 @@ class RecordController extends Controller
      * Get old value if present (after a validation error) and transform it if necessary.
      *
      * @param SchemaField $field
-     * @param string $key
+     * @param string      $key
+     *
      * @return string $default
      */
-    protected function old($field, $key, $default) {
+    protected function old($field, $key, $default)
+    {
         if (old($key) !== null) {
             $value = old($key);
             if ($field->type === 'persons') {
                 $value = json_decode($value, true);
             }
         }
+
         return $default;
     }
 
@@ -41,6 +44,7 @@ class RecordController extends Controller
      *
      * @param Record $record
      * @param Schema $schema
+     *
      * @return array
      */
     protected function formArguments(Record $record, Schema $schema)
@@ -68,8 +72,8 @@ class RecordController extends Controller
      * Store a newly created record, or update an existing one.
      *
      * @param Request $request
-     * @param Schema $schema
-     * @param Record $record
+     * @param Schema  $schema
+     * @param Record  $record
      */
     protected function updateRecord(Schema $schema, Record $record, Request $request)
     {
@@ -126,7 +130,8 @@ class RecordController extends Controller
      * Generate JSON response for DataTables.
      *
      * @param SearchRequest $request
-     * @param Schema $schema
+     * @param Schema        $schema
+     *
      * @return JsonResponse
      */
     protected function dataTablesResponse(SearchRequest $request, Schema $schema)
@@ -184,6 +189,7 @@ class RecordController extends Controller
                         $out[$columnReverseMap[$k]] = $v;
                     }
                 }
+
                 return $out;
             });
 
@@ -217,8 +223,9 @@ class RecordController extends Controller
      * Returns -1 if $costLimit is set and the cost of the query overshoots this value.
      *
      * @param SearchRequest $request
-     * @param Builder $queryBuilder
-     * @param int $costLimit
+     * @param Builder       $queryBuilder
+     * @param int           $costLimit
+     *
      * @return int
      */
     protected function getRecordCount(SearchRequest $request, Builder $queryBuilder, int $costLimit = 0): int
@@ -230,6 +237,7 @@ class RecordController extends Controller
                 'SELECT reltuples::bigint FROM pg_catalog.pg_class WHERE relname = ?',
                 [$queryBuilder->getModel()->getTable()]
             );
+
             return (int) $res[0]->reltuples;
         }
 

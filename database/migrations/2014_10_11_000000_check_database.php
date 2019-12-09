@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CheckDatabase extends Migration
@@ -21,7 +20,6 @@ class CheckDatabase extends Migration
             );
         }
 
-
         // Validate default collation
         $desiredCollation = 'C';
         $dbname = \DB::connection()->getDatabaseName();
@@ -40,8 +38,8 @@ class CheckDatabase extends Migration
         if (!count($res)) {
             throw new \RuntimeException(
                 "The database does not have the $additionalCollation collation. " .
-                "Please create it before migrating the database. " .
-                "See instructions in the readme.md file."
+                'Please create it before migrating the database. ' .
+                'See instructions in the readme.md file.'
             );
         }
     }

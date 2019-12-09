@@ -17,7 +17,6 @@ class CreateLetrasTable extends Migration
     {
         Schema::dropIfExists('letras');
         Schema::create('letras', function (Blueprint $table) {
-
             $this->addCommonFields($table);
 
             $table->string('forfatter')->nullable();

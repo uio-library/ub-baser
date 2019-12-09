@@ -124,9 +124,11 @@ class LitteraturkritikkPersonController extends RecordController
      * Remove the specified resource from storage.
      *
      * @param Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param int     $id
+     *
      * @throws \Exception
+     *
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)
     {

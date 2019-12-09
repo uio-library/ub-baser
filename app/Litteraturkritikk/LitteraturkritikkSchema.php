@@ -30,8 +30,8 @@ class LitteraturkritikkSchema extends Schema
                 'searchOptions' => [
                     'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc... Avslutt med * om du føler for å trunkere.',
                     'index' => ['type' => 'ts', 'ts_column' => 'any_field_ts'],
-                    'operators' => ['eq', 'neq']
-                ]
+                    'operators' => ['eq', 'neq'],
+                ],
             ],
 
             // Person-søk (forfatter eller kritiker)
@@ -47,7 +47,7 @@ class LitteraturkritikkSchema extends Schema
                     'placeholder' => 'Fornavn og/eller etternavn',
                     'index' => ['type' => 'ts', 'ts_column' => 'person_ts'],
                     'operators' => ['eq', 'neq'],
-                ]
+                ],
             ],
         ],
 
@@ -280,27 +280,27 @@ class LitteraturkritikkSchema extends Schema
                     [
                         'key' => 'aargang',
                         'type' => 'simple',
-                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).'
+                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
                     ],
                     [
                         'key' => 'bind',
                         'type' => 'simple',
-                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).'
+                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
                     ],
                     [
                         'key' => 'hefte',
                         'type' => 'simple',
-                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).'
+                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
                     ],
                     [
                         'key' => 'nummer',
                         'type' => 'simple',
-                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).'
+                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
                     ],
                     [
                         'key' => 'sidetall',
                         'type' => 'simple',
-                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).'
+                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
                     ],
                     [
                         'key' => 'kommentar',
@@ -378,7 +378,7 @@ class LitteraturkritikkSchema extends Schema
                             ['id' => 4, 'label' => 'Korrekturlest og lenket til digitalt materiale'],
                         ],
                         'searchOptions' => [
-                            'operators' => ['ex']
+                            'operators' => ['ex'],
                         ],
                         'columnClassName' => 'dt-body-nowrap',
                     ],
@@ -392,7 +392,7 @@ class LitteraturkritikkSchema extends Schema
 
                         'columnClassName' => 'dt-body-nowrap',
                     ],
-                ]
+                ],
             ],
         ],
     ];

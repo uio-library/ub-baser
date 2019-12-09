@@ -1,15 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddKorrekturstatus extends Migration
 {
     protected function dropView()
     {
         DB::unprepared('DROP MATERIALIZED VIEW litteraturkritikk_records_search');
-
     }
 
     protected function recreateView()

@@ -21,11 +21,10 @@ class CreateLitteraturkritikkTable extends Migration
         });
 
         Schema::create('litteraturkritikk_records', function (Blueprint $table) {
-
             $this->addCommonFields($table);
 
-            # ------------------------------------------------------------------------------------------------
-            # Kritikken
+            // ------------------------------------------------------------------------------------------------
+            // Kritikken
 
             $table->jsonb('kritikktype');
             $table->text('spraak')->nullable();
@@ -46,8 +45,8 @@ class CreateLitteraturkritikkTable extends Migration
 
             $table->text('fulltekst_url')->nullable();
 
-            # ------------------------------------------------------------------------------------------------
-            # Det kritiserte verket
+            // ------------------------------------------------------------------------------------------------
+            // Det kritiserte verket
 
             $table->text('verk_tittel')->nullable();
             $table->text('verk_dato')->nullable();

@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Schema\Schema;
 use App\Dommer\DommerRecordView;
 use App\Dommer\DommerSchema;
+use App\Schema\Schema;
 use Illuminate\Database\Eloquent\Builder;
 
 class DommerSearchRequest extends SearchRequest

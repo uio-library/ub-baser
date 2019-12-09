@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class CreateDommerMaterializedView extends Migration
 {
@@ -13,11 +11,11 @@ class CreateDommerMaterializedView extends Migration
      */
     public function up()
     {
-        DB::unprepared("
+        DB::unprepared('
             DROP VIEW dommer_view
-        ");
+        ');
 
-        DB::unprepared("
+        DB::unprepared('
             CREATE MATERIALIZED VIEW dommer_view AS
                 SELECT
                     d.*,
@@ -27,7 +25,7 @@ class CreateDommerMaterializedView extends Migration
 
                 JOIN dommer_kilder AS kilder
                     ON d.kilde_id = kilder.id
-        ");
+        ');
 
         DB::unprepared('CREATE UNIQUE INDEX dommer_view_id ON dommer_view (id)');
     }
@@ -39,11 +37,11 @@ class CreateDommerMaterializedView extends Migration
      */
     public function down()
     {
-        DB::unprepared("
+        DB::unprepared('
             DROP MATERIALIZED VIEW dommer_view
-        ");
+        ');
 
-        DB::unprepared("
+        DB::unprepared('
             CREATE VIEW dommer_view AS
                 SELECT
                     d.*,
@@ -53,6 +51,6 @@ class CreateDommerMaterializedView extends Migration
 
                 JOIN dommer_kilder AS kilder
                     ON d.kilde_id = kilder.id
-        ");
+        ');
     }
 }

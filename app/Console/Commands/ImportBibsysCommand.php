@@ -2,9 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-
 class ImportBibsysCommand extends ImportCommand
 {
     protected $recordBuffer = [];
@@ -26,13 +23,13 @@ class ImportBibsysCommand extends ImportCommand
 
     protected function importFolder($folder)
     {
-        $this->info("Importing object records");
+        $this->info('Importing object records');
         $this->importObjektPoster($folder);
 
-        $this->info("Importing document records");
+        $this->info('Importing document records');
         $this->importDokPoster($folder);
 
-        $this->info("Refreshing materialized view");
+        $this->info('Refreshing materialized view');
         \DB::unprepared('REFRESH MATERIALIZED VIEW bibsys_search');
     }
 
@@ -48,13 +45,13 @@ class ImportBibsysCommand extends ImportCommand
         $marcRecordText = '';
         foreach (glob($marcFiles) as $filename) {
             $this->comment("Importing $filename");
-            $fn = fopen($filename, "r");
-            while(! feof($fn)) {
+            $fn = fopen($filename, 'r');
+            while (!feof($fn)) {
                 $result = rtrim(fgets($fn));
 
-                if ($result === "^") {
+                if ($result === '^') {
                     if ($objektId != '') {
-                        $this->storeRecord($objektId, trim($marcRecord), trim($marcRecordText) , $titleStatement, $pubDate);
+                        $this->storeRecord($objektId, trim($marcRecord), trim($marcRecordText), $titleStatement, $pubDate);
                     }
                     $marcRecord = '';
                     $marcRecordText = '';
@@ -196,13 +193,13 @@ class ImportBibsysCommand extends ImportCommand
         $beholdn = "$folder/beholdn_k.csv";
 
         $row = 1;
-        $handle = fopen($beholdn, "r");
+        $handle = fopen($beholdn, 'r');
 
         $rows = [];
 
         $n = 0;
 
-        while (($values = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        while (($values = fgetcsv($handle, 1000, ',')) !== false) {
             if ($values[0] == 'Objektid') {
                 // Skip header
                 continue;

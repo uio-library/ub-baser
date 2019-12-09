@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BibsysSearchRequest;
-use App\Bibsys\BibsysDokument;
-use App\Bibsys\BibsysView;
 use App\Bibsys\BibsysSchema;
+use App\Bibsys\BibsysView;
+use App\Http\Requests\BibsysSearchRequest;
 use App\Page;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class BibsysController extends RecordController
 {
@@ -19,7 +17,8 @@ class BibsysController extends RecordController
      *
      *
      * @param BibsysSearchRequest $request
-     * @param BibsysSchema $schema
+     * @param BibsysSchema        $schema
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(BibsysSearchRequest $request, BibsysSchema $schema)
@@ -73,7 +72,7 @@ class BibsysController extends RecordController
         return response()->view('bibsys.show', $data);
     }
 
-    public function autocomplete(Request $request,  BibsysSchema $schema)
+    public function autocomplete(Request $request, BibsysSchema $schema)
     {
         $fieldName = $request->get('field');
         $fields = $schema->keyed();
@@ -113,5 +112,4 @@ class BibsysController extends RecordController
 
         return response()->json($data);
     }
-
 }

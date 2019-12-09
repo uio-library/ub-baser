@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Schema\Schema;
 use App\Bibsys\BibsysSchema;
 use App\Bibsys\BibsysView;
+use App\Schema\Schema;
 use Illuminate\Database\Eloquent\Builder;
 
 class BibsysSearchRequest extends SearchRequest

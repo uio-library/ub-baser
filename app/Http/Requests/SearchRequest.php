@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Schema\Schema;
-use App\Schema\SchemaField;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
@@ -69,6 +68,7 @@ abstract class SearchRequest extends FormRequest
                 'value' => $value,
             ];
         }
+
         return $inputs;
     }
 
@@ -148,7 +148,6 @@ abstract class SearchRequest extends FormRequest
 
     protected function addSimpleTerm(array $index, string $operator, ?string $value): void
     {
-
         if ($operator == 'eq' || $operator == 'like') {
             if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
                 // Phrase
@@ -164,7 +163,7 @@ abstract class SearchRequest extends FormRequest
                 // right-truncate by default
                 $value = $value . '%';
             }
-        } else if ($operator == 'ex') {
+        } elseif ($operator == 'ex') {
             if (Str::endsWith($value, '*')) {
                 // Prefix / ending wildcard
                 $value = rtrim($value, '*') . '%';
