@@ -83,6 +83,8 @@
                 <h1>
                     @hasSection('header')
                         @yield('header')
+                    @elseif (isset($base))
+                        <a href="{{ $base->action('index') }}">{{ $base->title }}</a>
                     @else
                         <a href="/">UB-baser</a>
                     @endif

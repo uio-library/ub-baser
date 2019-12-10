@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LitteraturkritikkTableSeeder::class);
         $this->call(DommerTableSeeder::class);
         $this->call(LetrasTableSeeder::class);
+        $this->call(BibliomanuelTableSeeder::class);
         $this->call(OpesTableSeeder::class);
         $this->call(PagesTableSeeder::class);
 

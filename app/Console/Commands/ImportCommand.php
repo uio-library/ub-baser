@@ -215,6 +215,11 @@ class ImportCommand extends Command
             'folder' => "$folder/letras",
         ]);
 
+        $this->call('import:bibliomanuel', [
+            '--force' => $force,
+            'folder' => "$folder/bibliomanuel",
+        ]);
+
         $this->call('import:litteraturkritikk', [
             '--force' => $force,
             'folder' => "$folder/litteraturkritikk",
