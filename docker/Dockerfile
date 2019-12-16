@@ -16,7 +16,7 @@ RUN apt-get update \
     && apt-get install -y libpq-dev \
     && docker-php-ext-install pdo pdo_pgsql
 
-RUN a2enmod rewrite ssl
+RUN a2enmod rewrite ssl headers
 RUN a2dissite 000-default
 
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
