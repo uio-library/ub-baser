@@ -11,7 +11,7 @@
   git:
     repo: git@github.com:scriptotek/ub-baser.git
     dest: /data/ub-baser
-    version: master
+    version: deploy
 
 - name: Build
   shell:
