@@ -27,8 +27,8 @@
 
 - name: Wait for site to come up
   uri:
-    url: "https://ub-baser.uio.no/"
+    url: https://ub-baser.uio.no/
   register: result
-  until: result.status == 200
+  until: ('status' in result) and result.status == 200
   retries: 60
   delay: 1
