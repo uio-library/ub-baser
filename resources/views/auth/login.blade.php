@@ -2,13 +2,25 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <p>Innlogginga feilet:</p>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8 accordion" id="accordionExample">
 
             <div class="card">
-                <div class="card-header">{{ __('UiO-innlogging') }}</div>
-                <div class="card-body">
+                <div class="card-header"><a href="#" onclick="showCard(1); return false;">{{ __('UiO-innlogging') }}</a></div>
+                <div class="card-body collapse show" id="collapse1">
 
                     <a class="btn btn-primary" href="{{ route('saml2_login', 'uio') }}">
                         <em class="fa fa-arrow-right"></em>
@@ -18,12 +30,10 @@
                 </div>
             </div>
 
+            <div class="card">
+                <div class="card-header"><a id="collapse1_toggle" href="#" onclick="showCard(2); return false;">{{ __('Lokal innlogging (alternativ)') }}</a></div>
 
-
-            <div class="card my-3">
-                <div class="card-header"><a id="collapse1_toggle" href="#" onclick="$('#collapse1').toggleClass('collapse'); return false;">{{ __('Lokal innlogging (alternativ)') }}</a></div>
-
-                <div class="card-body collapse" id="collapse1">
+                <div class="card-body collapse" id="collapse2">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -86,4 +96,18 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('script')
+<script>
+function showCard(nr) {
+    $('.collapse').removeClass('show');
+    $('#collapse' + nr).addClass('show');
+}
+
+@if ($errors->has('email') || $errors->has('password'))
+showCard(2);
+@endif
+</script>
 @endsection
