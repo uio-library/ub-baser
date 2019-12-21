@@ -13,13 +13,11 @@ class FixMaterializedView extends Migration
      */
     public function up()
     {
-        Schema::table('litteraturkritikk_records', function (Blueprint $table) {
-            DB::unprepared('CREATE UNIQUE INDEX litteraturkritikk_records_search_id ON litteraturkritikk_records_search (id)');
-            DB::unprepared('CREATE INDEX litteraturkritikk_any_field_ts_idx ON litteraturkritikk_records_search USING gin(any_field_ts)');
-            DB::unprepared('CREATE INDEX litteraturkritikk_forfatter_ts_idx ON litteraturkritikk_records_search USING gin(forfatter_ts)');
-            DB::unprepared('CREATE INDEX litteraturkritikk_kritiker_ts_idx ON litteraturkritikk_records_search USING gin(kritiker_ts)');
-            DB::unprepared('CREATE INDEX litteraturkritikk_person_ts_idx ON litteraturkritikk_records_search USING gin(person_ts)');
-        });
+        DB::unprepared('CREATE UNIQUE INDEX litteraturkritikk_records_search_id ON litteraturkritikk_records_search (id)');
+        DB::unprepared('CREATE INDEX litteraturkritikk_any_field_ts_idx ON litteraturkritikk_records_search USING gin(any_field_ts)');
+        DB::unprepared('CREATE INDEX litteraturkritikk_forfatter_ts_idx ON litteraturkritikk_records_search USING gin(forfatter_ts)');
+        DB::unprepared('CREATE INDEX litteraturkritikk_kritiker_ts_idx ON litteraturkritikk_records_search USING gin(kritiker_ts)');
+        DB::unprepared('CREATE INDEX litteraturkritikk_person_ts_idx ON litteraturkritikk_records_search USING gin(person_ts)');
     }
 
     /**
@@ -29,8 +27,10 @@ class FixMaterializedView extends Migration
      */
     public function down()
     {
-        Schema::table('litteraturkritikk_records', function (Blueprint $table) {
-            //
-        });
+        DB::unprepared('DROP INDEX litteraturkritikk_records_search_id');
+        DB::unprepared('DROP INDEX litteraturkritikk_any_field_ts_idx');
+        DB::unprepared('DROP INDEX litteraturkritikk_forfatter_ts_idx');
+        DB::unprepared('DROP INDEX litteraturkritikk_kritiker_ts_idx');
+        DB::unprepared('DROP INDEX litteraturkritikk_person_ts_idx');
     }
 }
