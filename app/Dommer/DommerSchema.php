@@ -34,6 +34,7 @@ class DommerSchema extends Schema
                         'type'=> 'simple',
                         'column' => 'kilde_id',
                     ],
+                    'operators' => ['ex'],
                 ],
             ],
             [
