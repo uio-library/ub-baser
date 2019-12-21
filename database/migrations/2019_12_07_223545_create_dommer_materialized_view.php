@@ -1,9 +1,12 @@
 <?php
 
+use App\Traits\MigrationHelper;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateDommerMaterializedView extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -11,23 +14,8 @@ class CreateDommerMaterializedView extends Migration
      */
     public function up()
     {
-        DB::unprepared('
-            DROP VIEW dommer_view
-        ');
-
-        DB::unprepared('
-            CREATE MATERIALIZED VIEW dommer_view AS
-                SELECT
-                    d.*,
-                    kilder.navn as kilde_navn
-
-                FROM dommer AS d
-
-                JOIN dommer_kilder AS kilder
-                    ON d.kilde_id = kilder.id
-        ');
-
-        DB::unprepared('CREATE UNIQUE INDEX dommer_view_id ON dommer_view (id)');
+        $this->dropView('dommer_view');
+        $this->createView('dommer_view', 2);
     }
 
     /**
@@ -37,20 +25,7 @@ class CreateDommerMaterializedView extends Migration
      */
     public function down()
     {
-        DB::unprepared('
-            DROP MATERIALIZED VIEW dommer_view
-        ');
-
-        DB::unprepared('
-            CREATE VIEW dommer_view AS
-                SELECT
-                    d.*,
-                    kilder.navn as kilde_navn
-
-                FROM dommer AS d
-
-                JOIN dommer_kilder AS kilder
-                    ON d.kilde_id = kilder.id
-        ');
+        $this->dropMaterializedView('dommer_view');
+        $this->createView('dommer_view', 1);
     }
 }

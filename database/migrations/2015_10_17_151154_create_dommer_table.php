@@ -39,17 +39,7 @@ class CreateDommerTable extends Migration
                 ->references('id')->on('dommer_kilder');
         });
 
-        DB::unprepared('
-            CREATE VIEW dommer_view AS
-                SELECT
-                    d.*,
-                    kilder.navn as kilde_navn
-
-                FROM dommer AS d
-
-                JOIN dommer_kilder AS kilder
-                    ON d.kilde_id = kilder.id
-        ');
+        $this->createView('dommer_view', 1);
     }
 
     /**
@@ -59,7 +49,7 @@ class CreateDommerTable extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP VIEW dommer_view');
+        $this->dropView('dommer_view');
         Schema::drop('dommer');
         Schema::drop('dommer_kilder');
     }

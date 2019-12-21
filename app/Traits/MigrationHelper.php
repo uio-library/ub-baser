@@ -25,4 +25,26 @@ trait MigrationHelper
             ->on('users')
             ->onDelete('set null');
     }
+
+    protected function runSql($filename)
+    {
+        $sql = file_get_contents($filename);
+        \DB::unprepared($sql);
+    }
+
+    protected function createView($view, $version = 1)
+    {
+        $filename = database_path('migrations/views/' . $view . '/v' . $version . '.sql');
+        $this->runSql($filename);
+    }
+
+    protected function dropView($name)
+    {
+        \DB::unprepared('DROP VIEW ' . $name);
+    }
+
+    protected function dropMaterializedView($name)
+    {
+        \DB::unprepared('DROP MATERIALIZED VIEW ' . $name);
+    }
 }
