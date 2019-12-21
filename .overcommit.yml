@@ -20,6 +20,8 @@ PreCommit:
     problem_on_unmodified_line: warn
   TrailingWhitespace:
     enabled: true
+    exclude:
+      - '**/*.tsv'
   PhpCs:
     enabled: true
     command: 'vendor/bin/phpcs'
