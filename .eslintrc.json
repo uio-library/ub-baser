@@ -12,6 +12,7 @@
         "SharedArrayBuffer": "readonly",
         "browser": "readonly",
         "$": "readonly",
+        "$$": "readonly",
         "describe": "readonly",
         "it": "readonly"
     },

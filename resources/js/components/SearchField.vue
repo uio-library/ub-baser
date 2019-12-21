@@ -3,7 +3,7 @@
         <span v-if="!currentSchema">Error: No schema found for {{ field }}.</span>
         <span v-else>Invalid: Schema for "{{ field }}" lacks "searchOptions" or "searchOptions.operators"</span>
     </div>
-    <div v-else class="d-flex my-1">
+    <div v-else class="d-flex my-1" :id="'searchField' + index">
         <div class="flex-grow-0">
             <select class="form-control field-select"
                 :name="`f${index}`"
