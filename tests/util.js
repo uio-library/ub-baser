@@ -1,7 +1,7 @@
 const { exec } = require('child_process')
 const log = console.log
 const chalk = require('chalk')  // eslint-disable-line
-const DOCKER_APP_CONTAINER_NAME = process.env.DOCKER_APP_CONTAINER_NAME || 'ub-baser-app-testing'
+const DOCKER_APP_CONTAINER_NAME = process.env.DOCKER_APP_CONTAINER_NAME || 'ub-baser-app-staging'
 
 function execPromise (command) {
   return new Promise(function (resolve, reject) {

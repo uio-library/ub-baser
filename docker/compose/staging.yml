@@ -23,6 +23,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         - GITHUB_TOKEN
+    container_name: ub-baser-app-staging
     environment:
       - APP_ENV=staging
       - APP_DEBUG=true
