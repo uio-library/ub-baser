@@ -9,69 +9,19 @@ use Punic\Language;
 
 class ImportLitteraturkritikkCommand extends ImportCommand
 {
-    protected $fields = [
-        'id',
-
-        // 1. Kritikken
-
-        // 1.1 Person
-
-        'kritiker_etternavn',
-        'kritiker_fornavn',
-        'kritiker_kjonn',
-        'kritiker_pseudonym',
-        'kritiker_kommentar',
-
-        // 1.2 Dokument
-
-        'kritikktype',
-        'publikasjon',
-        'utgivelsessted',
-        'aar',
-        'dato',
-        'aargang',
-        'nummer',
-        'bind',
-        'hefte',
-        'sidetall',
-        'utgivelseskommentar',
-        'tittel',
-        'spraak',
-        'kommentar',
-
-        // 2. Verket
-
-        // 2.1 Person
-
-        'forfatter_etternavn',
-        'forfatter_fornavn',
-        'forfatter_kommentar',
-        'forfatter_kjonn',
-
-        // 2.2 Dokument
-
-        'verk_tittel',
-        'verk_utgivelsessted',
-        'verk_dato',
-        'verk_sjanger',
-        'verk_spraak',
-        'verk_kommentar',
-    ];
-
     /**
-     * The name and signature of the console command.
+     * The name of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:litteraturkritikk  {--force   : Whether to delete existing data without asking}
-                                                      {filename  : The JSON file to import}';
+    protected $name = 'import:litteraturkritikk';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import data for Norsk litteraturkritikk';
+    protected $description = 'Import data for "Norsk litteraturkritikk"';
 
     protected function processKritikktype($input)
     {
@@ -313,30 +263,22 @@ class ImportLitteraturkritikkCommand extends ImportCommand
      */
     public function handle()
     {
-        $filename = $this->argument('filename');
-        $force = $this->option('force');
-
-        $this->comment('');
-        $this->comment(sprintf("Preparing import at host '%s'", \DB::getConfig('host')));
-
-        if (env('APP_ENV') === 'production') {
-            $this->error('This is the production environment!!!');
-            $force = false;
-        }
-
-        if (!$this->ensureEmpty('litteraturkritikk_records', $force)) {
+        // Check if tables are empty. Ask to empty them if not.
+        if (!$this->ensureTablesEmpty(['litteraturkritikk_records', 'litteraturkritikk_personer'])) {
             return;
         }
 
-        // ------
+        // Import data from TSV files
+        $folder = $this->argument('folder');
+        $filename = rtrim($folder, '/') . '/litteraturkritikk.tsv';
 
-        $data = $this->getData($filename);
+        $columns = $this->readTsvFileHeader($filename);
 
-//        $allespraak = array_flip(Language::getAll(true, true, 'nb'));
-//        $allespraak['finsk-svensk'] = 'sv';
-//        $allespraak['bokmål'] = 'nb';
-//        $allespraak['nynorsk'] = 'nn';
-//        $allespraak['bokmål (innslag av nynorsk)'] = 'nb';
+        $data = [];
+        foreach ($this->readTsvFileRows($filename, $columns) as $row) {
+            $data[] = $row;
+        }
+
 
         // Separate out 'person' columns
         $personColumns = [
@@ -386,21 +328,14 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             echo "Kritiker: $k : $v\n";
         }
 
-        $this->comment('Refreshing views');
+        // Refresh views
+        $this->refreshView('litteraturkritikk_records_search');
 
-        \DB::unprepared('REFRESH MATERIALIZED VIEW litteraturkritikk_records_search');
+        // Fix auto-incrementing sequences
+        $this->updateSequence('litteraturkritikk_records', 'id');
+        $this->updateSequence('litteraturkritikk_personer', 'id');
 
-        $this->comment('Updating sequences');
-
-        \DB::unprepared(
-            "SELECT pg_catalog.setval(pg_get_serial_sequence('litteraturkritikk_records', 'id'), MAX(id))" .
-            ' FROM litteraturkritikk_records'
-        );
-        \DB::unprepared(
-            "SELECT pg_catalog.setval(pg_get_serial_sequence('litteraturkritikk_personer', 'id'), MAX(id))" .
-            ' FROM litteraturkritikk_personer'
-        );
-
+        // Done!
         $this->comment('Import complete');
     }
 }

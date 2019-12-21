@@ -13,3 +13,7 @@ indent_size = 2
 
 [*.php]
 indent_size = 4
+
+[*.tsv]
+indent_style = tab
+trim_trailing_whitespace = false
