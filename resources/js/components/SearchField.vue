@@ -8,7 +8,7 @@
             <select class="form-control field-select"
                 :name="`f${index}`"
                 :value="field"
-                @input="$emit('field', $event.target.value)"
+                @change="onFieldChange($event.target.value)"
             >
                 <option v-for="field in fields"
                         :key="field.key"
@@ -123,6 +123,9 @@ export default {
   methods: {
     fieldIsVisible (field) {
       return field.searchable === 'simple' || (this.advanced && field.searchable === 'advanced')
+    },
+    onFieldChange (value) {
+      this.$emit('field', value)
     },
   },
 }

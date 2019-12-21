@@ -9,7 +9,7 @@ describe('Home page', function () {
 
   it('should contain a list of databases', function () {
     HomePage.open()
-    expect(HomePage.getDatabaseList()).to.have.length(4)
+    expect(HomePage.getDatabaseList().length).to.be.at.least(4)
   })
 })
 

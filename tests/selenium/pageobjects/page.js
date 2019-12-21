@@ -1,10 +1,14 @@
 const querystring = require('querystring')
-const url = require('url')
+const urljoin = require('url-join')
 
 /**
  * Based on http://webdriver.io/guide/testrunner/pageobjects.html
  */
 class Page {
+  constructor () {
+    this.baseUrl = '/'
+  }
+
   /**
    * Navigate the browser to a given page.
    *
@@ -15,14 +19,17 @@ class Page {
    * @param {string} [fragment] Fragment parameter
    * @return {void} This method runs a browser command.
    */
-  open (path, query = {}, fragment = '') {
-    const fullUrl = new url.URL(path, browser.options.baseUrl)
+  open (path = '', query = {}, fragment = '') {
+    const url = urljoin(browser.options.baseUrl, this.baseUrl, path)
+    console.log('Open URL: ' + url)
     browser.url(
-      fullUrl.href,
+      url,
       (query ? ('?' + querystring.stringify(query)) : '') +
-      (fragment ? ('#' + fragment) : '')
+      (fragment ? ('#' + fragment) : ''),
     )
   }
+
+  get title () { return browser.getTitle() }
 
   getLoggedInUser () {
     const node = $('#user_name')
