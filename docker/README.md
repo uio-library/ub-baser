@@ -17,34 +17,55 @@ and calls docker-compose with the configuration in
 [`docker/compose.dev.yml`](https://github.com/scriptotek/ub-baser/blob/master/docker/compose.dev.yml)
 and any arguments given to the script.
 
-To bring everything up, simply run:
+To bring everything up:
 
 	./dev.sh up
 
-And simply press Ctrl-C to stop it.
+This starts two containers: `db` (the Postgres database) and `app` (Apache + PHP).
+Note that it can take a minute or two before everything is ready.
+To stop the server, press Ctrl-C.
 
-Any other command supported by docker-compose also works with the `dev.sh` script. E.g. to check status, run:
+When the `app` container starts, it runs the `entrypoint.sh` script (from this folder),
+which takes care of [migrating](https://laravel.com/docs/master/migrations) the database.
 
-	./dev.sh ps
-
-Or to start a shell in the app container:
+Any other command supported by docker-compose also works with the `dev.sh` script.
+For instance, instead of running `docker-compose ps`, you can run `./dev.sh ps`.
+And if you want to start a shell in the app container, you can run:
 
 	./dev.sh exec app bash
 
-## Migrating the database and importing data
+### Creating an admin user
 
-The first time the server is started, it comes with an empty database.
-To migrate it, run:
+In a development environment, you can run the `create:admin` artisan command to create an admin user with a default password.
+Instead of running `php artisan create:admin` locally, you can run it inside the `app` container using the following command:
 
-	./dev.sh run --rm app php artisan migrate --seed
+	./dev.sh run --rm app php artisan create:admin
 
-By including `--seed`, a few static pages and an administrator user (user: `admin@example.org`, password: `secret`)
-will also be created. Make sure to change this later on.
+Note: The source for this command is `app/Console/Commands/CreateAdminCommand.php`
 
-To also import the data from the `initial-import` folder, run:
+Now you should be able to login at http://localhost/login
+and add additional rights at http://localhost/admin/users/1/edit
+
+### Importing data
+
+Data can be imported from the `initial-import` folder using the import commands.
+For instance you can import data from `initial-import/dommer` to the `dommer` database like so:
+
+    $ ./dev.sh run --rm -v "$(pwd)"/initial-import:/initial-import app php artisan import:dommer /initial-import/dommer
+
+This uses the import command defined at `app/Console/Commands/ImportDommerCommand.php`.
+
+There is also a shorthand command to import multiple databases:
 
     $ ./dev.sh run --rm -v "$(pwd)"/initial-import:/initial-import app php artisan import /initial-import
 
+See `app/Console/Commands/ImportCommand.php` for details.
+
+### Resetting the database
+
+If you need to delete the database and start over again, use the `migrate:fresh` artisan command:
+
+	./dev.sh run --rm app php artisan migrate:fresh
 
 ## Making changes to the Docker image and Apache/PHP config
 
@@ -64,18 +85,23 @@ the `sites-available` folder:
 
 ## Running tests
 
-Make sure the development server is running:
+If you don't want to touch the current development database, you can use the `staging` environment:
 
-	APP_ENV=testing ./dev.sh up -d
+	APP_ENV=staging ./dev.sh up -d
+
+This will start up two new containers.
 
 To run tests:
 
-	APP_ENV=testing npm run test
+	npm run test
 
 If you use Docker Machine:
 
 	BASE_URL="http://$(docker-machine ip):8080" npm run test
 
+To run a specific test:
+
+    APP_ENV=staging npx wdio tests/wdio.conf.js --spec ./tests/selenium/specs/login.js
 
 ## Making changes to stylesheets or JavaScripts
 

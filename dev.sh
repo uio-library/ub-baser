@@ -66,7 +66,7 @@ esac
 
 docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" $CMD
 
-if [[ $CMD == up* ]]; then
+if [[ $CMD == "up -d"* ]]; then
     APP_ID="$(docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" ps -q app)"
     APP_HOST="http://$(docker port $APP_ID | awk '{split($0,a," -> "); print a[2]}')"
     echo -e "Waiting for host to be available at $APP_HOST, this may take some time\c"
