@@ -14,7 +14,8 @@ CREATE TABLE oversatte_lover (
 );
 
 CREATE TABLE oversettelser (
-    lov_id  NUMBER  NOT NULL REFERENCES oversatte_lover(lov_id),
+    oversettelse_id     SERIAL  PRIMARY KEY,
+    lov_id  NUMBER      NOT NULL REFERENCES oversatte_lover(lov_id),
     dato DATE,
     sprak VARCHAR(15),
     regdato DATE,
