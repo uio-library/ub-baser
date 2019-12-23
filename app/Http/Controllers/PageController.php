@@ -22,16 +22,6 @@ class PageController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -52,6 +42,9 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
+        if (!$page->exists) {
+            return abort(404);
+        }
         return response()->view('pages.show', [
             'page' => $page,
         ]);

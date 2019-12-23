@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Page;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +26,24 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         Route::pattern('id', '[0-9]+');
-        Route::pattern('page', '[a-z-]+/[a-z-]+');
+        Route::pattern('page', '[a-z-]+/[0-9a-z-]+');
+
+        Route::bind('page', function ($value) {
+            $page = Page::firstOrNew([
+                'slug' => $value,
+            ]);
+            if (!$page->exists) {
+                // Check if the page slug contains a valid namespace
+                $namespace = explode('/', $value)[0];
+                if (!in_array($namespace, AuthServiceProvider::$rights)) {
+                    return;
+                }
+                // Bootstrap a new page
+                $page->permission = $namespace;
+                $page->layout = 'layouts.' . $namespace;
+            }
+            return $page;
+        });
 
         parent::boot();
     }

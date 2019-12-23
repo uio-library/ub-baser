@@ -5,6 +5,12 @@
     <form method="POST" action="{{ action('PageController@update', ['page' => $page->slug]) }}">
         <?php echo csrf_field(); ?>
 
+        @if (!$page->exists)
+        <p class="alert alert-success">
+            OBS: Du er i ferd med å opprette en ny side.
+        </p>
+        @endif
+
         <page-editor data="{{ $page->body }}"></page-editor>
 
         <button type="submit" class="btn btn-primary">{{ trans('messages.update') }}</button>
