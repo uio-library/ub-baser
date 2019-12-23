@@ -1,5 +1,8 @@
 <?php
 
+use App\Litteraturkritikk\Person as LitteraturkritikkPerson;
+use App\Litteraturkritikk\Record as LitteraturkritikkRecord;
+use App\Litteraturkritikk\RecordView as LitteraturkritikkRecordView;
 use Illuminate\Database\Seeder;
 
 class LitteraturkritikkTableSeeder extends Seeder
@@ -11,37 +14,19 @@ class LitteraturkritikkTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('litteraturkritikk_kritikktyper')->insert([
-            ['navn' => 'avhandling'],
-            ['navn' => 'bloggpost'],
-            ['navn' => 'bokanmeldelse'],
-            ['navn' => 'debattinnlegg'],
-            ['navn' => 'essay'],
-            ['navn' => 'kronikk'],
-            ['navn' => 'kåseri'],
-            ['navn' => 'oversiktsartikkel'],
-            ['navn' => 'samtaleprogram'],
-            ['navn' => 'vitenskapelig artikkel'],
-            ['navn' => 'annet'],
+        $persons = factory(LitteraturkritikkPerson::class, 20)->create()
+            ->pluck('id')
+            ->toArray();
 
-            ['navn' => 'dagskritikk'],
-            ['navn' => 'debatt'],
-            ['navn' => 'teaterkritikk'],
-            ['navn' => 'forfatterportrett'],
-            ['navn' => 'intervju'],
-            ['navn' => 'nekrolog'],
+        factory(LitteraturkritikkRecord::class, 50)->create()
+            ->each(function ($rec) use ($persons) {
+                $forfatter = $persons[array_rand($persons)];
+                $rec->persons()->attach($forfatter, ['person_role' => 'forfatter']);
 
-            ['navn' => 'artikkel'],
-            ['navn' => 'litteraturhistorie'],
-            ['navn' => 'biografi'],
+                $kritiker = $persons[array_rand($persons)];
+                $rec->persons()->attach($kritiker, ['person_role' => 'kritiker']);
+            });
 
-            // ['navn' => 'teaterkritikk'],
-            // ['navn' => 'teaterkritikk'],
-            // ['navn' => 'teaterkritikk'],
-            // ['navn' => 'teaterkritikk'],
-            // ['navn' => 'teaterkritikk'],
-            // ['navn' => 'teaterkritikk'],
-
-        ]);
+        LitteraturkritikkRecordView::refreshView();
     }
 }

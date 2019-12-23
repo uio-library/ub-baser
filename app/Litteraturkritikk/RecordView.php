@@ -10,4 +10,9 @@ class RecordView extends Record
      * @var string
      */
     protected $table = 'litteraturkritikk_records_search';
+
+    public static function refreshView()
+    {
+        \DB::unprepared('REFRESH MATERIALIZED VIEW litteraturkritikk_records_search');
+    }
 }
