@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\CreateUserCommand::class,
+        \App\Console\Commands\CreateAdminCommand::class,
         \App\Console\Commands\DatabaseDumpCommand::class,
         \App\Console\Commands\ImportLitteraturkritikkCommand::class,
         \App\Console\Commands\ImportDommerCommand::class,

@@ -20,11 +20,16 @@ function artisan (args) {
   return execPromise(`docker exec ${DOCKER_APP_CONTAINER_NAME} php artisan ${args}`)
 }
 
+function createAdminUser () {
+  log(`Create admin user in Docker container "${DOCKER_APP_CONTAINER_NAME}"`)
+  return artisan('create:admin -y')
+}
+
 function runMigrations () {
   log(`Running migrations in Docker container "${DOCKER_APP_CONTAINER_NAME}"`)
   return artisan('migrate:fresh --seed')
     .then(function (out) {
-      // log(chalk.gray(out))
+      return createAdminUser();
     })
     .catch(function (error) {
       throw new Error(error)
