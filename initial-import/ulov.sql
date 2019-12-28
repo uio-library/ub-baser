@@ -10,7 +10,7 @@ CREATE TABLE oversatte_lover (
     kort TEXT,
     --url TEXT,  --kan droppes?
     note TEXT,
-    UNIQUE (dato, nummer)
+    UNIQUE (dato, nummer, dok_type)
 );
 
 CREATE TABLE oversettelser (
