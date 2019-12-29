@@ -1,4 +1,4 @@
-@extends('layouts.litteraturkritikk')
+@extends('litteraturkritikk.layout')
 
 @section('content')
 
@@ -14,7 +14,7 @@
 
         <div class="panel-body">
 
-            <form method="POST" action="{{ action('LitteraturkritikkPersonController@update', $person->id) }}">
+            <form method="POST" action="{{ $base->action('PersonController@update', $person->id) }}">
                 {!! csrf_field() !!}
                 <input type="hidden" name="_method" value="PUT">
 
@@ -91,7 +91,7 @@
                 Postene selv blir ikke slettet.
             </p>
 
-            <form method="POST" action="{{ action('LitteraturkritikkPersonController@destroy', $person->id) }}">
+            <form method="POST" action="{{ $base->action('PersonController@destroy', $person->id) }}">
                 {!! csrf_field() !!}
                 <input type="hidden" name="_method" value="DELETE">
 

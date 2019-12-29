@@ -1,4 +1,4 @@
-@extends('layouts.litteraturkritikk')
+@extends('litteraturkritikk.layout')
 
 @section('content')
 
@@ -8,7 +8,7 @@
 
     @include('shared.errors')
 
-    <form method="POST" action="{{ action('LitteraturkritikkController@store') }}" class="form-horizontal">
+    <form method="POST" action="{{ $base->action('store') }}" class="form-horizontal">
         {!! csrf_field() !!}
 
         <edit-form

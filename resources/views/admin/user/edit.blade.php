@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layout')
 
 @section('content')
 
@@ -24,21 +24,21 @@
             {!! csrf_field() !!}
 
             <div class="form-group row">
-                <label for="nameInput" class="col-sm-2 form-control-label">{{ trans('messages.name') }}</label>
+                <label for="nameInput" class="col-sm-2 col-form-label">{{ trans('messages.name') }}</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="nameInput" name="name" value="{{ old('name') ?: $user->name }}">
                 </div>
             </div>
 
             <div class="form-group row">
-                <label for="emailInput" class="col-sm-2 form-control-label">{{ trans('messages.email') }}</label>
+                <label for="emailInput" class="col-sm-2 col-form-label">{{ trans('messages.email') }}</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="emailInput" name="email" value="{{ old('email') ?: $user->email }}">
                 </div>
             </div>
 
             <div class="form-group row">
-                <label for="saml_idInput" class="col-sm-2 form-control-label">{{ trans('messages.saml_id') }}</label>
+                <label for="saml_idInput" class="col-sm-2 col-form-label">{{ trans('messages.saml_id') }}</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="saml_idInput" name="saml_id" value="{{ old('saml_id') ?: $user->saml_id }}">
                 </div>
@@ -48,11 +48,11 @@
                 <label class="col-sm-2">{{ trans('messages.rights') }}</label>
                 <div class="col-sm-10">
                     <div class="checkbox">
-                        @foreach ($rights as $right)
+                        @foreach ($rights as $right => $label)
                         <div>
                             <label>
                                 {!! Form::checkbox('right-' . $right, 'on', old('right-' . $right) ?: $user->can($right)) !!}
-                                {{ trans('rights.' . $right) }}
+                                {{ $label }}
                             </label>
                         </div>
                         @endforeach

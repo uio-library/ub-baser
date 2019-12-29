@@ -1,9 +1,9 @@
-@extends('layouts.litteraturkritikk')
+@extends('litteraturkritikk.layout')
 
 @section('content')
 
     <p style="float:right">
-        <a href="/norsk-litteraturkritikk/veiledning" target="veiledning">Redigeringsveiledning</a> (åpner i nytt vindu/ny fane)
+        <a href="{{ $base->pageAction('veiledning') }}" target="veiledning">Redigeringsveiledning</a> (åpner i nytt vindu/ny fane)
     </p>
 
     <h2>
@@ -12,13 +12,14 @@
 
     @include('shared.errors')
 
-    <form method="POST" action="{{ action('LitteraturkritikkController@update', $record->id) }}" class="form-horizontal">
+    <form method="POST" action="{{ $base->action('update', $record->id) }}" class="form-horizontal">
         {!! csrf_field() !!}
         <input type="hidden" name="_method" value="PUT">
 
         <edit-form
-                :schema="{{ json_encode($schema) }}"
-                :values="{{ json_encode($values) }}"
+            :schema="{{ json_encode($schema) }}"
+            :settings="{{ json_encode($settings) }}"
+            :values="{{ json_encode($values) }}"
         ></edit-form>
 
         <div class="form-group">

@@ -1,12 +1,17 @@
 <template>
     <div>
 
+        <div v-if="error" class="alert alert-danger">
+            {{ error }}
+        </div>
+
         <!-- Top level fields -->
         <table class="table table-borderless table-sm">
             <edit-field
                     v-for="field in fields"
                     :key="field.key"
                     :schema="schemas[field.key]"
+                    :settings="settings"
                     :value="currentValues[field.key]"
                     @value="onValue(field.key, $event)"
             ></edit-field>
@@ -23,6 +28,7 @@
                             v-for="field in group.fields"
                             :key="field.key"
                             :schema="schemas[field.key]"
+                            :settings="settings"
                             :value="currentValues[field.key]"
                             @value="onValue(field.key, $event)"
                     ></edit-field>
@@ -45,6 +51,9 @@ export default {
   },
   props: {
     schema: {
+      type: Object,
+    },
+    settings: {
       type: Object,
     },
     values: {
@@ -80,6 +89,7 @@ export default {
     })
 
     return {
+      error: null,
       currentValues: values,
     }
   },
@@ -88,6 +98,14 @@ export default {
       console.log('[EditForm] Changed: ', key, newValue)
       this.currentValues[key] = newValue
     },
+  },
+  mounted () {
+    if (!this.settings) {
+      this.error = `EditForm is missing a value for the property: settings`
+    }
+    if (!this.schema) {
+      this.error = `EditForm is missing a value for the property: schema`
+    }
   },
 }
 </script>

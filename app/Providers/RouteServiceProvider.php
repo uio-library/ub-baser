@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Base;
 use App\Page;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
+use PDOException;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -25,22 +27,34 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Route::pattern('id', '[0-9]+');
+        // De fleste basene har numeriske ID-er, men f.eks. Bibsys-basen har alfanumeriske
+        // Vi bør ikke være altfor strenge her.
+        Route::pattern('id', '[a-z-0-9]+');
+
+        // Denne brukes for omdirigeringer
+        Route::pattern('numeric', '[0-9]+');
+
         Route::pattern('page', '[a-z-]+/[0-9a-z-]+');
+
+        Route::pattern('base', '[0-9a-z-]+');
+
+        Route::bind('base', function ($value) {
+            return Base::find($value);
+        });
 
         Route::bind('page', function ($value) {
             $page = Page::firstOrNew([
                 'slug' => $value,
             ]);
             if (!$page->exists) {
-                // Check if the page slug contains a valid namespace
-                $namespace = explode('/', $value)[0];
-                if (!in_array($namespace, AuthServiceProvider::$rights)) {
-                    return;
-                }
+                // Check if the page slug contains a valid basepath
+                $basepath = explode('/', $value)[0];
+                $base = Base::where('basepath', '=', $basepath)->firstOrFail();
+
                 // Bootstrap a new page
-                $page->permission = $namespace;
-                $page->layout = 'layouts.' . $namespace;
+                $page->permission = $base->id;
+                $page->base_id = $base->id;
+                $page->layout = $base->id . '.layout';
             }
             return $page;
         });
@@ -59,7 +73,21 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        $this->mapRedirectRoutes();
+
+        $this->mapDynamicRoutes();
+    }
+
+    /**
+     * Define redirect routes.
+     *
+     * These routes are stateless.
+     *
+     * @return void
+     */
+    protected function mapRedirectRoutes()
+    {
+        require base_path('routes/redirects.php');
     }
 
     /**
@@ -89,5 +117,68 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the dynamic routes for the application.
+     *
+     * @return void
+     */
+    protected function mapDynamicRoutes()
+    {
+        try {
+            Base::get()->each(function(Base $base) {
+                Route::prefix($base->basepath)
+                    ->namespace($base->fqn())
+                    ->group(function() use ($base) {
+
+                        // Routes that do not need session
+                        Route::get('/autocomplete', 'Controller@autocomplete');
+                        Route::get('/data', 'Controller@data');
+
+                        Route::middleware('web')
+                            ->group(function() use ($base) {
+
+                                // Standard routes for this base
+                                Route::get('/', 'Controller@index');
+                                Route::get('/{numeric}', function($numeric) use ($base) {
+                                    return redirect($base->action('show', $numeric));
+                                });
+                                Route::get('/poster/', function() use ($base) {
+                                    return redirect($base->action('index'));
+                                });
+                                Route::get('/poster/{id}', 'Controller@show');
+
+                                // Authorized routes for this base
+                                Route::middleware('can:' . $base->id)
+                                    ->group(function() {
+                                        Route::get('/poster/ny', 'Controller@create');
+                                        Route::post('/poster', 'Controller@store');
+                                        Route::get('/poster/{id}/rediger', 'Controller@edit');
+                                        Route::put('/poster/{id}', 'Controller@update');
+
+                                        Route::delete('/poster/{id}', 'Controller@destroy');
+                                        Route::post('/poster/{id}/gjenopprett', 'Controller@restore');
+                                    });
+
+                                // Additional routes for this base
+                                require base_path('routes/bases/' . $base->id . '.php');
+                            });
+                    });
+            });
+        } catch (PDOException $ex) {
+            // During site setup / DB migration
+        }
+
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(function() {
+                Route::middleware('admin')
+                    ->group(function() {
+                        Route::get('{page}/edit', 'PageController@edit');
+                        Route::post('{page}/update', 'PageController@update');
+                    });
+                Route::get('{page}', 'PageController@show');
+            });
     }
 }

@@ -40,6 +40,7 @@ export default {
   props: {
     name: String,
     schema: Object,
+    settings: Object,
     value: String,
   },
   data () {
@@ -65,7 +66,8 @@ export default {
     initAutocomplete () {
       let cancel = null
 
-      const url = get(this.schema, 'searchOptions.autocompleteUrl')
+      const url = get(this.settings, 'baseUrl') + '/autocomplete'
+
       search = autocomplete(this.$refs.input, {}, [
         {
           source: (query, callback) => {

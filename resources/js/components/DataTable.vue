@@ -78,7 +78,7 @@ export default {
     order: {
       type: Array,
     },
-    url: {
+    baseUrl: {
       type: String,
     },
     prefix: {
@@ -240,7 +240,7 @@ export default {
         pageLength: this.getSessionValue('page-length', 50),
         lengthMenu: [10, 50, 100, 500, 1000],
         ajax: {
-          url: this.url,
+          url: `${this.baseUrl}/data`,
           data: (input) => {
             return Object.assign({}, input, this.query)
           },
@@ -259,12 +259,12 @@ export default {
             .on('mousemove', () => { drag = true })
             .on('keypress', $event => {
               if ($event.keyCode === 13) {
-                const link = this.url + '/' + data[this.schema.primaryId]
+                const link = `${this.baseUrl}/poster/${data[this.schema.primaryId]}`
                 window.location = link
               }
             })
             .on('click', $event => {
-              const link = this.url + '/' + data[this.schema.primaryId]
+              const link = `${this.baseUrl}/poster/${data[this.schema.primaryId]}`
               if (drag) {
                 return
               }

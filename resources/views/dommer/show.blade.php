@@ -1,4 +1,4 @@
-@extends('layouts.dommer')
+@extends('dommer.layout')
 
 @section('content')
 
@@ -6,7 +6,7 @@
 	<a href="{{ URL::previous() }}"><em class="fa fa-arrow-circle-left"></em> Tilbake</a>
 	@can('dommer')
 		&nbsp;
-		<a href="{{ action('DommerController@edit', $record->id) }}"><em class="fa fa-edit"></em> Rediger post</a>
+		<a href="{{ action('\App\Bases\Dommer\Controller@edit', $record->id) }}"><em class="fa fa-edit"></em> Rediger post</a>
 	@endcan
 </p>
 

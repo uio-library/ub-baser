@@ -1,4 +1,4 @@
-@extends('layouts.dommer')
+@extends('dommer.layout')
 
 @section('content')
 
@@ -8,12 +8,13 @@
 
     @include('shared.errors')
 
-    <form method="POST" action="{{ action('DommerController@update', $record->id) }}" class="form-horizontal">
+    <form method="POST" action="{{ $base->action('update', $record->id) }}" class="form-horizontal">
         @csrf
         <input type="hidden" name="_method" value="PUT">
 
         <edit-form
             :schema="{{ json_encode($schema) }}"
+            :settings="{{ json_encode($settings) }}"
             :values="{{ json_encode($values) }}"
         ></edit-form>
 
@@ -35,7 +36,7 @@
 
         <div class="panel-body">
 
-            <form method="POST" action="{{ action('DommerController@destroy', $record->id) }}">
+            <form method="POST" action="{{ $base->action('destroy', $record->id) }}">
                 {!! csrf_field() !!}
 
                 <div class="form-group row">

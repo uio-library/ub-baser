@@ -2,7 +2,7 @@
   <div>
     <selectize
       :name="name"
-      :settings="settings"
+      :settings="selectizeSettings"
       :value="value"
       @input="onInput($event)"
     >
@@ -22,20 +22,15 @@ export default {
     Selectize,
   },
   props: {
-    name: {
-      type: String,
-    },
-    schema: {
-      type: Object,
-    },
-    value: {
-      type: String,
-    },
+    name: String,
+    schema: Object,
+    settings: Object,
+    value: String,
   },
   data () {
     return {
       values: cloneDeep(this.schema.values),
-      settings: {
+      selectizeSettings: {
         // Ref: https://github.com/selectize/selectize.js/blob/master/docs/usage.md
         create: false,
         valueField: 'id',

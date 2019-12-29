@@ -47,6 +47,7 @@ class PageController extends Controller
         }
         return response()->view('pages.show', [
             'page' => $page,
+            'base' => $page->base,
         ]);
     }
 
@@ -62,7 +63,8 @@ class PageController extends Controller
         $this->authorize($page->permission);
 
         return response()->view('pages.edit', [
-            'page'        => $page,
+            'page' => $page,
+            'base' => $page->base,
         ]);
     }
 

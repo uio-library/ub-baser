@@ -1,4 +1,4 @@
-@extends('layouts.letras')
+@extends('letras.layout')
 
 @section('content')
 
@@ -8,7 +8,7 @@
 
     @include('shared.errors')
 
-    <form method="POST" action="{{ action('LetrasController@store') }}" class="form-horizontal">
+    <form method="POST" action="{{ action('\App\Bases\Letras\Controller@store') }}" class="form-horizontal">
         @csrf
 
         <edit-form

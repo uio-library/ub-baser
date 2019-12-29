@@ -45,6 +45,7 @@
                 :name="`v${index}`"
                 :value="value"
                 :schema="currentSchema"
+                :settings="settings"
                 @value="$emit('value', $event)"
             ></component>
         </div>
@@ -72,6 +73,7 @@ export default {
     advanced: Boolean,
     index: Number,
     schema: Object,
+    settings: Object,
     field: String,
     operators: Array,
     operator: String,

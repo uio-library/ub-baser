@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Dommer\DommerRecord;
+use App\Bases\Dommer\Record;
 use Faker\Generator as Faker;
 
-$factory->define(DommerRecord::class, function (Faker $faker) {
+$factory->define(Record::class, function (Faker $faker) {
     return [
         'navn' => ucfirst($faker->words(5, true)),
         'aar' => $faker->year,

@@ -2,6 +2,7 @@
 
 namespace App\Schema;
 
+use App\Base;
 use Illuminate\Support\Arr;
 
 abstract class Schema implements \JsonSerializable
@@ -14,7 +15,6 @@ abstract class Schema implements \JsonSerializable
     const DATATYPE_BOOL = 'bool';
 
     public $prefix;
-    public $view;
     public $primaryId = 'id';
     public $costLimit = 0;
 

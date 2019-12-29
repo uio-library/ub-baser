@@ -1,4 +1,4 @@
-@extends('layouts.litteraturkritikk')
+@extends('litteraturkritikk.layout')
 
 @section('content')
 
@@ -16,13 +16,13 @@
 
         @can('litteraturkritikk')
 
-            <a href="{{ action('LitteraturkritikkController@edit', $record->id) }}" class="btn btn-outline-primary">
+            <a href="{{ $base->action('edit', $record->id) }}" class="btn btn-outline-primary">
                 <em class="fa fa-edit"></em>
                 Rediger post
             </a>
 
             @if ($record->trashed())
-                <form style="display: inline-block" action="{{ action('LitteraturkritikkController@restore', $record->id) }}" method="post">
+                <form style="display: inline-block" action="{{ $base->action('restore', $record->id) }}" method="post">
                     @csrf
                     <button type="submit" class="btn btn-outline-danger btn-xs">
                         <em class="fa fa-undo"></em>
@@ -30,7 +30,7 @@
                     </button>
                 </form>
             @else
-                <form style="display: inline-block" action="{{ action('LitteraturkritikkController@destroy', $record->id) }}" method="post">
+                <form style="display: inline-block" action="{{ $base->action('destroy', $record->id) }}" method="post">
                     @csrf
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn btn-outline-danger btn-xs">
@@ -104,7 +104,7 @@
                                 @if ($field->type == 'persons')
 
                                     @foreach ($record->{$field->modelAttribute} as $person)
-                                        <a href="{{ action('LitteraturkritikkPersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
+                                        <a href="{{ $base->action('PersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
                                             $person->pivot->pseudonym ? ', under pseudonymet «' . $person->pivot->pseudonym . '»' : ''
                                         }}{{
                                             !in_array($person->pivot->person_role, ['kritiker', 'forfatter']) ? ' (' . $person->pivot->person_role . ')' : ''
@@ -128,7 +128,7 @@
                                 @elseif (is_array($record->{$field->key}))
 
                                     @foreach ($record->{$field->key} as $value)
-                                        <a class="badge badge-primary" href="{{ action('LitteraturkritikkController@index', [
+                                        <a class="badge badge-primary" href="{{ $base->action('index', [
                                             'f0' => $field->getColumn(),
                                             'v0' => $value,
                                         ]) }}">{{ $value }}</a>

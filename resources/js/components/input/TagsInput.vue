@@ -3,7 +3,7 @@
       <selectize
         multiple
         :name="name + '[]'"
-        :settings="settings"
+        :settings="selectizeSettings"
         :value="value"
         @input="onInput($event)"
       >
@@ -25,11 +25,12 @@ export default {
   props: {
     name: String,
     schema: Object,
+    settings: Object,
     value: Array,
   },
   data () {
     return {
-      settings: {
+      selectizeSettings: {
         create: true,
         preload: true,
         labelField: 'value',
@@ -38,7 +39,8 @@ export default {
         openOnFocus: true,
         closeAfterSelect: true,
         load: (query, callback) => {
-          const url = get(this.schema, 'searchOptions.autocompleteUrl')
+          const url = get(this.settings, 'baseUrl') + '/autocomplete'
+
           this.$http.get(url, {
             params: {
               field: this.schema.key,

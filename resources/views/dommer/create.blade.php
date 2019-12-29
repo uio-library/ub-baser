@@ -1,4 +1,4 @@
-@extends('layouts.dommer')
+@extends('dommer.layout')
 
 @section('content')
 
@@ -8,7 +8,7 @@
 
     @include('shared.errors')
 
-    <form method="POST" action="{{ action('DommerController@store') }}" class="form-horizontal">
+    <form method="POST" action="{{ action('\App\Bases\Dommer\Controller@store') }}" class="form-horizontal">
         @csrf
 
         <edit-form

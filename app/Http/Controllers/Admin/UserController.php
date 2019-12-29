@@ -32,7 +32,7 @@ class UserController extends Controller
     public function create()
     {
         $data = [
-            'rights' => AuthServiceProvider::$rights,
+            'rights' => AuthServiceProvider::$gateLabels,
         ];
 
         return response()->view('admin.user.create', $data);
@@ -48,9 +48,9 @@ class UserController extends Controller
     protected function rightsFromRequest(Request $request)
     {
         $rights = [];
-        foreach (AuthServiceProvider::$rights as $r) {
-            if ($request->get('right-' . $r)) {
-                $rights[] = $r;
+        foreach (AuthServiceProvider::listGates() as $gate) {
+            if ($request->get('right-' . $gate)) {
+                $rights[] = $gate;
             }
         }
 
@@ -124,7 +124,7 @@ class UserController extends Controller
 
         $data = [
             'user'   => $user,
-            'rights' => AuthServiceProvider::$rights,
+            'rights' => AuthServiceProvider::$gateLabels,
         ];
 
         return response()->view('admin.user.show', $data);
@@ -143,7 +143,7 @@ class UserController extends Controller
 
         $data = [
             'user'   => $user,
-            'rights' => AuthServiceProvider::$rights,
+            'rights' => AuthServiceProvider::$gateLabels,
         ];
 
         return response()->view('admin.user.edit', $data);
@@ -163,12 +163,12 @@ class UserController extends Controller
 
         $this->log(
             'Oppdaterte bruker: <a href="%s">%s (%s)</a>.',
-            action('Admin\UserController@show', $user->id),
+            action([UserController::class, 'show'], $user->id),
             $user->name,
             $user->email
         );
 
-        return redirect()->action('Admin\UserController@index')
+        return redirect()->action([UserController::class, 'index'])
             ->with('status', 'Brukeren ble lagret');
     }
 

@@ -1,8 +1,8 @@
 <?php
 
-use App\Dommer\DommerKilde;
-use App\Dommer\DommerRecord;
-use App\Dommer\DommerRecordView;
+use App\Bases\Dommer\DommerKilde;
+use App\Bases\Dommer\Record;
+use App\Bases\Dommer\RecordView;
 use Illuminate\Database\Seeder;
 
 class DommerTableSeeder extends Seeder
@@ -16,9 +16,9 @@ class DommerTableSeeder extends Seeder
     {
         factory(DommerKilde::class, 4)->create()->each(function ($kilde) {
             $kilde->poster()->createMany(
-                factory(DommerRecord::class, 8)->make()->toArray()
+                factory(Record::class, 8)->make()->toArray()
             );
         });
-        DommerRecordView::refreshView();
+        RecordView::refreshView();
     }
 }

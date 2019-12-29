@@ -9,6 +9,7 @@
                 :name="name"
                 :value="value"
                 :schema="schema"
+                :settings="settings"
                 @value="onValue($event)"
             ></component>
             <div v-if="schema.help"><small class="text-muted text-small">
@@ -31,6 +32,7 @@ export default {
   },
   props: [
     'schema',
+    'settings',
     'value',
   ],
   methods: {

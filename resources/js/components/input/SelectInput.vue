@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div v-if="!values.length">
+    <div v-if="!options.length">
       <div v-if="failed" class="text-danger p-1">Det oppsto en feil. Prøv å laste siden på nytt.</div>
       <div v-else class="p-1">Et øyeblikk...</div>
     </div>
     <div v-else>
       <selectize
         :name="name"
-        :settings="settings"
+        :settings="selectSettings"
         :value="value"
         @input="onInput($event)"
       >
-        <option v-for="val in values" :key="val.id" :value="val.id">{{ val.label }}</option>
+        <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
       </selectize>
     </div>
   </div>
@@ -27,24 +27,19 @@ export default {
     Selectize,
   },
   props: {
-    name: {
-      type: String,
-    },
-    schema: {
-      type: Object,
-    },
-    value: {
-      type: String,
-    },
+    name: String,
+    schema: Object,
+    settings: Object,
+    value: String,
   },
   data () {
     return {
-      values: [],
+      options: [],
       failed: false,
-      settings: {
+      selectSettings: {
         // Ref: https://github.com/selectize/selectize.js/blob/master/docs/usage.md
         create: false,
-        valueField: 'id',
+        valueField: 'value',
         labelField: 'label',
         searchField: 'label',
         openOnFocus: true,
@@ -53,13 +48,13 @@ export default {
     }
   },
   mounted () {
-    const url = get(this.schema, 'searchOptions.autocompleteUrl')
+    const url = get(this.settings, 'baseUrl') + '/autocomplete'
     this.$http.get(url, {
       params: {
         field: this.schema.key,
       },
     }).then(res => {
-      this.values = res.data
+      this.options = res.data
     }).catch(() => {
       this.failed = true
     })

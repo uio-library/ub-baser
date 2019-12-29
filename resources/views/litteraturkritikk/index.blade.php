@@ -1,38 +1,37 @@
-@extends('layouts.litteraturkritikk')
+@extends('litteraturkritikk.layout')
 
 @section('content')
 
+    @can($base->id)
         <p>
-            @can('litteraturkritikk')
-                <a href="{{ action('LitteraturkritikkController@create') }}"><em class="fa fa-file"></em> Opprett ny post</a>
-                &nbsp;
-                <a href="{{ action('PageController@edit', ['page' => 'norsk-litteraturkritikk/intro']) }}"><em class="fa fa-edit"></em> Rediger introtekst</a>
-            @endcan
+            <a href="{{ $base->action('create') }}"><em class="fa fa-file"></em> Opprett ny post</a>
+            <a href="{{ $base->pageAction('intro', 'edit') }}"><em class="fa fa-edit"></em> Rediger introtekst</a>
         </p>
+    @endcan
 
-        <div class="lead">
-            {!! $intro !!}
-        </div>
+    <div class="lead">
+        {!! $intro !!}
+    </div>
 
-        <div class="panel panel-default" style="margin-bottom: 1.6em;">
-            <div class="panel-body">
-                <search-form
-                        action="{{ action('LitteraturkritikkController@index') }}"
-                        :initial-query="{{ json_encode($processedQuery) }}"
-                        :schema="{{ json_encode($schema) }}"
-                        :advanced-search="{{ json_encode($advancedSearch) }}"
-                ></search-form>
-            </div>
-        </div>
-
-        <data-table
-                v-once
-                url="{{ action('LitteraturkritikkController@index') }}"
-                prefix="litteraturkritikk"
+    <div class="panel panel-default" style="margin-bottom: 1.6em;">
+        <div class="panel-body">
+            <search-form
+                :initial-query="{{ json_encode($processedQuery) }}"
                 :schema="{{ json_encode($schema) }}"
-                :default-columns="{{ json_encode($defaultColumns) }}"
-                :order="{{ json_encode($order) }}"
-                :query="{{ json_encode($query, JSON_FORCE_OBJECT) }}"
-        ></data-table>
+                :settings="{{ json_encode($settings) }}"
+                :advanced-search="{{ json_encode($advancedSearch) }}"
+            ></search-form>
+        </div>
+    </div>
+
+    <data-table
+        v-once
+        prefix="{{ $base->id }}"
+        base-url="{{ $base->action('index') }}"
+        :schema="{{ json_encode($schema) }}"
+        :default-columns="{{ json_encode($defaultColumns) }}"
+        :order="{{ json_encode($order) }}"
+        :query="{{ json_encode($query, JSON_FORCE_OBJECT) }}"
+    ></data-table>
 
 @endsection

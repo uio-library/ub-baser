@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'admin' => 'Admin',
     'logs' => 'Logg',
     'confirm-deleteuser' => 'Jeg er sikker på at jeg ønsker å slette denne brukeren',
@@ -11,7 +10,8 @@ return [
     'update' => 'Lagre',
     'cancel' => 'Avbryt',
     'manageusers' => 'Brukeradministrasjon',
-    'managepages' => 'Statiske sider',
+    'managepages' => 'Sideadministrasjon',
+    'managebases' => 'Baseadministrasjon',
     'users' => 'Brukere',
     'create' => 'Opprett',
     'createuser' => 'Opprett ny bruker',
@@ -32,5 +32,4 @@ return [
     'search' => 'Søk',
     'clear' => 'Nullstill',
     'choose' => 'Velg...',
-
 ];

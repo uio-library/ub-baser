@@ -29,6 +29,14 @@ class Page extends Model
     }
 
     /**
+     * Get the base the page belongs to.
+     */
+    public function base()
+    {
+        return $this->belongsTo('App\Base');
+    }
+
+    /**
      * Get the route key for the model.
      * Ref: https://laravel.com/docs/master/routing
      *

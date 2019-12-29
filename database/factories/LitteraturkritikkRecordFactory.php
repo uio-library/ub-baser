@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Litteraturkritikk\Record as LitteraturkritikkRecord;
+use App\Bases\Litteraturkritikk\Record as LitteraturkritikkRecord;
 use Faker\Generator as Faker;
 
 $factory->define(LitteraturkritikkRecord::class, function (Faker $faker) {

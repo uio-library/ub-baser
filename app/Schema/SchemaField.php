@@ -114,11 +114,6 @@ abstract class SchemaField implements JsonSerializable
             $value['operators'] = $options['defaultOperators'];
         }
 
-        // Add autocomplete target if not set
-        if (!isset($value['autocompleteUrl'])) {
-            $value['autocompleteUrl'] = $options['autocompleteUrl'];
-        }
-
         $this->data['searchOptions'] = $value;
     }
 

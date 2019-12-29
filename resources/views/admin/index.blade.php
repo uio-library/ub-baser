@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layout')
 
 @section('content')
 
@@ -16,6 +16,9 @@
     </li>
     <li>
         <a href="{{ action('PageController@index') }}">{{ trans('messages.managepages') }}</a>
+    </li>
+    <li>
+        <a href="{{ action('Admin\BaseController@index') }}">{{ trans('messages.managebases') }}</a>
     </li>
 </ul>
 

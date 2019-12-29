@@ -1,4 +1,4 @@
-@extends('layouts.opes')
+@extends('opes.layout')
 
 @section('content')
 
@@ -7,7 +7,7 @@
         </h2>
         @can('opes')
             <p>
-                <a href="{{ action('OpesController@edit', $record->id) }}">[Rediger]</a>
+                <a href="{{ action('Controller@edit', $record->id) }}">[Rediger]</a>
             </p>
         @endif
         <p>

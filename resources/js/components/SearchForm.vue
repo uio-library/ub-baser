@@ -1,5 +1,9 @@
 <template>
-    <form id="searchForm" method="GET" :action="action" class="pb-3">
+    <form id="searchForm" method="GET" :action="baseUrl" class="pb-3">
+
+        <div v-if="error" class="alert alert-danger">
+            {{ error }}
+        </div>
 
         <search-field
                 v-for="(field, fieldIndex) in query"
@@ -9,6 +13,7 @@
                 :advanced="advanced"
                 :index="fieldIndex"
                 :schema="schema"
+                :settings="settings"
                 :field="field.field"
                 @field="field.field = $event"
                 :operators="operators"
@@ -36,7 +41,7 @@
         <div class="d-flex py-1">
             <div class="flex-grow-1">
                 <button type="submit" class="btn btn-primary"><em class="zmdi zmdi-search"></em> Søk</button>
-                <a :href="action" class="btn btn-secondary">Nullstill</a>
+                <a :href="baseUrl" class="btn btn-secondary">Nullstill</a>
             </div>
 
             <div class="flex-grow-0">
@@ -61,13 +66,17 @@ export default {
   },
 
   props: {
-    action: String,
+    settings: Object,
     initialQuery: Array,
     schema: Object,
     advancedSearch: Boolean,
   },
 
   computed: {
+
+    baseUrl () {
+      return get(this.settings, 'baseUrl')
+    },
 
     allFields () {
       const fields = []
@@ -91,6 +100,7 @@ export default {
 
   data () {
     return {
+      error: null,
       advanced: this.advancedSearch,
       query: this.initialQuery.map(x => ({
         field: x.field,
@@ -121,6 +131,12 @@ export default {
   },
 
   mounted () {
+    if (!this.settings) {
+      this.error = `SearchForm is missing a value for the property: settings`
+    }
+    if (!this.schema) {
+      this.error = `SearchForm is missing a value for the property: schema`
+    }
     if (!this.query.length) {
       this.addField()
     }

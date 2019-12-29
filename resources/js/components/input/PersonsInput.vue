@@ -54,6 +54,7 @@
                 <autocomplete-input
                         :value="newPersonValue"
                         :schema="newPersonSchema"
+                        :base-settings="settings"
                         ref="newperson"
                         @value="newPersonValue=$event"
                         @selected="selectedPerson=$event"
@@ -89,6 +90,7 @@ export default {
   props: {
     name: String,
     schema: Object,
+    settings: Object,
     value: Array,
   },
   data () {
@@ -104,9 +106,6 @@ export default {
       return {
         type: 'autocomplete',
         key: 'person',
-        searchOptions: {
-          autocompleteUrl: get(this.schema, 'searchOptions.autocompleteUrl'),
-        },
       }
     },
     personsJson () {

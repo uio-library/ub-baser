@@ -150,11 +150,11 @@ class ImportBibsysCommand extends ImportCommand
             $force = false;
         }
 
-        if (!$this->ensureEmpty('bibsys', $force)) {
+        if (!$this->ensureTableEmpty('bibsys', $force)) {
             return;
         }
 
-        if (!$this->ensureEmpty('bibsys_dok', $force)) {
+        if (!$this->ensureTableEmpty('bibsys_dok', $force)) {
             return;
         }
 

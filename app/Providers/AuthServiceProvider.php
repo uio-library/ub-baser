@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Base;
+use App\User;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use PDOException;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -17,18 +20,18 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
-     * List of all user rights.
+     * List of gates
      *
      * @var array
      */
-    public static $rights = [
-        'admin',
-        'litteraturkritikk',
-        'letras',
-        'opes',
-        'dommer',
-        'bibsys',
+    public static $gateLabels = [
     ];
+
+    public static function listGates()
+    {
+        $gates = \Gate::abilities();
+        return array_keys($gates);
+    }
 
     /**
      * Register any application authentication / authorization services.
@@ -41,10 +44,22 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        foreach (self::$rights as $right) {
-            $gate->define($right, function ($user) use ($right) {
-                return in_array($right, $user->rights);
-            });
+        // Define the "admin" gate
+        $gate->define('admin', function (User $user) {
+            return in_array('admin', $user->rights);
+        });
+        self::$gateLabels['admin'] = trans('rights.admin');
+
+        // Define a gate for each base
+        try {
+            foreach (Base::get() as $base) {
+                $gate->define($base->id, function (User $user) use ($base) {
+                    return in_array($base->id, $user->rights);
+                });
+                self::$gateLabels[$base->id] = trans('rights.can-edit', ['name' => $base->title]);
+            }
+        } catch (PDOException $ex) {
+            // During site setup / DB migration
         }
     }
 }

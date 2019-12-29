@@ -1,8 +1,8 @@
 <?php
 
-use App\Litteraturkritikk\Person as LitteraturkritikkPerson;
-use App\Litteraturkritikk\Record as LitteraturkritikkRecord;
-use App\Litteraturkritikk\RecordView as LitteraturkritikkRecordView;
+use App\Bases\Litteraturkritikk\Person as LitteraturkritikkPerson;
+use App\Bases\Litteraturkritikk\Record as LitteraturkritikkRecord;
+use App\Bases\Litteraturkritikk\RecordView as LitteraturkritikkRecordView;
 use Illuminate\Database\Seeder;
 
 class LitteraturkritikkTableSeeder extends Seeder

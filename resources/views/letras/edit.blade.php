@@ -1,4 +1,4 @@
-@extends('layouts.letras')
+@extends('letras.layout')
 
 @section('content')
 
@@ -8,13 +8,14 @@
 
     @include('shared.errors')
 
-    <form method="POST" action="{{ action('LetrasController@update', $record->id) }}" class="form-horizontal">
+    <form method="POST" action="{{ $base->action('update', $record->id) }}" class="form-horizontal">
         {!! csrf_field() !!}
         <input type="hidden" name="_method" value="PUT">
 
         <edit-form
-                :schema="{{ json_encode($schema) }}"
-                :values="{{ json_encode($values) }}"
+            :schema="{{ json_encode($schema) }}"
+            :settings="{{ json_encode($settings) }}"
+            :values="{{ json_encode($values) }}"
         ></edit-form>
 
         <div class="form-group">
@@ -35,7 +36,7 @@
 
         <div class="panel-body">
 
-            <form method="POST" action="{{ action('LetrasController@destroy', $record->id) }}">
+            <form method="POST" action="{{ action('\App\Bases\Letras\Controller@destroy', $record->id) }}">
                 {!! csrf_field() !!}
 
                 <div class="form-group row">

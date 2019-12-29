@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layout')
 
 @section('content')
 
@@ -38,7 +38,7 @@
                 @foreach ($rights as $right => $label)
                 <div>
                     <label>
-                        {!! Form::checkbox('right-' . $right, $label) !!}
+                        {!! Form::checkbox('right-' . $right) !!}
                         {{ $label }}
                     </label>
                 </div>

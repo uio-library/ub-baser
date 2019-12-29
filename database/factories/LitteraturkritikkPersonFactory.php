@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Litteraturkritikk\Person as LitteraturkritikkPerson;
+use App\Bases\Litteraturkritikk\Person as LitteraturkritikkPerson;
 use Faker\Generator as Faker;
 
 $factory->define(LitteraturkritikkPerson::class, function (Faker $faker) {

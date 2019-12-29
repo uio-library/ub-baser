@@ -1,10 +1,10 @@
-@extends('layouts.litteraturkritikk')
+@extends('litteraturkritikk.layout')
 
 @section('content')
 
     <p>
         @can('litteraturkritikk')
-        <a href="{{ action('LitteraturkritikkPersonController@edit', $person->id) }}"><em class="fa fa-edit"></em> Rediger person</a>
+        <a href="{{ action('\App\Bases\Litteraturkritikk\PersonController@edit', $person->id) }}"><em class="fa fa-edit"></em> Rediger person</a>
         @endcan
     </p>
 
@@ -50,7 +50,7 @@
             <li>{!! $record->representation() !!}</li>
         @endforeach
     </ul>
-    <a href="{{ action('LitteraturkritikkController@index', ['f0' => 'verk_forfatter', 'v0' => strval($person)])  }}">Vis som tabellvisning</a>
+    <a href="{{ action('\App\Bases\Litteraturkritikk\Controller@index', ['f0' => 'verk_forfatter', 'v0' => strval($person)])  }}">Vis som tabellvisning</a>
     @endif
 
     @if (count($person->recordsAsCritic))
@@ -60,7 +60,7 @@
                 <li>{!! $record->representation() !!}</li>
             @endforeach
         </ul>
-        <a href="{{ action('LitteraturkritikkController@index', ['f0' => 'kritiker', 'v0' => strval($person)])  }}">Vis som tabellvisning</a>
+        <a href="{{ action('\App\Bases\Litteraturkritikk\Controller@index', ['f0' => 'kritiker', 'v0' => strval($person)])  }}">Vis som tabellvisning</a>
     @endif
 
 @endsection

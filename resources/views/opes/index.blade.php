@@ -1,12 +1,12 @@
 index.blade.php
-@extends('layouts.opes')
+@extends('opes.layout')
 
 @section('content')
 
         <p>
 
             @can('opes')
-                <a href="{{ action('OpesController@create') }}"><em class="fa fa-file"></em> Opprett ny post</a>
+                <a href="{{ action('Controller@create') }}"><em class="fa fa-file"></em> Opprett ny post</a>
 
 
             @endif
@@ -20,7 +20,7 @@ index.blade.php
       <div class="panel panel-default">
             <div class="panel-body">
 
-                <form class="form-horizontal" id="searchForm" method="GET" action="{{ action('OpesController@index') }}">
+                <form class="form-horizontal" id="searchForm" method="GET" action="{{ action('Controller@index') }}">
 
                     <input type="hidden" name="search" value="true">
 
@@ -77,7 +77,7 @@ index.blade.php
 
     <tr>
                 <td>
-                    <a href="{{ action('OpesController@show', $record->id) }}">
+                    <a href="{{ action('Controller@show', $record->id) }}">
 
                     {{$record}}
 

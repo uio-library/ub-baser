@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-use App\Dommer\DommerSchema;
-use App\Letras\LetrasSchema;
-use App\Litteraturkritikk\LitteraturkritikkSchema;
+use App\Base;
+use App\Http\Request;
+use App\Http\Requests\SearchRequest;
+use App\Schema\Schema;
+use App\Services\AutocompleteServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \App\Bases\Litteraturkritikk\Record::observe(\App\Bases\Litteraturkritikk\RecordObserver::class);
+        \App\Bases\Litteraturkritikk\Person::observe(\App\Bases\Litteraturkritikk\PersonObserver::class);
     }
 
     /**
@@ -26,7 +29,35 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $requestClasses = [
+            Request::class,
+            SearchRequest::class,
+        ];
+
+        foreach ($requestClasses as $cls) {
+            $this->app->singleton($cls, function ($app) use ($cls) {
+                return $cls::createFrom($app['request']);
+            });
+        }
+
+        // IDÉ: Bind 'Record', 'RecordView', 'AutocompleteService' based on base
+        // Kan jeg binde Base også??
+
+        $this->app->singleton(Base::class, function($app) {
+            $request = $app[Request::class];
+            return $request->getBase();
+        });
+
+        $this->app->singleton(Schema::class, function($app) {
+            $base = $app[Base::class];
+            return $base->getSchema();
+        });
+
+        $this->app->singleton(AutocompleteServiceInterface::class, function($app) {
+            $base = $app[Base::class];
+            $serviceClass = $base->getClass('AutocompleteService');
+            return new $serviceClass($base);
+        });
     }
 
     /**
@@ -35,8 +66,6 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     public $singletons = [
-        LitteraturkritikkSchema::class => LitteraturkritikkSchema::class,
-        LetrasSchema::class => LetrasSchema::class,
-        DommerSchema::class => DommerSchema::class,
+        //
     ];
 }

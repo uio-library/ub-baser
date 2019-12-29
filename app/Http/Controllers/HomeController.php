@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Base;
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $bases = Base::get();
+        return view('home', ['bases' => $bases]);
     }
 }
