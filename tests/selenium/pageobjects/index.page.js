@@ -36,4 +36,5 @@ class IndexPage extends Page {
     return $$('#DataTables_Table_0_wrapper tbody tr')
   }
 }
+
 module.exports = IndexPage
