@@ -13,6 +13,7 @@
 
         <edit-form
             :schema="{{ json_encode($schema) }}"
+            :settings="{{ json_encode($settings) }}"
             :values="{{ json_encode($values) }}"
         ></edit-form>
 

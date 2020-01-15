@@ -12,8 +12,9 @@
         {!! csrf_field() !!}
 
         <edit-form
-                :schema="{{ json_encode($schema) }}"
-                :values="{{ json_encode($values) }}"
+            :schema="{{ json_encode($schema) }}"
+            :settings="{{ json_encode($settings) }}"
+            :values="{{ json_encode($values) }}"
         ></edit-form>
 
         <div class="form-group">
