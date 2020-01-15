@@ -147,12 +147,13 @@ class RouteServiceProvider extends ServiceProvider
                                 Route::get('/poster/', function() use ($base) {
                                     return redirect($base->action('index'));
                                 });
+
                                 Route::get('/poster/{id}', 'Controller@show');
 
                                 // Authorized routes for this base
                                 Route::middleware('can:' . $base->id)
                                     ->group(function() {
-                                        Route::get('/poster/ny', 'Controller@create');
+                                        Route::get('/ny-post', 'Controller@create');
                                         Route::post('/poster', 'Controller@store');
                                         Route::get('/poster/{id}/rediger', 'Controller@edit');
                                         Route::put('/poster/{id}', 'Controller@update');
