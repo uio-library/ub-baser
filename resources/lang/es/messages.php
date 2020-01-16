@@ -29,18 +29,8 @@ return [
     'logout' => 'Logg ut',
     'loggedinas' => 'Innlogget som :user',
     'forgotpassword' => 'Glemt passord?',
-    'search' => 'Søk',
-    'clear' => 'Nullstill',
-    'choose' => 'Velg...',
-    'advanced_search' => 'Avansert søk',
+    'search' => 'Buscar',
     'reset' => 'Nullstill',
-
-    // DataTable
-    'first' => 'Første',
-    'previous' => 'Forrige',
-    'next' => 'Neste',
-    'last' => 'Siste',
-    'loading' => 'Laster...',
-    'nohits' => 'Ingen treff',
-
+    'choose' => 'Velg...',
+    'advanced_search' => 'Búsqueda Avanzada',
 ];
