@@ -1,7 +1,7 @@
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const mix = require('laravel-mix')
-
+require('laravel-vue-lang/mix')
 require('laravel-mix-imagemin')
 
 const imageminMozjpeg = require('imagemin-mozjpeg')
@@ -11,6 +11,8 @@ const imageminMozjpeg = require('imagemin-mozjpeg')
  | Mix Asset Management
  |--------------------------------------------------------------------------
  */
+
+mix.lang()
 
 mix.js('resources/js/app.js', 'public/js')
   .sourceMaps()

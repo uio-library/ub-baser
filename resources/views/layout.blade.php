@@ -13,6 +13,11 @@
 
     <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
 
+    <script>
+    window.default_locale = "{{ config('app.locale') }}";
+    window.fallback_locale = "{{ config('app.fallback_locale') }}";
+    </script>
+
     @yield('head')
 </head>
 <body class="d-flex flex-column h-100">

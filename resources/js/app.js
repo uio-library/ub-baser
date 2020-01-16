@@ -5,6 +5,7 @@
  */
 
 import Vue from './bootstrap'
+import Lang from 'laravel-vue-lang';
 
 /**
  * The following block of code may be used to automatically register your
@@ -28,6 +29,11 @@ Vue.component('data-table', DataTable)
 Vue.component('search-form', SearchForm)
 Vue.component('edit-form', EditForm)
 Vue.component('page-editor', PageEditor)
+
+Vue.use(Lang, {
+  locale: window.default_locale,
+  fallback: window.fallback_locale,
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
