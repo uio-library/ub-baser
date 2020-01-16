@@ -6,9 +6,11 @@ use Illuminate\Database\Schema\Blueprint;
 
 trait MigrationHelper
 {
-    protected function addCommonFields(Blueprint $table)
+    protected function addCommonFields(Blueprint $table, $includeId = true)
     {
-        $table->increments('id');
+        if ($includeId) {
+            $table->increments('id');
+        }
         $table->timestamps();
         $table->softDeletes();
 
