@@ -54,7 +54,7 @@ class CreateBibliomanuelTable extends Migration
                 'languages' => json_encode(['nb', 'en']),
                 'default_language' => 'nb',
                 'name' => json_encode([
-                    'nb' => 'Bibliografi om Manuel Vázquez Montalbá'
+                    'nb' => 'Bibliografía sobre la obra de Manuel Vázquez Montalbán'
                 ]),
                 'class_bindings' => json_encode([
                     'RecordView' => 'Record',
