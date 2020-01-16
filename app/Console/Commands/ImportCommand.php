@@ -59,23 +59,28 @@ class ImportCommand extends Command
         if ($handle === false) {
             throw new ErrorException('Failed to open file: ' . $filename);
         }
-        $header = fgetcsv($handle, 0, "\t");
+        $header = explode("\t", stream_get_line($handle, 1024 * 1024, "\n"));
         fclose($handle);
         return $header;
     }
 
     protected function readTsvFileRows(string $filename, array $columnNames)
     {
+        // Note: We don't use the build-in csv_ functions in PHP because they don't allow us to
+        // not use a quoting character. (We could have set the quoting character to some character
+        // that is very unlikely to be encountered, but that's just stupid.)
+
         $handle = fopen($filename, 'r');
         if ($handle === false) {
             throw new ErrorException('Failed to open file: ' . $filename);
         }
 
         // Skip header line
-        fgetcsv($handle, 0, "\t");
+        stream_get_line($handle, 1024 * 1024, "\n");
 
         $lineNo = 0;
-        while (($row = fgetcsv($handle, 0, "\t")) !== false) {
+        while (($row = stream_get_line($handle, 1024 * 1024, "\n")) !== false) {
+            $row = explode("\t", $row);
             $lineNo++;
             if (count($row) != count($columnNames)) {
                 throw new ErrorException(sprintf(
