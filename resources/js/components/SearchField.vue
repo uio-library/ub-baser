@@ -84,7 +84,7 @@ export default {
     currentSchema () {
       if (fieldMap === null) {
         // Lazy-load field map
-        fieldMap = new Map()
+        fieldMap = {}
         fieldMap = this.schema.fields.reduce((out, field) => { out[field.key] = field; return out }, fieldMap)
         this.schema.groups.forEach(fieldGroup => {
           fieldMap = fieldGroup.fields.reduce((out, field) => { out[field.key] = field; return out }, fieldMap)
