@@ -136,7 +136,10 @@ class RouteServiceProvider extends ServiceProvider
                         Route::get('/autocomplete', 'Controller@autocomplete');
                         Route::get('/data', 'Controller@data');
 
-                        Route::middleware('web')
+                        Route::middleware([
+                            'web',
+                            'checklang',
+                        ])
                             ->group(function() use ($base) {
 
                                 // Standard routes for this base

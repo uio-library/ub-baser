@@ -71,6 +71,7 @@ class Kernel extends HttpKernel
         'secure.content' => \Stevenmaguire\Laravel\Http\Middleware\EnforceContentSecurity::class,
         'admin' => \App\Http\Middleware\Login::class,
 
+        'checklang' => \App\Http\Middleware\CheckLang::class,
     ];
 
     /**

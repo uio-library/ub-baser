@@ -24,9 +24,11 @@ class BaseController extends Controller
     /**
      * Instantiate a new BaseController instance.
      */
-    public function __construct()
+    public function __construct(Base $base)
     {
         $this->middleware('auth', ['only' => ['create', 'edit', 'store', 'update', 'destroy']]);
+
+        \View::share('base', $base);
     }
 
     /**

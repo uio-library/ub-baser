@@ -5,9 +5,9 @@
 @section('content')
 
         <ul id="database_list">
-            @foreach($bases as $base)
+            @foreach($bases as $item)
                 <li>
-                    <a href="{{ $base->action('index') }}">{{ $base->title }}</a>
+                    <a href="{{ $item->action('index') }}">{{ $item->title }}</a>
                     {{--
                     {!! $base->getIntro() !!}
                     --}}

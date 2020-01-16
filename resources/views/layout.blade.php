@@ -28,35 +28,50 @@
         </div>
         <div class="header">
             <div class="container">
-                <div id="user">
-                <a href="/" >UB-baser</a>
+                <div id="navbar_top">
+                    <div>
+                        <a href="/" >UB-baser</a>
+                    </div>
+                    <div id="user">
 
-                    @if (Auth::check())
-                        @can('admin')
-                        | <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a>
-                        @endcan
+                        @if (isset($base) && (count($base->languages) > 1))
+                            @foreach ($base->languages as $baseLang)
+                                @if ($baseLang == \App::getLocale())
+                                    {{ $baseLang }}
+                                @else
+                                    <a href="?lang={{ $baseLang }}">{{ $baseLang }}</a>
+                                @endif
+                            @endforeach
+                        @endif
 
-                        | <a href="{{ action('LogEntryController@index') }}">{{ trans('messages.logs') }}</a>
+                        @if (Auth::check())
 
-                        | {!! trans('messages.loggedinas', [
-                            'user' => '<a href="' . action('AccountController@index') . '" id="user_name">' . Auth::user()->name . '</a>'
-                        ]) !!}
+                            @can('admin')
+                            | <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a>
+                            @endcan
 
-                        | <a href="{{ route('logout') }}"
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
-                        </a>
+                            | <a href="{{ action('LogEntryController@index') }}">{{ trans('messages.logs') }}</a>
 
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
+                            | {!! trans('messages.loggedinas', [
+                                'user' => '<a href="' . action('AccountController@index') . '" id="user_name">' . Auth::user()->name . '</a>'
+                            ]) !!}
 
-                    @else
+                            | <a href="{{ route('logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
 
-                        <a href="{{ URL::current() }}?login=true">{{ trans('messages.login') }}</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
 
-                    @endif
+                        @else
 
+                            <a href="{{ URL::current() }}?login=true">{{ trans('messages.login') }}</a>
+
+                        @endif
+
+                    </div>
                 </div>
                 <h1>
                     @hasSection('header')
