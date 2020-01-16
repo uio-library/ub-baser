@@ -52,6 +52,17 @@ class ImportCommand extends Command
         return $force;
     }
 
+    /**
+     * Process a single value. This method can be overriden in an importer
+     * to do some kind of processing before the data are inserted into the database,
+     * e.g. converting a string value to a JSON value.
+     *
+     * @return array
+     */
+    protected function processValue(string $column, string $value)
+    {
+        return trim($value);
+    }
 
     protected function readTsvFileHeader(string $filename)
     {
@@ -92,7 +103,7 @@ class ImportCommand extends Command
             }
             $indexedRow = [];
             foreach ($columnNames as $idx => $column) {
-                $indexedRow[$column] = trim($row[$idx]);
+                $indexedRow[$column] = $this->processValue($column, $row[$idx]);
             }
             yield $indexedRow;
         }
