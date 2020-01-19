@@ -259,12 +259,12 @@ export default {
             .on('mousemove', () => { drag = true })
             .on('keypress', $event => {
               if ($event.keyCode === 13) {
-                const link = `${this.baseUrl}/poster/${data[this.schema.primaryId]}`
+                const link = `${this.baseUrl}/record/${data[this.schema.primaryId]}`
                 window.location = link
               }
             })
             .on('click', $event => {
-              const link = `${this.baseUrl}/poster/${data[this.schema.primaryId]}`
+              const link = `${this.baseUrl}/record/${data[this.schema.primaryId]}`
               if (drag) {
                 return
               }

@@ -147,22 +147,22 @@ class RouteServiceProvider extends ServiceProvider
                                 Route::get('/{numeric}', function($numeric) use ($base) {
                                     return redirect($base->action('show', $numeric));
                                 });
-                                Route::get('/poster/', function() use ($base) {
+                                Route::get('/record/', function() use ($base) {
                                     return redirect($base->action('index'));
                                 });
 
-                                Route::get('/poster/{id}', 'Controller@show');
+                                Route::get('/record/{id}', 'Controller@show');
 
                                 // Authorized routes for this base
                                 Route::middleware('can:' . $base->id)
                                     ->group(function() {
-                                        Route::get('/ny-post', 'Controller@create');
-                                        Route::post('/poster', 'Controller@store');
-                                        Route::get('/poster/{id}/rediger', 'Controller@edit');
-                                        Route::put('/poster/{id}', 'Controller@update');
+                                        Route::get('/record/_new', 'Controller@create');
+                                        Route::post('/record', 'Controller@store');
+                                        Route::get('/record/{id}/edit', 'Controller@edit');
+                                        Route::put('/record/{id}', 'Controller@update');
 
-                                        Route::delete('/poster/{id}', 'Controller@destroy');
-                                        Route::post('/poster/{id}/gjenopprett', 'Controller@restore');
+                                        Route::delete('/record/{id}', 'Controller@destroy');
+                                        Route::post('/record/{id}/restore', 'Controller@restore');
                                     });
 
                                 // Additional routes for this base
