@@ -73,21 +73,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        $this->mapRedirectRoutes();
-
         $this->mapDynamicRoutes();
-    }
-
-    /**
-     * Define redirect routes.
-     *
-     * These routes are stateless.
-     *
-     * @return void
-     */
-    protected function mapRedirectRoutes()
-    {
-        require base_path('routes/redirects.php');
     }
 
     /**
@@ -144,13 +130,8 @@ class RouteServiceProvider extends ServiceProvider
 
                                 // Standard routes for this base
                                 Route::get('/', 'Controller@index');
-                                Route::get('/{numeric}', function($numeric) use ($base) {
-                                    return redirect($base->action('show', $numeric));
-                                });
-                                Route::get('/record/', function() use ($base) {
-                                    return redirect($base->action('index'));
-                                });
-
+                                Route::get('/{numeric}', 'Controller@redirectToRecord');
+                                Route::get('/record/', 'Controller@redirectToHome');
                                 Route::get('/record/{id}', 'Controller@show');
 
                                 // Authorized routes for this base

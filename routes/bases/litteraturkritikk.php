@@ -27,3 +27,7 @@ Route::middleware('can:litteraturkritikk')
         Route::put('personer/{id}', 'PersonController@update');
         Route::delete('personer/{id}', 'PersonController@destroy');
     });
+
+
+Route::get('norsklitteraturkritikk', 'Controller@redirectToHome');
+Route::get('norsk_litteraturkritikk', 'Controller@redirectToHome');

@@ -400,4 +400,13 @@ class BaseController extends Controller
         ];
     }
 
+    public function redirectToRecord(Base $base, $numeric)
+    {
+        return response()->redirect($base->action('show', $numeric));
+    }
+
+    public function redirectToHome(Base $base)
+    {
+        return response()->redirect($base->action('index'));
+    }
 }
