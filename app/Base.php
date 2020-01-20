@@ -5,6 +5,7 @@ namespace App;
 use App\Http\Controllers\PageController;
 use App\Schema\Schema;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 /**
  * A Base is a collection of Records with its own namespace and settings.
@@ -62,7 +63,7 @@ class Base extends Model
      */
     public function getTitleAttribute()
     {
-        return $this->name[$this->default_language];
+        return Arr::get($this->name, \App::getLocale()) ?: Arr::get($this->name, $this->default_language);
     }
 
     /**
