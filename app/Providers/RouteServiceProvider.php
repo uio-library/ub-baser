@@ -147,7 +147,7 @@ class RouteServiceProvider extends ServiceProvider
                                     });
 
                                 // Additional routes for this base
-                                require base_path('routes/bases/' . $base->id . '.php');
+                                @include base_path('routes/bases/' . $base->id . '.php');
                             });
                     });
             });
