@@ -88,20 +88,6 @@ class CreateBasesTable extends Migration
                     'AutocompleteService' => 'AutocompleteService',
                 ], JSON_FORCE_OBJECT),
             ],
-            [
-                'id' => 'opes',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'basepath' => 'opes',
-                'namespace' => 'Opes',
-                'languages' => json_encode(['nb']),
-                'default_language' => 'nb',
-                'name' => json_encode([
-                    'nb' => 'OPES'
-                ]),
-                'class_bindings' => json_encode([
-                ], JSON_FORCE_OBJECT),
-            ],
         ]);
 
         Schema::table('pages', function (Blueprint $table) {
