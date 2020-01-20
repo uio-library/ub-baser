@@ -51,10 +51,12 @@ class CreateBibliomanuelTable extends Migration
                 'updated_at' => Carbon::now(),
                 'basepath' => 'bibliomanuel',
                 'namespace' => 'Bibliomanuel',
-                'languages' => json_encode(['nb', 'en']),
-                'default_language' => 'nb',
+                'languages' => json_encode(['nb', 'es', 'en']),
+                'default_language' => 'es',
                 'name' => json_encode([
-                    'nb' => 'Bibliografía sobre la obra de Manuel Vázquez Montalbán'
+                    'es' => 'Bibliografía sobre la obra de Manuel Vázquez Montalbán',
+                    'en' => 'Bibliography on the works of Manuel Vázquez Montalbán',
+                    'nb' => 'Bibliografi over Manuel Vázquez Montalbáns utgivelser',
                 ]),
                 'class_bindings' => json_encode([
                     'RecordView' => 'Record',
