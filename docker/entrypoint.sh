@@ -73,6 +73,13 @@ php artisan migrate --force
 php artisan ub-baser:deployed
 
 # ----------------------------------------------------------------------------
+# Update route cache after migration step to make sure all dynamic routes are included.
+
+if [ "$APP_ENV" == "production" ]; then
+    php artisan route:cache  # stored in bootstrap/cache/config.php
+fi
+
+# ----------------------------------------------------------------------------
 # Fix permissions
 # This should be done *after* any artisan command, to avoid being left with
 # files owned by root.
