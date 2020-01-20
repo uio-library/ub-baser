@@ -37,14 +37,6 @@ class Schema extends BaseSchema
 
                 'columnClassName' => 'dt-body-nowrap',
             ],
-        ],
-
-         'groups' => [
-
-            [
-                'label' => 'Verket',
-                'fields' => [
-
 
 			// Forfatter
 			[
@@ -58,7 +50,7 @@ class Schema extends BaseSchema
 				'type' => 'simple',
 			],
 
-			// Antalogi
+			// Antologi
 			[
 				'key' => 'antologi',
 				'type' => 'simple',
@@ -70,7 +62,7 @@ class Schema extends BaseSchema
 				'type' => 'simple',
 			],
 
-			// Redaktorer
+			// Redaktører
 			[
 				'key' => 'redaktorer',
 				'type' => 'simple',
@@ -107,7 +99,7 @@ class Schema extends BaseSchema
 				'type' => 'simple',
 			],
 
-			// Aar
+			// År
 			[
 				'key' => 'aar',
 				'type' => 'simple',
@@ -176,8 +168,6 @@ class Schema extends BaseSchema
 				'key' => 'url',
 				'type' => 'simple',
 			],
-          ],
         ],
-      ],
     ];
 }
