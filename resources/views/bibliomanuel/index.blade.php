@@ -11,7 +11,10 @@
 
     <p>
         {!! $intro !!}
-        <img src="/images/IMG_0483.JPG" id="bibliomanuel_illustrasjon_jpg" alt="bibliografi Manuel">
+        <img src="/images/bibliomanuel-banner.jpg"
+             style="max-width: 100%;"
+             alt="Illustrasjonsbilde fra Barrio del Raval, Barcelona."
+             title="Foto: José María Izquierdo (2012)">
     </p>
 
     <div class="panel panel-default">
