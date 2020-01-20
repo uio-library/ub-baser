@@ -8,5 +8,6 @@ return [
     'password' => 'Password',
     'confirmpassword' => 'Confirm password',
     'sendpasswordresetlink' => 'Send Password Reset Link',
+    'language' => 'Language',
 
 ];

@@ -17,7 +17,7 @@
         "laravel/framework": "6.5.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "~6.0",
-        "punic/punic": "^3.3",
+        "punic/punic": "^3.5",
         "sentry/sentry-laravel": "^1.2",
         "spatie/laravel-csp": "^2.4"
     },

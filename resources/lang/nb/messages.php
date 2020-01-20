@@ -34,6 +34,7 @@ return [
     'choose' => 'Velg...',
     'advanced_search' => 'Avansert søk',
     'reset' => 'Nullstill',
+    'language' => 'Språk',
 
     // DataTable
     'first' => 'Første',
