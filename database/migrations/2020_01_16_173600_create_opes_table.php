@@ -107,6 +107,23 @@ class CreateOpesTable extends Migration
         });
 
         $this->createView('opes_view', 1);
+
+        \DB::table('bases')->insert([
+            [
+                'id' => 'opes',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'basepath' => 'opes',
+                'namespace' => 'Opes',
+                'languages' => json_encode(['en']),
+                'default_language' => 'en',
+                'name' => json_encode([
+                    'nb' => 'OPES'
+                ]),
+                'class_bindings' => json_encode([
+                ], JSON_FORCE_OBJECT),
+            ]
+        ]);
     }
     /**
      * Reverse the migrations.
@@ -119,5 +136,9 @@ class CreateOpesTable extends Migration
 
         Schema::drop('opes_publications');
         Schema::drop('opes');
+
+        \DB::table('bases')
+            ->where(['id' => 'opes'])
+            ->delete();
     }
 }
