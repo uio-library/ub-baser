@@ -54,12 +54,12 @@
                         @if (Auth::check())
 
                             @can('admin')
-                            | <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a>
+                            <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a> |
                             @endcan
 
-                            | <a href="{{ action('LogEntryController@index') }}">{{ trans('messages.logs') }}</a>
+                            <a href="{{ action('LogEntryController@index') }}">{{ trans('messages.logs') }}</a> |
 
-                            | {!! trans('messages.loggedinas', [
+                            {!! trans('messages.loggedinas', [
                                 'user' => '<a href="' . action('AccountController@index') . '" id="user_name">' . Auth::user()->name . '</a>'
                             ]) !!}
 

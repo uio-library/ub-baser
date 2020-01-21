@@ -9,16 +9,19 @@ class Request extends BaseRequest
 {
     /**
      * Get a Base instance from the first part of the URL.
-     * Throw 404 if not found.
+     * Returns null if no base is part of the request URL.
      * @throws \Illuminate\Http\Exceptions\HttpResponseException;
-     * @return Base
+     * @return Base|null
      */
     public function getBase()
     {
         $basepath = explode('/', $this->path())[0];
+        if (empty($basepath)) {
+            return null;
+        }
         $base = Base::where(['basepath' => $basepath])->first();
         if (is_null($base)) {
-            abort('404', trans('base.notfound', ['name' => $basepath]));
+            return null;
         }
         return $base;
     }

@@ -7,7 +7,7 @@ use Closure;
 
 class CheckLang
 {
-    public function __construct(Base $base)
+    public function __construct(?Base $base)
     {
         $this->base = $base;
     }
@@ -21,12 +21,14 @@ class CheckLang
      */
     public function handle($request, Closure $next)
     {
-        $lang = $request->query('lang') ?: $request->session()->get('lang');
-        if (!in_array($lang, $this->base->languages, true)) {
-            $lang = $this->base->default_language;
+        if (!is_null($this->base)) {
+            $lang = $request->query('lang') ?: $request->session()->get('lang');
+            if (!in_array($lang, $this->base->languages, true)) {
+                $lang = $this->base->default_language;
+            }
+            \App::setLocale($lang);
+            $request->session()->put('lang', $lang);
         }
-        \App::setLocale($lang);
-        $request->session()->put('lang', $lang);
 
         return $next($request);
     }

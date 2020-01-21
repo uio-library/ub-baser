@@ -11,6 +11,11 @@
         </p>
         @endif
 
+        @if (!$page->exists)
+        <p>
+            Språk for denne siden: {{ \Punic\Language::getName(\App::getLocale(), 'nb') }}
+        </p>
+        @endif
         <page-editor data="{{ $page->body }}"></page-editor>
 
         <button type="submit" class="btn btn-primary">{{ trans('messages.update') }}</button>

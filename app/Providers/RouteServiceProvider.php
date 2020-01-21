@@ -45,15 +45,20 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('page', function ($value) {
             $page = Page::firstOrNew([
                 'slug' => $value,
+                'lang' => \App::getLocale(),
             ]);
             if (!$page->exists) {
                 // Check if the page slug contains a valid basepath
                 $basepath = explode('/', $value)[0];
-                $base = Base::where('basepath', '=', $basepath)->firstOrFail();
+                $base = Base::where('basepath', '=', $basepath)->first();
+                if (is_null($base)) {
+                    abort(404, 'Base not found');
+                }
 
                 // Bootstrap a new page
                 $page->permission = $base->id;
                 $page->base_id = $base->id;
+                $page->lang = \App::getLocale();
                 $page->layout = $base->id . '.layout';
             }
             return $page;
@@ -122,10 +127,7 @@ class RouteServiceProvider extends ServiceProvider
                         Route::get('/autocomplete', 'Controller@autocomplete');
                         Route::get('/data', 'Controller@data');
 
-                        Route::middleware([
-                            'web',
-                            'checklang',
-                        ])
+                        Route::middleware('web')
                             ->group(function() use ($base) {
 
                                 // Standard routes for this base
