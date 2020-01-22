@@ -7,6 +7,9 @@ function execPromise (command) {
   return new Promise(function (resolve, reject) {
     exec(command, (error, stdout, stderr) => {
       if (error) {
+        console.log('Command failed')
+        console.log(stdout)
+        console.log(stderr)
         reject(error)
         return
       }
