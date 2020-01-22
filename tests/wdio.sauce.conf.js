@@ -2,6 +2,14 @@ const { runMigrations, rollbackMigrations, isDockerRunning } = require('./util')
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:8080'
 
+const sauceOptions = {
+  'sauce:options': {
+    tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+    build: process.env.TRAVIS_BUILD_NUMBER,
+    // trustAllSSLCertificates: true,
+  }
+}
+
 exports.config = {
 
   services: ['sauce'],
@@ -16,15 +24,15 @@ exports.config = {
   capabilities: [
     {
       browserName: 'firefox',
-      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-      build: process.env.TRAVIS_BUILD_NUMBER,
-      trustAllSSLCertificates: true,
+      browserVersion: 'latest',
+      platformName: 'Windows 10',
+      ...sauceOptions,
     },
     {
       browserName: 'chrome',
-      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-      build: process.env.TRAVIS_BUILD_NUMBER,
-      trustAllSSLCertificates: true,
+      browserVersion: 'latest',
+      platformName: 'Windows 10',
+      ...sauceOptions,
     },
   ],
 
