@@ -7,6 +7,7 @@ class LoginPage extends Page {
 
   loginAs (username, password) {
     $('#collapse1_toggle').click()
+    $('input[name="email"]').click()
     $('input[name="email"]').setValue(username)
     $('input[name="password"]').setValue(password)
     $('button[type="submit"]').click()
