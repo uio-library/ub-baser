@@ -1,3 +1,5 @@
+const { runMigrations, rollbackMigrations, isDockerRunning } = require('./util')
+
 const BASE_URL = process.env.BASE_URL || 'http://localhost:8080'
 
 exports.config = {
@@ -48,5 +50,21 @@ exports.config = {
   mochaOpts: {
     ui: 'bdd',
     timeout: 60000,
+  },
+  /**
+     * Hook that gets executed before the suite starts
+     * @param {Object} suite suite details
+     */
+  beforeSuite: function (suite) {
+    // console.log(`BEFORE suite: ${suite.title}`);
+    return runMigrations()
+  },
+  /**
+     * Hook that gets executed after the suite has ended
+     * @param {Object} suite suite details
+     */
+  afterSuite: function (suite) {
+    // console.log(`AFTER suite: ${suite.title}`);
+    return rollbackMigrations()
   },
 }
