@@ -32,8 +32,8 @@ class Page {
   get title () { return browser.getTitle() }
 
   getLoggedInUser () {
-    const node = $('#user_name')
-    return node.isExisting() ? node.getText() : null
+    const user = $('#user_name').getText().trim()
+    return (user === '') ? null : user
   }
 }
 
