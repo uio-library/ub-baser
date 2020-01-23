@@ -1,30 +1,30 @@
-Create an SSH key `~/.ssh/id_rsa.ub-baser-deploy` and transfer the
-public key to the server(s).
+## Deploying with Ansible
 
-Locally, create a hosts file in e.g.
+### Setup SSH connection as the deploy user
 
-    $HOME/.ansible/hosts.yml
+Create a SSH key pair:
 
-with something like:
+    $ ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa.ub-baser-deploy -C "Deploy key for ub-baser (YOUR NAME)"
 
-    ub_baser:
-      hosts:
-        ub-baser.uio.no:
-      vars:
-        ansible_user: deploy
-        ansible_ssh_private_key_file: ~/.ssh/id_rsa.ub-baser-deploy
+Please protect it with a strong passphrase.
 
-Make sure it's referred to in `~/.ansible.cfg`:
+Copy the public key (`~/.ssh/id_rsa.ub-baser-deploy.pub`),
+login to the server and append the public key to `/home/deploy/.ssh/authorized_keys`.
 
-    inventory      = /Users/USERNAME/.ansible/hosts.yml
+To test if the key is working, try this:
 
-Then test it:
-
-    $ ansible -i ~/.ansible/hosts.yml -m shell -a whoami ub_baser
+    $ ansible -m shell -a whoami prod
     ub-baser.uio.no | CHANGED | rc=0 >>
     deploy
 
-If successful, go ahead and deploy
+The last line is the result from running the `whoami` command remotely using Ansible.
+It should say "deploy".
+
+In case of connections problems, check that the filename of your key matches the one in `hosts.yml`.
+
+### Deploying
+
+To deploy, run:
 
     $ ansible-playbook deploy.yml
 

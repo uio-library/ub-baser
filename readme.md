@@ -15,6 +15,7 @@ Felles webgrensesnitt for mindre Postgres-baser driftet av Universitetsbibliotek
 - `./dev.sh up` for å starte en utviklingsserver med Docker Compose.
 - `npm run watch` for å bygge frontend (SASS og JS og sånt).
 - Se [./docker/README.md](./docker/README.md) for flere detaljer.
+- Se [./ansible/README.md](./ansible/README.md) for info om deployering.
 
 #### Tips og triks
 
