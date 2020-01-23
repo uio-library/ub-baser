@@ -43,17 +43,17 @@ class AppServiceProvider extends ServiceProvider
         // IDÉ: Bind 'Record', 'RecordView', 'AutocompleteService' based on base
         // Kan jeg binde Base også??
 
-        $this->app->singleton(Base::class, function($app) {
+        $this->app->singleton(Base::class, function ($app) {
             $request = $app[Request::class];
             return $request->getBase();
         });
 
-        $this->app->singleton(Schema::class, function($app) {
+        $this->app->singleton(Schema::class, function ($app) {
             $base = $app[Base::class];
             return $base->getSchema();
         });
 
-        $this->app->singleton(AutocompleteServiceInterface::class, function($app) {
+        $this->app->singleton(AutocompleteServiceInterface::class, function ($app) {
             $base = $app[Base::class];
             $serviceClass = $base->getClass('AutocompleteService');
             return new $serviceClass($base);

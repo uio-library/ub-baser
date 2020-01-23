@@ -37,7 +37,6 @@ class AutocompleteService extends \App\Services\AutocompleteService
     protected $listers = [
     ];
 
-
     /**
      * @param SchemaField $field
      * @param string $term

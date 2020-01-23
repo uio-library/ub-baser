@@ -23,4 +23,3 @@ Route::middleware('can:bibliomanuel')
     ->group(function () {
         // Place any routes that should only be available to authorized users here
     });
-

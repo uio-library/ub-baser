@@ -8,7 +8,7 @@ class Controller extends BaseController
 {
     protected $logGroup = 'letras';
 
-    static public $defaultColumns = [
+    public static $defaultColumns = [
         // Verket
         'forfatter',
         'tittel',
@@ -20,7 +20,7 @@ class Controller extends BaseController
         'utgivelsesaar2',
     ];
 
-    static public $defaultSortOrder = [
+    public static $defaultSortOrder = [
         ['key' => 'utgivelsesaar', 'direction' => 'desc'],
     ];
 }

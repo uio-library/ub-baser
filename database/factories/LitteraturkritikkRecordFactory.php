@@ -15,7 +15,7 @@ $factory->define(LitteraturkritikkRecord::class, function (Faker $faker) {
         // 'verk_forfatter_mfl' => $faker->undefined(),
         // 'korrekturstatus' => $faker->undefined(),
         // 'tags' => $faker->undefined(),
-        'dato' => $faker->date('Y-m-d') ,
+        'dato' => $faker->date('Y-m-d'),
         'aargang' => $faker->randomNumber(),
         'nummer' => $faker->randomNumber(),
         'bind' => $faker->randomNumber(),
@@ -35,5 +35,5 @@ $factory->define(LitteraturkritikkRecord::class, function (Faker $faker) {
         'tittel' => $faker->sentence(),
         'publikasjon' => $faker->sentence(),
         'utgivelsessted' => $faker->sentence(),
-   ];
+    ];
 });

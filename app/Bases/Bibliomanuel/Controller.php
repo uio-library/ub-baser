@@ -8,7 +8,7 @@ class Controller extends BaseController
 {
     protected $logGroup = 'bibliomanuel';
 
-    static public $defaultColumns = [
+    public static $defaultColumns = [
         // Verket
         'forfatter',
         'tittel',
@@ -20,7 +20,7 @@ class Controller extends BaseController
         'type',
     ];
 
-    static public $defaultSortOrder = [
+    public static $defaultSortOrder = [
         ['key' => 'aar', 'direction' => 'desc'],
     ];
 }

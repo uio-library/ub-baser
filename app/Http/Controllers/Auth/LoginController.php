@@ -45,7 +45,7 @@ class LoginController extends Controller
     public function samlError()
     {
         return view('auth.saml_error', [
-             'error' => session()->get('saml2_error.last_error_reason', ''),
+            'error' => session()->get('saml2_error.last_error_reason', ''),
         ]);
     }
 

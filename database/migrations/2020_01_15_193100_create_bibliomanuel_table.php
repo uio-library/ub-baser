@@ -1,4 +1,5 @@
 <?php
+
 use App\Traits\MigrationHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
@@ -38,7 +39,6 @@ class CreateBibliomanuelTable extends Migration
             $table->string('issn')->nullable();
             $table->string('eissn')->nullable();
             $table->string('url')->nullable();
-
 
             $table->index('forfatter');
             $table->index('tittel');

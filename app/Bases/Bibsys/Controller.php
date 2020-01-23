@@ -11,7 +11,7 @@ class Controller extends BaseController
 {
     protected $logGroup = 'bibsys';
 
-    static public $defaultColumns = [
+    public static $defaultColumns = [
         'dokid',
         'avdeling',
         'samling',
@@ -20,7 +20,7 @@ class Controller extends BaseController
         'pub_date',
     ];
 
-    static public $defaultSortOrder = [
+    public static $defaultSortOrder = [
     ];
 
     /**
@@ -51,5 +51,4 @@ class Controller extends BaseController
             'record'  => $record,
         ]);
     }
-
 }

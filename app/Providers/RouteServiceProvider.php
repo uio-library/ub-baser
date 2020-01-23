@@ -118,17 +118,17 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapDynamicRoutes()
     {
         try {
-            Base::get()->each(function(Base $base) {
+            Base::get()->each(function (Base $base) {
                 Route::prefix($base->basepath)
                     ->namespace($base->fqn())
-                    ->group(function() use ($base) {
+                    ->group(function () use ($base) {
 
                         // Routes that do not need session
                         Route::get('/autocomplete', 'Controller@autocomplete');
                         Route::get('/data', 'Controller@data');
 
                         Route::middleware('web')
-                            ->group(function() use ($base) {
+                            ->group(function () use ($base) {
 
                                 // Standard routes for this base
                                 Route::get('/', 'Controller@index');
@@ -138,7 +138,7 @@ class RouteServiceProvider extends ServiceProvider
 
                                 // Authorized routes for this base
                                 Route::middleware('can:' . $base->id)
-                                    ->group(function() {
+                                    ->group(function () {
                                         Route::get('/record/_new', 'Controller@create');
                                         Route::post('/record', 'Controller@store');
                                         Route::get('/record/{id}/edit', 'Controller@edit');
@@ -159,9 +159,9 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::middleware('web')
             ->namespace($this->namespace)
-            ->group(function() {
+            ->group(function () {
                 Route::middleware('admin')
-                    ->group(function() {
+                    ->group(function () {
                         Route::get('{page}/edit', 'PageController@edit');
                         Route::post('{page}/update', 'PageController@update');
                     });
