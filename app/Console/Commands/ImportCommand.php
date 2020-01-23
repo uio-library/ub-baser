@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use ErrorException;
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class ImportCommand extends Command
 {
@@ -95,7 +95,7 @@ class ImportCommand extends Command
             $lineNo++;
             if (count($row) != count($columnNames)) {
                 throw new ErrorException(sprintf(
-                    "Row %d: Found %d columns, expected %d",
+                    'Row %d: Found %d columns, expected %d',
                     $lineNo,
                     count($row),
                     count($columnNames)

@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\User;
 use Illuminate\Console\Command;
-use Illuminate\Mail\Message;
 
 class CreateAdminCommand extends Command
 {

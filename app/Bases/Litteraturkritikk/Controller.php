@@ -11,7 +11,7 @@ class Controller extends BaseController
 {
     protected $logGroup = 'norsk-litteraturkritikk';
 
-    static public $defaultColumns = [
+    public static $defaultColumns = [
         // Verket
         'verk_tittel',
         'verk_forfatter',
@@ -23,7 +23,7 @@ class Controller extends BaseController
         'dato',
     ];
 
-    static public $defaultSortOrder = [
+    public static $defaultSortOrder = [
         ['key' => 'dato', 'direction' => 'asc'],
     ];
 
@@ -72,7 +72,6 @@ class Controller extends BaseController
 
         return '';
     }
-
 
     /**
      * Sync persons for a record.

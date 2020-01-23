@@ -62,7 +62,7 @@ class Schema extends BaseSchema
 
                         'searchOptions' => [
                             'operators' => ['ex'],
-                            'index' => ['column' => 'objektid', 'case' => Schema::LOWER_CASE],
+                            'index' => ['column' => 'objektid', 'case' => self::LOWER_CASE],
                         ],
                         'orderable' => false,
                     ],
@@ -99,7 +99,7 @@ class Schema extends BaseSchema
                         'type' => 'simple',
                         'searchOptions' => [
                             'operators' => ['ex'],
-                            'index' => ['column' => 'dokid', 'case' => Schema::LOWER_CASE],
+                            'index' => ['column' => 'dokid', 'case' => self::LOWER_CASE],
                         ],
                         'orderable' => false,
                     ],
@@ -111,7 +111,7 @@ class Schema extends BaseSchema
                         'orderable' => false,
                         'searchOptions' => [
                             'operators' => ['ex'],
-                            'index' => ['column' => 'strekkode', 'case' => Schema::LOWER_CASE],
+                            'index' => ['column' => 'strekkode', 'case' => self::LOWER_CASE],
                         ],
                         'orderable' => false,
                     ],
@@ -132,7 +132,7 @@ class Schema extends BaseSchema
                         'searchOptions' => [
                             'operators' => ['ex'],
                             'placeholder' => 'Du kan høyretrunkere med *',
-                            'index' => ['column' => 'lower(avdeling)', 'case' => Schema::LOWER_CASE],
+                            'index' => ['column' => 'lower(avdeling)', 'case' => self::LOWER_CASE],
                         ],
                     ],
 
@@ -144,7 +144,7 @@ class Schema extends BaseSchema
                         'searchOptions' => [
                             'placeholder' => 'Du kan høyretrunkere med *',
                             'operators' => ['ex'],
-                            'index' => ['column' => 'lower(samling)', 'case' => Schema::LOWER_CASE],
+                            'index' => ['column' => 'lower(samling)', 'case' => self::LOWER_CASE],
                         ],
                     ],
 
@@ -156,7 +156,7 @@ class Schema extends BaseSchema
                         'searchOptions' => [
                             'placeholder' => 'Du kan høyretrunkere med *',
                             'operators' => ['ex'],
-                            'index' => ['column' => 'lower(hyllesignatur)', 'case' => Schema::LOWER_CASE],
+                            'index' => ['column' => 'lower(hyllesignatur)', 'case' => self::LOWER_CASE],
                         ],
                     ],
 
@@ -245,7 +245,7 @@ class Schema extends BaseSchema
                         'type' => 'simple',
                         'searchOptions' => [
                             'operators' => ['ex'],
-                            'index' => ['column' => 'seriedokid', 'case' => Schema::LOWER_CASE],
+                            'index' => ['column' => 'seriedokid', 'case' => self::LOWER_CASE],
                         ],
                         'orderable' => false,
                     ],

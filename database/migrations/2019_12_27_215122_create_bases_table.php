@@ -35,7 +35,7 @@ class CreateBasesTable extends Migration
                 'languages' => json_encode(['nb']),
                 'default_language' => 'nb',
                 'name' => json_encode([
-                    'nb' => 'Bibsys katalogdump'
+                    'nb' => 'Bibsys katalogdump',
                 ]),
                 'class_bindings' => json_encode([
                     'AutocompleteService' => 'AutocompleteService',
@@ -52,7 +52,7 @@ class CreateBasesTable extends Migration
                 'languages' => json_encode(['nb']),
                 'default_language' => 'nb',
                 'name' => json_encode([
-                    'nb' => 'Dommers populærnavn'
+                    'nb' => 'Dommers populærnavn',
                 ]),
                 'class_bindings' => json_encode([
                     'AutocompleteService' => 'AutocompleteService',
@@ -67,7 +67,7 @@ class CreateBasesTable extends Migration
                 'languages' => json_encode(['nb', 'es']),
                 'default_language' => 'nb',
                 'name' => json_encode([
-                    'nb' => 'Letras'
+                    'nb' => 'Letras',
                 ]),
                 'class_bindings' => json_encode([
                     'RecordView' => 'Record',
@@ -82,7 +82,7 @@ class CreateBasesTable extends Migration
                 'languages' => json_encode(['nb']),
                 'default_language' => 'nb',
                 'name' => json_encode([
-                    'nb' => 'Norsk litteraturkritikk'
+                    'nb' => 'Norsk litteraturkritikk',
                 ]),
                 'class_bindings' => json_encode([
                     'AutocompleteService' => 'AutocompleteService',
@@ -101,7 +101,7 @@ class CreateBasesTable extends Migration
 
         \DB::table('pages')
             ->update([
-                'base_id' => \DB::raw("permission"),
+                'base_id' => \DB::raw('permission'),
             ]);
     }
 

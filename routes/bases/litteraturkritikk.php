@@ -21,13 +21,12 @@ Route::post('person', 'PersonController@store');
 Route::get('person/{id}', 'PersonController@show');
 
 Route::middleware('can:litteraturkritikk')
-    ->group(function() {
+    ->group(function () {
         // Place any routes that should only be available to authorized users here
         Route::get('person/{id}/edit', 'PersonController@edit');
         Route::put('person/{id}', 'PersonController@update');
         Route::delete('person/{id}', 'PersonController@destroy');
     });
-
 
 Route::get('norsklitteraturkritikk', 'Controller@redirectToHome');
 Route::get('norsk_litteraturkritikk', 'Controller@redirectToHome');

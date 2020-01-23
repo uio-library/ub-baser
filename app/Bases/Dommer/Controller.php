@@ -9,14 +9,14 @@ class Controller extends BaseController
 {
     protected $logGroup = 'dommer';
 
-    static public $defaultColumns = [
+    public static $defaultColumns = [
         'navn',
         'kilde',
         'aar',
         'side',
     ];
 
-    static public $defaultSortOrder = [
+    public static $defaultSortOrder = [
         ['key' => 'aar', 'direction' => 'desc'],
     ];
 

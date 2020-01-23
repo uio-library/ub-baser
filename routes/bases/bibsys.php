@@ -26,6 +26,6 @@
 //
 
 Route::middleware('can:bibsys')
-    ->group(function() {
+    ->group(function () {
         // Place any routes that should only be available to authorized users here
     });

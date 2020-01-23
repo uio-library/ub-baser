@@ -163,12 +163,12 @@ class UserController extends Controller
 
         $this->log(
             'Oppdaterte bruker: <a href="%s">%s (%s)</a>.',
-            action([UserController::class, 'show'], $user->id),
+            action([self::class, 'show'], $user->id),
             $user->name,
             $user->email
         );
 
-        return redirect()->action([UserController::class, 'index'])
+        return redirect()->action([self::class, 'index'])
             ->with('status', 'Brukeren ble lagret');
     }
 

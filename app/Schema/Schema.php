@@ -2,7 +2,6 @@
 
 namespace App\Schema;
 
-use App\Base;
 use Illuminate\Support\Arr;
 
 abstract class Schema implements \JsonSerializable

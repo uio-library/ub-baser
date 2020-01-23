@@ -113,7 +113,7 @@ return [
     */
     'custom_db_types' => [
         'postgresql' => [
-           'jsonb' => 'json_array',
+            'jsonb' => 'json_array',
         ],
     ],
 

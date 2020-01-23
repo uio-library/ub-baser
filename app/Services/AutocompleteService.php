@@ -8,7 +8,6 @@ use Illuminate\Database\Query\Builder;
 
 /**
  * General autocomplete service that can be extended by the different bases if needed.
- * @package App\Services
  */
 class AutocompleteService implements AutocompleteServiceInterface
 {
@@ -183,7 +182,7 @@ class AutocompleteService implements AutocompleteServiceInterface
      */
     protected function newQuery(): Builder
     {
-        $table = (new $this->model)->getTable();
+        $table = (new $this->model())->getTable();
         return \DB::query()->from($table);
     }
 
@@ -260,6 +259,7 @@ class AutocompleteService implements AutocompleteServiceInterface
 
         return $this->getResultsOrderedByPopularity($query);
     }
+
     /**
      * Simple string completer using the ILIKE operator.
      *

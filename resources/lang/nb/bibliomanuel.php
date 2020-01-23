@@ -20,7 +20,7 @@ return [
     'aar' => 'År',
     'dato' => 'Dato',
     'type' => 'Type',
-	'bind' => 'Bind',
+    'bind' => 'Bind',
     'hefte' => 'Hefte',
     'nummer' => 'Nummer',
     'sidetall' => 'Sidetall',

@@ -2,9 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-
 class ImportBibliomanuelCommand extends ImportCommand
 {
     /**
