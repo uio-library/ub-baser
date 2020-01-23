@@ -74,6 +74,7 @@
 
                         @else
 
+                            <span id="user_name"></span><!-- Empty for tests -->
                             <a href="{{ URL::current() }}?login=true">{{ trans('messages.login') }}</a>
 
                         @endif

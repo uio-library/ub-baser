@@ -1,4 +1,14 @@
+const { runMigrations, rollbackMigrations, isDockerRunning } = require('./util')
+
 const BASE_URL = process.env.BASE_URL || 'http://localhost:8080'
+
+const sauceOptions = {
+  'sauce:options': {
+    tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+    build: process.env.TRAVIS_BUILD_NUMBER,
+    // trustAllSSLCertificates: true,
+  }
+}
 
 exports.config = {
 
@@ -14,15 +24,15 @@ exports.config = {
   capabilities: [
     {
       browserName: 'firefox',
-      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-      build: process.env.TRAVIS_BUILD_NUMBER,
-      trustAllSSLCertificates: true,
+      browserVersion: 'latest',
+      platformName: 'Windows 10',
+      ...sauceOptions,
     },
     {
       browserName: 'chrome',
-      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-      build: process.env.TRAVIS_BUILD_NUMBER,
-      trustAllSSLCertificates: true,
+      browserVersion: 'latest',
+      platformName: 'Windows 10',
+      ...sauceOptions,
     },
   ],
 
@@ -48,5 +58,21 @@ exports.config = {
   mochaOpts: {
     ui: 'bdd',
     timeout: 60000,
+  },
+  /**
+     * Hook that gets executed before the suite starts
+     * @param {Object} suite suite details
+     */
+  beforeSuite: function (suite) {
+    // console.log(`BEFORE suite: ${suite.title}`);
+    return runMigrations()
+  },
+  /**
+     * Hook that gets executed after the suite has ended
+     * @param {Object} suite suite details
+     */
+  afterSuite: function (suite) {
+    // console.log(`AFTER suite: ${suite.title}`);
+    return rollbackMigrations()
   },
 }
