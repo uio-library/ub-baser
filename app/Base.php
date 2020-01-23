@@ -150,7 +150,10 @@ class Base extends Model
      */
     public function getPage(string $name)
     {
-        return Page::where('slug', '=', $this->basepath . '/' . $name)->first();
+        return Page::where([
+            'slug' => $this->basepath . '/' . $name,
+            'lang' => \App::getLocale(),
+        ])->first();
     }
 
     /**
@@ -160,11 +163,8 @@ class Base extends Model
      */
     public function getIntro()
     {
-        $page = Page::where('slug', '=', $this->basepath . '/intro')->first();
-        if (is_null($page)) {
-            return $page;
-        }
-        return $page->body;
+        $page = $this->getPage('intro');
+        return ! is_null($page) ? $page->body : null;
     }
 
     /**
