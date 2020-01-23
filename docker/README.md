@@ -109,6 +109,8 @@ Run `npm run watch` to build these resources as you make changes to the source f
 
 # Production setup
 
+Note: Day-to-day deployments are done using Ansible. See ../ansible/README.md
+
 ## 1. [Install Docker for Centos](https://docs.docker.com/install/linux/docker-ce/centos/)
 
 - [ ] Install Docker:
