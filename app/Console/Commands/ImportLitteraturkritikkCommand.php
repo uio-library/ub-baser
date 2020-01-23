@@ -279,7 +279,6 @@ class ImportLitteraturkritikkCommand extends ImportCommand
             $data[] = $row;
         }
 
-
         // Separate out 'person' columns
         $personColumns = [
             'forfatter_etternavn',

@@ -15,7 +15,7 @@ return [
     'next' => 'Next',
     'last' => 'Last',
     'loading' => 'Loading...',
-    'nohits' => 'No hits',	
+    'nohits' => 'No hits',
     'advanced_search' => 'Advanced Search',
     'login' => 'Login',
     'logout' => 'Logout',

@@ -191,11 +191,11 @@ class Base extends Model
     /**
      * Get a given record, or null if it doesn't exist.
      *
-     * @param integer $id
+     * @param int $id
      * @param bool $withTrashed
      * @return Record
      */
-    public function getRecord($id, $withTrashed=true)
+    public function getRecord($id, $withTrashed = true)
     {
         $recordClass = $this->getClass('Record');
         if ($withTrashed) {

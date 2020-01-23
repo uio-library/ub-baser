@@ -20,6 +20,6 @@
 // Route::get('hello-world', 'Controller@helloWorld');
 
 Route::middleware('can:letras')
-    ->group(function() {
+    ->group(function () {
         // Place any routes that should only be available to authorized users here
     });

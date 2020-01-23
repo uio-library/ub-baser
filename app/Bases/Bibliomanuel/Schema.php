@@ -38,136 +38,133 @@ class Schema extends BaseSchema
                 'columnClassName' => 'dt-body-nowrap',
             ],
 
-			// Forfatter
-			[
-				'key' => 'forfatter',
-				'type' => 'autocomplete',
-			],
+            // Forfatter
+            [
+                'key' => 'forfatter',
+                'type' => 'autocomplete',
+            ],
 
-			// Tittel
-			[
-				'key' => 'tittel',
-				'type' => 'simple',
-			],
+            // Tittel
+            [
+                'key' => 'tittel',
+                'type' => 'simple',
+            ],
 
-			// Antologi
-			[
-				'key' => 'antologi',
-				'type' => 'simple',
-			],
+            // Antologi
+            [
+                'key' => 'antologi',
+                'type' => 'simple',
+            ],
 
-			// Boktittel
-			[
-				'key' => 'boktittel',
-				'type' => 'simple',
-			],
+            // Boktittel
+            [
+                'key' => 'boktittel',
+                'type' => 'simple',
+            ],
 
-			// Redaktører
-			[
-				'key' => 'redaktorer',
-				'type' => 'simple',
-			],
+            // Redaktører
+            [
+                'key' => 'redaktorer',
+                'type' => 'simple',
+            ],
 
-			// Utgivelsessted
-			[
-				'key' => 'utgivelsessted',
-				'type' => 'simple',
-			],
+            // Utgivelsessted
+            [
+                'key' => 'utgivelsessted',
+                'type' => 'simple',
+            ],
 
-			// Avis
-			[
-				'key' => 'avis',
-				'type' => 'simple',
-			],
+            // Avis
+            [
+                'key' => 'avis',
+                'type' => 'simple',
+            ],
 
-			// Tidsskriftstittel
-			[
-				'key' => 'tidsskriftstittel',
-				'type' => 'simple',
-			],
+            // Tidsskriftstittel
+            [
+                'key' => 'tidsskriftstittel',
+                'type' => 'simple',
+            ],
 
-			// Nettsted
-			[
-				'key' => 'nettsted',
-				'type' => 'simple',
-			],
+            // Nettsted
+            [
+                'key' => 'nettsted',
+                'type' => 'simple',
+            ],
 
+            // Utviger
+            [
+                'key' => 'utgiver',
+                'type' => 'simple',
+            ],
 
-			// Utviger
-			[
-				'key' => 'utgiver',
-				'type' => 'simple',
-			],
+            // År
+            [
+                'key' => 'aar',
+                'type' => 'simple',
+            ],
 
-			// År
-			[
-				'key' => 'aar',
-				'type' => 'simple',
-			],
+            // Dato
+            [
+                'key' => 'dato',
+                'type' => 'simple',
 
-			// Dato
-			[
-				'key' => 'dato',
-				'type' => 'simple',
+                'searchable' => 'advanced',
+            ],
 
-				'searchable' => 'advanced',
-			],
+            // Type
+            [
+                'key' => 'type',
+                'type' => 'simple',
+            ],
 
-			// Type
-			[
-				'key' => 'type',
-				'type' => 'simple',
-			],
+            // Bind
+            [
+                'key' => 'bind',
+                'type' => 'simple',
+            ],
 
-			// Bind
-			[
-				'key' => 'bind',
-				'type' => 'simple',
-			],
+            // Hefte
+            [
+                'key' => 'hefte',
+                'type' => 'simple',
+            ],
 
+            // Nummer
+            [
+                'key' => 'nummer',
+                'type' => 'simple',
+            ],
 
-			// Hefte
-			[
-				'key' => 'hefte',
-				'type' => 'simple',
-			],
+            // Sidetall
+            [
+                'key' => 'sidetall',
+                'type' => 'simple',
+            ],
 
-			// Nummer
-			[
-				'key' => 'nummer',
-				'type' => 'simple',
-			],
+            // ISBN
+            [
+                'key' => 'isbn',
+                'type' => 'simple',
+            ],
 
-			// Sidetall
-			[
-				'key' => 'sidetall',
-				'type' => 'simple',
-			],
+            // ISSN
+            [
+                'key' => 'issn',
+                'type' => 'simple',
+            ],
 
+            // EISSN
+            [
+                'key' => 'eissn',
+                'type' => 'simple',
+            ],
 
-			// ISBN
-			[
-				'key' => 'isbn',
-				'type' => 'simple',
-			],
-
-			// ISSN
-			[
-				'key' => 'issn',
-				'type' => 'simple',
-			],
-
-			// EISSN
-			[
-				'key' => 'eissn',
-				'type' => 'simple',
-			],
-
-			// URL
-			[
-				'key' => 'url',
-				'type' => 'simple',
-			],
+            // URL
+            [
+                'key' => 'url',
+                'type' => 'simple',
+            ],
         ],
     ];
 }

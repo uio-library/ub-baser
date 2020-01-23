@@ -368,7 +368,7 @@ class Schema extends BaseSchema
                     [
                         'key' => 'korrekturstatus',
                         'type' => 'enum',
-                        'datatype' => Schema::DATATYPE_INT,
+                        'datatype' => self::DATATYPE_INT,
                         'values' => [
                             ['id' => 1, 'label' => 'Ikke korrekturlest'],
                             ['id' => 2, 'label' => 'Må korrekturleses mot fysisk materiale'],

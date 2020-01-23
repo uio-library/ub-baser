@@ -11,6 +11,7 @@ class CheckLang
     {
         $this->base = $base;
     }
+
     /**
      * Handle an incoming request.
      *

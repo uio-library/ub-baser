@@ -18,8 +18,8 @@ use Illuminate\Validation\Rule;
 
 class BaseController extends Controller
 {
-    static public $defaultColumns = [];
-    static public $defaultSortOrder = [];
+    public static $defaultColumns = [];
+    public static $defaultSortOrder = [];
 
     /**
      * Instantiate a new BaseController instance.
@@ -191,8 +191,8 @@ class BaseController extends Controller
      *
      * @param Request $request
      * @param Base $base
-     * @return RedirectResponse
      * @throws \Illuminate\Validation\ValidationException
+     * @return RedirectResponse
      */
     public function store(Request $request, Base $base)
     {

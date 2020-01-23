@@ -14,6 +14,6 @@ $factory->define(Page::class, function (Faker $faker) {
         'permission' => $namespace,
         'title' => $faker->title,
         'body' => str_replace("\n", "</p>\n<p>", '<p>' . $faker->text . '</p>'),
-        'updated_by' => $faker->numberBetween(1,10),
+        'updated_by' => $faker->numberBetween(1, 10),
     ];
 });
