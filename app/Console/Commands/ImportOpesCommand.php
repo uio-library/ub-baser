@@ -41,27 +41,13 @@ class ImportOpesCommand extends ImportCommand
                 $value = (substr($value, 0, 3) === 'Yes') ? '1' : '0';
                 break;
 
-            case 'inv_no':
-                // TODO
-                // Strip "P.Oslo inv." ???
-                if (strpos($value,  "P.Oslo inv. ") === 0) {
-                    $value = substr($value, strlen("P.Oslo inv. "));
-                } elseif (strpos($value,  "P. Oslo inv. ") === 0) {
-                    $value = substr($value, strlen("P. Oslo inv. "));
-                } elseif (strpos($value,  "P.Olso inv. ") === 0) {
-                    $value = substr($value, strlen("P.Olso inv. "));
-                } else {
-                    die("Invalid inv_no: " . $value);
-                }
-                break;
-
             case 'date1':
             case 'date2':
                 if ($value !== '') {
                     //$value = preg_replace('/\/.*$/', '', $value);
                     //$value = preg_replace('/\(\?\)/', '', $value);
                     if (!is_numeric($value)) {
-                        echo "'$column' is not numeric: $value\n";
+                        echo "Warning: '$column' is not numeric: $value\n";
                     }
                 }
                 break;
@@ -75,6 +61,10 @@ class ImportOpesCommand extends ImportCommand
                     }
                     $value = sprintf('%s-%s-%s', $value[2], $value[1], $value[0]);
                 }
+                break;
+
+            case 'ddbdp_pmichcitation':
+                $value = strtolower(str_replace(':', ';', $value));
                 break;
         }
 
