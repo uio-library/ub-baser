@@ -2,15 +2,21 @@
 
 namespace App\Schema;
 
+use Illuminate\Support\Arr;
+
 class SchemaGroup implements \JsonSerializable
 {
     public $label;
+    public $displayable;
+    public $searchable;
     public $fields;
 
     public static function make(array $data, string $schemaPrefix, array $options): self
     {
         $schemaGroup = new self();
         $schemaGroup->label = $data['label'];
+        $schemaGroup->displayable = Arr::get($data, 'displayable', true);
+        $schemaGroup->searchable= Arr::get($data, 'searchable', true);
         $schemaGroup->fields = SchemaFields::make($data['fields'], $schemaPrefix, $options);
 
         return $schemaGroup;
@@ -28,6 +34,8 @@ class SchemaGroup implements \JsonSerializable
     {
         return [
             'label' => $this->label,
+            'displayable' => $this->displayable,
+            'searchable' => $this->searchable,
             'fields' => $this->fields,
         ];
     }
