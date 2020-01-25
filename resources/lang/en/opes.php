@@ -2,10 +2,11 @@
 
 // «Brukervennlige» navn på feltene
 return [
+    'q' => 'All fields',
     'inv_no' => 'Inventory Number',
-    'title_or_type' => 'Title or Type of Text',
+    'title_or_type' => 'Title / Type of text',
     'section_or_side' => 'Section or side',
-    'material' => 'Material',
+    'material' => 'Material (abbr.)',
     'connections' => 'Connections',
     'rep_ser_old' => 'Rep Ser Old',
     'rep_pg_no_old' => 'Rep page no Old',
@@ -31,7 +32,7 @@ return [
     'genre' => 'Genre',
     'fullsizefront_r1' => 'Image Recto',
     'fullsizeback_r1' => 'Image Verso',
-    'translation' => 'Translation',
+    'translation' => 'English translation',
     'status' => 'Status',
     'bibliography' => 'Bibliography',
     'negative_in_copenhagen' => 'Negative keept in Copenhagen',
@@ -45,7 +46,7 @@ return [
     'date2'=> 'Date2',
     'date'=> 'Date',
     'title_statement' => 'Title Statement',
-    'material_long' => 'Material Long',
+    'material_long' => 'Material',
     'subj_headings' => 'Subject headings',
     // from repeting fields variabels that are displayed
     'corrections' => 'Corrections',

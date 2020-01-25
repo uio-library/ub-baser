@@ -16,10 +16,25 @@ class Schema extends BaseSchema
                 'type' => 'incrementing',
                 'displayable' => true,
             ],
-            // Inventary number
+            // inventary number
             [
                 'key' => 'inv_no',
                 'type' => 'simple',
+            ],
+            // Søk i alle felt
+            [
+                'key' => 'q',
+                'type' => 'simple',
+
+                'displayable' => false,
+                'editable' => false,
+                'searchable' => 'simple',
+
+                'searchOptions' => [
+                    'placeholder' => '',
+                    'index' => ['type' => 'ts', 'ts_column' => 'any_field_ts'],
+                    'operators' => ['eq', 'neq'],
+                ],
             ],
             // Opprettet
             [
@@ -37,11 +52,6 @@ class Schema extends BaseSchema
                 'searchable' => 'disabled',
                 'columnClassName' => 'dt-body-nowrap',
             ],
-            // Title or type of text
-            [
-                'key' => 'title_or_type',
-                'type' => 'simple',
-            ],
         ],
         'groups' => [
             [
@@ -49,8 +59,8 @@ class Schema extends BaseSchema
                 'fields' => [
                     // Material
                     [
-                        'key' => 'material',
-                        'type' => 'autocomplete',
+                        'key' => 'material_long',
+                        'type' => 'select',
                     ],
                     // Material long
                     //[
@@ -62,21 +72,24 @@ class Schema extends BaseSchema
                     [
                         'key' => 'connections',
                         'type' => 'simple',
+                        'searchable' => 'advanced',
                     ],
                     // Size
                     [
                         'key' => 'size',
                         'type' => 'simple',
+                        'searchable' => 'advanced',
                     ],
                     // Lines
                     [
                         'key' => 'lines',
                         'type' => 'simple',
+                        'searchable' => 'advanced',
                     ],
                     // Publication side
                     [
                         'key' => 'publ_side',
-                        'type' => 'simple',
+                        'type' => 'select',
                     ],
                     // Palaeogrfic description
                     [
@@ -96,37 +109,27 @@ class Schema extends BaseSchema
                     // Origin
                     [
                         'key' => 'origin',
-                        'type' => 'simple',
-                    ],
-                    //Provenance
-                    [
-                        'key' => 'provenance',
-                        'type' => 'simple',
-                    ],
-                    //Acquisition
-                    [
-                        'key' => 'acquisition',
-                        'type' => 'simple',
+                        'type' => 'autocomplete',
                     ],
                     // Language
-                    [
-                        'key' =>  'language',
-                        'type' =>  'simple',
-                    ],
+                    // [
+                    //     'key' =>  'language',
+                    //     'type' =>  'simple',
+                    // ],
                     // Genre
                     [
                         'key' =>  'genre',
-                        'type' =>  'simple',
+                        'type' =>  'autocomplete',
                     ],
                     // Author
                     [
                         'key' =>  'author',
-                        'type' =>  'simple',
+                        'type' =>  'autocomplete',
                     ],
                     // Title or type of text
                     [
                         'key' =>  'title_or_type',
-                        'type' =>  'simple',
+                        'type' =>  'autocomplete',
                     ],
                     // Content
                     [
@@ -136,22 +139,48 @@ class Schema extends BaseSchema
                     // Subject Headings
                     [
                         'key' =>  'subj_headings',
-                        'type' =>  'simple',
+                        'type' =>  'tags',
+                        'searchOptions' => [
+                            'type' => 'autocomplete',
+                            'placeholder' => '',
+                            'index' => [
+                                'type' => 'array',
+                                'column' => 'subj_headings',
+                            ],
+                        ],
                     ],
                     // Persons
                     [
                         'key' =>  'persons',
-                        'type' =>  'simple',
+                        'type' =>  'tags',
+                        'searchOptions' => [
+                            'type' => 'autocomplete',
+                            'placeholder' => '',
+                            'index' => [
+                                'type' => 'array',
+                                'column' => 'persons',
+                            ],
+                        ],
                     ],
                     // Geographica
                     [
                         'key' =>  'geographica',
-                        'type' =>  'simple',
+                        'type' =>  'autocomplete',
                     ],
                     // Translation
                     [
                         'key' =>  'translation',
                         'type' =>  'simple',
+                    ],
+                    //Provenance
+                    [
+                        'key' => 'provenance',
+                        'type' => 'autocomplete',
+                    ],
+                    //Acquisition
+                    [
+                        'key' => 'acquisition',
+                        'type' => 'simple',
                     ],
 
                 ],
@@ -159,6 +188,7 @@ class Schema extends BaseSchema
 
             [
                 'label' => 'Information on publication',
+                'searchable' => 'disabled',
                 'fields' => [
 
                     // WAIT with this:
@@ -245,12 +275,14 @@ class Schema extends BaseSchema
                 // if possible not the link but a text to click
                 // like Recto Verso. to be done later
                 'label' => 'Images',
+                'searchable' => 'disabled',
                 'fields' => [
                     // Image Recto
                     [
                         // print "https://ub-media.uio.no/OPES/jpg/"
                         'key' => 'fullsizefront_r1',
                         'type' => 'simple',
+                        'columnClassName' => 'p-1 align-middle text-center',
                         // print ".jpg";
                     ],
                     // Image Verso
@@ -258,6 +290,7 @@ class Schema extends BaseSchema
                         // print "https://ub-media.uio.no/OPES/jpg/"
                         'key' => 'fullsizeback_r1',
                         'type' => 'simple',
+                        'columnClassName' => 'p-1 align-middle text-center',
                         // print ".jpg";
                     ],
                 ],

@@ -35,13 +35,26 @@ return [
     'advanced_search' => 'Avansert søk',
     'reset' => 'Nullstill',
     'language' => 'Språk',
+    'previous_record' => 'Forrige post',
+    'next_record' => 'Neste post',
+    'responsible' => 'Ansvarlig for nettstedet',
+    'please_wait' => 'Et øyeblikk...',
+    'no_values' => 'Ingen verdier registrert',
+    'unknown_error' => 'Det oppsto en ukjent feil',
 
     // DataTable
+    'show_columns' => 'Vis kolonner:',
     'first' => 'Første',
     'previous' => 'Forrige',
     'next' => 'Neste',
     'last' => 'Siste',
     'loading' => 'Laster...',
     'nohits' => 'Ingen treff',
-
+    'no_records_found' => 'Ingen poster funnet.',
+    'records_per_page_setting' => 'Vis _MENU_ poster per side',
+    'records_shown_of_many' => 'Viser post :start til :end av mange',
+    'records_shown_of_total' => 'Viser post :start til :end av :total',
+    'asc_sort_help' => 'Sortert i stigende rekkefølge. Trykk for å endre til synkende.',
+    'desc_sort_help' => 'Sortert i synkende rekkefølge. Trykk for å endre til stigende.',
+    'sort_by_this_column' => 'Trykk for å sortere etter denne kolonnen (stigende rekkefølge)',
 ];
