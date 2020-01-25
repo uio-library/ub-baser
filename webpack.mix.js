@@ -76,6 +76,8 @@ mix.copy('node_modules/datatables.net-dt/images/*', 'public/images')
 
 mix.copy('node_modules/datatables.net-plugins/i18n/Norwegian-Bokmal.lang', 'public/misc/datatables-nb.json')
 
+mix.copy('node_modules/openseadragon/build/openseadragon/images/*', 'public/images')
+
 mix.webpackConfig({
   plugins: [
     // new BundleAnalyzerPlugin({
