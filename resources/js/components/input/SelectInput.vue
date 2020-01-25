@@ -1,9 +1,8 @@
 <template>
   <div>
-    <div v-if="!options.length">
-      <div v-if="failed" class="text-danger p-1">Det oppsto en feil. Prøv å laste siden på nytt.</div>
-      <div v-else class="p-1">Et øyeblikk...</div>
-    </div>
+    <div v-if="state === 'failed'" class="text-danger p-1">{{ $t('messages.unknown_error') }}</div>
+    <div v-else-if="state === 'loading'" class="p-1">{{ $t('messages.please_wait') }}</div>
+    <div v-else-if="state === 'empty'" class="p-1">{{ $t('messages.no_values') }}</div>
     <div v-else>
       <selectize
         :name="name"
@@ -35,7 +34,7 @@ export default {
   data () {
     return {
       options: [],
-      failed: false,
+      state: 'loading',
       selectSettings: {
         // Ref: https://github.com/selectize/selectize.js/blob/master/docs/usage.md
         create: false,
@@ -44,6 +43,18 @@ export default {
         searchField: 'label',
         openOnFocus: true,
         closeAfterSelect: true,
+        render: {
+          option: function(item, escape) {
+            return `<div class="option">${escape(item.label || item.value)}</div>`
+          },
+          item: function(item, escape) {
+            return `<div>${escape(item.label || item.value)}</div>`
+          },
+        },
+
+        onOptionAdd: function(item) {
+          console.log('YO', item)
+        }
       },
     }
   },
@@ -55,8 +66,13 @@ export default {
       },
     }).then(res => {
       this.options = res.data
+      if (!this.options.length) {
+        this.state = 'empty'
+      } else {
+        this.state = 'ok'
+      }
     }).catch(() => {
-      this.failed = true
+      this.state = 'failed'
     })
   },
   methods: {
