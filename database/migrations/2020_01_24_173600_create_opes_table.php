@@ -37,7 +37,7 @@ class CreateOpesTable extends Migration
 			$table->text('size')->nullable();
 			$table->text('notes_on_preservation')->nullable();
 			$table->text('provenance')->nullable();
-			// $table->text('language')->nullable(); Kan avledes fra language_code
+			$table->text('language')->nullable(); // Kan avledes fra language_code
 			$table->text('lines')->nullable();
 			$table->text('palaeographic_description')->nullable();
 			$table->text('further_rep')->nullable();
@@ -121,6 +121,7 @@ class CreateOpesTable extends Migration
                     'nb' => 'OPES'
                 ]),
                 'class_bindings' => json_encode([
+                    'AutocompleteService' => 'AutocompleteService',
                 ], JSON_FORCE_OBJECT),
             ]
         ]);
