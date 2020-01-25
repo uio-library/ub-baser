@@ -105,7 +105,7 @@ export default {
       return this.schema.fields.filter(field => this.fieldIsVisible(field))
     },
     groups () {
-      return this.schema.groups.map(group => ({
+      return this.schema.groups.filter(group => group.searchable !== 'disabled').map(group => ({
         label: group.label,
         fields: group.fields.filter(field => this.fieldIsVisible(field)),
       }))
@@ -123,7 +123,7 @@ export default {
   },
 
   methods: {
-    fieldIsVisible (field) {
+    fieldIsVisible (field, group) {
       return field.searchable === 'simple' || (this.advanced && field.searchable === 'advanced')
     },
     onFieldChange (value) {
