@@ -18,15 +18,17 @@ import Lang from 'laravel-vue-lang';
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-import DataTable from './components/DataTable.vue'
-import SearchForm from './components/SearchForm.vue'
-import EditForm from './components/EditForm.vue'
-import PageEditor from './components/PageEditor.vue'
-import ImageViewer from './components/ImageViewer.vue'
+import DataTable from './components/DataTable'
+import OpesDataTable from './components/bases/opes/OpesDataTable'
+import SearchForm from './components/SearchForm'
+import EditForm from './components/EditForm'
+import PageEditor from './components/PageEditor'
+import ImageViewer from './components/ImageViewer'
 
 Vue.config.devtools = true
 
 Vue.component('data-table', DataTable)
+Vue.component('opes-data-table', OpesDataTable)
 Vue.component('search-form', SearchForm)
 Vue.component('edit-form', EditForm)
 Vue.component('page-editor', PageEditor)

@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <data-table
+    <opes-data-table
         v-once
         prefix="{{ $base->id }}"
         base-url="{{ $base->action('index') }}"
@@ -32,6 +32,6 @@
         :default-columns="{{ json_encode($defaultColumns) }}"
         :order="{{ json_encode($order) }}"
         :query="{{ json_encode($query, JSON_FORCE_OBJECT) }}"
-    ></data-table>
+    ></opes-data-table>
 
 @endsection

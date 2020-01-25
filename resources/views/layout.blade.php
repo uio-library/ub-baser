@@ -97,7 +97,7 @@
 
     <main id="app" class="flex-shrink-0">
 
-        <div class="container">
+        <div class="container {{ isset($base) ? $base->id : '' }}">
             @if (session('status'))
                 <div class="alert alert-info">
                     {{ session('status') }}
@@ -138,7 +138,7 @@
                 @else
                     <ul class="list-unstyled">
                         <li>
-                            Ansvarlig nettredaktør:<br>
+                            @lang('messages.responsible'):<br>
                             <a href="mailto:ub-web@ub.uio.no" title="Nettredaktør">ub-web@ub.uio.no</a>
                         </li>
                     </ul>

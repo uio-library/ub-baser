@@ -18,4 +18,18 @@ class Publication extends \Eloquent
     {
         return $this->belongsTo(Record::class, 'opes_id');
     }
+
+    public function getPapyriInfoLinkAttribute()
+    {
+        $baseUrl = 'https://papyri.info/ddbdp/';
+
+        if (isset($this->ddbdp_pmichcitation)) {
+            return $baseUrl . $this->ddbdp_pmichcitation;
+        }
+        if (isset($this->ddbdp_omichcitation)) {
+            return $baseUrl . $this->ddbdp_omichcitation;
+        }
+
+        return null;
+    }
 }

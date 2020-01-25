@@ -16,7 +16,7 @@
 
             <div ref="columnSelectorWrapper"  class="d-flex align-items-center">
                 <div class="flex-grow-0 pr-2">
-                    Vis kolonner:
+                    {{ $t('messages.show_columns') }}
                 </div>
                 <select multiple
                         ref="columnSelector"
@@ -107,6 +107,7 @@ export default {
       return this.getSessionValue('columns', this.defaultColumns)
     },
 
+
     columns () {
       const columns = []
 
@@ -119,12 +120,7 @@ export default {
           columnLabel: field.label,
           orderable: field.orderable,
           visible: this.visibleColumns.indexOf(field.key) !== -1,
-          render: (data, type, row) => {
-            if (data === null) {
-              data = '–'
-            }
-            return data
-          },
+          render: this.renderCell,
         }
         if (get(field, 'columnClassName')) {
           col.className = field.columnClassName
@@ -150,6 +146,13 @@ export default {
 
   methods: {
 
+    renderCell (data, type, row, meta) {
+      if (data === null) {
+        return '–'
+      }
+      return data
+    },
+
     getSessionValue (name, defaultValue) {
       const key = `ub-baser-${this.prefix}-${name}`
       if (sessionStorage.getItem(key) !== null) {
@@ -170,31 +173,31 @@ export default {
     initTable () {
       let drag = false
 
-      $(document).ready(function() {
+      $(document).ready(() => {
           $('.tooltipster th').tooltipster({
             maxWidth: 250,
             delay: 800,
             theme: 'tooltipster-borderless',
             content: 'Loading...',
             // 'instance' is basically the tooltip. More details in the "Object-oriented Tooltipster" section.
-            functionBefore: function(instance, helper) {
+            functionBefore: (instance, helper) => {
               var $origin = $(helper.origin)
               var order = table.order()
               var label = $origin.text()
               var currentIdx = table.column($origin[0]).index()
               label = label.charAt(0).toLowerCase() + label.substring(1)
               if (order.length && order[0][0] == currentIdx) {
-                if (order[0][1] == 'asc') {
-                  instance.content('Sortert i stigende rekkefølge. Trykk for å endre til synkende.')
+                if (order[0][1] === 'asc') {
+                  instance.content(this.$t('messages.asc_sort_help'))
                 } else {
-                  instance.content('Sortert i synkende rekkefølge. Trykk for å endre til stigende.')
+                  instance.content(this.$t('messages.desc_sort_help'))
                 }
               } else {
-               instance.content('Trykk for å sortere etter denne kolonnen (stigende rekkefølge).')
+               instance.content(this.$t('messages.sort_by_this_column'))
               }
             }
-          });
-      });
+          })
+      })
 
       const table = $(this.$refs.theTable).DataTable({
 
@@ -202,13 +205,13 @@ export default {
         dom: '<"top"ilp<"clear">>rt<"bottom"ilp<"clear">>',
 
         language: {
-          sEmptyTable: 'Ingen poster funnet.',
+          sEmptyTable: this.$t('messages.no_records_found'),
           sInfo: '<span class="datatables-info-message">...</span>',
-          sInfoEmpty: 'Viser 0 til 0 av 0 poster.',
+          sInfoEmpty: '(not in use)',
           sInfoFiltered: '(filtrert fra _MAX_ totalt antall poster)',
           sInfoPostFix: '',
-          sInfoThousands: ' ',
-          sLengthMenu: 'Vis _MENU_ poster per side',
+          sInfoThousands: ' ',
+          sLengthMenu: this.$t('messages.records_per_page_setting'),
           sLoadingRecords: this.$t('messages.loading'),
           sProcessing: '<div class="spinner"></div>',
           sSearch: this.$t('messages.search'),
@@ -225,16 +228,19 @@ export default {
             sSortDescending: ': aktiver for å sortere kolonnen synkende',
           },
         },
-        drawCallback: function (settings) {
+        drawCallback: (settings) => {
           let info = table.page.info();
-          let msg = `Viser post ${info.start+1} til ${info.end}`;
           if (lastResponse) {
-            if (lastResponse.unknownCount) {
-              msg += ' av mange';
-            } else {
-              msg += ` av ${lastResponse.recordsTotal}`;
+            let msg = 'messages.records_shown_of_many',
+              msgArgs = {
+                start: info.start + 1,
+                end: info.end,
+              }
+            if (!lastResponse.unknownCount) {
+              msg = 'messages.records_shown_of_total'
+              msgArgs.total = lastResponse.recordsTotal
             }
-            $('.datatables-info-message').text(msg);
+            $('.datatables-info-message').text(this.$t(msg, msgArgs))
           }
         },
         pageLength: this.getSessionValue('page-length', 50),
@@ -253,6 +259,7 @@ export default {
         serverSide: true,
         // Make the tr elements focusable
         createdRow: (row, data, dataIndex) => {
+          console.log('c', dataIndex, row)
           $(row)
             .attr('tabindex', '0')
             .on('mousedown', () => { drag = false })
@@ -282,6 +289,7 @@ export default {
   },
 
   mounted () {
+    console.log(this.schema)
     // Initialize the column selector and the table
     const $columnSelector = this.initColumnSelector()
     const table = this.initTable()

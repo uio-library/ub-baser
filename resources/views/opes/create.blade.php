@@ -8,7 +8,7 @@
 
     @include('shared.errors')
 
-    <form method="POST" action="{{ action('\App\Bases\Opes\Controller@store') }}" class="form-horizontal">
+    <form method="POST" action="{{ $base->action('store') }}" class="form-horizontal">
         @csrf
 
         <edit-form
