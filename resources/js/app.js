@@ -22,6 +22,7 @@ import DataTable from './components/DataTable.vue'
 import SearchForm from './components/SearchForm.vue'
 import EditForm from './components/EditForm.vue'
 import PageEditor from './components/PageEditor.vue'
+import ImageViewer from './components/ImageViewer.vue'
 
 Vue.config.devtools = true
 
@@ -29,6 +30,7 @@ Vue.component('data-table', DataTable)
 Vue.component('search-form', SearchForm)
 Vue.component('edit-form', EditForm)
 Vue.component('page-editor', PageEditor)
+Vue.component('image-viewer', ImageViewer)
 
 Vue.use(Lang, {
   locale: window.default_locale,
