@@ -54,7 +54,7 @@
                 <autocomplete-input
                         :value="newPersonValue"
                         :schema="newPersonSchema"
-                        :base-settings="settings"
+                        :settings="settings"
                         ref="newperson"
                         @value="newPersonValue=$event"
                         @selected="selectedPerson=$event"
