@@ -236,7 +236,17 @@ export default {
         fixedHeader: true,
 
         // Define which table control elements should appear and in what order.
-        dom: '<"top"ilp<"clear">>rt<"bottom"ilp<"clear">>',
+        dom: '<"top"ilpB<"clear">>rt<"bottom"ilp<"clear">>',
+        buttons: [
+          {
+            text: '<em class="fa fa-arrows-alt"></em>',
+            titleAttr: this.$t('messages.toggle_fullscreen'),
+            className: 'btn btn-outline-primary dataTablesFullscreenBtn',
+            action: ( e, dt, node, config ) => {
+              this.toggleFullScreen()
+            }
+          }
+        ],
 
         language: {
           sEmptyTable: this.$t('messages.no_records_found'),
@@ -324,6 +334,15 @@ export default {
     onTableScroll () {
       $(".fixedHeader-floating").scrollLeft(this.$refs.theTable.scrollLeft)
     },
+
+    toggleFullScreen () {
+
+      const $container = $(this.$refs.theTable).parent()
+
+      $container.toggleClass('dataTablesFullscreen')
+      // Notify the fixedHeader plugin
+      $(window).trigger('datatable:togglefullscreen')
+    }
   },
 
   mounted () {

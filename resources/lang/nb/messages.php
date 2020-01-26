@@ -57,4 +57,5 @@ return [
     'asc_sort_help' => 'Sortert i stigende rekkefølge. Trykk for å endre til synkende.',
     'desc_sort_help' => 'Sortert i synkende rekkefølge. Trykk for å endre til stigende.',
     'sort_by_this_column' => 'Trykk for å sortere etter denne kolonnen (stigende rekkefølge)',
+    'toggle_fullscreen' => 'Fullskjerm',
 ];

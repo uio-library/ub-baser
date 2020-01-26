@@ -15,7 +15,7 @@ $break-md: 1200px
 // Bootstrap
 @import '~bootstrap/scss/bootstrap'
 
-
+// Extra styles for DataTables
 @import 'datatables.net-fixedHeader.bootstrap4.min'
 
 body
@@ -293,6 +293,18 @@ div.dataTables_wrapper
 
     label
       margin-bottom: 0
+
+.dataTablesFullscreenBtn
+  height: 36px
+  margin-left: 6px
+  border: 1px solid #dee2e6
+
+.dataTablesFullscreen
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  background: white
 
 /*******************************************************************
  * Algolia
