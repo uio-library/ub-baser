@@ -27,12 +27,12 @@
             This is the '{{ App::environment() }}' environment
         </div>
         <div class="uio-header">
-            <div class="container">
+            <div class="container-xl">
                 <a href="https://www.uio.no/" title="Universitetet i Oslo"><img src="/images/uio-logo.svg" alt="Universitetet i Oslo"></a>
             </div>
         </div>
         <div class="header">
-            <div class="container">
+            <div class="container-xl">
                 <div id="navbar_top">
                     <div>
                         <a href="/" >UB-baser</a>
@@ -97,7 +97,7 @@
 
     <main id="app" class="flex-shrink-0">
 
-        <div class="container {{ isset($base) ? $base->id : '' }}">
+        <div class="container-xl {{ isset($base) ? $base->id : '' }}">
             @if (session('status'))
                 <div class="alert alert-info">
                     {{ session('status') }}
@@ -110,7 +110,7 @@
     </main>
 
     <footer>
-        <div class="container text-center text-md-left align-items-center">
+        <div class="container-xl text-center text-md-left align-items-center">
 
             <!-- Column -->
             <div class="logo" ></div>

@@ -168,7 +168,7 @@ footer
   a:link, a:visited
     color: #bbb
 
-  .container
+  > div
     display: flex
 
     @media (max-width: $break-sm)
@@ -189,7 +189,7 @@ footer
         background-size: 90px 90px
 
     > div
-      flex: 1 0 auto
+      flex: 1 1 auto
       margin-left: 10px
       margin-right: 10px
 
@@ -197,6 +197,13 @@ footer
 /*******************************************************************
  * DataTables
  *******************************************************************/
+
+@media (max-width: 820px)
+  .dataTables_wrapper .top
+    display: none
+
+.dataTables_wrapper .bottom, .dataTables_wrapper .top
+  flex-wrap: wrap
 
 table.dataTable
 
