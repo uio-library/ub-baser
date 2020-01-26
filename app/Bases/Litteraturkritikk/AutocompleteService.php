@@ -29,12 +29,12 @@ class AutocompleteService extends \App\Services\AutocompleteService
      * @var array
      */
     protected $completers = [
-        'publikasjon' => 'simpleStringLister',
-        'spraak' => 'simpleStringLister',
-        'verk_spraak' => 'simpleStringLister',
-        'verk_sjanger' => 'simpleStringLister',
-        'utgivelsessted' => 'simpleStringLister',
-        'verk_utgivelsessted' => 'simpleStringLister',
+        'publikasjon' => 'simpleLister',
+        'spraak' => 'simpleLister',
+        'verk_spraak' => 'simpleLister',
+        'verk_sjanger' => 'simpleLister',
+        'utgivelsessted' => 'simpleLister',
+        'verk_utgivelsessted' => 'simpleLister',
 
         'kritikktype' => 'jsonArrayCompleter',
         'tags' => 'jsonArrayCompleter',
