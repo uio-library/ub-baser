@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Base;
 use App\User;
 use Illuminate\Console\Command;
 
@@ -42,9 +43,11 @@ class CreateAdminCommand extends Command
 
             return;
         }
+        $rights = Base::pluck('id');
+        $rights[] = 'admin';
 
         $user->name = 'Georg Sverdrup';
-        $user->rights = ['admin'];
+        $user->rights = $rights;
         $user->password = bcrypt('secret');
         $user->save();
 
