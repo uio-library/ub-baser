@@ -40,7 +40,7 @@
                 </select>
             </div>
 
-            <table ref="theTable" class="table hover table-responsive" style="width:100%">
+            <table ref="theTable" @scroll.passive="onTableScroll" class="table hover table-responsive" style="width:100%">
                 <thead>
                     <tr v-if="groups.length">
                         <th v-for="field in fields" :key="field.key"></th>
@@ -233,6 +233,8 @@ export default {
 
       const table = $(this.$refs.theTable).DataTable({
 
+        fixedHeader: true,
+
         // Define which table control elements should appear and in what order.
         dom: '<"top"ilp<"clear">>rt<"bottom"ilp<"clear">>',
 
@@ -317,6 +319,10 @@ export default {
       })
 
       return table
+    },
+
+    onTableScroll () {
+      $(".fixedHeader-floating").scrollLeft(this.$refs.theTable.scrollLeft)
     },
   },
 
