@@ -71,6 +71,13 @@ class Schema extends BaseSchema
                         ],
                     ],
 
+                    // Originaltittel
+                    [
+                        'key' => 'verk_originaltittel',
+                        'type' => 'autocomplete',
+                        'searchable' => 'disabled',
+                    ],
+
                     // Forfatter
                     [
                         'key' => 'verk_forfatter',
@@ -143,6 +150,20 @@ class Schema extends BaseSchema
                         'type' => 'autocomplete',
 
                         'searchable' => 'advanced',
+                        'searchOptions' => [
+                            'placeholder' => 'Språk for den omtalte utgaven',
+                        ],
+                    ],
+
+                    // Originalspråk
+                    [
+                        'key' => 'verk_originalspraak',
+                        'type' => 'autocomplete',
+
+                        'searchable' => 'advanced',
+                        'searchOptions' => [
+                            'placeholder' => 'Språk for originalutgaven',
+                        ],
                     ],
 
                     // Kommentar
@@ -218,6 +239,29 @@ class Schema extends BaseSchema
                                 'type' => 'simple',
                                 'column' => 'publikasjon',
                             ],
+                        ],
+                    ],
+
+                    // Medieformat
+                    [
+                        'key' => 'medieformat',
+                        'type' => 'enum',
+                        'columnClassName' => 'dt-body-nowrap',
+                        'values' => [
+                            ['id' => 'avis', 'label' => 'Avis'],
+                            ['id' => 'tidsskrift', 'label' => 'Tidsskrift'],
+                            ['id' => 'bok', 'label' => 'Bok'],
+                            ['id' => 'radio', 'label' => 'Radio'],
+                            ['id' => 'tv', 'label' => 'TV'],
+                            ['id' => 'video', 'label' => 'Video'],
+                            ['id' => 'blogg', 'label' => 'Blogg'],
+                            ['id' => 'podcast', 'label' => 'Podcast'],
+                            ['id' => 'nettmagasin', 'label' => 'Nettmagasin'],
+                            ['id' => 'nettforum', 'label' => 'Nettforum'],
+                            ['id' => 'some', 'label' => 'Sosiale medier'],
+                        ],
+                        'searchOptions' => [
+                            'operators' => ['ex'],
                         ],
                     ],
 

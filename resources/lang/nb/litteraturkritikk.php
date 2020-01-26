@@ -16,6 +16,7 @@ return [
     'spraak' => 'Språk',
 
     'type' => 'Kritikktype',
+    'medieformat' => 'Medieformat',
     'tittel' => 'Kritikkens tittel',
     'kommentar' => 'Kommentar',
     'publikasjon' => 'Publikasjon',
@@ -42,9 +43,11 @@ return [
     'wikidata_id' => 'Wikidata-ID',
 
     'verk_tittel' => 'Tittel',
+    'verk_originaltittel' => 'Originaltittel',
     'verk_dato' => 'Utgivelsesår',
     'verk_sjanger' => 'Sjanger',
     'verk_spraak' => 'Språk',
+    'verk_originalspraak' => 'Originalspråk',
     'verk_kommentar' => 'Kommentar',
     'verk_utgivelsessted' => 'Utgivelsessted',
     'verk_fulltekst_url' => 'Fulltekst-URL',
