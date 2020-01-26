@@ -40,7 +40,7 @@
                 </select>
             </div>
 
-            <table ref="theTable" @scroll.passive="onTableScroll" class="table hover table-responsive" style="width:100%">
+            <table ref="theTable" @scroll.passive="onTableScroll" class="table hover" style="width:100%">
                 <thead>
                     <tr v-if="groups.length">
                         <th v-for="field in fields" :key="field.key"></th>
@@ -236,14 +236,14 @@ export default {
         fixedHeader: true,
 
         // Define which table control elements should appear and in what order.
-        dom: '<"top"ilpB<"clear">>rt<"bottom"ilp<"clear">>',
+        dom: '<"top"ilpB<"clear">>r<"table-responsive"t><"bottom"ilp<"clear">>',
         buttons: [
           {
             text: '<em class="fa fa-arrows-alt"></em>',
             titleAttr: this.$t('messages.toggle_fullscreen'),
             className: 'btn btn-outline-primary dataTablesFullscreenBtn',
             action: ( e, dt, node, config ) => {
-              this.toggleFullScreen()
+              this.toggleFullScreen(table)
             }
           }
         ],
@@ -335,11 +335,9 @@ export default {
       $(".fixedHeader-floating").scrollLeft(this.$refs.theTable.scrollLeft)
     },
 
-    toggleFullScreen () {
-
-      const $container = $(this.$refs.theTable).parent()
-
-      $container.toggleClass('dataTablesFullscreen')
+    toggleFullScreen (table) {
+      const container = table.table().container()
+      $(container).toggleClass('dataTablesFullscreen')
       // Notify the fixedHeader plugin
       $(window).trigger('datatable:togglefullscreen')
     }
