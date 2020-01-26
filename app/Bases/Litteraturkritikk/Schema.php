@@ -62,12 +62,56 @@ class Schema extends BaseSchema
                         'type' => 'autocomplete',
 
                         'searchOptions' => [
-                            'placeholder' => 'Tittel på omtalt verk',
+                            'placeholder' => 'Tittel på den omtalte utgaven av verket',
                             'index' => [
                                 'type' => 'ts',
                                 'column' => 'verk_tittel',
                                 'ts_column' => 'verk_tittel_ts',
                             ],
+                        ],
+                    ],
+
+                    // Språk
+                    [
+                        'key' => 'verk_spraak',
+                        'type' => 'autocomplete',
+
+                        'searchable' => 'advanced',
+                        'searchOptions' => [
+                            'placeholder' => 'Språket den omtalte utgaven er skrevet på',
+                        ],
+                    ],
+
+                    // Originaltittel
+                    [
+                        'key' => 'verk_originaltittel',
+                        'type' => 'autocomplete',
+                        'searchable' => 'advanced',
+
+                        'searchOptions' => [
+                            'placeholder' => 'Fylles ut hvis tittel på omtalt utgave avviker fra originaltittel, f.eks. ved oversettelse',
+                        ],
+
+                    ],
+
+                    // Originaltittel (transkribert)
+                    [
+                        'key' => 'verk_originaltittel_transkribert',
+                        'type' => 'autocomplete',
+                        'searchable' => 'advanced',
+                        'searchOptions' => [
+                            'placeholder' => 'Fylles ut hvis originaltittel bruker ikke-latinsk skrift',
+                        ],
+                    ],
+
+                    // Originalspråk
+                    [
+                        'key' => 'verk_originalspraak',
+                        'type' => 'autocomplete',
+
+                        'searchable' => 'advanced',
+                        'searchOptions' => [
+                            'placeholder' => 'Språket originalutgaven er skrevet på',
                         ],
                     ],
 
@@ -108,6 +152,14 @@ class Schema extends BaseSchema
                         'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
                     ],
 
+                    // Utgivelsessted
+                    [
+                        'key' => 'verk_utgivelsessted',
+                        'type' => 'autocomplete',
+
+                        'searchable' => 'advanced',
+                    ],
+
                     // År
                     [
                         'key' => 'verk_dato',
@@ -122,6 +174,7 @@ class Schema extends BaseSchema
                                 'type' => 'range',
                                 'column' => 'verk_dato',
                             ],
+                            'placeholder' => 'Utgivelsesår for omtalt utgave'
                         ],
                     ],
 
@@ -137,26 +190,10 @@ class Schema extends BaseSchema
                         ],
                     ],
 
-                    // Språk
-                    [
-                        'key' => 'verk_spraak',
-                        'type' => 'autocomplete',
-
-                        'searchable' => 'advanced',
-                    ],
-
                     // Kommentar
                     [
                         'key' => 'verk_kommentar',
                         'type' => 'simple',
-
-                        'searchable' => 'advanced',
-                    ],
-
-                    // Utgivelsessted
-                    [
-                        'key' => 'verk_utgivelsessted',
-                        'type' => 'autocomplete',
 
                         'searchable' => 'advanced',
                     ],
@@ -218,6 +255,29 @@ class Schema extends BaseSchema
                                 'type' => 'simple',
                                 'column' => 'publikasjon',
                             ],
+                        ],
+                    ],
+
+                    // Medieformat
+                    [
+                        'key' => 'medieformat',
+                        'type' => 'enum',
+                        'columnClassName' => 'dt-body-nowrap',
+                        'values' => [
+                            ['id' => 'avis', 'label' => 'Avis'],
+                            ['id' => 'tidsskrift', 'label' => 'Tidsskrift'],
+                            ['id' => 'bok', 'label' => 'Bok'],
+                            ['id' => 'radio', 'label' => 'Radio'],
+                            ['id' => 'tv', 'label' => 'TV'],
+                            ['id' => 'video', 'label' => 'Video'],
+                            ['id' => 'blogg', 'label' => 'Blogg'],
+                            ['id' => 'podcast', 'label' => 'Podcast'],
+                            ['id' => 'nettmagasin', 'label' => 'Nettmagasin'],
+                            ['id' => 'nettforum', 'label' => 'Nettforum'],
+                            ['id' => 'some', 'label' => 'Sosiale medier'],
+                        ],
+                        'searchOptions' => [
+                            'operators' => ['ex'],
                         ],
                     ],
 

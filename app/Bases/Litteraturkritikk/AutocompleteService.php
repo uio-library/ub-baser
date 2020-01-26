@@ -43,6 +43,8 @@ class AutocompleteService extends \App\Services\AutocompleteService
         'tags' => 'jsonArrayCompleter',
 
         'verk_tittel' => 'textSearchCompleter',
+        'verk_originaltittel' => 'textSearchCompleter',
+        'verk_originaltittel_transkribert' => 'textSearchCompleter',
 
         'person' => 'personCompleter',
         'verk_forfatter' => 'personCompleter',
