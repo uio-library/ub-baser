@@ -40,7 +40,7 @@
                 </select>
             </div>
 
-            <table ref="theTable" class="table hover" style="width:100%">
+            <table ref="theTable" class="table hover table-responsive" style="width:100%">
                 <thead>
                     <tr v-if="groups.length">
                         <th v-for="field in fields" :key="field.key"></th>
