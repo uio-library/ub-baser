@@ -44,7 +44,7 @@
                 <thead>
                     <tr v-if="groups.length">
                         <th v-for="field in fields" :key="field.key"></th>
-                        <th v-for="group in groups" :key="group.label" :colspan="group.fields.length">{{ group.label }}</th>
+                        <th class="left-group-divider" v-for="group in groups" :key="group.label" :colspan="group.fields.length">{{ group.label }}</th>
                     </tr>
                     <tr class="tooltipster">
                         <th v-for="col in columns" :key="col.data">
@@ -63,6 +63,7 @@
 
 <script>
 import { get } from 'lodash/object'
+import { difference } from 'lodash/array'
 
 let lastResponse = {};
 
@@ -103,12 +104,9 @@ export default {
       ))
     },
 
-    visibleColumns () {
-      return this.getSessionValue('columns', this.defaultColumns)
-    },
-
-
     columns () {
+      const visibleColumns = this.getVisibleColumns()
+
       const columns = []
 
       const processField = (field) => {
@@ -119,7 +117,7 @@ export default {
           data: field.key,
           columnLabel: field.label,
           orderable: field.orderable,
-          visible: this.visibleColumns.indexOf(field.key) !== -1,
+          visible: visibleColumns.indexOf(field.key) !== -1,
           render: this.renderCell,
         }
         if (get(field, 'columnClassName')) {
@@ -136,15 +134,49 @@ export default {
     },
 
     defaultOrder () {
+      const visibleColumns = this.getVisibleColumns()
+
       const keys = this.columns.map(col => col.data)
       let order = this.getSessionValue('order', this.order)
-      order = order.filter(item => this.visibleColumns.indexOf(item.key) !== -1)
+      order = order.filter(item => visibleColumns.indexOf(item.key) !== -1)
       return order.map(item => [keys.indexOf(item.key), item.direction])
     },
 
   },
 
   methods: {
+
+    getVisibleColumns () {
+      return this.getSessionValue('columns', this.defaultColumns)
+    },
+
+    updateGroupDividers (table, visibleColumns) {
+      visibleColumns = visibleColumns || this.getVisibleColumns()
+
+      let fieldGroupMap = {}
+      this.schema.fields.forEach(field => fieldGroupMap[field.key] = null)
+      this.schema.groups.forEach(fieldGroup => {
+        fieldGroup.fields.forEach(field => fieldGroupMap[field.key] = fieldGroup.label)
+      })
+
+
+      const keys = this.columns.map(col => col.data)
+
+      let groupsSeen = []
+      let groupBoundaries = []
+      visibleColumns.forEach(colKey => {
+        let colGroup = fieldGroupMap[colKey]
+        if (groupsSeen.indexOf(colGroup) === -1) {
+          groupBoundaries.push(keys.indexOf(colKey))
+          groupsSeen.push(colGroup)
+        }
+      })
+
+      table.cells().nodes().flatten().to$().removeClass('left-group-divider')
+      table.header().to$().removeClass('left-group-divider')
+      table.columns(groupBoundaries).nodes().flatten().to$().addClass('left-group-divider')
+      table.columns(groupBoundaries).header().to$().addClass('left-group-divider')
+    },
 
     renderCell (data, type, row, meta) {
       if (data === null) {
@@ -167,7 +199,7 @@ export default {
     },
 
     initColumnSelector () {
-      return $(this.$refs.columnSelector).val(this.visibleColumns)
+      return $(this.$refs.columnSelector).val(this.getVisibleColumns())
     },
 
     initTable () {
@@ -207,7 +239,7 @@ export default {
         language: {
           sEmptyTable: this.$t('messages.no_records_found'),
           sInfo: '<span class="datatables-info-message">...</span>',
-          sInfoEmpty: '(not in use)',
+          sInfoEmpty: this.$t('messages.no_records_found'),
           sInfoFiltered: '(filtrert fra _MAX_ totalt antall poster)',
           sInfoPostFix: '',
           sInfoThousands: ' ',
@@ -242,6 +274,7 @@ export default {
             }
             $('.datatables-info-message').text(this.$t(msg, msgArgs))
           }
+          this.updateGroupDividers(table)
         },
         pageLength: this.getSessionValue('page-length', 50),
         lengthMenu: [10, 50, 100, 500, 1000],
@@ -259,7 +292,6 @@ export default {
         serverSide: true,
         // Make the tr elements focusable
         createdRow: (row, data, dataIndex) => {
-          console.log('c', dataIndex, row)
           $(row)
             .attr('tabindex', '0')
             .on('mousedown', () => { drag = false })
@@ -289,21 +321,29 @@ export default {
   },
 
   mounted () {
-    console.log(this.schema)
     // Initialize the column selector and the table
     const $columnSelector = this.initColumnSelector()
     const table = this.initTable()
 
     // Connect them together: Update the table when the column selector change.
     $columnSelector.on('change', () => {
-      const visibleColumns = $columnSelector.val() // array of keys
+      const currentlyVisible = this.getVisibleColumns()
 
-      this.storeSessionValue('columns', visibleColumns)
+      const visible = $columnSelector.val() // array of keys
+      this.storeSessionValue('columns', visible)
 
-      this.columns.forEach((col, idx) => {
-        const visible = visibleColumns.indexOf(col.data) !== -1
-        table.column(idx).visible(visible)
-      })
+      const keys = this.columns.map(col => col.data)
+
+      const toHide = difference(currentlyVisible, visible)
+      const toShow = difference(visible, currentlyVisible)
+
+      const toHideIdx = toHide.map(x => keys.indexOf(x))
+      const toShowIdx = toShow.map(x => keys.indexOf(x))
+
+      table.columns(toShowIdx).visible(true, false)
+      table.columns(toHideIdx).visible(false, false)
+
+      this.updateGroupDividers(table, visible)
     })
 
     // Tweak the table header and move the column selector into it
