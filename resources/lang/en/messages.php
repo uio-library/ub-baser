@@ -57,4 +57,5 @@ return [
     'asc_sort_help' => 'Sorted in ascending order. Press to change to descending order.',
     'desc_sort_help' => 'Sorted in descending order. Press to change to ascending order.',
     'sort_by_this_column' => 'Press to sort by this column (in ascending order).',
+    'toggle_fullscreen' => 'Toggle fullscreen',
 ];

@@ -243,6 +243,10 @@
       var dt = this.s.dt;
 
       $(window)
+        .on('datatable:togglefullscreen', function () {
+          that._positions();
+          that._scroll();
+        })
         .on( 'scroll'+this.s.namespace, function () {
           that._scroll();
         } )
@@ -473,6 +477,7 @@
           .css( item === 'header' ? 'top' : 'bottom', this.c[item+'Offset'] )
           .css( 'left', position.left+'px' )
           .css( 'width', position.width+'px' )
+          .css( 'z-index', 2 )
           .scrollLeft(tableNode.scrollLeft())
 
         if ( item === 'footer' ) {

@@ -35,6 +35,7 @@ require('datatables.net')
 require('datatables.net-dt')
 require('datatables.net-bs4')
 require('./include/dataTables.fixedHeader')
+require('datatables.net-buttons')
 
 require('bootstrap-select')
 require('bootstrap-select/dist/js/i18n/defaults-nb_NO.js')
