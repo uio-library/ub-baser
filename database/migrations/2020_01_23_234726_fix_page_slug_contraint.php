@@ -14,7 +14,6 @@ class FixPageSlugContraint extends Migration
     public function up()
     {
         Schema::table('pages', function (Blueprint $table) {
-
             $conn = Schema::getConnection();
             $dbSchemaManager = $conn->getDoctrineSchemaManager();
             $doctrineTable = $dbSchemaManager->listTableDetails('pages');

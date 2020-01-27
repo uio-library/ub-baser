@@ -216,7 +216,7 @@ class Schema extends BaseSchema
                     //            'key' =>  'preferred_citation',
                     //            'type' => 'simple',
                     //        ],
-                        //       [
+                    //       [
                     //            'key' =>  'ddbdp_pmichcitation',
                     //            'type' => 'simple',
                     //        ],
