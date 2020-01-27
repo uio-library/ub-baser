@@ -312,11 +312,15 @@
           itemDom.floating.remove();
         }
 
-        itemDom.floating = $( dt.table().node().cloneNode( false ) )
-          .css( 'table-layout', 'fixed' )
+        let table = $( dt.table().node().cloneNode( false ) )
+          // .css( 'table-layout', 'fixed' )
           .attr( 'aria-hidden', 'true' )
           .removeAttr( 'id' )
           .append( itemElement )
+
+        itemDom.floating = $( '<div></div>' )
+          .addClass( 'table-responsive fixedHeader-floating' )
+          .append(table)
           .appendTo( 'body' );
 
         // Insert a fake thead/tfoot into the DataTable to stop it jumping around
@@ -478,7 +482,7 @@
           .css( 'left', position.left+'px' )
           .css( 'width', position.width+'px' )
           .css( 'z-index', 2 )
-          .scrollLeft(tableNode.scrollLeft())
+          .scrollLeft(tableNode.parent().scrollLeft())
 
         if ( item === 'footer' ) {
           itemDom.floating.css( 'top', '' );
@@ -530,6 +534,7 @@
       var position = this.s.position;
       var dom = this.dom;
       var tableNode = $(table.node());
+      var containerNode = tableNode.parent();
 
       // Need to use the header and footer that are in the main table,
       // regardless of if they are clones, since they hold the positions we
@@ -538,9 +543,9 @@
       var tfoot = tableNode.children('tfoot');
       var tbody = dom.tbody;
 
-      position.visible = tableNode.is(':visible');
-      position.width = tableNode.outerWidth();
-      position.left = tableNode.offset().left;
+      position.visible = containerNode.is(':visible');
+      position.width = containerNode.outerWidth();
+      position.left = containerNode.offset().left;
       position.theadTop = thead.offset().top;
       position.tbodyTop = tbody.offset().top;
       position.tbodyHeight = tbody.outerHeight();
