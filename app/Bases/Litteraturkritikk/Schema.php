@@ -417,7 +417,7 @@ class Schema extends BaseSchema
                             ['id' => 1, 'label' => 'Ikke korrekturlest'],
                             ['id' => 2, 'label' => 'Må korrekturleses mot fysisk materiale'],
                             ['id' => 3, 'label' => 'Korrekturlest mot fysisk materiale'],
-                            ['id' => 4, 'label' => 'Korrekturlest og lenket til digitalt materiale'],
+                            ['id' => 4, 'label' => 'Korrekturlest mot og lenket til digitalt materiale'],
                         ],
                         'searchOptions' => [
                             'operators' => ['ex'],
