@@ -63,7 +63,7 @@
             @foreach ($schema->groups as $group)
                 <h4 class="mt-4">{{ $group->label }}</h4>
 
-                <div class="py-2">
+                <div class="py-2" style="height: 45px">
                     @if ($group->label == 'Kritikken' && $record->fulltekst_url)
                         @foreach (explode(' ', $record->fulltekst_url) as $n => $url)
                             <a href="{{ $url }}" class="btn btn-outline-success btn-sm">
@@ -79,10 +79,10 @@
                             </a>
                         @endforeach
                     @elseif ($group->label != 'Databaseposten')
-                        <a href="https://www.nb.no/search?{{ $record->nationalLibrarySearchLink($group->label) }}" class="btn btn-outline-success btn-sm">
-                            <em class="fa fa-search"></em>
-                            Søk etter fulltekst i NB
-                        </a>
+                        <national-library-search
+                            base-url="{{ $base->action('nationalLibrarySearch') }}"
+                            :query="{{ json_encode($record->nationalLibrarySearchQuery($group->label)) }}"
+                        ></national-library-search>
                     @endif
 
                     @if ($group->label == 'Omtale av')
