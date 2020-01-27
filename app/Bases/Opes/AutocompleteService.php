@@ -2,9 +2,6 @@
 
 namespace App\Bases\Opes;
 
-use App\Schema\SchemaField;
-use Illuminate\Support\Arr;
-
 class AutocompleteService extends \App\Services\AutocompleteService
 {
     /**
@@ -41,4 +38,3 @@ class AutocompleteService extends \App\Services\AutocompleteService
     protected $listers = [
     ];
 }
-

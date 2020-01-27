@@ -33,7 +33,9 @@ class ImportOpesCommand extends ImportCommand
             case 'persons':
             case 'subj_headings':
                 $value = explode(';', $value);
-                $value = array_map(function($x) { return trim($x); }, $value);
+                $value = array_map(function ($x) {
+                    return trim($x);
+                }, $value);
                 $value = json_encode($value);
                 break;
 
@@ -56,7 +58,7 @@ class ImportOpesCommand extends ImportCommand
                 if ($value !== '') {
                     $value = explode('.', $value);
                     if (count($value) != 3) {
-                        print("INVALID DATE: " . implode('.', $value));
+                        echo 'INVALID DATE: ' . implode('.', $value);
                         die;
                     }
                     $value = sprintf('%s-%s-%s', $value[2], $value[1], $value[0]);

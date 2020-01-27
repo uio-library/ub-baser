@@ -16,7 +16,7 @@ class SchemaGroup implements \JsonSerializable
         $schemaGroup = new self();
         $schemaGroup->label = $data['label'];
         $schemaGroup->displayable = Arr::get($data, 'displayable', true);
-        $schemaGroup->searchable= Arr::get($data, 'searchable', true);
+        $schemaGroup->searchable = Arr::get($data, 'searchable', true);
         $schemaGroup->fields = SchemaFields::make($data['fields'], $schemaPrefix, $options);
 
         return $schemaGroup;
