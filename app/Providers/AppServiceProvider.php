@@ -12,6 +12,16 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
+     * All of the container bindings that should be registered.
+     *
+     * @var array
+     */
+    public $bindings = [
+        \Psr\Http\Client\ClientInterface::class => \RicardoFiorani\GuzzlePsr18Adapter\Client::class,
+        \Psr\Http\Message\RequestFactoryInterface::class => \Http\Factory\Guzzle\RequestFactory::class,
+    ];
+
+    /**
      * Bootstrap any application services.
      *
      * @return void

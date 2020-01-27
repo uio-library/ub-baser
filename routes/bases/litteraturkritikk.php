@@ -17,6 +17,8 @@
 |     ./dev.sh artisan route:list
 */
 
+Route::get('nb-search', 'Controller@nationalLibrarySearch');
+
 Route::post('person', 'PersonController@store');
 Route::get('person/{id}', 'PersonController@show');
 

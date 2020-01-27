@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Request;
 use App\Record;
 use App\Schema\Schema;
+use App\Services\NationalLibraryApi;
 
 class Controller extends BaseController
 {
@@ -172,5 +173,17 @@ class Controller extends BaseController
         );
 
         return $person;
+    }
+
+    protected function nationalLibrarySearch(
+        Request $request,
+        NationalLibraryApi $api
+    ) {
+        // Note: Because of the repeated filter= statements, we need to get the unprocessed query string
+        $query = $request->server->get('QUERY_STRING');
+
+        return response()->json(
+            $api->request($query)
+        );
     }
 }

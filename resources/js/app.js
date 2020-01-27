@@ -24,6 +24,7 @@ import SearchForm from './components/SearchForm'
 import EditForm from './components/EditForm'
 import PageEditor from './components/PageEditor'
 import ImageViewer from './components/ImageViewer'
+import NationalLibrarySearch from './components/NationalLibrarySearch'
 
 Vue.config.devtools = true
 
@@ -33,6 +34,7 @@ Vue.component('search-form', SearchForm)
 Vue.component('edit-form', EditForm)
 Vue.component('page-editor', PageEditor)
 Vue.component('image-viewer', ImageViewer)
+Vue.component('national-library-search', NationalLibrarySearch)
 
 Vue.use(Lang, {
   locale: window.default_locale,

@@ -271,61 +271,66 @@ class Record extends \App\Record
         return implode('&', $queries);
     }
 
-    public function nationalLibrarySearchLink(string $group): string
+    public function nationalLibrarySearchQuery(string $group): array
     {
-        $query = ['q' => []];
+        $query = [];
+        $filters = [];
 
         if ($group == 'Kritikken') {
             $dato = $this->dato;
 
             if ($this->isNewspaper()) {
-                $query['mediatype'] = 'aviser';
-                $query['series'] = $this->publikasjon;
+                $filters['mediatype'] = 'aviser';
+                $filters['series'] = $this->publikasjon;
             } elseif ($this->isJournal()) {
-                $query['mediatype'] = 'tidsskrift';
-                $query['title'] = $this->publikasjon;
+                $filters['mediatype'] = 'tidsskrift';
+                $filters['title'] = $this->publikasjon;
             }
         } else {
             $dato = $this->verk_dato;
 
-            $query['mediatype'] = 'bøker';
+            $filters['mediatype'] = 'bøker';
 
             if ($this->verk_tittel) {
-                $query['title'] = $this->verk_tittel;
+                $filters['title'] = $this->verk_tittel;
             }
         }
 
         if ($dato && strlen($dato) <= 10) {
-            $query['fromDate'] = str_replace('-', '', $dato);
-            $query['toDate'] = str_replace('-', '', $dato);
+            $fromDate = str_replace('-', '', $dato);
+            $toDate = str_replace('-', '', $dato);
             if (strlen($dato) == 4) {
-                $query['fromDate'] = "{$dato}0101";
-                $query['toDate'] = "{$dato}1231";
+                $fromDate = "{$dato}0101";
+                $toDate = "{$dato}1231";
             }
+            $filters['date'] = [$fromDate, $toDate];
         }
 
         if ($group == 'Kritikken') {
             if ($this->nummer) {
-                $query['q'][] = $this->nummer;
+                $query[] = $this->nummer;
             }
 
             $kritiker = $this->kritikere()->first();
             if ($kritiker !== null && !$kritiker->pivot->pseudonym && !preg_match('/(anonym|ukjent)/', $kritiker->etternavn)) {
-                $query['q'][] = $kritiker->etternavn;
+                $query[] = $kritiker->etternavn;
             }
             $forfatter = $this->forfattere()->first();
             if ($forfatter !== null) {
-                $query['q'][] = $forfatter->etternavn;
+                $query[] = $forfatter->etternavn;
             }
         } else {
             $forfatter = $this->forfattere()->first();
             if ($forfatter !== null) {
-                $query['name'] = $forfatter->etternavn;
+                $filters['name'] = $forfatter->etternavn;
             }
         }
 
-        $query['q'] = implode(' ', $query['q']);
+        $query = implode(' ', $query);
 
-        return http_build_query($query);
+        return [
+            'query' => $query,
+            'filters' => $filters,
+        ];
     }
 }
