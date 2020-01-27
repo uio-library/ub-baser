@@ -9,7 +9,7 @@ class Controller extends BaseController
 {
     protected $logGroup = 'opes';
 
-    static public $defaultColumns = [
+    public static $defaultColumns = [
         'inv_no',
         'title_or_type',
         'genre',
@@ -19,7 +19,7 @@ class Controller extends BaseController
         'fullsizeback_r1',
     ];
 
-    static public $defaultSortOrder = [
+    public static $defaultSortOrder = [
         ['key' => 'inv_no', 'direction' => 'asc'],
     ];
 

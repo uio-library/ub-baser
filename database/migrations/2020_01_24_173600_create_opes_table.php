@@ -24,65 +24,65 @@ class CreateOpesTable extends Migration
         Schema::create('opes', function (Blueprint $table) {
             $this->addCommonFields($table, true);
 
-			$table->text('inv_no');
-			$table->text('section_or_side')->nullable();
-			$table->text('material')->nullable();
-			$table->text('connections')->nullable();
-			$table->text('rep_ser_old')->nullable();
-			$table->text('rep_pg_no_old')->nullable();
-			$table->text('mounted')->nullable();
-			$table->text('negative')->nullable();
-			$table->text('acquisition')->nullable();
-			$table->text('title_or_type')->nullable();
-			$table->text('size')->nullable();
-			$table->text('notes_on_preservation')->nullable();
-			$table->text('provenance')->nullable();
-			$table->text('language')->nullable(); // Kan avledes fra language_code
-			$table->text('lines')->nullable();
-			$table->text('palaeographic_description')->nullable();
-			$table->text('further_rep')->nullable();
-			$table->text('author')->nullable();
-			$table->text('content')->nullable();
+            $table->text('inv_no');
+            $table->text('section_or_side')->nullable();
+            $table->text('material')->nullable();
+            $table->text('connections')->nullable();
+            $table->text('rep_ser_old')->nullable();
+            $table->text('rep_pg_no_old')->nullable();
+            $table->text('mounted')->nullable();
+            $table->text('negative')->nullable();
+            $table->text('acquisition')->nullable();
+            $table->text('title_or_type')->nullable();
+            $table->text('size')->nullable();
+            $table->text('notes_on_preservation')->nullable();
+            $table->text('provenance')->nullable();
+            $table->text('language')->nullable(); // Kan avledes fra language_code
+            $table->text('lines')->nullable();
+            $table->text('palaeographic_description')->nullable();
+            $table->text('further_rep')->nullable();
+            $table->text('author')->nullable();
+            $table->text('content')->nullable();
 
-			$table->jsonb('persons')->default('[]');
+            $table->jsonb('persons')->default('[]');
 
-			$table->text('geographica')->nullable();
-			$table->text('extent')->nullable();
-			$table->text('institution')->nullable();
-			$table->text('origin')->nullable();
-			$table->text('conservation_status')->nullable();
+            $table->text('geographica')->nullable();
+            $table->text('extent')->nullable();
+            $table->text('institution')->nullable();
+            $table->text('origin')->nullable();
+            $table->text('conservation_status')->nullable();
 
-			$table->integer('items')->unsigned()->nullable();
+            $table->integer('items')->unsigned()->nullable();
 
-			$table->text('publ_side')->nullable();
-			$table->text('genre')->nullable();
-			$table->text('fullsizefront_r1')->nullable();
-			$table->text('fullsizeback_r1')->nullable();
-			$table->text('translation')->nullable();
-			$table->text('status')->nullable();
-			$table->text('bibliography')->nullable();
+            $table->text('publ_side')->nullable();
+            $table->text('genre')->nullable();
+            $table->text('fullsizefront_r1')->nullable();
+            $table->text('fullsizeback_r1')->nullable();
+            $table->text('translation')->nullable();
+            $table->text('status')->nullable();
+            $table->text('bibliography')->nullable();
 
-			$table->boolean('negative_in_copenhagen')->nullable();
-			$table->date('date_cataloged')->nullable();
+            $table->boolean('negative_in_copenhagen')->nullable();
+            $table->date('date_cataloged')->nullable();
 
-			$table->text('processing_number')->nullable();
+            $table->text('processing_number')->nullable();
 
             // Hva er dette?
-			$table->integer('quote')->unsigned()->nullable();
+            $table->integer('quote')->unsigned()->nullable();
 
-			$table->text('further_replication_note')->nullable();
-			$table->text('extent_genre')->nullable();
-			$table->string('language_code', 3)->nullable();
+            $table->text('further_replication_note')->nullable();
+            $table->text('extent_genre')->nullable();
+            $table->string('language_code', 3)->nullable();
 
             // OBS: Disse inneholder også strenger, men ser ut som de er MENT å være tall
-			$table->string('date1')->nullable(); /*_data range for serching low */
-			$table->string('date2')->nullable(); /*_data range for serching high*/
+            $table->string('date1')->nullable(); /*_data range for serching low */
+            $table->string('date2')->nullable(); /*_data range for serching high*/
 
-			$table->text('date')->nullable(); /*_exampel_132/133_a.d.*/
+            $table->text('date')->nullable(); /*_exampel_132/133_a.d.*/
 
-			$table->text('title_statement')->nullable();
-			$table->text('material_long')->nullable();  // OBS: VI har BÅDE material og material_long. Kan de ha noen annen verdi enn "Papyrus" i en papyrussamling???
-			$table->jsonb('subj_headings')->default('[]');
+            $table->text('title_statement')->nullable();
+            $table->text('material_long')->nullable();  // OBS: VI har BÅDE material og material_long. Kan de ha noen annen verdi enn "Papyrus" i en papyrussamling???
+            $table->jsonb('subj_headings')->default('[]');
         });
 
         Schema::create('opes_publications', function (Blueprint $table) {
@@ -118,14 +118,15 @@ class CreateOpesTable extends Migration
                 'languages' => json_encode(['en']),
                 'default_language' => 'en',
                 'name' => json_encode([
-                    'nb' => 'OPES'
+                    'nb' => 'OPES',
                 ]),
                 'class_bindings' => json_encode([
                     'AutocompleteService' => 'AutocompleteService',
                 ], JSON_FORCE_OBJECT),
-            ]
+            ],
         ]);
     }
+
     /**
      * Reverse the migrations.
      *
