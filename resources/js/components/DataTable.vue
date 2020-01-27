@@ -40,7 +40,7 @@
                 </select>
             </div>
 
-            <table ref="theTable" @scroll.passive="onTableScroll" class="table hover" style="width:100%">
+            <table ref="theTable" class="table hover" style="width:100%">
                 <thead>
                     <tr v-if="groups.length">
                         <th v-for="field in fields" :key="field.key"></th>
@@ -203,7 +203,7 @@ export default {
     },
 
     initTable () {
-      let drag = false
+      let mouseDownPos = null;
 
       $(document).ready(() => {
           $('.tooltipster th').tooltipster({
@@ -272,6 +272,13 @@ export default {
             sSortDescending: ': aktiver for å sortere kolonnen synkende',
           },
         },
+        initComplete: () => {
+          table.table().node().parentElement.addEventListener(
+            'scroll',
+            this.onTableScroll,
+            { passive: true }
+          )
+        },
         drawCallback: (settings) => {
           let info = table.page.info();
           if (lastResponse) {
@@ -306,8 +313,7 @@ export default {
         createdRow: (row, data, dataIndex) => {
           $(row)
             .attr('tabindex', '0')
-            .on('mousedown', () => { drag = false })
-            .on('mousemove', () => { drag = true })
+            .on('mousedown', $event => { mouseDownPos = [$event.clientX, $event.clientY] })
             .on('keypress', $event => {
               if ($event.keyCode === 13) {
                 const link = `${this.baseUrl}/record/${data[this.schema.primaryId]}`
@@ -316,7 +322,12 @@ export default {
             })
             .on('click', $event => {
               const link = `${this.baseUrl}/record/${data[this.schema.primaryId]}`
-              if (drag) {
+              const drag = [
+                Math.sqrt(($event.clientX - mouseDownPos[0])**2),
+                Math.sqrt(($event.clientY - mouseDownPos[1])**2),
+              ]
+              if (drag[0] > 10 || drag[1] > 10) {
+                // Cancel, this was a drag, not a click
                 return
               }
               if ($event.ctrlKey || $event.metaKey) {
@@ -331,8 +342,9 @@ export default {
       return table
     },
 
-    onTableScroll () {
-      $(".fixedHeader-floating").scrollLeft(this.$refs.theTable.scrollLeft)
+    onTableScroll (ev) {
+      // Update the horizontal scroll position of the floating header
+      $('.fixedHeader-floating').scrollLeft(ev.target.scrollLeft)
     },
 
     toggleFullScreen (table) {
