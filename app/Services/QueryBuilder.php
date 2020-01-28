@@ -191,22 +191,19 @@ class QueryBuilder
     protected function addRangeSearchTerm(array $index, string $operator, ?string $value): void
     {
         $value = explode('-', $value);
-        if (count($value) != 2) {
-            return;
+        if (count($value) == 2) {
+            switch ($operator) {
+                case 'eq':
+                    $this->query->where($index['column'], '>=', intval($value[0]))
+                        ->where($index['column'], '<=', intval($value[1]));
+                    return;
+                case 'neq':
+                    $this->query->where($index['column'], '<', intval($value[0]))
+                        ->orWhere($index['column'], '>', intval($value[1]));
+                    return;
+            }
         }
-
-        switch ($operator) {
-            case 'eq':
-                $this->query->where($index['column'], '>=', intval($value[0]))
-                    ->where($index['column'], '<=', intval($value[1]));
-                break;
-            case 'neq':
-                $this->query->where($index['column'], '<', intval($value[0]))
-                    ->orWhere($index['column'], '>', intval($value[1]));
-                break;
-            default:
-                $this->checkNull($index['column'], $operator);
-        }
+        $this->checkNull($index['column'], $operator);
     }
 
     protected function addArraySearchTerm(array $index, string $operator, ?string $value): void
@@ -220,8 +217,17 @@ class QueryBuilder
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
                 $this->query->whereRaw('NOT ' . $index['column'] . ' ~@ ?', [$value]);
                 break;
+            case 'isnull':
+                $this->query->whereRaw($index['column'] . " = '[]'::jsonb");
+                break;
+            case 'notnull':
+                $this->query->whereRaw($index['column'] . " != '[]'::jsonb");
+                break;
             default:
-                $this->checkNull($index['column'], $operator);
+                throw new \RuntimeException('Unsupported search operator');
         }
+        // TODO: Support wildcards in some way.
+        // "Contains" could be done easily as column::text like '%value%'
+        // Starts with is a bit worse :/
     }
 }
