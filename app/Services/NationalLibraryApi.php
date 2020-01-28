@@ -34,5 +34,4 @@ class NationalLibraryApi
 
         return json_decode($response->getBody(), true);
     }
-
 }
