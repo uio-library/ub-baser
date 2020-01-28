@@ -41,6 +41,7 @@ return [
     'please_wait' => 'Et øyeblikk...',
     'no_values' => 'Ingen verdier registrert',
     'unknown_error' => 'Det oppsto en ukjent feil',
+    'lists' => 'Lister',
 
     // DataTable
     'show_columns' => 'Vis kolonner:',

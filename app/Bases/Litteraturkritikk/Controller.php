@@ -2,6 +2,7 @@
 
 namespace App\Bases\Litteraturkritikk;
 
+use App\Base;
 use App\Http\Controllers\BaseController;
 use App\Http\Request;
 use App\Record;
@@ -185,5 +186,29 @@ class Controller extends BaseController
         return response()->json(
             $api->request($query)
         );
+    }
+
+    protected function listIndex(Base $base, Request $request, AggregateLists $lists)
+    {
+        return view('litteraturkritikk.lists.index', [
+            'lists' => $lists->all(),
+        ]);
+    }
+
+    protected function listShow(Base $base, Request $request, AggregateLists $lists, $id)
+    {
+        $list = $lists->get($id);
+
+        if (is_null($list)) {
+            abort(404, 'List not found');
+        }
+
+        $sort = $request->get('sort', 'record_count');
+
+        return view('litteraturkritikk.lists.show', [
+            'list' => $list,
+            'sort' => $sort,
+            'aggs' => $list->getResults($sort),
+        ]);
     }
 }
