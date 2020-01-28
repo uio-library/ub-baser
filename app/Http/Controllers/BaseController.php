@@ -293,11 +293,12 @@ class BaseController extends Controller
      */
     protected function old($field, $key, $default)
     {
-        if (old($key) !== null) {
+        if (!is_null(old($key))) {
             $value = old($key);
             if ($field->type === 'persons') {
                 $value = json_decode($value, true);
             }
+            return $value;
         }
 
         return $default;

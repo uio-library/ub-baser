@@ -3,11 +3,13 @@
 namespace App\Bases\Litteraturkritikk;
 
 use App\Base;
+use App\Exceptions\NationalLibraryRecordNotFound;
 use App\Http\Controllers\BaseController;
 use App\Http\Request;
 use App\Record;
 use App\Schema\Schema;
 use App\Services\NationalLibraryApi;
+use Illuminate\Validation\ValidationException;
 
 class Controller extends BaseController
 {
@@ -40,7 +42,13 @@ class Controller extends BaseController
     protected function updateOrCreateRecord(Record $record, Schema $schema, Request $request): array
     {
         // Update the main record
-        $changes = parent::updateOrCreateRecord($record, $schema, $request);
+        try {
+            $changes = parent::updateOrCreateRecord($record, $schema, $request);
+        } catch (NationalLibraryRecordNotFound $ex) {
+            throw ValidationException::withMessages([
+                $ex->field => ['Klarte ikke å slå opp URL-en: ' . $ex->url],
+            ]);
+        }
 
         // Sync persons
         $persons = [];
