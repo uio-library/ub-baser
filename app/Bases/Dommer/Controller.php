@@ -47,13 +47,6 @@ class Controller extends BaseController
      */
     protected function updateOrCreate(Request $request, Schema $schema, Record $record)
     {
-        $changes = parent::updateOrCreateRecord($request, $schema, $record);
-
-        if (count($changes)) {
-            // Refresh view
-            \DB::unprepared('REFRESH MATERIALIZED VIEW CONCURRENTLY dommer_view');
-        }
-
-        return $changes;
+        return parent::updateOrCreateRecord($request, $schema, $record);
     }
 }
