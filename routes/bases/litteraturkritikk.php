@@ -18,6 +18,8 @@
 */
 
 Route::get('nb-search', 'Controller@nationalLibrarySearch');
+Route::get('list', 'Controller@listIndex');
+Route::get('list/{id}', 'Controller@listShow');
 
 Route::post('person', 'PersonController@store');
 Route::get('person/{id}', 'PersonController@show');
