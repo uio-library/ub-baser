@@ -237,6 +237,22 @@ class Schema extends BaseSchema
                         ],
                     ],
 
+                    // Emneord
+                    [
+                        'key' => 'tags',
+                        'type' => 'tags',
+                        'defaultValue' => [],
+
+                        'searchOptions' => [
+                            'type' => 'autocomplete',
+                            'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...',
+                            'index' => [
+                                'type' => 'array',
+                                'column' => 'tags',
+                            ],
+                        ],
+                    ],
+
                     // Dato
                     [
                         'key' => 'dato',
@@ -320,21 +336,6 @@ class Schema extends BaseSchema
                         'searchable' => 'advanced',
                     ],
 
-                    // Emneord
-                    [
-                        'key' => 'tags',
-                        'type' => 'tags',
-                        'defaultValue' => [],
-
-                        'searchOptions' => [
-                            'type' => 'autocomplete',
-                            'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...',
-                            'index' => [
-                                'type' => 'array',
-                                'column' => 'tags',
-                            ],
-                        ],
-                    ],
                 ],
             ],
 
