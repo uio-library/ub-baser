@@ -2,7 +2,11 @@
 
 namespace App\Bases\Litteraturkritikk;
 
+use App\Exceptions\NationalLibraryRecordNotFound;
+use App\Services\NationalLibraryApi;
+use Http\Client\Exception\RequestException;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 
 class Record extends \App\Record
 {
@@ -36,6 +40,12 @@ class Record extends \App\Record
         'kritikktype' => 'array',
         'tags' => 'array',
     ];
+
+    /**
+     * ------------------------------------------------------------------------
+     * Relations
+     * ------------------------------------------------------------------------
+     */
 
     public function createdBy()
     {
@@ -78,6 +88,69 @@ class Record extends \App\Record
         return $this->persons()
             ->where('person_role', '=', 'kritiker');
     }
+
+    /**
+     * ------------------------------------------------------------------------
+     * Accessors and muators
+     * ------------------------------------------------------------------------
+     */
+
+    /**
+     * Validate/mutate URL field against external API.
+     *
+     * @param string $field
+     * @param string $value
+     */
+    protected function mutateUrlField(string $field, string $value): void
+    {
+        $api = app(NationalLibraryApi::class);
+        $urls = explode(' ', $value);
+
+        $urls = array_map(function($url) use ($api, $field) {
+            try {
+                $newUrl = $api->resolveUrl($url);
+                if ($newUrl !== $url) {
+                    \Log::info("Endret NB-URL-en <a href=\"$url\">$url</a> til <a href=\"$newUrl\">$newUrl</a>");
+                }
+                return $newUrl;
+            } catch (RequestException $ex) {
+                \Log::info("Klarte ikke å slå opp NB-urlen <a href=\"$url\">$url</a>");
+                throw new NationalLibraryRecordNotFound($url, $field);
+            }
+        }, $urls);
+
+        $this->attributes[$field] = implode(' ', $urls);
+    }
+
+    /**
+     * Mutator for the fulltekst_url field.
+     *
+     * @param  string  $value
+     * @return void
+     * @throws NationalLibraryRecordNotFound
+     */
+    public function setFulltekstUrlAttribute(string $value): void
+    {
+        $this->mutateUrlField('fulltekst_url', $value);
+    }
+
+    /**
+     * Mutator for the verk_fulltekst_url field.
+     *
+     * @param  string  $value
+     * @return void
+     * @throws NationalLibraryRecordNotFound
+     */
+    public function setVerkFulltekstUrlAttribute(string $value): void
+    {
+        $this->mutateUrlField('verk_fulltekst_url', $value);
+    }
+
+    /**
+     * ------------------------------------------------------------------------
+     * Misc
+     * ------------------------------------------------------------------------
+     */
 
     /**
      * Get a title for this record that can be used in the <title> element etc.
