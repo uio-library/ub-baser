@@ -21,7 +21,7 @@ class AggregateList
 
     protected function sanitize(string $value)
     {
-        return preg_replace("/[^a-z0-9_]/", '', $value);
+        return preg_replace('/[^a-z0-9_]/', '', $value);
     }
 
     public function getResults(string $sort = null): array
