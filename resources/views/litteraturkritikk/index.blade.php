@@ -6,6 +6,7 @@
         <p>
             <a href="{{ $base->action('create') }}"><em class="fa fa-file"></em> Opprett ny post</a>
             <a href="{{ $base->pageAction('intro', 'edit') }}"><em class="fa fa-edit"></em> Rediger introtekst</a>
+            <a href="{{ $base->action('listIndex') }}"><em class="fa fa-list"></em> Lister</a>
         </p>
     @endcan
 
