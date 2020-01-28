@@ -23,8 +23,9 @@ class BaseController extends Controller
 
     /**
      * Instantiate a new BaseController instance.
+     * @param Base|null $base
      */
-    public function __construct(Base $base)
+    public function __construct(Base $base = null)
     {
         $this->middleware('auth', ['only' => ['create', 'edit', 'store', 'update', 'destroy']]);
 
