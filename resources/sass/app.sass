@@ -428,18 +428,41 @@ div.dataTables_wrapper
   color: white !important
 
 .ck-content
+  li
+    margin-top: 10px
+
+  ol
+    counter-reset: item
+
+  ol > li
+    list-style: none
+    position: relative
+
+  ol > li:before
+    counter-increment: item
+    content: counters(item, ".") ") "
+    position: absolute
+    left: -6em
+    width: 5.6em
+    text-align: right
+
+.ck-content
   font-size: 17px
   line-height: 150%
   font-family: 'PT Sans', serif
 
 .ck-content h2
-  margin-top: 30px
+  margin-top: 32px
   margin-bottom: 24px
 
 .ck-content h3, .ck-content h4
   border-bottom: 1px solid #aaa
-  margin-top: 20px
+  margin-top: 30px
   margin-bottom: 16px
+
+.ck-content h5
+  margin-top: 30px
+  font-weight: bold
 
 .ck-content table
   @extend .table-bordered
