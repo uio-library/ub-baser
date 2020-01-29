@@ -98,7 +98,8 @@ class PageController extends Controller
             ->with('status', 'Siden ble lagret.');
     }
 
-    protected function storeThumb(FilesystemManager $fm, ImageManager $im, $file, $maxWidth, $maxHeight, $filename) {
+    protected function storeThumb(FilesystemManager $fm, ImageManager $im, $file, $maxWidth, $maxHeight, $filename)
+    {
         $blob = $im->make($file->path())
             ->resize($maxWidth, $maxHeight, function ($constraint) {
                 $constraint->aspectRatio();
@@ -135,7 +136,7 @@ class PageController extends Controller
             $fm->disk('public')->putFileAs('.', $file, $filename);
 
             $url = asset($publicPath . $filename);
-            $this->log("Lastet opp bilde: <a href='$url'>" . basename($url) . "</a>");
+            $this->log("Lastet opp bilde: <a href='$url'>" . basename($url) . '</a>');
 
             return response()->json([
                 'url' =>  $url,
@@ -155,7 +156,7 @@ class PageController extends Controller
         }
 
         $url = $urls['default'];
-        $this->log("Lastet opp bilde: <a href='$url'>" . basename($url) . "</a>");
+        $this->log("Lastet opp bilde: <a href='$url'>" . basename($url) . '</a>');
 
         return response()->json([
             'urls' => $urls,

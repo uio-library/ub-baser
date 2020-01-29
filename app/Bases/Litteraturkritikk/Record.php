@@ -6,7 +6,6 @@ use App\Exceptions\NationalLibraryRecordNotFound;
 use App\Services\NationalLibraryApi;
 use Http\Client\Exception\RequestException;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Arr;
 
 class Record extends \App\Record
 {
@@ -46,7 +45,6 @@ class Record extends \App\Record
      * Relations
      * ------------------------------------------------------------------------
      */
-
     public function createdBy()
     {
         return $this->belongsTo('App\User', 'created_by');
@@ -106,7 +104,7 @@ class Record extends \App\Record
         $api = app(NationalLibraryApi::class);
         $urls = explode(' ', $value);
 
-        $urls = array_map(function($url) use ($api, $field) {
+        $urls = array_map(function ($url) use ($api, $field) {
             try {
                 $newUrl = $api->resolveUrl($url);
                 if ($newUrl !== $url) {
@@ -115,6 +113,7 @@ class Record extends \App\Record
                 return $newUrl;
             } catch (RequestException $ex) {
                 \Log::info("Klarte ikke å slå opp NB-urlen <a href=\"$url\">$url</a>");
+
                 throw new NationalLibraryRecordNotFound($url, $field);
             }
         }, $urls);
@@ -126,8 +125,8 @@ class Record extends \App\Record
      * Mutator for the fulltekst_url field.
      *
      * @param  string  $value
-     * @return void
      * @throws NationalLibraryRecordNotFound
+     * @return void
      */
     public function setFulltekstUrlAttribute(string $value): void
     {
@@ -138,8 +137,8 @@ class Record extends \App\Record
      * Mutator for the verk_fulltekst_url field.
      *
      * @param  string  $value
-     * @return void
      * @throws NationalLibraryRecordNotFound
+     * @return void
      */
     public function setVerkFulltekstUrlAttribute(string $value): void
     {

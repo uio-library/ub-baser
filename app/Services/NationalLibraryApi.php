@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\NationalLibraryRecordNotFound;
 use Http\Client\Exception\RequestException;
 use Illuminate\Support\Arr;
 use Psr\Http\Client\ClientExceptionInterface;
@@ -21,8 +20,8 @@ class NationalLibraryApi
 
     /**
      * @param string $url
-     * @return string
      * @throws ClientExceptionInterface
+     * @return string
      */
     public function resolveUrl(string $url): string
     {
@@ -52,12 +51,11 @@ class NationalLibraryApi
 
     /**
      * @param string $id
-     * @return array
      * @throws ClientExceptionInterface
+     * @return array
      */
     public function lookup(string $id): array
     {
-
         $url = $this->baseUrl . '/' . $id;
         $request = $this->factory->createRequest('GET', $url);
         $response = $this->http->sendRequest($request);
