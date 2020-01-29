@@ -10,7 +10,7 @@
         </p>
     @endcan
 
-    <div class="lead">
+    <div class="lead ck-content">
         {!! $intro !!}
     </div>
 

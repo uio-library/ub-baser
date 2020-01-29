@@ -8,12 +8,10 @@
             {
                 "debug": true,
                 "modules": false,
-                "forceAllTransforms": true,
+                "forceAllTransforms": false,
                 "useBuiltIns": "entry",
                 "corejs": "3",
-                "targets": {
-                    "ie": "11"
-                }
+                "targets": "last 4 Chrome versions, last 4 Firefox versions, last 4 Edge versions, last 2 Safari versions"
             }
         ]
     ]

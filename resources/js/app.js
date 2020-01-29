@@ -22,8 +22,6 @@ import DataTable from './components/DataTable'
 import OpesDataTable from './components/bases/opes/OpesDataTable'
 import SearchForm from './components/SearchForm'
 import EditForm from './components/EditForm'
-import PageEditor from './components/PageEditor'
-import ImageViewer from './components/ImageViewer'
 import NationalLibrarySearch from './components/NationalLibrarySearch'
 
 Vue.config.devtools = true
@@ -32,9 +30,12 @@ Vue.component('data-table', DataTable)
 Vue.component('opes-data-table', OpesDataTable)
 Vue.component('search-form', SearchForm)
 Vue.component('edit-form', EditForm)
-Vue.component('page-editor', PageEditor)
-Vue.component('image-viewer', ImageViewer)
 Vue.component('national-library-search', NationalLibrarySearch)
+
+// Code splitting: Components to be loaded as needed
+Vue.component('page-editor', () => import(/* webpackChunkName: "page-editor" */ './components/PageEditor'))
+Vue.component('image-viewer', () => import(/* webpackChunkName: "image-viewer" */ './components/ImageViewer'))
+
 
 Vue.use(Lang, {
   locale: window.default_locale,

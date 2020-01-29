@@ -28,6 +28,7 @@ window.Popper = require('popper.js').default
 window.$ = window.jQuery = require('jquery')
 
 require('bootstrap')
+require('@openfonts/pt-sans_all')
 
 // require('selectize');
 
