@@ -19,7 +19,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 // Admin routes...
 Route::get('users/{id}', 'Admin\UserController@show');
-Route::group(['middleware' => 'admin'], function () {
+Route::group(['middleware' => ['login', 'can:admin']], function () {
     Route::get('admin', 'Admin\AdminController@index');
 
     // Manage users

@@ -18,6 +18,9 @@ $break-md: 1200px
 // Extra styles for DataTables
 @import 'datatables.net-fixedHeader.bootstrap4.min'
 
+// CKeditor content styles
+@import 'ckeditor-content-styles'
+
 body
   // Always show scollbar to avoid jumping of centered content during page load
   overflow-y: scroll
@@ -393,3 +396,53 @@ div.dataTables_wrapper
 
 .opes .record-view badge
   font-size: 100%
+
+/*******************************************************************
+ * CKEditor
+ *******************************************************************/
+
+.ck-savebutton
+  margin-left: 8px !important
+  margin-right: 10px !important
+  color: #fff
+  padding-left: 20px !important
+  padding-right: 20px !important
+  border: 0
+  border-radius: 2px
+  font-weight: bold
+  outline: none
+  transition: 300ms ease background opacity
+  // box-shadow: 0 2px 0 rgb(68, 117, 10)
+  opacity: 1
+
+.ck-savebutton.ck-savebutton-success
+  background: hsl( 88, 73%, 39% ) !important
+
+.ck-savebutton.ck-savebutton-error
+  background: hsl( 360, 73%, 39% ) !important
+
+.ck-savebutton:not(.ck-disabled):hover
+  opacity: 0.8
+
+.ck-savebutton > span
+  color: white !important
+
+.ck-content
+  font-size: 17px
+  line-height: 150%
+  font-family: 'PT Sans', serif
+
+.ck-content h2
+  margin-top: 30px
+  margin-bottom: 24px
+
+.ck-content h3, .ck-content h4
+  border-bottom: 1px solid #aaa
+  margin-top: 20px
+  margin-bottom: 16px
+
+.ck-content table
+  @extend .table-bordered
+
+.ck.ck-editor__main
+  min-height: 500px

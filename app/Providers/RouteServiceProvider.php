@@ -160,10 +160,11 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
             ->namespace($this->namespace)
             ->group(function () {
-                Route::middleware('admin')
+                Route::middleware('login')
                     ->group(function () {
                         Route::get('{page}/edit', 'PageController@edit');
                         Route::post('{page}/update', 'PageController@update');
+                        Route::post('upload-image', 'PageController@uploadImage');
                     });
                 Route::get('{page}', 'PageController@show');
             });

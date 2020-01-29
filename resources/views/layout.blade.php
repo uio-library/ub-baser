@@ -98,6 +98,17 @@
     <main id="app" class="flex-shrink-0">
 
         <div class="container-xl {{ isset($base) ? $base->id : '' }}">
+            @if ((new \Jenssegers\Agent\Agent() )->browser() === 'IE')
+
+                <div class="card bg-danger text-white mb-3">
+                  <div class="card-body">
+                    Du bruker Internet Explorer, en utdatert nettleser som UB-baser dessverre ikke støtter særlig bra.
+                    Vi anbefaler å bytte til en mer moderne nettleser om du kan, som Edge, Firefox eller Chrome.
+                  </div>
+                </div>
+
+            @endif
+
             @if (session('status'))
                 <div class="alert alert-info">
                     {{ session('status') }}
