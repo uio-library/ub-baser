@@ -15,12 +15,14 @@ class Saml2Logout
      */
     public function handle(Saml2LogoutEvent $event)
     {
-        $user = \Auth::user();
+        $redirectTo = session('url.intended');
+        $user = auth()->user();
         if ($user) {
             $user->saml_session = null;
             $user->save();
         }
-        \Auth::logout();
-        \Session::save();
+        auth()->logout();
+        session()->invalidate();
+        session()->put('url.intended', $redirectTo);
     }
 }

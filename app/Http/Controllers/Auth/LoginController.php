@@ -7,6 +7,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class LoginController extends Controller
 {
@@ -51,14 +52,8 @@ class LoginController extends Controller
 
     public function samlRegister(Request $request)
     {
-        if (\Auth::check()) {
-            return redirect('/');
-        }
-
-        $samlResponse = $request->session()->get('saml_response');
-
         return view('auth.saml_register', [
-            'data' => $samlResponse,
+            'data' => $request->session()->get('saml_response'),
         ]);
     }
 
@@ -98,18 +93,31 @@ class LoginController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function logout(Request $request)
     {
         $user = \Auth::user();
 
         if ($user->saml_session !== null) {
+            $request->session()->put('url.intended', url()->previous());
+
             return redirect()->route('saml2_logout', 'uio');
         }
 
         return $this->localLogout($request);
+    }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        return redirect(url()->previous());
     }
 }
