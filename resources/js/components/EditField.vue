@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="cssClasses">
     <div class="edit-label">
       <v-popover :auto-hide="true" trigger="click" v-if="helpText">
         <span style="border-bottom: 1px dotted #ccd; cursor: help">{{ schema.label }}</span>:
@@ -20,7 +20,7 @@
         ref="component"
         @value="onValue($event)"
       ></component>
-      <!-- <tt>[{{ this.currentType }}] {{ name}}: {{ value }}</tt>-->
+      <!-- <tt>[{{ this.currentType }}] {{ name}}: {{ value }}</tt> -->
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@ export default {
   ],
   methods: {
     onValue (newValue) {
-      console.log('[EditField] New value: ', newValue)
+      console.log(`[EditField] New value (${this.schema.key}) → `, newValue)
       this.$emit('value', newValue)
     },
     focus () {
@@ -62,10 +62,17 @@ export default {
     name () {
       return this.schema.key
     },
+    cssClasses () {
+      const type = this.schema.type
+      let cls = get(this.schema, 'edit.cssClass')
+      if (cls) {
+        return cls.split(/ /g)
+      } else if (type === 'entities' || type === 'boolean') {
+        return ['full-width']
+      } else {
+        return ['standard-width']
+      }
+    },
   },
 }
 </script>
-
-<style scoped>
-
-</style>

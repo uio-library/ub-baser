@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Base;
+use App\Exceptions\UnsupportedSearchOperator;
 use App\Http\Requests\DataTableRequest;
 use App\Http\Requests\SearchRequest;
 use App\Schema\Operators;
@@ -70,6 +71,7 @@ class QueryBuilder
             }, null, null, $boolean);
             $boolean = $queryPart['boolean'];
         }
+
         return $this->query;
     }
 
@@ -137,7 +139,7 @@ class QueryBuilder
                 $query->whereRaw('NOT ' . $searchConfig->ts_index . ' @@ ' . $queryTerm, [$value]);
                 break;
             default:
-                throw new \RuntimeException('Unsupported search operator');
+                throw new UnsupportedSearchOperator($operator, $searchConfig->index);
         }
     }
 
@@ -208,7 +210,7 @@ class QueryBuilder
         ];
 
         if (!isset($operatorMap[$operator])) {
-            throw new \Error('Unsupported search operator "' . $operator . '"');
+            throw new UnsupportedSearchOperator($operator, $searchConfig->index);
         }
 
         $sqlOperator = $operatorMap[$operator];
@@ -228,7 +230,7 @@ class QueryBuilder
                     return;
             }
         }
-        throw new \Error('Unsupported search operator');
+        throw new UnsupportedSearchOperator($operator, $searchConfig->index);
     }
 
     protected function addArraySearchTerm(EloquentBuilder $query, SearchOptions $searchConfig, string $operator, ?string $value): void
@@ -243,7 +245,7 @@ class QueryBuilder
                 $query->whereRaw('NOT ' . $searchConfig->index . ' ~@ ?', [$value]);
                 break;
             default:
-                throw new \Error('Unsupported search operator');
+                throw new UnsupportedSearchOperator($operator, $searchConfig->index);
         }
         // TODO: Support wildcards in some way.
         // "Contains" could be done easily as column::text like '%value%'

@@ -5,6 +5,7 @@ namespace App\Bases\Litteraturkritikk;
 use App\Base;
 use App\Http\Controllers\BaseController;
 use App\Http\Request;
+use App\Services\QueryStringBuilder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -14,6 +15,7 @@ class PersonController extends BaseController
     protected $logGroup = 'norsk-litteraturkritikk';
     protected $recordClass = 'Person';
     protected $recordSchema = 'PersonSchema';
+    protected $showView = 'persons.show';
     protected $editView = 'persons.edit';
 
     /**
@@ -26,26 +28,29 @@ class PersonController extends BaseController
      */
     public function show(Request $request, Base $base, $id)
     {
-        $schema = app(PersonSchema::class);
-        $record = Person::withTrashed()->with(
-            'recordsAsAuthor',
-            'recordsAsAuthor.forfattere',
-            'recordsAsAuthor.kritikere',
-            'recordsAsCritic',
-            'recordsAsCritic.forfattere',
-            'recordsAsCritic.kritikere'
-        )->findOrFail($id);
+        $schema = $base->make($this->recordSchema);
+        $record = Person::withTrashed()
+        // ->with(
+            // 'recordsAsAuthor',
+            // 'recordsAsAuthor.forfattere',
+            // 'recordsAsAuthor.kritikere',
+            // 'recordsAsCritic',
+            // 'recordsAsCritic.forfattere',
+            // 'recordsAsCritic.kritikere'
+        // )
+        ->findOrFail($id);
 
-        return response()->view($base->getView('persons.show'), [
+        return response()->view($base->getView($this->showView), [
             'base' => $base,
             'schema' => $schema,
             'title' => $record->getStringRepresentationAttribute(),
             'record' => $record,
+            'queryStringBuilder' => new QueryStringBuilder($base->getSchema()),
         ]);
     }
 
     /**
-     * Create a new person record.
+     * Store a new person record.
      *
      * @param Request $request
      * @param Base $base
@@ -160,7 +165,7 @@ class PersonController extends BaseController
                 ->with('status', 'Manglet bekreftelse');
         }
 
-        $person = Person::findOrFail($id);
+        $person = Person::withTrashed()->findOrFail($id);
 
         $url = $base->action('PersonController@show', $person->id);
         $this->log(
@@ -171,6 +176,10 @@ class PersonController extends BaseController
         );
 
         $person->records()->detach();
+
+        $person->works()->detach();
+
+        $person->discussedIn()->detach();
 
         $person->delete();
 

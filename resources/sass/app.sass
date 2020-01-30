@@ -639,18 +639,29 @@ div.dataTables_wrapper
 .edit-field
   display: flex
 
+.full-width
+  @extend .col-md-12
+
 .toplevel-field
   padding: 4px 4px
 
-.toplevel-field > .edit-label
-  padding: 5px 5px
-  width: 150px
-  flex-shrink: 0
-  text-align: right
-  //class="flex-shrink-0 pr-2 pt-1 text-right" style="width: 150px;"
+  > .edit-label
+    padding: 5px 5px
+    width: 150px
+    flex-shrink: 0
+    flex-grow: 0
+    text-align: right
+    //class="flex-shrink-0 pr-2 pt-1 text-right" style="width: 150px;"
 
-  span
-    font-size: 13px
+    span
+      font-size: 13px
+
+  &.standard-width
+    @extend .col-md-6
+
+.pivot-field.entities, .pivot-field.boolean
+  > div
+    width: 100%
 
 .pivot-field
   flex-direction: column
@@ -663,6 +674,7 @@ div.dataTables_wrapper
 
   > .edit-label
     font-size: 85%
+    flex-grow: 0
 
   .form-control, .selectize-input
     @extend .form-control-sm
@@ -727,3 +739,63 @@ div.dataTables_wrapper
         &:hover
           text-decoration: none
           color: #7dc2ff
+
+/*******************************************************************
+ * Norsk litteraturkritikk
+ *******************************************************************/
+
+.ltk_fulltext_links
+  margin: 8px 0
+  min-height: 30px
+  display: block
+
+.ltk_record
+
+  > .ltk_row
+    display: flex
+
+    .ltk_field_name
+      background: #f6f6f6
+      padding: 3px 12px
+      border-bottom: 1px solid white
+      text-align: right
+      flex: 0 0 160px
+
+    .ltk_field_value
+      background: #fff
+      padding: 3px 12px
+      border-bottom: 1px solid #f6f6f6
+      flex: 1 1 auto
+
+.ltk_person
+  border: 1px solid #dedede
+  background: #fafafa
+  padding: 1px 8px
+  margin-bottom: 2px
+  margin-right: 3px
+  white-space: nowrap
+  display: inline-block
+
+.ltk_work
+  border: 1px solid #dedede
+  background: #fafafa
+  margin-bottom: 12px
+  padding: 3px
+
+  .ltk_fulltext_links
+    margin: 8px 6px
+
+  > .ltk_row
+    display: flex
+
+    > div
+      margin: 1px 6px
+
+    .ltk_field_name
+      color: #555
+      text-align: right
+      flex: 0 0 120px
+
+    .ltk_field_value
+      flex: 1 1 auto
+

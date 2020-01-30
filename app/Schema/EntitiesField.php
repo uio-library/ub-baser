@@ -2,6 +2,12 @@
 
 namespace App\Schema;
 
+/**
+ * @property Relationship $relationship
+ * @property array $entityType
+ * @property string $modelAttribute
+ * @property SchemaField[] $pivotFields
+ */
 class EntitiesField extends SchemaField
 {
     public const TYPE = 'entities';
@@ -11,7 +17,13 @@ class EntitiesField extends SchemaField
      */
     public function setDefaults()
     {
-        $this->data['relatedPivotKey'] = 'record_id';
+        $this->data['pivotFields'] = [];
+        $this->data['defaultValue'] = [];
+
+        // Pivot table
+        // $this->data['pivotTable'] = null;
+        // $this->data['pivotTableKey'] = null;
+        // $this->data['relatedPivotKey'] = 'record_id';
     }
 
     public function setModelAttribute(string $value)
@@ -21,19 +33,20 @@ class EntitiesField extends SchemaField
 
     public function setEntityType(string $value)
     {
-        $this->data['entityType'] = $value;
+        $this->data['entityType'] = [
+            'className' => $value,
+            'name' => $value::$shortName,
+            'schema' => new $value::$schema(),
+        ];
     }
 
-    public function setEntitySchema(string $value)
+    public function setRelationship(array $value)
     {
-        $this->data['entitySchema'] = new $value();
+        $this->data['relationship'] = new Relationship();
+        $this->data['relationship']->init($value);
     }
 
-    public function setPivotTable(string $value)
-    {
-        $this->data['pivotTable'] = $value;
-    }
-
+    /*
     public function setPivotTableKey(string $value)
     {
         $this->data['pivotTableKey'] = $value;
@@ -43,11 +56,12 @@ class EntitiesField extends SchemaField
     {
         $this->data['relatedPivotKey'] = $value;
     }
+    */
 
     public function setPivotFields(array $values)
     {
         $values = array_map(
-            function($value) {
+            function ($value) {
                 $value['key'] = $this->key . ':' . $value['key'];
                 return self::make($value, $this->schemaPrefix, $this);
             },

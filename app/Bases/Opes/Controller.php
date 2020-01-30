@@ -3,7 +3,7 @@
 namespace App\Bases\Opes;
 
 use App\Http\Controllers\BaseController;
-use App\Record as BaseRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class Controller extends BaseController
 {
@@ -27,10 +27,10 @@ class Controller extends BaseController
      * Validation rules when creating or updating a record.
      * @see: https://laravel.com/docs/master/validation
      *
-     * @param Record $record
+     * @param Model $record
      * @return array
      */
-    protected function getValidationRules(BaseRecord $record): array
+    protected function getValidationRules(Model $record): array
     {
         return [
             'inv_no' => 'required',

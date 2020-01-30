@@ -7,6 +7,7 @@ use App\Http\Request;
 use App\Http\Requests\DataTableRequest;
 use App\Http\Requests\SearchRequest;
 use App\Record;
+use App\Schema\EntitiesField;
 use App\Schema\Schema;
 use App\Schema\SchemaField;
 use App\Services\AutocompleteServiceInterface;
@@ -22,6 +23,7 @@ class BaseController extends Controller
 {
     protected $recordClass = 'Record';
     protected $recordSchema = 'Schema';
+    protected $showView = 'show';
     protected $editView = 'edit';
 
     public static $defaultColumns = [];
@@ -42,10 +44,10 @@ class BaseController extends Controller
      * Validation rules when creating or updating a record.
      * @see: https://laravel.com/docs/master/validation
      *
-     * @param Record $record
+     * @param Model $record
      * @return array
      */
-    protected function getValidationRules(Record $record): array
+    protected function getValidationRules(Model $record): array
     {
         return [];
     }
@@ -211,7 +213,7 @@ class BaseController extends Controller
      */
     public function store(Request $request, Base $base)
     {
-        $record = $base->newRecord();
+        $record = $base->newRecord($this->recordClass);
 
         $this->validate($request, $this->getValidationRules($record));
 
@@ -236,13 +238,14 @@ class BaseController extends Controller
      */
     public function update(Request $request, Base $base, $id)
     {
+        $schema = $base->getSchema($this->recordSchema);
         $record = $base->getRecord($id, true, $this->recordClass) ?? abort(trans('base.error.recordnotfound'));
 
         $this->validate($request, $this->getValidationRules($record));
 
-        $changes = $this->updateOrCreateRecord($record, $base->getSchema(), $request);
+        $changes = $this->updateOrCreateRecord($record, $schema, $request);
 
-        $url = $base->action('show', $record->id);
+        $url = $base->action(get_class($this) . '@show', $record->id);
         if (count($changes)) {
             $changeList = implode("\n", array_map(
                 function ($change) {
@@ -318,7 +321,7 @@ class BaseController extends Controller
     {
         if (!is_null(old($key))) {
             $value = old($key);
-            if ($field->type === 'persons') {
+            if ($field->type === 'entities') {
                 $value = json_decode($value, true);
             }
             return $value;
@@ -361,12 +364,12 @@ class BaseController extends Controller
     /**
      * Store a newly created record, or update an existing one.
      *
-     * @param Record  $record
-     * @param Schema  $schema
+     * @param Model $record
+     * @param Schema $schema
      * @param Request $request
      * @return array
      */
-    protected function updateOrCreateRecord(Record $record, Schema $schema, Request $request): array
+    protected function updateOrCreateRecord(Model $record, Schema $schema, Request $request): array
     {
         $changes = [];
 
@@ -385,7 +388,7 @@ class BaseController extends Controller
             }
 
             if ($field->type == 'entities') {
-                // Ignore, these are handled by the specific controller (for now)
+                // Relationships are handled below, after we have saved the main record.
             } else {
                 if ($record->id) {
                     // Keep a record of changes
@@ -413,6 +416,146 @@ class BaseController extends Controller
         }
 
         $record->save();
+
+        // Sync entities
+        foreach ($schema->flat() as $field) {
+            if ($field->type == 'entities') {
+                $newValue = $request->get($field->key, $field->defaultValue);
+                if (is_string($newValue)) {
+                    $newValue = json_decode($newValue, true);
+                }
+                $changes = array_merge(
+                    $changes,
+                    $this->syncRelationships($record, $field, $newValue)
+                );
+            }
+        }
+
+        return $changes;
+    }
+
+    /**
+     * Sync relationships for a record.
+     *
+     * @param Model $record
+     * @param EntitiesField $field
+     * @param array $input
+     *
+     * @return array
+     */
+    protected function syncRelationships(Model $record, EntitiesField $field, array $input): array
+    {
+        // The attribute used on the Eloquent model
+        $attribute = $field->modelAttribute;
+
+        $relationship = $field->relationship;
+
+        $sourceModel = get_class($record);
+        $targetModel = $field->entityType['className'];
+
+        $pivotFields = array_map(
+            function ($field) {
+                return $field->shortKey;
+            },
+            $field->pivotFields ?? []
+        );
+
+        // Initially, the plan was to use the Eloquent sync() method here, but it doesn't
+        // support attaching the same model multiple times with different pivot data, so
+        // it can't be used to attach the same author multiple times with different roles.
+        // Therefore we have to get our hands a bit dirty here.
+
+        $tableKeys = [$relationship->source_id, $relationship->target_id];
+        if (!is_null($relationship->target_type)) {
+            $tableKeys[] = $relationship->target_type;
+        }
+        if (!is_null($relationship->source_type)) {
+            $tableKeys[] = $relationship->source_type;
+        }
+
+        $changes = [];
+        $names = [];
+
+        // Make a list of current entities
+        $currentEntities = [];
+        foreach ($record->{$attribute} as $entity) {
+            $names[$entity->id] = (string) $entity;
+            $value = [
+                $relationship->source_id => $record->id,
+                $relationship->target_id => $entity->id,
+                // if morphable, then include we need to include entity_type
+            ];
+            if (!is_null($relationship->source_type)) {
+                $value[$relationship->source_type] = $sourceModel;
+            }
+            if (!is_null($relationship->target_type)) {
+                $value[$relationship->target_type] = $targetModel;
+            }
+            foreach ($pivotFields as $pf) {
+                $value[$pf] = $entity->pivot->{$pf};
+            }
+            $currentEntities[] = $value;
+        }
+
+        // Make a list of new entities
+        $entities = [];
+        foreach ($input as $inputValue) {
+            $entity = $targetModel::findOrFail($inputValue['id']);
+            $names[$entity->id] = (string) $entity;
+            $value = [
+                $relationship->source_id => $record->id,
+                $relationship->target_id => $entity->id,
+            ];
+            if (!is_null($relationship->source_type)) {
+                $value[$relationship->source_type] = $sourceModel;
+            }
+            if (!is_null($relationship->target_type)) {
+                $value[$relationship->target_type] = $targetModel;
+            }
+            foreach ($pivotFields as $pf) {
+                $value[$pf] = ($inputValue['pivot'][$pf] === '') ? null : $inputValue['pivot'][$pf];
+            }
+            $entities[] = $value;
+        }
+
+        // Compare the two to figure out which updates we need to do on
+        // the record-entity pivot table.
+        $delete = array_udiff($currentEntities, $entities, function ($a, $b) {
+            return strcmp(json_encode($a), json_encode($b));
+        });
+        $insert = array_udiff($entities, $currentEntities, function ($a, $b) {
+            return strcmp(json_encode($a), json_encode($b));
+        });
+
+        // Delete relations that no longer exist
+        $delete = collect($delete)->map(function ($x) use ($tableKeys) {
+            $results = [];
+            foreach ($tableKeys as $key) {
+                if (isset($x[$key])) {
+                    $results[$key] = $x[$key];
+                }
+            }
+            return $results;
+        });
+        foreach ($delete as $value) {
+            $changes[] = "Fjernet: " . json_encode($value, JSON_UNESCAPED_UNICODE);
+
+            \DB::table($relationship->table)
+                ->where($value)
+                ->delete();
+        }
+
+        // Insert new ones
+        foreach ($insert as $value) {
+            $changes[] = "La til: " . json_encode($value, JSON_UNESCAPED_UNICODE);
+            foreach ($value as $k => $v) {
+                if (is_array($v)) {
+                    $value[$k] = json_encode($v);
+                }
+            }
+            \DB::table($relationship->table)
+                ->insert($value);
+        }
 
         return $changes;
     }

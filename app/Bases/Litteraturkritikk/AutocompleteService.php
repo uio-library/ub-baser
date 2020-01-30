@@ -94,7 +94,8 @@ class AutocompleteService extends \App\Bases\AutocompleteService
             $query->whereRaw('? = ANY(roller)', [$personRole]);
         } else {
             // Skjul personer som ikke er i bruk
-            $query->whereRaw('CARDINALITY(roller) != 0');
+            // $query->where('deleted_at')
+            // $query->whereRaw('CARDINALITY(roller) != 0');
         }
 
         $data = [];

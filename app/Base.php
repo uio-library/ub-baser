@@ -220,12 +220,12 @@ class Base extends Model
      *
      * @param int $id
      * @param bool $withTrashed
-     * @param string $className
+     * @param string $recordClass
      * @return Record
      */
-    public function getRecord($id, $withTrashed = true, $className = 'Record')
+    public function getRecord($id, $withTrashed = true, $recordClass = 'Record')
     {
-        $recordClass = $this->getClass($className);
+        $recordClass = $this->getClass($recordClass);
         if ($withTrashed) {
             return $recordClass::withTrashed()->find($id);
         }
@@ -235,11 +235,12 @@ class Base extends Model
     /**
      * Create a new record instance (but do not store it).
      *
+     * @param string $recordClass
      * @return Record
      */
-    public function newRecord()
+    public function newRecord($recordClass = 'Record')
     {
-        $recordClass = $this->getClass('Record');
+        $recordClass = $this->getClass($recordClass);
         return new $recordClass();
     }
 

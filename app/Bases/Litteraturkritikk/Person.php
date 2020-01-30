@@ -4,9 +4,23 @@ namespace App\Bases\Litteraturkritikk;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Person extends \Eloquent
+class Person extends \App\Record
 {
     use SoftDeletes;
+
+    /**
+     * Short name used to determine routes etc.
+     *
+     * @var string
+     */
+    public static $shortName = 'person';
+
+    /**
+     * Schema class used with this model.
+     *
+     * @var string
+     */
+    public static $schema = PersonSchema::class;
 
     /**
      * The table associated with the model.
@@ -37,25 +51,45 @@ class Person extends \Eloquent
     protected $appends = ['string_representation'];
 
     /**
-     * The records this person belongs to.
+     * Records this person has created.
      */
     public function records()
     {
-        return $this->belongsToMany(
-            'App\Bases\Litteraturkritikk\Record',
-            'litteraturkritikk_record_person',
-            'person_id',
-            'record_id'
+        return $this->morphedByMany(
+            Record::class,
+            'contribution',
+            'litteraturkritikk_person_contributions'
         )
-            ->using(RecordPerson::class)
-            ->withPivot('person_role', 'kommentar', 'pseudonym', 'posisjon');
+            ->using(PersonContribution::class)
+            ->withPivot('person_role', 'kommentar', 'pseudonym', 'position');
     }
 
-    public function recordsAsAuthor()
+    /**
+     * Works this person has created or contributed to.
+     */
+    public function works()
+    {
+        return $this->morphedByMany(
+            Work::class,
+            'contribution',
+            'litteraturkritikk_person_contributions'
+        )
+            ->withPivot('person_role', 'kommentar', 'pseudonym', 'position');
+    }
+
+    /**
+     * The records that discusses this author.
+     */
+    public function discussedIn()
+    {
+        return $this->belongsToMany(Record::class, 'litteraturkritikk_subject_person');
+    }
+
+    /*public function recordsAsAuthor()
     {
         return $this->records()
             ->whereJsonDoesntContain('person_role', 'kritiker');
-    }
+    }*/
 
     public function recordsAsCritic()
     {
@@ -73,10 +107,9 @@ class Person extends \Eloquent
             $names[] = $this->fornavn;
         }
         $nn = implode(', ', $names);
-        if ($this->fodt !== null) {
-            $nn .= ', ' . $this->fodt . '-' . ($this->dod ?: '');
-        }
-
+        // if ($this->fodt !== null) {
+        //     $nn .= ', ' . $this->fodt . '-' . ($this->dod ?: '');
+        // }
         return $nn;
     }
 
@@ -86,6 +119,14 @@ class Person extends \Eloquent
     }
 
     public function __toString()
+    {
+        return $this->normalizedName();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTitle(): string
     {
         return $this->normalizedName();
     }

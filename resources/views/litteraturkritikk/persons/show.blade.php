@@ -16,6 +16,7 @@
     </p>
 
     <h2>
+        <i class="fa fa-user"></i>
         {{ strval($record) }}
     </h2>
 
@@ -25,45 +26,84 @@
         </div>
     @endif
 
-    <dl class="row">
+    <div class="ltk_record">
         @foreach ($schema->fields as $field)
             @if ($field->showInRecordView && !empty($record->{$field->key}))
-                <dt class="col-sm-3 text-sm-right">
-                    {{ trans('litteraturkritikk.person.' . $field->key) }}:
-                </dt>
-                <dd class="col-sm-9">
-                    @if (method_exists($field, 'formatValue'))
-                        {!! $field->formatValue($record->{$field->key}, $base) !!}
-                    @else
-                        {{ $record->{$field->key} }}
-                    @endif
-                </dd>
+                <div>
+                    <div class="ltk_field_name">
+                        {{ trans('litteraturkritikk.person.' . $field->key) }}:
+                    </div>
+                    <div class="ltk_field_value">
+                        @if (method_exists($field, 'formatValue'))
+                            {!! $field->formatValue($record->{$field->key}, $base) !!}
+                        @else
+                            {{ $record->{$field->key} }}
+                        @endif
+                    </div>
+                </div>
             @endif
         @endforeach
-    </dl>
-
-    @if (count($record->recordsAsAuthor))
-        <div id="recordsAsAuthor">
-            <h3>Omtalt i {{ count($record->recordsAsAuthor ) }} {{ count($record->recordsAsAuthor ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
-            <ul>
-                @foreach ($record->recordsAsAuthor as $doc)
-                    <li>{!! $doc->representation() !!}</li>
-                @endforeach
-            </ul>
-            <a href="{{ $base->action('index', ['f0' => 'verk_forfatter', 'v0' => strval($record)])  }}">Vis som tabellvisning</a>
-        </div>
-    @endif
+    </div>
 
     @if (count($record->recordsAsCritic))
-        <div id="recordsAsCritic">
+        <div id="recordsAsCritic" class="mt-3">
             <h3>Skribent av {{ count($record->recordsAsCritic ) }} {{ count($record->recordsAsCritic ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
             <ul>
                 @foreach ($record->recordsAsCritic as $doc)
                     <li>{!! $doc->representation() !!}</li>
                 @endforeach
             </ul>
-            <a href="{{ $base->action('index', ['f0' => 'kritiker', 'v0' => strval($record)])  }}">Vis som tabellvisning</a>
+            <a href="{{ $base->action('index', [
+                'q' => $queryStringBuilder->build([
+                    ['kritiker', 'contains', strval($record)],
+                ]) ]) }}">Vis i søk</a>
         </div>
     @endif
+
+    @if (count($record->discussedIn))
+        <div id="recordsDiscussedIn" class="mt-3">
+            <h3>Forfatterskap omtalt i {{ count($record->discussedIn ) }} {{ count($record->discussedIn) == 1 ? 'kritikk' : 'kritikker' }}</h3>
+            <ul>
+                @foreach ($record->discussedIn as $doc)
+                    <li>{!! $doc->representation() !!}</li>
+                @endforeach
+            </ul>
+            <a href="{{ $base->action('index', [
+                'q' => $queryStringBuilder->build([
+                    ['forfatter', 'contains', strval($record), 'AND'],
+                    ['verk_tittel', 'isnull'],
+                ]) ]) }}">Vis i søk</a>
+        </div>
+    @endif
+
+    @if (count($record->works))
+        <div id="recordsAsAuthor" class="mt-3">
+            <h3>
+                Verk ({{ count($record->works) }})
+            </h3>
+            <ul>
+                @foreach ($record->works as $work)
+                    <li>
+                        <a href="{{ $base->action('WorkController@show', $work->id) }}">
+                            {!! $work->stringRepresentation !!}
+                        </a>
+                        <ul>
+                            @foreach ($work->discussedIn as $critique)
+                                <li>
+                                    {!! $critique->representation() !!}
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @endforeach
+            </ul>
+            <a href="{{ $base->action('index', [
+                'q' => $queryStringBuilder->build([
+                    ['forfatter', 'contains', strval($record), 'AND'],
+                    ['verk_tittel', 'notnull'],
+                ]) ]) }}">Vis i søk</a>
+        </div>
+    @endif
+
 
 @endsection

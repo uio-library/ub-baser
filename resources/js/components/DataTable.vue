@@ -12,7 +12,18 @@
             <div class="lds-heart"><div></div></div>
         </div>
 
-        <div ref="main" style="opacity: 0">
+      <div ref="serverError" class="alert alert-danger" style="display: none; font-size: 150%">
+        <span class="fa fa-gears"></span>
+        Beklager, det oppsto et teknisk problem som gjør at vi ikke kan vise deg resultater akkurat nå.
+        Detaljer om problemet er logget.
+      </div>
+
+      <div ref="networkError" class="alert alert-danger" style="display: none; font-size: 150%">
+        <span class="fa fa-globe"></span>
+        Får ikke tak i basen akkurat nå.
+      </div>
+
+      <div ref="main" style="opacity: 0">
 
             <div ref="columnSelectorWrapper"  class="d-flex align-items-center">
                 <div class="flex-grow-0 pr-2">
@@ -193,6 +204,9 @@ export default {
       if (data === null) {
         return '–'
       }
+      if (typeof data === 'string') {
+        data = data.replace(/\n/g, '<br>')
+      }
       return data
     },
 
@@ -317,6 +331,19 @@ export default {
           data: (input) => {
             return Object.assign({}, input, this.query)
           },
+          error: (xhr, ajaxOptions, thrownError) => {
+            $(this.$refs.spinner).hide()
+            $(this.$refs.main).hide()
+
+            console.error(thrownError)
+
+            if (!xhr.status) {
+              $(this.$refs.networkError).show()
+            } else {
+              console.error(xhr.responseText)
+              $(this.$refs.serverError).show()
+            }
+          },
         },
         columns: this.columns,
         order: this.getOrder(),
@@ -420,6 +447,10 @@ export default {
       // We're ready!
       $(this.$refs.spinner).hide()
       $(this.$refs.main).css('opacity', '1')
+    })
+
+    table.on('complete', (event) => {
+      console.log('On complete')
     })
 
     table.on('length', (e, settings, len) => {

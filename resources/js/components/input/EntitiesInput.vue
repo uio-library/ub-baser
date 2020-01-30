@@ -1,6 +1,19 @@
 <template>
   <div style="border: 1px solid #ddd; border-radius: 3px; padding: 3px">
-    <input type="hidden" :name="this.schema.key" :value="jsonSerialized">
+    <input type="hidden" :name="schema.key" :value="jsonSerialized">
+
+    <!--
+    {{ baseUrl }}
+
+    <div>
+      ENTITIES: <code>{{ entities }}</code>
+    </div>
+
+    <div>
+      NEW ENTITY: {{ newEntity }}
+    </div>
+
+    -->
 
     <!-- eslint-disable-next-line vue/require-v-for-key -->
     <div v-for="(entity, entityIdx) in entities" class="d-flex pb-1 align-items-end">
@@ -12,7 +25,7 @@
       <template v-for="field in schema.pivotFields">
         <edit-field
           v-if="field.edit.enabled"
-          class="edit-field pivot-field"
+          :class="['edit-field', 'pivot-field', field.type]"
           :key="field.key"
           :schema="field"
           :settings="settings"
@@ -46,17 +59,32 @@
     <div v-else-if="mode === 'createEntity'">
       <form @submit.prevent="storeNewEntity()" style="background: #fff6a1; border: 1px solid #eee; padding: 2px;" class="d-flex flex-wrap align-items-end">
 
-        <template v-for="(field, idx) in schema.entitySchema.fields">
+        <template v-for="(field, idx) in schema.entityType.schema.fields">
           <edit-field
-            class="edit-field pivot-field"
+            :class="['edit-field', 'pivot-field', field.type]"
             ref="newEntityInputs"
             :key="field.key"
             :schema="field"
             :settings="settings"
             :value="newEntity[field.shortKey]"
-            @value="newEntity[field.shortKey] = $event"
+            @value="onNewEntityChange(field, $event)"
           ></edit-field>
         </template>
+
+        <div v-for="group in schema.entityType.schema.groups" :key="group.label">
+          <h4>{{ group.label}}</h4>
+          <template v-for="(field, idx) in group.fields">
+            <edit-field
+              :class="['edit-field', 'pivot-field', field.type]"
+              ref="newEntityInputs"
+              :key="field.key"
+              :schema="field"
+              :settings="settings"
+              :value="newEntity[field.shortKey]"
+              @value="onNewEntityChange(field, $event)"
+            ></edit-field>
+          </template>
+        </div>
 
         <div v-if="error" class="text-danger">{{ error }}</div>
         <button type="button" class="btn btn-danger btn-sm mx-1" @click="clearInput()">Avbryt</button>
@@ -68,10 +96,7 @@
     <div v-else>
       <button type="button" class="btn btn-outline-primary btn-sm m-1" @click="addEntity()">Legg til</button>
     </div>
-<!--
-    <code style="display: block; width: 500px; overflow: scroll">
-      {{jsonSerialized}}
-    </code>-->
+
   </div>
 </template>
 
@@ -94,7 +119,6 @@ export default {
     EditField: () => import('../EditField'),
   },
   props: {
-    name: String,
     schema: Object,
     settings: Object,
     value: Array,
@@ -111,7 +135,7 @@ export default {
   },
   computed: {
     entityType () {
-      return this.schema.entityType.split('\\').pop().toLowerCase()
+      return this.schema.entityType.name
     },
     baseUrl () {
       return get(this.settings, 'baseUrl') + '/' + this.entityType
@@ -134,6 +158,7 @@ export default {
   methods: {
     removeEntity(idx) {
       this.entities.splice(idx, 1)
+      this.$emit('value', this.entities)
     },
     addEntity () {
       this.mode = 'addEntity'
@@ -144,10 +169,11 @@ export default {
     },
     clearInput () {
       this.searchValue = ''
+      this.newEntity = {}
       this.mode = 'normal'
     },
     getNextPosition() {
-      let pos = this.entities.length ? Number(this.entities[this.entities.length - 1].pivot.posisjon) + 1 : 1
+      let pos = this.entities.length ? Number(this.entities[this.entities.length - 1].pivot.position) + 1 : 1
       return String(pos)
     },
     selectEntity (selected) {
@@ -156,29 +182,43 @@ export default {
       this.schema.pivotFields.forEach(pivotField => {
         entity.pivot[pivotField.shortKey] = get(pivotField, 'defaultValue', '')
       })
-      entity.pivot.posisjon = this.getNextPosition()
+      entity.pivot.position = this.getNextPosition()
+
+
+      console.log('SELECT ENTITY', entity)
       this.entities.push(entity)
+      this.$emit('value', this.entities)
       this.clearInput()
     },
     newEntityForm() {
       this.busy = false
       this.error = null
-      this.newEntity = {
+      let newEntity = {
         id: null,
         pivot: {},
       }
-      this.schema.entitySchema.fields.forEach(field => this.newEntity[field.shortKey] = get(field, 'defaultValue', ''))
-      this.schema.pivotFields.forEach(field => this.newEntity.pivot[field.shortKey] = get(field, 'defaultValue', ''))
+      console.log(this.schema)
+      this.schema.entityType.schema.fields.forEach(field => newEntity[field.shortKey] = get(field, 'defaultValue', ''))
+      this.schema.pivotFields.forEach(field => newEntity.pivot[field.shortKey] = get(field, 'defaultValue', ''))
 
-      const firstKey = this.schema.entitySchema.fields[0].shortKey
-      this.newEntity[firstKey] = this.searchValue
+      const firstKey = this.schema.entityType.schema.fields[0].shortKey
+      newEntity[firstKey] = this.searchValue
+
+      console.log('newEntityForm', newEntity)
 
       this.mode = 'createEntity'
-      this.$nextTick(() => {
+      setTimeout(() => {
         this.$refs.newEntityInputs[0].focus()
-      })
+      }, 300)
+
+      this.newEntity = newEntity
+    },
+    onNewEntityChange(field, newValue) {
+      console.log('[EntitiesInput] Changed', field.shortKey)
+      this.$set(this.newEntity, field.shortKey, newValue)
     },
     storeNewEntity() {
+      console.log('storeNewEntity', this.newEntity)
       this.busy = true
       this.error = null
       this.$http.post(this.baseUrl, this.newEntity)

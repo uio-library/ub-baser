@@ -15,4 +15,15 @@ class RecordView extends Record
     {
         \DB::unprepared('REFRESH MATERIALIZED VIEW litteraturkritikk_records_search');
     }
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'verk_spraak' => 'array',
+        'verk_originalspraak' => 'array',
+    ];
+
 }

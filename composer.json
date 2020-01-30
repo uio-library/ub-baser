@@ -16,6 +16,7 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
+        "hedronium/spaceless-blade": "^3.0",
         "http-interop/http-factory-guzzle": "^1.0",
         "intervention/image": "^2.5",
         "jenssegers/agent": "^2.6",

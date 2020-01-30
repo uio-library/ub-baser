@@ -5,6 +5,7 @@ namespace App\Bases\Litteraturkritikk;
 use App\Exceptions\HttpErrorResponse;
 use App\Exceptions\NationalLibraryRecordNotFound;
 use App\Services\NationalLibraryApi;
+use App\User;
 use Http\Client\Exception\RequestException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -41,8 +42,6 @@ class Record extends \App\Record
         'kritikktype' => 'array',
         'tags' => 'array',
         'spraak' => 'array',
-        'verk_spraak' => 'array',
-        'verk_originalspraak' => 'array',
     ];
 
     /**
@@ -52,37 +51,32 @@ class Record extends \App\Record
      */
     public function createdBy()
     {
-        return $this->belongsTo('App\User', 'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function updatedBy()
     {
-        return $this->belongsTo('App\User', 'updated_by');
+        return $this->belongsTo(User::class, 'updated_by');
     }
 
     /**
-     * The persons that are part of this record.
+     * Works discussed in this record.
      */
-    public function persons()
+    public function subjectWorks()
     {
-        return $this->belongsToMany(
-            'App\Bases\Litteraturkritikk\Person',
-            'litteraturkritikk_record_person'
-            //'record_id',
-            //'person_id'
-        )
-            ->using(RecordPerson::class)
-            ->withPivot('person_role', 'kommentar', 'pseudonym', 'posisjon')
-            ->orderBy('litteraturkritikk_record_person.posisjon', 'asc');
+        return $this->belongsToMany(Work::class, 'litteraturkritikk_subject_work')
+            ->withPivot('position', 'edition')
+            ->orderBy('litteraturkritikk_subject_work.position', 'asc');
     }
 
     /**
-     * The persons that are part of this record.
+     * Authorships discussed in this record.
      */
-    public function forfattere()
+    public function subjectPersons()
     {
-        return $this->persons()
-            ->whereJsonDoesntContain('person_role','kritiker');
+        return $this->belongsToMany(Person::class, 'litteraturkritikk_subject_person')
+            ->withPivot('position')
+            ->orderBy('litteraturkritikk_subject_person.position', 'asc');
     }
 
     /**
@@ -90,8 +84,17 @@ class Record extends \App\Record
      */
     public function kritikere()
     {
-        return $this->persons()
-            ->whereJsonContains('person_role', 'kritiker');
+        return $this->morphToMany(
+            Person::class,
+            'contribution',
+            'litteraturkritikk_person_contributions'
+            //'record_id',
+            //'person_id'
+        )
+            ->whereJsonContains('person_role', 'kritiker')
+            ->using(PersonContribution::class)
+            ->withPivot('person_role', 'kommentar', 'pseudonym', 'position')
+            ->orderBy('litteraturkritikk_person_contributions.position', 'asc');
     }
 
     /**
@@ -311,7 +314,8 @@ class Record extends \App\Record
 
         $repr .= $this->formatKritikk();
         $kritikktype = $this->preferredKritikktype($this->kritikktype);
-        $verk = $this->formatVerk();
+        $verk = '';
+        // $verk = $this->formatVerk();
 
         $repr .= '</a><br>';
 
@@ -338,53 +342,19 @@ class Record extends \App\Record
         return Publications::isJournal($this->publikasjon);
     }
 
-    public function oriaSearchLink(): string
-    {
-        // Oria syntax is of course weird and non-standard to the point
-        // that we cannot use a single http_build_query call.
-
-        $queries = [];
-        $forfatter = $this->forfattere()->first();
-        if ($forfatter !== null) {
-            $queries[] = http_build_query(['query' => "creator,contains,{$forfatter->etternavn}"]);
-        }
-        if ($this->verk_tittel) {
-            $queries[] = http_build_query(['query' => "title,contains,{$this->verk_tittel}"]);
-        }
-
-        $queries[] = http_build_query([
-            'tab' => 'default_tab',
-            'search_scope' => 'default_scope',
-            'vid' => 'UIO',
-            'mode' => 'advanced',
-        ]);
-
-        return implode('&', $queries);
-    }
-
     public function nationalLibrarySearchQuery(string $group): array
     {
         $query = [];
         $filters = [];
 
-        if ($group == 'Kritikken') {
-            $dato = $this->dato;
+        $dato = $this->dato;
 
-            if ($this->isNewspaper()) {
-                $filters['mediatype'] = 'aviser';
-                $filters['series'] = $this->publikasjon;
-            } elseif ($this->isJournal()) {
-                $filters['mediatype'] = 'tidsskrift';
-                $filters['title'] = $this->publikasjon;
-            }
-        } else {
-            $dato = $this->verk_dato;
-
-            $filters['mediatype'] = 'bøker';
-
-            if ($this->verk_tittel) {
-                $filters['title'] = $this->verk_tittel;
-            }
+        if ($this->isNewspaper()) {
+            $filters['mediatype'] = 'aviser';
+            $filters['series'] = $this->publikasjon;
+        } elseif ($this->isJournal()) {
+            $filters['mediatype'] = 'tidsskrift';
+            $filters['title'] = $this->publikasjon;
         }
 
         if ($dato && strlen($dato) <= 10) {
@@ -397,24 +367,17 @@ class Record extends \App\Record
             $filters['date'] = [$fromDate, $toDate];
         }
 
-        if ($group == 'Kritikken') {
-            if ($this->nummer) {
-                $query[] = $this->nummer;
-            }
+        if ($this->nummer) {
+            $query[] = $this->nummer;
+        }
 
-            $kritiker = $this->kritikere()->first();
-            if ($kritiker !== null && !$kritiker->pivot->pseudonym && !preg_match('/(anonym|ukjent)/', $kritiker->etternavn)) {
-                $query[] = $kritiker->etternavn;
-            }
-            $forfatter = $this->forfattere()->first();
-            if ($forfatter !== null) {
-                $query[] = $forfatter->etternavn;
-            }
-        } else {
-            $forfatter = $this->forfattere()->first();
-            if ($forfatter !== null) {
-                $filters['name'] = $forfatter->etternavn;
-            }
+        $kritiker = $this->kritikere()->first();
+        if ($kritiker !== null && !$kritiker->pivot->pseudonym && !preg_match('/(anonym|ukjent)/', $kritiker->etternavn)) {
+            $query[] = $kritiker->etternavn;
+        }
+        $forfatter = $this->forfattere()->first();
+        if ($forfatter !== null) {
+            $query[] = $forfatter->etternavn;
         }
 
         $query = implode(' ', $query);
@@ -424,5 +387,4 @@ class Record extends \App\Record
             'filters' => $filters,
         ];
     }
-
 }
