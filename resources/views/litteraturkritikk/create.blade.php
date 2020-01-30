@@ -2,6 +2,10 @@
 
 @section('content')
 
+    <p style="float:right">
+        <a href="{{ $base->pageAction('veiledning') }}" target="veiledning">Redigeringsveiledning</a> (åpner i nytt vindu/ny fane)
+    </p>
+
     <h2>
         Opprett ny post
     </h2>
