@@ -97,10 +97,14 @@ class Record extends \App\Record
      * Validate/mutate URL field against external API.
      *
      * @param string $field
-     * @param string $value
+     * @param string|null $value
+     * @return string|null
      */
-    protected function mutateUrlField(string $field, string $value): void
+    protected function mutateUrlField(string $field, ?string $value): ?string
     {
+        if (is_null($value)) {
+            return null;
+        }
         $api = app(NationalLibraryApi::class);
         $urls = explode(' ', $value);
 
@@ -118,31 +122,29 @@ class Record extends \App\Record
             }
         }, $urls);
 
-        $this->attributes[$field] = implode(' ', $urls);
+        return implode(' ', $urls);
     }
 
     /**
      * Mutator for the fulltekst_url field.
      *
-     * @param  string  $value
-     * @throws NationalLibraryRecordNotFound
+     * @param  string|null  $value
      * @return void
      */
-    public function setFulltekstUrlAttribute(string $value): void
+    public function setFulltekstUrlAttribute(?string $value): void
     {
-        $this->mutateUrlField('fulltekst_url', $value);
+        $this->attributes['fulltekst_url'] = $this->mutateUrlField('fulltekst_url', $value);
     }
 
     /**
      * Mutator for the verk_fulltekst_url field.
      *
-     * @param  string  $value
-     * @throws NationalLibraryRecordNotFound
+     * @param  string|null  $value
      * @return void
      */
-    public function setVerkFulltekstUrlAttribute(string $value): void
+    public function setVerkFulltekstUrlAttribute(?string $value): void
     {
-        $this->mutateUrlField('verk_fulltekst_url', $value);
+        $this->attributes['verk_fulltekst_url'] = $this->mutateUrlField('verk_fulltekst_url', $value);
     }
 
     /**
