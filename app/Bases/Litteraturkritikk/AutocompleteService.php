@@ -116,7 +116,7 @@ class AutocompleteService extends \App\Services\AutocompleteService
             'verk_originalspraak',
         ];
 
-        $subQueries = implode(' union all ', array_map(function($field) {
+        $subQueries = implode(' union all ', array_map(function ($field) {
             return 'select ' . $field . ' as value from litteraturkritikk_records';
         }, $languageFields));
 
