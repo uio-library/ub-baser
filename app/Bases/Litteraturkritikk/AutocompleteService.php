@@ -29,12 +29,15 @@ class AutocompleteService extends \App\Services\AutocompleteService
      * @var array
      */
     protected $completers = [
-        'publikasjon' => 'simpleLister',
-        'spraak' => 'simpleLister',
-        'verk_spraak' => 'simpleLister',
-        'verk_sjanger' => 'simpleLister',
-        'utgivelsessted' => 'simpleLister',
-        'verk_utgivelsessted' => 'simpleLister',
+        'publikasjon' => 'simpleStringCompleter',
+
+        'spraak' => 'languageCompleter',
+        'verk_spraak' => 'languageCompleter',
+        'verk_originalspraak' => 'languageCompleter',
+
+        'verk_sjanger' => 'simpleStringCompleter',
+        'utgivelsessted' => 'simpleStringCompleter',
+        'verk_utgivelsessted' => 'simpleStringCompleter',
 
         'kritikktype' => 'jsonArrayCompleter',
         'tags' => 'jsonArrayCompleter',
@@ -96,5 +99,32 @@ class AutocompleteService extends \App\Services\AutocompleteService
         }
 
         return $data;
+    }
+
+    /**
+     * We use a common index for all the different language fields.
+     *
+     * @param SchemaField $field
+     * @param string $term
+     * @return array
+     */
+    protected function languageCompleter(SchemaField $field, string $term): array
+    {
+        $languageFields = [
+            'spraak',
+            'verk_spraak',
+            'verk_originalspraak',
+        ];
+
+        $subQueries = implode(' union all ', array_map(function($field) {
+            return 'select ' . $field . ' as value from litteraturkritikk_records';
+        }, $languageFields));
+
+        $query = \DB::table(\DB::raw('(' . $subQueries . ') subquery'))
+            ->where('value', 'ilike', $term . '%')
+            ->where('value', 'not like', '%;%')
+            ->select('value');
+
+        return $this->getResultsOrderedByPopularity($query);
     }
 }
