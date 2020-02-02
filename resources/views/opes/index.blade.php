@@ -9,9 +9,9 @@
         </p>
     @endcan
 
-    <p>
+    <div class="lead ck-content">
         {!! $intro !!}
-    </p>
+    </div>
 
     <div class="panel panel-default">
         <div class="panel-body">
