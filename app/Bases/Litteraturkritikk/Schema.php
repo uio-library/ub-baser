@@ -158,6 +158,7 @@ class Schema extends BaseSchema
 
                         // 'default' => false,
                         'edit' => [
+                            'label' => 'Flere forfattere',
                             'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
                             'cssClass' => 'col-md-12',
                         ],
@@ -261,6 +262,7 @@ class Schema extends BaseSchema
                         'displayable' => false,
                         'search' => false,
                         'edit' => [
+                            'label' => 'Flere kritikere',
                             'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
                             'cssClass' => 'col-md-12',
                         ],

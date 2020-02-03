@@ -1,10 +1,10 @@
 <template>
   <div :class="cssClass">
 
-    <div class="d-flex mx-2">
+    <div class="d-flex mx-2 my-1 align-items-center">
 
-        <div class="flex-shrink-0 pt-2 pr-2 text-right" style="width: 150px;" valign="top">
-            {{ schema.label }}:
+        <div class="flex-shrink-0 pr-2 text-right" style="width: 150px;" valign="top">
+            <span v-if="schema.type !== 'boolean'">{{ schema.label }}:</span>
         </div>
         <div class="flex-grow-1">
             <component
@@ -16,13 +16,10 @@
                 :settings="settings"
                 @value="onValue($event)"
             ></component>
-            <div class="text-muted small d-inline-block">
-              <span v-if="schema.edit.help">
-                <em class="fa fa-info-circle"></em>
-                {{ schema.edit.help }}
-              </span>
-            </div>
             <!-- <tt>[{{ this.currentType }}] {{ name}}: {{ value }}</tt>-->
+        </div>
+        <div v-if="schema.edit.help" class="flex-shrink-0 ml-2">
+          <em  style="font-size: 150%; cursor: help; color: #d32" class="fa fa-question-circle" :title="schema.edit.help"></em>
         </div>
     </div>
   </div>
