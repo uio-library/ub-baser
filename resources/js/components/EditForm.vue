@@ -6,7 +6,7 @@
         </div>
 
         <!-- Top level fields -->
-        <table class="table table-borderless table-sm">
+          <div class="row no-gutters">
             <edit-field
                     v-for="field in fields"
                     :key="field.key"
@@ -15,24 +15,22 @@
                     :value="currentValues[field.key]"
                     @value="onValue(field.key, $event)"
             ></edit-field>
-        </table>
+        </div>
 
         <!-- Grouped fields -->
         <div class="panel panel-default" v-for="group in groups" :key="group.label">
             <div class="panel-heading">
-                <h4 class="panel-title">{{ group.label }}</h4>
+                <h4 class="panel-title" style="border-bottom: 1px solid #666">{{ group.label }}</h4>
             </div>
-            <div class="panel-body">
-                <table class="table table-borderless table-sm">
-                    <edit-field
-                            v-for="field in group.fields"
-                            :key="field.key"
-                            :schema="schemas[field.key]"
-                            :settings="settings"
-                            :value="currentValues[field.key]"
-                            @value="onValue(field.key, $event)"
-                    ></edit-field>
-                </table>
+            <div class="row no-gutters">
+                <edit-field
+                    v-for="field in group.fields"
+                    :key="field.key"
+                    :schema="schemas[field.key]"
+                    :settings="settings"
+                    :value="currentValues[field.key]"
+                    @value="onValue(field.key, $event)"
+                ></edit-field>
             </div>
             <!--{{ json_encode( old($field['key'], $record->{$field['key']}) ) }}-->
         </div>

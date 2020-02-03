@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="d-inline-block mr-2 mb-1">
         <input type="checkbox"
                :name="name"
                :checked="value"

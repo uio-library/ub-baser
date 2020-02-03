@@ -1,9 +1,12 @@
 <template>
-    <tr>
-        <td style="width: 150px;" valign="top">
-            {{ schema.label }}
-        </td>
-        <td>
+  <div :class="cssClass">
+
+    <div class="d-flex mx-2">
+
+        <div class="flex-shrink-0 pt-2 pr-2 text-right" style="width: 150px;" valign="top">
+            {{ schema.label }}:
+        </div>
+        <div class="flex-grow-1">
             <component
                 :is="currentType"
                 :name="name"
@@ -13,14 +16,16 @@
                 :settings="settings"
                 @value="onValue($event)"
             ></component>
-            <div v-if="schema.edit.help"><small class="text-muted text-small">
-              <em class="fa fa-info-circle"></em>
-              {{ schema.edit.help }}
-            </small></div>
-            <div v-else><small class="text-muted text-small">&nbsp;</small></div>
+            <div class="text-muted small d-inline-block">
+              <span v-if="schema.edit.help">
+                <em class="fa fa-info-circle"></em>
+                {{ schema.edit.help }}
+              </span>
+            </div>
             <!-- <tt>[{{ this.currentType }}] {{ name}}: {{ value }}</tt>-->
-        </td>
-    </tr>
+        </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -44,6 +49,9 @@ export default {
     },
   },
   computed: {
+    cssClass () {
+      return get(this.schema, 'edit.cssClass') || 'col-md-6'
+    },
     placeholder () {
       return get(this.schema, 'edit.placeholder')
     },

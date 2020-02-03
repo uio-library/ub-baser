@@ -98,6 +98,17 @@ class Schema extends BaseSchema
 
                     ],
 
+                    // Originalspråk
+                    [
+                        'key' => 'verk_originalspraak',
+                        'type' => 'autocomplete',
+
+                        'search' => [
+                            'advanced' => true,
+                            'placeholder' => 'Språket originalutgaven er skrevet på',
+                        ],
+                    ],
+
                     // Originaltittel (transkribert)
                     [
                         'key' => 'verk_originaltittel_transkribert',
@@ -108,17 +119,6 @@ class Schema extends BaseSchema
                         ],
                         'edit' => [
                             'placeholder' => 'Fylles ut hvis originaltittel bruker ikke-latinsk skrift',
-                        ],
-                    ],
-
-                    // Originalspråk
-                    [
-                        'key' => 'verk_originalspraak',
-                        'type' => 'autocomplete',
-
-                        'search' => [
-                            'advanced' => true,
-                            'placeholder' => 'Språket originalutgaven er skrevet på',
                         ],
                     ],
 
@@ -142,6 +142,10 @@ class Schema extends BaseSchema
                                 'notnull',
                             ],
                         ],
+
+                        'edit' => [
+                            'cssClass' => 'col-md-12',
+                        ],
                     ],
 
                     // mfl.
@@ -155,6 +159,7 @@ class Schema extends BaseSchema
                         // 'default' => false,
                         'edit' => [
                             'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
+                            'cssClass' => 'col-md-12',
                         ],
                     ],
 
@@ -217,6 +222,7 @@ class Schema extends BaseSchema
                         ],
                         'edit' => [
                             'help' => 'Flere verdier skilles med mellomrom',
+                            'cssClass' => 'col-md-12',
                         ],
                     ],
 
@@ -242,6 +248,9 @@ class Schema extends BaseSchema
                             'type' => 'ts',
                             'index' => 'kritiker_ts',
                         ],
+                        'edit' => [
+                            'cssClass' => 'col-md-12',
+                        ],
                     ],
 
                     // mfl.
@@ -253,6 +262,7 @@ class Schema extends BaseSchema
                         'search' => false,
                         'edit' => [
                             'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
+                            'cssClass' => 'col-md-12',
                         ],
                     ],
 
@@ -364,35 +374,35 @@ class Schema extends BaseSchema
                         'key' => 'aargang',
                         'type' => 'simple',
                         'edit' => [
-                            'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                            'help' => 'Tall (1), intervall (1-2) eller flere verdier (1; 3).',
                         ],
                     ],
                     [
                         'key' => 'bind',
                         'type' => 'simple',
                         'edit' => [
-                            'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                            'help' => 'Tall (1), intervall (1-2) eller flere verdier (1; 3).',
                         ],
                     ],
                     [
                         'key' => 'hefte',
                         'type' => 'simple',
                         'edit' => [
-                            'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                            'help' => 'Tall (1), intervall (1-2) eller flere verdier (1; 3).',
                         ],
                     ],
                     [
                         'key' => 'nummer',
                         'type' => 'simple',
                         'edit' => [
-                            'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                            'help' => 'Tall (1), intervall (1-2) eller flere verdier (1; 3).',
                         ],
                     ],
                     [
                         'key' => 'sidetall',
                         'type' => 'simple',
                         'edit' => [
-                            'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                            'help' => 'Tall (1), intervall (1-2) eller flere verdier (1; 3).',
                         ],
                     ],
                     [

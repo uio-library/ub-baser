@@ -10,6 +10,7 @@ class EditOptions extends FieldOptions
     public $data = [
         'enabled' => true,
         'help' => '',
+        'cssClass' => null,
         'placeholder' => '',
     ];
 
@@ -19,6 +20,7 @@ class EditOptions extends FieldOptions
     protected $properties = [
         'enabled' => 'boolean',
         'help' => 'string',
+        'cssClass' => 'string',
         'placeholder' => 'string',
     ];
 }
