@@ -31,12 +31,11 @@ abstract class SchemaField implements JsonSerializable
 
         // Defaults
         $this->data['displayable'] = true;
-        $this->data['editable'] = true;
         $this->data['orderable'] = true;
         $this->data['defaultValue'] = null;
         $this->data['datatype'] = Schema::DATATYPE_STRING;
-        $this->data['search'] = new SearchConfig($key, static::TYPE, $schemaOptions);
-        $this->data['help'] = null;
+        $this->data['search'] = new SearchOptions($key, static::TYPE, $schemaOptions);
+        $this->data['edit'] = new EditOptions();
     }
 
     /**
@@ -109,13 +108,13 @@ abstract class SchemaField implements JsonSerializable
     }
 
     /**
-     * Set whether the field should be editable or not.
+     * Set whether the field should be edit or not.
      *
-     * @param bool $value
+     * @param array|bool $value
      */
-    public function setEditable(bool $value): void
+    public function setedit($value): void
     {
-        $this->data['editable'] = $value;
+        $this->data['edit']->init($value);
     }
 
     /**
@@ -196,16 +195,6 @@ abstract class SchemaField implements JsonSerializable
     public function getModelAttribute(): string
     {
         return $this->get('modelAttribute', $this->key);
-    }
-
-    /**
-     * Set help text shown when editing the field.
-     *
-     * @param string $value
-     */
-    public function setHelp(string $value): void
-    {
-        $this->data['help'] = $value;
     }
 
     /**

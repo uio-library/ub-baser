@@ -22,7 +22,7 @@ class Schema extends BaseSchema
                 'type' => 'simple',
 
                 'displayable' => false,
-                'editable' => false,
+                'edit' => false,
 
                 'search' => [
                     'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc... Avslutt med * om du føler for å trunkere.',
@@ -38,7 +38,7 @@ class Schema extends BaseSchema
                 'type' => 'autocomplete',
 
                 'displayable' => false,
-                'editable' => false,
+                'edit' => false,
 
                 'search' => [
                     'placeholder' => 'Fornavn og/eller etternavn',
@@ -67,9 +67,9 @@ class Schema extends BaseSchema
                             'index' => 'verk_tittel_ts',
                         ],
 
-                        // 'edit' => [
-                        //     'placeholder' => 'Tittel på den omtalte utgaven av verket',
-                        // ],
+                        'edit' => [
+                            'placeholder' => 'Tittel på den omtalte utgaven av verket',
+                        ],
                     ],
 
                     // Språk
@@ -92,9 +92,9 @@ class Schema extends BaseSchema
                             'advanced' => true,
                             'placeholder' => 'Søk kun i originaltitler',
                         ],
-                        // 'edit' => [
-                        //     'placeholder' => 'Fylles ut hvis tittel på omtalt utgave avviker fra originaltittel, f.eks. ved oversettelse',
-                        // ],
+                        'edit' => [
+                            'placeholder' => 'Fylles ut hvis tittel på omtalt utgave avviker fra originaltittel, f.eks. ved oversettelse',
+                        ],
 
                     ],
 
@@ -106,9 +106,9 @@ class Schema extends BaseSchema
                             'advanced' => true,
                             'placeholder' => 'Søk kun i transkriberte titler',
                         ],
-                        // 'edit' => [
-                        //     'placeholder' => 'Fylles ut hvis originaltittel bruker ikke-latinsk skrift',
-                        // ],
+                        'edit' => [
+                            'placeholder' => 'Fylles ut hvis originaltittel bruker ikke-latinsk skrift',
+                        ],
                     ],
 
                     // Originalspråk
@@ -153,7 +153,9 @@ class Schema extends BaseSchema
                         'search' => false,
 
                         // 'default' => false,
-                        'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
+                        'edit' => [
+                            'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
+                        ],
                     ],
 
                     // Utgivelsessted
@@ -209,10 +211,12 @@ class Schema extends BaseSchema
                     [
                         'key' => 'verk_fulltekst_url',
                         'type' => 'url',
-                        'help' => 'Flere verdier skilles med mellomrom',
 
                         'search' => [
                             'advanced' => true,
+                        ],
+                        'edit' => [
+                            'help' => 'Flere verdier skilles med mellomrom',
                         ],
                     ],
 
@@ -244,10 +248,12 @@ class Schema extends BaseSchema
                     [
                         'key' => 'kritiker_mfl',
                         'type' => 'boolean',
-                        'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
                         // 'default' => false,
                         'displayable' => false,
                         'search' => false,
+                        'edit' => [
+                            'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
+                        ],
                     ],
 
                     // Publikasjon
@@ -357,27 +363,37 @@ class Schema extends BaseSchema
                     [
                         'key' => 'aargang',
                         'type' => 'simple',
-                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                        'edit' => [
+                            'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                        ],
                     ],
                     [
                         'key' => 'bind',
                         'type' => 'simple',
-                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                        'edit' => [
+                            'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                        ],
                     ],
                     [
                         'key' => 'hefte',
                         'type' => 'simple',
-                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                        'edit' => [
+                            'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                        ],
                     ],
                     [
                         'key' => 'nummer',
                         'type' => 'simple',
-                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                        'edit' => [
+                            'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                        ],
                     ],
                     [
                         'key' => 'sidetall',
                         'type' => 'simple',
-                        'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                        'edit' => [
+                            'help' => 'Oppgis som tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
+                        ],
                     ],
                     [
                         'key' => 'kommentar',
@@ -398,10 +414,11 @@ class Schema extends BaseSchema
                     [
                         'key' => 'fulltekst_url',
                         'type' => 'url',
-                        'help' => 'Flere verdier skilles med mellomrom',
-
                         'search' => [
                             'advanced' => true,
+                        ],
+                        'edit' => [
+                            'help' => 'Flere verdier skilles med mellomrom',
                         ],
                     ],
 
@@ -418,7 +435,7 @@ class Schema extends BaseSchema
                     [
                         'key' => 'created_at',
                         'type' => 'simple',
-                        'editable' => false,
+                        'edit' => false,
                         'search' => false,
 
                         'columnClassName' => 'dt-body-nowrap',
@@ -428,7 +445,7 @@ class Schema extends BaseSchema
                     [
                         'key' => 'updated_at',
                         'type' => 'simple',
-                        'editable' => false,
+                        'edit' => false,
                         'search' => false,
 
                         'columnClassName' => 'dt-body-nowrap',
@@ -455,7 +472,7 @@ class Schema extends BaseSchema
                     [
                         'key' => 'deleted_at',
                         'type' => 'simple',
-                        'editable' => false,
+                        'edit' => false,
                         'search' => false,
 
                         'columnClassName' => 'dt-body-nowrap',

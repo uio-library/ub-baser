@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import { get } from 'lodash/object'
 
 export default {
   name: 'simple-input',
@@ -20,11 +19,7 @@ export default {
     schema: Object,
     settings: Object,
     value: String,
-  },
-  computed: {
-    placeholder () {
-      return get(this.schema, 'search.placeholder')
-    },
+    placeholder: String,
   },
   methods: {
     onInput (newValue) {

@@ -44,6 +44,7 @@
                 :is="currentType"
                 :name="`v${index}`"
                 :value="value"
+                :placeholder="placeholder"
                 :schema="currentSchema"
                 :settings="settings"
                 @value="$emit('value', $event)"
@@ -81,6 +82,9 @@ export default {
   },
 
   computed: {
+    placeholder () {
+      return get(this.currentSchema, 'search.placeholder')
+    },
     currentSchema () {
       if (fieldMap === null) {
         // Lazy-load field map

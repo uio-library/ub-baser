@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Base;
 use App\Http\Requests\SearchRequest;
 use App\Schema\Schema;
-use App\Schema\SearchConfig;
+use App\Schema\SearchOptions;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -92,7 +92,7 @@ class QueryBuilder
         return $this->query;
     }
 
-    protected function addTextSearchTerm(SearchConfig $searchConfig, string $operator, ?string $value): void
+    protected function addTextSearchTerm(SearchOptions $searchConfig, string $operator, ?string $value): void
     {
         if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
             // Phrase
@@ -117,7 +117,7 @@ class QueryBuilder
         }
     }
 
-    protected function addSimpleTerm(SearchConfig $searchConfig, string $operator, ?string $value): void
+    protected function addSimpleTerm(SearchOptions $searchConfig, string $operator, ?string $value): void
     {
         if ($operator == 'eq' || $operator == 'like') {
             if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
@@ -176,7 +176,7 @@ class QueryBuilder
         }
     }
 
-    protected function addRangeSearchTerm(SearchConfig $searchConfig, string $operator, ?string $value): void
+    protected function addRangeSearchTerm(SearchOptions $searchConfig, string $operator, ?string $value): void
     {
         $value = explode('-', $value);
         if (count($value) == 2) {
@@ -194,7 +194,7 @@ class QueryBuilder
         throw new \RuntimeException('Unsupported search operator');
     }
 
-    protected function addArraySearchTerm(SearchConfig $searchConfig, string $operator, ?string $value): void
+    protected function addArraySearchTerm(SearchOptions $searchConfig, string $operator, ?string $value): void
     {
         switch ($operator) {
             case 'eq':

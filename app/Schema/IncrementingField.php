@@ -13,6 +13,6 @@ class IncrementingField extends SchemaField
         // Defaults
         $this->data['displayable'] = false;
         $this->data['search']->init(false);
-        $this->data['editable'] = false;
+        $this->data['edit']->init(false);
     }
 }

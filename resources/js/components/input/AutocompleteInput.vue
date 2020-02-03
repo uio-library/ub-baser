@@ -42,16 +42,12 @@ export default {
     schema: Object,
     settings: Object,
     value: String,
+    placeholder: String,
   },
   data () {
     return {
       working: false,
     }
-  },
-  computed: {
-    placeholder () {
-      return get(this.schema, 'search.placeholder')
-    },
   },
   mounted () {
     this.initAutocomplete()

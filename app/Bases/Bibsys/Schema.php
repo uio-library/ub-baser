@@ -18,7 +18,7 @@ class Schema extends BaseSchema
                 'type' => 'simple',
 
                 'displayable' => false,
-                'editable' => false,
+                'edit' => false,
 
                 // ------------------------------
                 /*

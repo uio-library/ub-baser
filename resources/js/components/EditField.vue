@@ -8,13 +8,14 @@
                 :is="currentType"
                 :name="name"
                 :value="value"
+                :placeholder="placeholder"
                 :schema="schema"
                 :settings="settings"
                 @value="onValue($event)"
             ></component>
-            <div v-if="schema.help"><small class="text-muted text-small">
+            <div v-if="schema.edit.help"><small class="text-muted text-small">
               <em class="fa fa-info-circle"></em>
-              {{ schema.help }}
+              {{ schema.edit.help }}
             </small></div>
             <div v-else><small class="text-muted text-small">&nbsp;</small></div>
             <!-- <tt>[{{ this.currentType }}] {{ name}}: {{ value }}</tt>-->
@@ -23,6 +24,7 @@
 </template>
 
 <script>
+import { get } from 'lodash/object'
 import * as components from './input'
 
 export default {
@@ -42,6 +44,9 @@ export default {
     },
   },
   computed: {
+    placeholder () {
+      return get(this.schema, 'edit.placeholder')
+    },
     currentType () {
       const type = this.schema.type
       return type.substr(0, 1).toUpperCase() + type.substr(1) + 'Input'

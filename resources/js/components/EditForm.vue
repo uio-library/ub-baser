@@ -62,12 +62,12 @@ export default {
   },
   computed: {
     fields () {
-      return this.schema.fields.filter(field => field.editable)
+      return this.schema.fields.filter(field => field.edit.enabled)
     },
     groups () {
       return this.schema.groups.map(group => ({
         label: group.label,
-        fields: group.fields.filter(field => field.editable),
+        fields: group.fields.filter(field => field.edit.enabled),
       }))
     },
     schemas () {

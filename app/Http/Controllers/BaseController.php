@@ -349,7 +349,7 @@ class BaseController extends Controller
         $changes = [];
 
         foreach ($schema->flat() as $field) {
-            if (!$field->editable) {
+            if (!$field->edit->enabled) {
                 continue;
             }
 
