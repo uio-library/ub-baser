@@ -6,13 +6,13 @@ class IncrementingField extends SchemaField
 {
     public const TYPE = 'incrementing';
 
-    public function __construct()
+    public function __construct(string $key, array $schemaOptions)
     {
-        parent::__construct();
+        parent::__construct($key, $schemaOptions);
 
         // Defaults
         $this->data['displayable'] = false;
-        $this->data['searchable'] = static::SEARCH_DISABLED;
+        $this->data['search']->init(false);
         $this->data['editable'] = false;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Base;
 use App\Http\Requests\SearchRequest;
 use App\Schema\Schema;
+use App\Schema\SearchConfig;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -62,47 +63,36 @@ class QueryBuilder
 
         foreach ($this->request->getQueryParts() as $queryPart) {
             $field = $this->fields[$queryPart['field']];
-            $operator = $queryPart['operator'];
-            if (!$operator) {
-                $operator = $field->getDefaultSearchOperator();
-            }
+            $operator = $queryPart['operator'] ?: $field->getDefaultSearchOperator();
             $value = $queryPart['value'];
 
-            $index = $field->get('searchOptions.index', [
-                'column' => $field->key,
-            ]);
+            if ($operator === 'isnull') {
+                $this->query->whereNull($field->getColumn());
+                continue;
+            } elseif ($operator === 'notnull') {
+                $this->query->whereNotNull($field->getColumn());
+                continue;
+            }
 
-            $indexType = Arr::get($index, 'type');
-
-            if ($indexType == 'ts') {
-                $this->addTextSearchTerm($index, $operator, $value);
-            } elseif ($indexType == 'range') {
-                $this->addRangeSearchTerm($index, $operator, $value);
-            } elseif ($indexType == 'array') {
-                $this->addArraySearchTerm($index, $operator, $value);
-            } else {
-                $this->addSimpleTerm($index, $operator, $value);
+            switch ($field->search->type) {
+                case 'ts':
+                    $this->addTextSearchTerm($field->search, $operator, $value);
+                    break;
+                case 'range':
+                    $this->addRangeSearchTerm($field->search, $operator, $value);
+                    break;
+                case 'array':
+                    $this->addArraySearchTerm($field->search, $operator, $value);
+                    break;
+                default:
+                    $this->addSimpleTerm($field->search, $operator, $value);
             }
         }
 
         return $this->query;
     }
 
-    protected function checkNull(string $column, string $operator): void
-    {
-        switch ($operator) {
-            case 'isnull':
-                $this->query->whereNull($column);
-                break;
-            case 'notnull':
-                $this->query->whereNotNull($column);
-                break;
-            default:
-                throw new \RuntimeException('Unsupported search operator');
-        }
-    }
-
-    protected function addTextSearchTerm(array $index, string $operator, ?string $value): void
+    protected function addTextSearchTerm(SearchConfig $searchConfig, string $operator, ?string $value): void
     {
         if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
             // Phrase
@@ -117,17 +107,17 @@ class QueryBuilder
 
         switch ($operator) {
             case 'eq':
-                $this->query->whereRaw($index['ts_column'] . ' @@ ' . $query, [$value]);
+                $this->query->whereRaw($searchConfig->index . ' @@ ' . $query, [$value]);
                 break;
             case 'neq':
-                $this->query->whereRaw('NOT ' . $index['ts_column'] . ' @@ ' . $query, [$value]);
+                $this->query->whereRaw('NOT ' . $searchConfig->index . ' @@ ' . $query, [$value]);
                 break;
             default:
-                $this->checkNull($index['column'], $operator);
+                throw new \RuntimeException('Unsupported search operator');
         }
     }
 
-    protected function addSimpleTerm(array $index, string $operator, ?string $value): void
+    protected function addSimpleTerm(SearchConfig $searchConfig, string $operator, ?string $value): void
     {
         if ($operator == 'eq' || $operator == 'like') {
             if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
@@ -152,76 +142,74 @@ class QueryBuilder
             }
         }
 
-        if (isset($index['case'])) {
-            if ($index['case'] == Schema::UPPER_CASE) {
-                $value = mb_strtoupper($value);
-            }
-            if ($index['case'] == Schema::LOWER_CASE) {
-                $value = mb_strtolower($value);
-            }
+        if ($searchConfig->case === Schema::UPPER_CASE) {
+            $value = mb_strtoupper($value);
+        } elseif ($searchConfig->case === Schema::LOWER_CASE) {
+            $value = mb_strtolower($value);
         }
+
 
         switch ($operator) {
 
             // Exact match operator, we use raw to support complex column arguments like e.g. "lower(name)"
             case 'ex':
-                $this->query->whereRaw($index['column'] . ' = ?', [$value]);
+                $this->query->whereRaw($searchConfig->index . ' = ?', [$value]);
                 break;
 
             // Like operator
             case 'like':
-                $this->query->whereRaw($index['column'] . ' like ?', [$value]);
+                $this->query->whereRaw($searchConfig->index . ' like ?', [$value]);
                 break;
 
             // Standard ilike operator
             case 'eq':
-                $this->query->whereRaw($index['column'] . ' ilike ?', [$value]);
+                $this->query->whereRaw($searchConfig->index . ' ilike ?', [$value]);
                 break;
 
             // Negated standard ilike operator
             case 'neq':
-                $this->query->whereRaw($index['column'] . ' not ilike ?', [$value]);
+                $this->query->whereRaw($searchConfig->index . ' not ilike ?', [$value]);
                 break;
 
             default:
-                $this->checkNull($index['column'], $operator);
+                throw new \RuntimeException('Unsupported search operator');
         }
     }
 
-    protected function addRangeSearchTerm(array $index, string $operator, ?string $value): void
+    protected function addRangeSearchTerm(SearchConfig $searchConfig, string $operator, ?string $value): void
     {
         $value = explode('-', $value);
         if (count($value) == 2) {
             switch ($operator) {
                 case 'eq':
-                    $this->query->where($index['column'], '>=', intval($value[0]))
-                        ->where($index['column'], '<=', intval($value[1]));
+                    $this->query->where($searchConfig->index, '>=', intval($value[0]))
+                        ->where($searchConfig->index, '<=', intval($value[1]));
                     return;
                 case 'neq':
-                    $this->query->where($index['column'], '<', intval($value[0]))
-                        ->orWhere($index['column'], '>', intval($value[1]));
+                    $this->query->where($searchConfig->index, '<', intval($value[0]))
+                        ->orWhere($searchConfig->index, '>', intval($value[1]));
                     return;
             }
         }
-        $this->checkNull($index['column'], $operator);
+        throw new \RuntimeException('Unsupported search operator');
     }
 
-    protected function addArraySearchTerm(array $index, string $operator, ?string $value): void
+    protected function addArraySearchTerm(SearchConfig $searchConfig, string $operator, ?string $value): void
     {
         switch ($operator) {
             case 'eq':
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-                $this->query->whereRaw($index['column'] . ' ~@ ?', [$value]);
+                $this->query->whereRaw($searchConfig->index . ' ~@ ?', [$value]);
                 break;
             case 'neq':
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-                $this->query->whereRaw('NOT ' . $index['column'] . ' ~@ ?', [$value]);
+                $this->query->whereRaw('NOT ' . $searchConfig->index . ' ~@ ?', [$value]);
                 break;
             case 'isnull':
-                $this->query->whereRaw($index['column'] . " = '[]'::jsonb");
+                $this->query->whereRaw($searchConfig->index . " = '[]'::jsonb");
                 break;
             case 'notnull':
-                $this->query->whereRaw($index['column'] . " != '[]'::jsonb");
+                $this->query->whereRaw($searchConfig->index . " != '[]'::jsonb");
                 break;
             default:
                 throw new \RuntimeException('Unsupported search operator');

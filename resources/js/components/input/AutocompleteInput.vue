@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     placeholder () {
-      return get(this.schema, 'searchOptions.placeholder')
+      return get(this.schema, 'search.placeholder')
     },
   },
   mounted () {

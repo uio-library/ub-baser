@@ -89,7 +89,7 @@ export default {
 
     firstSearchField () {
       for (let i = 0; i < this.allFields.length; i++) {
-        if (this.allFields[i].searchable !== 'disabled') {
+        if (this.allFields[i].search.enabled) {
           return this.allFields[i]
         }
       }
@@ -123,7 +123,7 @@ export default {
       console.log(this.firstSearchField)
       this.query.push({
         field: this.firstSearchField.key,
-        operator: get(this.firstSearchField, 'searchOptions.operators.0', 'eq'),
+        operator: get(this.firstSearchField, 'search.operators.0', 'eq'),
         value: '',
       })
     },

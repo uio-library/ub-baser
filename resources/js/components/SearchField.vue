@@ -1,7 +1,7 @@
 <template>
-    <div v-if="!currentSchema || !currentSchema.searchOptions || !currentSchema.searchOptions.operators" class="text-danger">
+    <div v-if="!currentSchema || !currentSchema.search || !currentSchema.search.operators" class="text-danger">
         <span v-if="!currentSchema">Error: No schema found for {{ field }}.</span>
-        <span v-else>Invalid: Schema for "{{ field }}" lacks "searchOptions" or "searchOptions.operators"</span>
+        <span v-else>Invalid: Schema for "{{ field }}" lacks "search" or "search.operators"</span>
     </div>
     <div v-else class="d-flex my-1" :id="'searchField' + index">
         <div class="flex-grow-0">
@@ -93,12 +93,12 @@ export default {
       return fieldMap[this.field]
     },
     currentType () {
-      const type = get(this.currentSchema, 'searchOptions.type', this.currentSchema.type)
+      const type = get(this.currentSchema, 'search.widget', this.currentSchema.type)
       return type.substr(0, 1).toUpperCase() + type.substr(1) + 'Input'
     },
     currentOperators () {
       return this.operators.filter(
-        op => this.currentSchema.searchOptions.operators.indexOf(op.value) !== -1
+        op => this.currentSchema.search.operators.indexOf(op.value) !== -1
       )
     },
     fields () {
@@ -124,7 +124,7 @@ export default {
 
   methods: {
     fieldIsVisible (field, group) {
-      return field.searchable === 'simple' || (this.advanced && field.searchable === 'advanced')
+      return field.search.enabled && (!field.search.advanced || this.advanced)
     },
     onFieldChange (value) {
       this.$emit('field', value)

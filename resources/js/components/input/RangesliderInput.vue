@@ -42,10 +42,10 @@ export default {
 
   computed: {
     minValue () {
-      return get(this.schema, 'searchOptions.minValue')
+      return get(this.schema, 'search.widgetOptions.minValue')
     },
     maxValue () {
-      return get(this.schema, 'searchOptions.maxValue')
+      return get(this.schema, 'search.widgetOptions.maxValue', new Date().getFullYear())
     },
     valueAsArray () {
       const val = this.value.split('-')

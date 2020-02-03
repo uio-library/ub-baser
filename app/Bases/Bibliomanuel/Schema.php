@@ -23,7 +23,7 @@ class Schema extends BaseSchema
                 'key' => 'created_at',
                 'type' => 'simple',
                 'editable' => false,
-                'searchable' => 'disabled',
+                'search' => false,
 
                 'columnClassName' => 'dt-body-nowrap',
             ],
@@ -33,7 +33,7 @@ class Schema extends BaseSchema
                 'key' => 'updated_at',
                 'type' => 'simple',
                 'editable' => false,
-                'searchable' => 'disabled',
+                'search' => false,
 
                 'columnClassName' => 'dt-body-nowrap',
             ],
@@ -109,7 +109,9 @@ class Schema extends BaseSchema
                 'key' => 'dato',
                 'type' => 'simple',
 
-                'searchable' => 'advanced',
+                'search' => [
+                    'advanced' => true,
+                ],
             ],
 
             // Type

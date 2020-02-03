@@ -6,9 +6,9 @@ class BooleanField extends SchemaField
 {
     public const TYPE = 'boolean';
 
-    public function __construct()
+    public function __construct(string $key, array $schemaOptions)
     {
-        parent::__construct();
+        parent::__construct($key, $schemaOptions);
 
         // Defaults
         $this->data['defaultValue'] = false;

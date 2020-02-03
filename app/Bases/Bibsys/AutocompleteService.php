@@ -45,7 +45,7 @@ class AutocompleteService extends \App\Services\AutocompleteService
     protected function bibsysCompleter(SchemaField $field, string $term): array
     {
         /*
-        $index = $field->get('searchOptions.index', [
+        $index = $field->get('search.index', [
             'column' => $field->key,
         ]);
         $searchColumn = $index['column'];

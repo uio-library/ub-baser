@@ -10,15 +10,6 @@ abstract class SchemaField implements JsonSerializable
 {
     const TYPE = null;
 
-    // Indicates that a field is searchable in simple search
-    public const SEARCH_SIMPLE = 'simple';
-
-    // Indicates that a field is searchable in advanced search
-    public const SEARCH_ADVANCED = 'advanced';
-
-    // Indicates that a field is not searchable
-    public const SEARCH_DISABLED = 'disabled';
-
     public $data = [];
 
     public static $types = [
@@ -33,18 +24,18 @@ abstract class SchemaField implements JsonSerializable
         'url' => UrlField::class,
     ];
 
-    public function __construct()
+    public function __construct(string $key, array $schemaOptions)
     {
+        $this->data['key'] = $key;
         $this->data['type'] = static::TYPE;
 
         // Defaults
         $this->data['displayable'] = true;
-        $this->data['searchable'] = self::SEARCH_SIMPLE;
         $this->data['editable'] = true;
         $this->data['orderable'] = true;
         $this->data['defaultValue'] = null;
         $this->data['datatype'] = Schema::DATATYPE_STRING;
-        $this->data['searchOptions'] = [];
+        $this->data['search'] = new SearchConfig($key, static::TYPE, $schemaOptions);
         $this->data['help'] = null;
     }
 
@@ -59,15 +50,15 @@ abstract class SchemaField implements JsonSerializable
      */
     public static function make(array $data, string $schemaPrefix, array $schemaOptions): self
     {
-        $field = static::newFieldFromType($data['type'], $schemaPrefix, $data['key']);
-
-        $field->setSearchOptions(
-            Arr::get($data, 'searchOptions', $field->searchOptions),
+        $field = static::newFieldFromType(
+            $data['type'],
+            $schemaPrefix,
+            $data['key'],
             $schemaOptions
         );
 
         foreach ($data as $key => $value) {
-            if (in_array($key, ['type', 'key', 'searchOptions'])) {
+            if (in_array($key, ['type', 'key'])) {
                 // pass
             } elseif (method_exists($field, 'set' . Str::ucfirst($key))) {
                 $field->{'set' . Str::ucfirst($key)}($value, $schemaOptions);
@@ -85,17 +76,22 @@ abstract class SchemaField implements JsonSerializable
      * @param string $fieldType
      * @param string $schemaPrefix
      * @param string $key
+     * @param array $schemaOptions
      *
      * @return mixed
      */
-    public static function newFieldFromType(string $fieldType, string $schemaPrefix, string $key): self
+    public static function newFieldFromType(
+        string $fieldType,
+        string $schemaPrefix,
+        string $key,
+        array $schemaOptions
+    ): self
     {
         if (!isset(static::$types[$fieldType])) {
             throw new \RuntimeException('Schema contains field of unrecognized type: ' . $fieldType);
         }
 
-        $field = new static::$types[$fieldType]();
-        $field->data['key'] = $key;
+        $field = new static::$types[$fieldType]($key, $schemaOptions);
         $field->data['label'] = trans("{$schemaPrefix}.{$key}");
 
         return $field;
@@ -104,34 +100,12 @@ abstract class SchemaField implements JsonSerializable
     /**
      * Set options passed to the Vue input component handling search input.
      *
-     * @param array $value
+     * @param array|false $value
      * @param array $options
      */
-    public function setSearchOptions(array $value, array $options): void
+    public function setSearch($value, array $options): void
     {
-        // Add default search operators if not set in schema
-        if (!isset($value['operators'])) {
-            $value['operators'] = $options['defaultOperators'];
-        }
-
-        $this->data['searchOptions'] = $value;
-    }
-
-    /**
-     * Set whether the field should be searchable in simple search, advanced search or not at all.
-     *
-     * @param string $value
-     */
-    public function setSearchable(string $value): void
-    {
-        if (!in_array($value, [
-            self::SEARCH_SIMPLE,
-            self::SEARCH_ADVANCED,
-            self::SEARCH_DISABLED,
-        ])) {
-            throw new \RuntimeException('Invalid value for "searchable": ' . $value);
-        }
-        $this->data['searchable'] = $value;
+        $this->data['search']->init($value);
     }
 
     /**
@@ -216,7 +190,7 @@ abstract class SchemaField implements JsonSerializable
 
     public function getDefaultSearchOperator()
     {
-        return $this->get('searchOptions.operators.0', 'eq');
+        return $this->search->getDefaultOperator();
     }
 
     public function getModelAttribute(): string

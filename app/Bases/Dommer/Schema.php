@@ -27,11 +27,9 @@ class Schema extends BaseSchema
                 'column' => 'kilde_id',
                 'viewColumn' => 'kilde_navn',
 
-                'searchOptions' => [
-                    'index' => [
-                        'type'=> 'simple',
-                        'column' => 'kilde_id',
-                    ],
+                'search' => [
+                    'type'=> 'simple',
+                    'index' => 'kilde_id',
                     'operators' => ['ex'],
                 ],
             ],
@@ -41,11 +39,12 @@ class Schema extends BaseSchema
 
                 'columnClassName' => 'dt-body-nowrap',
 
-                'searchOptions' => [
-                    'type' => 'rangeslider',
-                    'index' => [
-                        'type' => 'range',
-                        'column' => 'aar',
+                'search' => [
+                    'type' => 'range',
+                    'widget' => 'rangeslider',
+                    'widgetOptions' => [
+                        'minValue' => 1848,
+                        'maxValue' => 2012,
                     ],
                 ],
             ],
@@ -57,12 +56,4 @@ class Schema extends BaseSchema
 
         'groups' => [],
     ];
-
-    public function __construct()
-    {
-        $this->schemaOptions['minYear'] = 1848;
-        $this->schemaOptions['maxYear'] = 2012;
-
-        parent::__construct();
-    }
 }

@@ -23,11 +23,11 @@ class Schema extends BaseSchema
 
                 'displayable' => false,
                 'editable' => false,
-                'searchable' => 'simple',
 
-                'searchOptions' => [
+                'search' => [
                     'placeholder' => 'Forfatter, kritiker, ord i tittel, kommentar, etc... Avslutt med * om du føler for å trunkere.',
-                    'index' => ['type' => 'ts', 'ts_column' => 'any_field_ts'],
+                    'type' => 'ts',
+                    'index' => 'any_field_ts',
                     'operators' => ['eq', 'neq'],
                 ],
             ],
@@ -39,11 +39,11 @@ class Schema extends BaseSchema
 
                 'displayable' => false,
                 'editable' => false,
-                'searchable' => 'simple',
 
-                'searchOptions' => [
+                'search' => [
                     'placeholder' => 'Fornavn og/eller etternavn',
-                    'index' => ['type' => 'ts', 'ts_column' => 'person_ts'],
+                    'type' => 'ts',
+                    'index' => 'person_ts',
                     'operators' => ['eq', 'neq'],
                 ],
             ],
@@ -61,14 +61,15 @@ class Schema extends BaseSchema
                         'key' => 'verk_tittel',
                         'type' => 'autocomplete',
 
-                        'searchOptions' => [
-                            'placeholder' => 'Tittel på den omtalte utgaven av verket',
-                            'index' => [
-                                'type' => 'ts',
-                                'column' => 'verk_tittel',
-                                'ts_column' => 'verk_tittel_ts',
-                            ],
+                        'search' => [
+                            'placeholder' => 'Tittel på omtalt verk',
+                            'type' => 'ts',
+                            'index' => 'verk_tittel_ts',
                         ],
+
+                        // 'edit' => [
+                        //     'placeholder' => 'Tittel på den omtalte utgaven av verket',
+                        // ],
                     ],
 
                     // Språk
@@ -76,8 +77,8 @@ class Schema extends BaseSchema
                         'key' => 'verk_spraak',
                         'type' => 'autocomplete',
 
-                        'searchable' => 'advanced',
-                        'searchOptions' => [
+                        'search' => [
+                            'advanced' => true,
                             'placeholder' => 'Språket den omtalte utgaven er skrevet på',
                         ],
                     ],
@@ -86,11 +87,14 @@ class Schema extends BaseSchema
                     [
                         'key' => 'verk_originaltittel',
                         'type' => 'autocomplete',
-                        'searchable' => 'advanced',
 
-                        'searchOptions' => [
-                            'placeholder' => 'Fylles ut hvis tittel på omtalt utgave avviker fra originaltittel, f.eks. ved oversettelse',
+                        'search' => [
+                            'advanced' => true,
+                            'placeholder' => 'Søk kun i originaltitler',
                         ],
+                        // 'edit' => [
+                        //     'placeholder' => 'Fylles ut hvis tittel på omtalt utgave avviker fra originaltittel, f.eks. ved oversettelse',
+                        // ],
 
                     ],
 
@@ -98,10 +102,13 @@ class Schema extends BaseSchema
                     [
                         'key' => 'verk_originaltittel_transkribert',
                         'type' => 'autocomplete',
-                        'searchable' => 'advanced',
-                        'searchOptions' => [
-                            'placeholder' => 'Fylles ut hvis originaltittel bruker ikke-latinsk skrift',
+                        'search' => [
+                            'advanced' => true,
+                            'placeholder' => 'Søk kun i transkriberte titler',
                         ],
+                        // 'edit' => [
+                        //     'placeholder' => 'Fylles ut hvis originaltittel bruker ikke-latinsk skrift',
+                        // ],
                     ],
 
                     // Originalspråk
@@ -109,8 +116,8 @@ class Schema extends BaseSchema
                         'key' => 'verk_originalspraak',
                         'type' => 'autocomplete',
 
-                        'searchable' => 'advanced',
-                        'searchOptions' => [
+                        'search' => [
+                            'advanced' => true,
                             'placeholder' => 'Språket originalutgaven er skrevet på',
                         ],
                     ],
@@ -123,14 +130,11 @@ class Schema extends BaseSchema
                         'modelAttribute' => 'forfattere',
                         'personRole' => 'forfatter',
 
-                        'searchOptions' => [
-                            'type' => 'autocomplete',
+                        'search' => [
+                            'widget' => 'autocomplete',
                             'placeholder' => 'Fornavn og/eller etternavn',
-                            'index' => [
-                                'type' => 'ts',
-                                'column' => 'verk_forfatter',
-                                'ts_column' => 'forfatter_ts',
-                            ],
+                            'type' => 'ts',
+                            'index' => 'forfatter_ts',
                             'operators' => [
                                 'eq',
                                 'neq',
@@ -146,7 +150,7 @@ class Schema extends BaseSchema
                         'type' => 'boolean',
 
                         'displayable' => false,
-                        'searchable' => 'disabled',
+                        'search' => false,
 
                         // 'default' => false,
                         'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
@@ -157,7 +161,9 @@ class Schema extends BaseSchema
                         'key' => 'verk_utgivelsessted',
                         'type' => 'autocomplete',
 
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
 
                     // År
@@ -167,12 +173,12 @@ class Schema extends BaseSchema
 
                         'columnClassName' => 'dt-body-nowrap',
 
-                        'searchOptions' => [
-                            'type' => 'rangeslider',
+                        'search' => [
                             'advanced' => true,
-                            'index' => [
-                                'type' => 'range',
-                                'column' => 'verk_dato',
+                            'type' => 'range',
+                            'widget' => 'rangeslider',
+                            'widgetOptions' => [
+                                'minValue' => 1789,
                             ],
                             'placeholder' => 'Utgivelsesår for omtalt utgave'
                         ],
@@ -183,10 +189,9 @@ class Schema extends BaseSchema
                         'key' => 'verk_sjanger',
                         'type' => 'autocomplete',
 
-                        'searchOptions' => [
+                        'search' => [
                             'placeholder' => 'Sjanger til det omtalte verket. F.eks. lyrikk, roman, ...',
-                            'options' => [],
-                            'index' => ['type' => 'simple', 'column' => 'verk_sjanger'],
+                            'type' => 'simple',
                         ],
                     ],
 
@@ -195,7 +200,9 @@ class Schema extends BaseSchema
                         'key' => 'verk_kommentar',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
 
                     // Fulltekst-URL
@@ -204,7 +211,9 @@ class Schema extends BaseSchema
                         'type' => 'url',
                         'help' => 'Flere verdier skilles med mellomrom',
 
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
 
                 ],
@@ -223,14 +232,11 @@ class Schema extends BaseSchema
                         'modelAttribute' => 'kritikere',
                         'personRole' => 'kritiker',
 
-                        'searchOptions' => [
-                            'type' => 'autocomplete',
+                        'search' => [
+                            'widget' => 'autocomplete',
                             'placeholder' => 'Fornavn og/eller etternavn',
-                            'index' => [
-                                'type' => 'ts',
-                                'column' => 'kritiker',
-                                'ts_column' => 'kritiker_ts',
-                            ],
+                            'type' => 'ts',
+                            'index' => 'kritiker_ts',
                         ],
                     ],
 
@@ -241,7 +247,7 @@ class Schema extends BaseSchema
                         'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
                         // 'default' => false,
                         'displayable' => false,
-                        'searchable' => 'disabled',
+                        'search' => false,
                     ],
 
                     // Publikasjon
@@ -249,12 +255,9 @@ class Schema extends BaseSchema
                         'key' => 'publikasjon',
                         'type' => 'autocomplete',
 
-                        'searchOptions' => [
+                        'search' => [
                             'placeholder' => 'Publikasjon',
-                            'index' => [
-                                'type' => 'simple',
-                                'column' => 'publikasjon',
-                            ],
+                            'type' => 'simple',
                         ],
                     ],
 
@@ -276,7 +279,7 @@ class Schema extends BaseSchema
                             ['id' => 'nettforum', 'label' => 'Nettforum'],
                             ['id' => 'some', 'label' => 'Sosiale medier'],
                         ],
-                        'searchOptions' => [
+                        'search' => [
                             'operators' => ['ex'],
                         ],
                     ],
@@ -287,13 +290,10 @@ class Schema extends BaseSchema
                         'type' => 'tags',
                         'defaultValue' => [],
 
-                        'searchOptions' => [
-                            'type' => 'autocomplete',
+                        'search' => [
+                            'type' => 'array',
+                            'widget' => 'autocomplete',
                             'placeholder' => '',
-                            'index' => [
-                                'type' => 'array',
-                                'column' => 'kritikktype',
-                            ],
                         ],
                     ],
 
@@ -303,13 +303,10 @@ class Schema extends BaseSchema
                         'type' => 'tags',
                         'defaultValue' => [],
 
-                        'searchOptions' => [
-                            'type' => 'autocomplete',
+                        'search' => [
+                            'type' => 'array',
+                            'widget' => 'autocomplete',
                             'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...',
-                            'index' => [
-                                'type' => 'array',
-                                'column' => 'tags',
-                            ],
                         ],
                     ],
 
@@ -320,11 +317,11 @@ class Schema extends BaseSchema
 
                         'columnClassName' => 'dt-body-nowrap',
 
-                        'searchOptions' => [
-                            'type' => 'rangeslider',
-                            'index' => [
-                                'type' => 'range',
-                                'column' => 'dato',
+                        'search' => [
+                            'type' => 'range',
+                            'widget' => 'rangeslider',
+                            'widgetOptions' => [
+                                'minValue' => 1789,
                             ],
                         ],
                     ],
@@ -334,7 +331,9 @@ class Schema extends BaseSchema
                         'key' => 'spraak',
                         'type' => 'autocomplete',
 
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
 
                     // Tittel
@@ -342,14 +341,18 @@ class Schema extends BaseSchema
                         'key' => 'tittel',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
 
                     [
                         'key' => 'utgivelsessted',
                         'type' => 'autocomplete',
 
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
                     [
                         'key' => 'aargang',
@@ -380,20 +383,26 @@ class Schema extends BaseSchema
                         'key' => 'kommentar',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
                     [
                         'key' => 'utgivelseskommentar',
                         'type' => 'simple',
 
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
                     [
                         'key' => 'fulltekst_url',
                         'type' => 'url',
                         'help' => 'Flere verdier skilles med mellomrom',
 
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
 
                 ],
@@ -410,7 +419,7 @@ class Schema extends BaseSchema
                         'key' => 'created_at',
                         'type' => 'simple',
                         'editable' => false,
-                        'searchable' => 'disabled',
+                        'search' => false,
 
                         'columnClassName' => 'dt-body-nowrap',
                     ],
@@ -420,7 +429,7 @@ class Schema extends BaseSchema
                         'key' => 'updated_at',
                         'type' => 'simple',
                         'editable' => false,
-                        'searchable' => 'disabled',
+                        'search' => false,
 
                         'columnClassName' => 'dt-body-nowrap',
                     ],
@@ -436,7 +445,7 @@ class Schema extends BaseSchema
                             ['id' => 3, 'label' => 'Korrekturlest mot fysisk materiale'],
                             ['id' => 4, 'label' => 'Korrekturlest mot og lenket til digitalt materiale'],
                         ],
-                        'searchOptions' => [
+                        'search' => [
                             'operators' => ['ex'],
                         ],
                         'columnClassName' => 'dt-body-nowrap',
@@ -447,7 +456,7 @@ class Schema extends BaseSchema
                         'key' => 'deleted_at',
                         'type' => 'simple',
                         'editable' => false,
-                        'searchable' => 'disabled',
+                        'search' => false,
 
                         'columnClassName' => 'dt-body-nowrap',
                     ],
@@ -455,12 +464,4 @@ class Schema extends BaseSchema
             ],
         ],
     ];
-
-    public function __construct()
-    {
-        $this->schemaOptions['minYear'] = 1789;
-        $this->schemaOptions['maxYear'] = (int) strftime('%Y');
-
-        parent::__construct();
-    }
 }

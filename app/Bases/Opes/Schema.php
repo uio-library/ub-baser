@@ -28,11 +28,10 @@ class Schema extends BaseSchema
 
                 'displayable' => false,
                 'editable' => false,
-                'searchable' => 'simple',
 
-                'searchOptions' => [
-                    'placeholder' => '',
-                    'index' => ['type' => 'ts', 'ts_column' => 'any_field_ts'],
+                'search' => [
+                    'type' => 'ts',
+                    'index' => 'any_field_ts',
                     'operators' => ['eq', 'neq'],
                 ],
             ],
@@ -41,7 +40,7 @@ class Schema extends BaseSchema
                 'key' => 'created_at',
                 'type' => 'simple',
                 'editable' => false,
-                'searchable' => 'disabled',
+                'search' => false,
                 'columnClassName' => 'dt-body-nowrap',
             ],
             // Sist endret
@@ -49,7 +48,7 @@ class Schema extends BaseSchema
                 'key' => 'updated_at',
                 'type' => 'simple',
                 'editable' => false,
-                'searchable' => 'disabled',
+                'search' => false,
                 'columnClassName' => 'dt-body-nowrap',
             ],
         ],
@@ -72,19 +71,25 @@ class Schema extends BaseSchema
                     [
                         'key' => 'connections',
                         'type' => 'simple',
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
                     // Size
                     [
                         'key' => 'size',
                         'type' => 'simple',
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
                     // Lines
                     [
                         'key' => 'lines',
                         'type' => 'simple',
-                        'searchable' => 'advanced',
+                        'search' => [
+                            'advanced' => true,
+                        ],
                     ],
                     // Publication side
                     [
@@ -140,26 +145,18 @@ class Schema extends BaseSchema
                     [
                         'key' =>  'subj_headings',
                         'type' =>  'tags',
-                        'searchOptions' => [
-                            'type' => 'autocomplete',
-                            'placeholder' => '',
-                            'index' => [
-                                'type' => 'array',
-                                'column' => 'subj_headings',
-                            ],
+                        'search' => [
+                            'widget' => 'autocomplete',
+                            'type' => 'array',
                         ],
                     ],
                     // Persons
                     [
                         'key' =>  'persons',
                         'type' =>  'tags',
-                        'searchOptions' => [
-                            'type' => 'autocomplete',
-                            'placeholder' => '',
-                            'index' => [
-                                'type' => 'array',
-                                'column' => 'persons',
-                            ],
+                        'search' => [
+                            'widget' => 'autocomplete',
+                            'type' => 'array',
                         ],
                     ],
                     // Geographica
@@ -188,7 +185,7 @@ class Schema extends BaseSchema
 
             [
                 'label' => 'Information on publication',
-                'searchable' => 'disabled',
+                'search' => false,
                 'fields' => [
 
                     // WAIT with this:
@@ -275,7 +272,7 @@ class Schema extends BaseSchema
                 // if possible not the link but a text to click
                 // like Recto Verso. to be done later
                 'label' => 'Images',
-                'searchable' => 'disabled',
+                'search' => false,
                 'fields' => [
                     // Image Recto
                     [

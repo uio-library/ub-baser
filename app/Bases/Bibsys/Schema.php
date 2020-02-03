@@ -40,12 +40,13 @@ class Schema extends BaseSchema
 
                 */
 
-                // 'searchable' => 'disabled',
+                // 'search' => false,
                 // ------------------------------
 
-                'searchOptions' => [
+                'search' => [
                     'placeholder' => 'Du kan søke etter objektid, dokid, knyttid, avdeling, samling, tekst i MARC-posten, osv.',
-                    'index' => ['type' => 'ts', 'ts_column' => 'any_field_ts'],
+                    'type' => 'ts',
+                    'index' => 'any_field_ts',
                     'operators' => ['eq', 'neq'],
                 ],
             ],
@@ -60,9 +61,9 @@ class Schema extends BaseSchema
                         'key' => 'objektid',
                         'type' => 'simple',
 
-                        'searchOptions' => [
+                        'search' => [
                             'operators' => ['ex'],
-                            'index' => ['column' => 'objektid', 'case' => self::LOWER_CASE],
+                            'case' => self::LOWER_CASE,
                         ],
                         'orderable' => false,
                     ],
@@ -71,21 +72,21 @@ class Schema extends BaseSchema
                         'key' => 'title_statement',
                         'type' => 'simple',
                         'orderable' => false,
-                        'searchable' => 'disabled',
+                        'search' => false,
                     ],
 
                     [
                         'key' => 'pub_date',
                         'type' => 'simple',
                         'orderable' => false,
-                        'searchable' => 'disabled',
+                        'search' => false,
                     ],
 
                     [
                         'key' => 'marc_record',
                         'type' => 'simple',
                         'orderable' => false,
-                        'searchable' => 'disabled',
+                        'search' => false,
                     ],
                 ],
             ],
@@ -97,9 +98,9 @@ class Schema extends BaseSchema
                     [
                         'key' => 'dokid',
                         'type' => 'simple',
-                        'searchOptions' => [
+                        'search' => [
                             'operators' => ['ex'],
-                            'index' => ['column' => 'dokid', 'case' => self::LOWER_CASE],
+                            'case' => self::LOWER_CASE,
                         ],
                         'orderable' => false,
                     ],
@@ -108,10 +109,9 @@ class Schema extends BaseSchema
                     [
                         'key' => 'strekkode',
                         'type' => 'simple',
-                        'orderable' => false,
-                        'searchOptions' => [
+                        'search' => [
                             'operators' => ['ex'],
-                            'index' => ['column' => 'strekkode', 'case' => self::LOWER_CASE],
+                            'case' => self::LOWER_CASE,
                         ],
                         'orderable' => false,
                     ],
@@ -121,7 +121,7 @@ class Schema extends BaseSchema
                         'key' => 'status',
                         'type' => 'simple',
                         'orderable' => false,
-                        'searchable' => 'disabled',
+                        'search' => false,
                     ],
 
                     // Avdeling
@@ -129,10 +129,11 @@ class Schema extends BaseSchema
                         'key' => 'avdeling',
                         'type' => 'simple',
                         'orderable' => false,
-                        'searchOptions' => [
+                        'search' => [
                             'operators' => ['ex'],
                             'placeholder' => 'Du kan høyretrunkere med *',
-                            'index' => ['column' => 'lower(avdeling)', 'case' => self::LOWER_CASE],
+                            'index' => 'lower(avdeling)',
+                            'case' => self::LOWER_CASE,
                         ],
                     ],
 
@@ -141,10 +142,11 @@ class Schema extends BaseSchema
                         'key' => 'samling',
                         'type' => 'simple',
                         'orderable' => false,
-                        'searchOptions' => [
+                        'search' => [
                             'placeholder' => 'Du kan høyretrunkere med *',
                             'operators' => ['ex'],
-                            'index' => ['column' => 'lower(samling)', 'case' => self::LOWER_CASE],
+                            'index' => 'lower(samling)',
+                            'case' => self::LOWER_CASE,
                         ],
                     ],
 
@@ -153,10 +155,11 @@ class Schema extends BaseSchema
                         'key' => 'hyllesignatur',
                         'type' => 'simple',
                         'orderable' => false,
-                        'searchOptions' => [
+                        'search' => [
                             'placeholder' => 'Du kan høyretrunkere med *',
                             'operators' => ['ex'],
-                            'index' => ['column' => 'lower(hyllesignatur)', 'case' => self::LOWER_CASE],
+                            'index' => 'lower(hyllesignatur)',
+                            'case' => self::LOWER_CASE,
                         ],
                     ],
 
@@ -165,7 +168,7 @@ class Schema extends BaseSchema
                         'key' => 'deponert',
                         'type' => 'simple',
 
-                        'searchable' => 'disabled',
+                        'search' => false,
                         'orderable' => false,
                     ],
 
@@ -173,7 +176,7 @@ class Schema extends BaseSchema
                         'key' => 'lokal_anmerkning',
                         'type' => 'simple',
 
-                        'searchable' => 'disabled',
+                        'search' => false,
                         'orderable' => false,
                     ],
 
@@ -181,7 +184,7 @@ class Schema extends BaseSchema
                         'key' => 'beholdning',
                         'type' => 'simple',
 
-                        'searchable' => 'disabled',
+                        'search' => false,
                         'orderable' => false,
                     ],
 
@@ -189,7 +192,7 @@ class Schema extends BaseSchema
                         'key' => 'utlaanstype',
                         'type' => 'simple',
 
-                        'searchable' => 'disabled',
+                        'search' => false,
                         'orderable' => false,
                     ],
 
@@ -197,7 +200,7 @@ class Schema extends BaseSchema
                         'key' => 'lisensbetingelser',
                         'type' => 'simple',
 
-                        'searchable' => 'disabled',
+                        'search' => false,
                         'orderable' => false,
                     ],
 
@@ -205,7 +208,7 @@ class Schema extends BaseSchema
                         'key' => 'tilleggsplassering',
                         'type' => 'simple',
 
-                        'searchable' => 'disabled',
+                        'search' => false,
                         'orderable' => false,
                     ],
 
@@ -213,7 +216,7 @@ class Schema extends BaseSchema
                         'key' => 'intern_bemerkning_aapen',
                         'type' => 'simple',
 
-                        'searchable' => 'disabled',
+                        'search' => false,
                         'orderable' => false,
                     ],
 
@@ -221,14 +224,14 @@ class Schema extends BaseSchema
                     //     'key' => 'intern_bemerkning_lukket',
                     //     'type' => 'simple',
 
-                    //     'searchable' => 'advanced',
+                    //     'search' => 'advanced',
                     // ],
 
                     [
                         'key' => 'bestillingstype',
                         'type' => 'simple',
 
-                        'searchable' => 'disabled',
+                        'search' => false,
                         'orderable' => false,
                     ],
 
@@ -236,16 +239,16 @@ class Schema extends BaseSchema
                         'key' => 'statusdato',
                         'type' => 'simple',
 
-                        'searchable' => 'disabled',
+                        'search' => false,
                         'orderable' => false,
                     ],
 
                     [
                         'key' => 'seriedokid',
                         'type' => 'simple',
-                        'searchOptions' => [
+                        'search' => [
                             'operators' => ['ex'],
-                            'index' => ['column' => 'seriedokid', 'case' => self::LOWER_CASE],
+                            'case' => self::LOWER_CASE,
                         ],
                         'orderable' => false,
                     ],
@@ -254,7 +257,7 @@ class Schema extends BaseSchema
                         'key' => 'har_hefter',
                         'type' => 'simple',
 
-                        'searchable' => 'disabled',
+                        'search' => false,
                         'orderable' => false,
                     ],
 

@@ -27,7 +27,7 @@ class DataTable
 
             $columnReverseMap[$field->getViewColumn()] = $field->key;
             $requestedColumns[$k] = $field->getViewColumn();
-            $columnOrderMap[$k] = $field->get('searchOptions.index.column', $field->getColumn());
+            $columnOrderMap[$k] = $field->getColumn();
         }
 
         // Always include the id column
