@@ -8,9 +8,7 @@
         </p>
     @endif
 
-    <div class="ck-content">
-        {!! $page->body !!}
-    </div>
+    {!! $page->rendered() !!}
 
     <hr>
 

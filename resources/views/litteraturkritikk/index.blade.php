@@ -10,9 +10,7 @@
         </p>
     @endcan
 
-    <div class="lead ck-content">
-        {!! $intro !!}
-    </div>
+    {!! $intro !!}
 
     <div class="panel panel-default" style="margin-bottom: 1.6em;">
         <div class="panel-body">

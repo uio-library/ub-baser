@@ -9,9 +9,7 @@
         </p>
     @endcan
 
-    <p>
-        {!! $intro !!}
-    </p>
+    {!! $intro !!}
 
     <div class="panel panel-default">
         <div class="panel-body">

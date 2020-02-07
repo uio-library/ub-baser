@@ -164,7 +164,7 @@ class Base extends Model
     public function getIntro()
     {
         $page = $this->getPage('intro');
-        return !is_null($page) ? $page->body : null;
+        return !is_null($page) ? '<div class="lead ck-content">' . $page->rendered() . '</div>' : null;
     }
 
     /**

@@ -46,4 +46,25 @@ class Page extends Model
     {
         return 'slug';
     }
+
+    public function rendered()
+    {
+        $body = $this->body;
+
+        $body = preg_replace_callback(
+            '|<h([0-9])>(.*?)</h[0-9]>|',
+            function($matches) {
+                $level = $matches[1];
+                $title = $matches[2];
+                $id = preg_replace('/ /', '_', $title);
+                $id = preg_replace('/[^\wæøåÆØÅ_-]/', '', $id);
+                $id = mb_strtolower($id);
+
+                return "<h$level><a id=\"$id\">$title</a></h$level>";
+            },
+            $body
+        );
+
+        return '<div class="ck-content">' . $body . '</div>';
+    }
 }
