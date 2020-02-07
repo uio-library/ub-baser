@@ -469,3 +469,119 @@ div.dataTables_wrapper
 
 .ck.ck-editor__main
   min-height: 500px
+
+
+
+/**
+ * Vue ToolTip
+ */
+
+.tooltip
+  display: block !important
+  z-index: 10000
+  $maxWidth: 350px
+
+  .tooltip-inner
+    background: black
+    color: white
+    border-radius: 16px
+    padding: 5px 10px 4px
+    max-width: $maxWidth !important
+
+  .tooltip-arrow
+    width: 0
+    height: 0
+    border-style: solid
+    position: absolute
+    margin: 5px
+    // border-color: black
+    z-index: 1
+
+  &[x-placement^="top"]
+    margin-bottom: 5px
+
+    .tooltip-arrow
+      border-width: 5px 5px 0 5px
+      border-left-color: transparent !important
+      border-right-color: transparent !important
+      border-bottom-color: transparent !important
+      bottom: -5px
+      left: calc(50% - 5px)
+      margin-top: 0
+      margin-bottom: 0
+
+  &[x-placement^="bottom"]
+    margin-top: 5px
+
+    .tooltip-arrow
+      border-width: 0 5px 5px 5px
+      border-left-color: transparent !important
+      border-right-color: transparent !important
+      border-top-color: transparent !important
+      top: -5px
+      left: calc(50% - 5px)
+      margin-top: 0
+      margin-bottom: 0
+
+  &[x-placement^="right"]
+    margin-left: 5px
+
+    .tooltip-arrow
+      border-width: 5px 5px 5px 0
+      border-left-color: transparent !important
+      border-top-color: transparent !important
+      border-bottom-color: transparent !important
+      left: -5px
+      top: calc(50% - 5px)
+      margin-left: 0
+      margin-right: 0
+
+  &[x-placement^="left"]
+    margin-right: 5px
+
+    .tooltip-arrow
+      border-width: 5px 0 5px 5px
+      border-top-color: transparent !important
+      border-right-color: transparent !important
+      border-bottom-color: transparent !important
+      right: -5px
+      top: calc(50% - 5px)
+      margin-left: 0
+      margin-right: 0
+
+  p
+    margin: 0
+
+  &.popover
+    $color: rgba(255,255,255,0.9)
+    background: transparent !important
+    border-color: transparent !important
+    max-width: $maxWidth !important
+
+    .popover-inner
+      background: $color
+      color: black
+      padding: 1.2em
+      border-radius: 5px
+      box-shadow: 0 5px 20px rgba(black, .3)
+
+    .popover-arrow
+      border-color: $color
+
+    ul
+      text-align: left
+      padding-left: 20px
+
+    hr
+      margin-top: .4rem
+      margin-bottom: .4rem
+
+  &[aria-hidden='true']
+    visibility: hidden
+    opacity: 0
+    transition: opacity .15s, visibility .15s
+
+  &[aria-hidden='false']
+    visibility: visible
+    opacity: 1
+    transition: opacity .15s

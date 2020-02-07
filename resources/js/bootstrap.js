@@ -4,6 +4,7 @@ import 'regenerator-runtime/runtime'
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VTooltip from 'v-tooltip'
 import * as Sentry from '@sentry/browser'
 import * as Integrations from '@sentry/integrations'
 
@@ -46,6 +47,8 @@ require('selectize')
 require('tooltipster')
 require('tooltipster/dist/css/tooltipster.bundle.min.css')
 require('tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css')
+
+Vue.use(VTooltip)
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

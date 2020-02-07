@@ -18,8 +18,11 @@
             ></component>
             <!-- <tt>[{{ this.currentType }}] {{ name}}: {{ value }}</tt>-->
         </div>
-        <div v-if="schema.edit.help" class="flex-shrink-0 ml-2">
-          <em  style="font-size: 150%; cursor: help; color: #d32" class="fa fa-question-circle" :title="schema.edit.help"></em>
+        <div v-if="helpText" class="flex-shrink-0 ml-2">
+          <v-popover :auto-hide="true" trigger="hover">
+            <em style="font-size: 150%; cursor: help; " class="fa fa-question-circle text-info"></em>
+            <template slot="popover"><div v-html="helpText"></div></template>
+          </v-popover>
         </div>
     </div>
   </div>
@@ -46,6 +49,9 @@ export default {
     },
   },
   computed: {
+    helpText () {
+      return get(this.schema, 'edit.help')
+    },
     cssClass () {
       return get(this.schema, 'edit.cssClass') || 'col-md-6'
     },
