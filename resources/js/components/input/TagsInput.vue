@@ -16,7 +16,7 @@
 
 <script>
 import { get } from 'lodash/object'
-import Selectize from 'vue2-selectize'
+import Selectize from '../wrappers/Selectize'
 
 export default {
   name: 'tags-input',

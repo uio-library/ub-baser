@@ -27,6 +27,7 @@ if (process.env.MIX_SENTRY_DSN) {
 
 window.Popper = require('popper.js').default
 window.$ = window.jQuery = require('jquery')
+require('selectize')
 
 require('bootstrap')
 require('@openfonts/pt-sans_all')
