@@ -11,7 +11,9 @@ Please protect it with a strong passphrase.
 Copy the public key (`~/.ssh/id_rsa.ub-baser-deploy.pub`),
 login to the server and append the public key to `/home/deploy/.ssh/authorized_keys`.
 
-To test if the key is working, try this:
+Then check if you can login using `ssh deploy@ub-baser`.
+
+If that succeeds, you can proceed to test if you can run `ansible` (from this directory):
 
     $ ansible -m shell -a whoami prod
     ub-baser.uio.no | CHANGED | rc=0 >>
@@ -24,8 +26,26 @@ In case of connections problems, check that the filename of your key matches the
 
 ### Deploying
 
-To deploy, run:
+To deploy:
 
-    $ ansible-playbook deploy.yml
+1. Start by pushing the code to GitHub (`git push`)
+2. Wait for Travis tests to complete: https://travis-ci.org/scriptotek/ub-baser/builds
+3. Ideally a deploy would automatically happen at this point, but it doesn't. So you need to manually run the following:
 
-In case of problems, add `-vvvv` to get very verbose output.
+        $ ansible-playbook deploy.yml
+
+In case of problems, add `-vvvv` to the above command get very verbose output.
+
+## Troubleshooting: If the app fails to start
+
+Check if container is running:
+
+    $ ansible prod -m shell -a 'docker ps'
+
+Check logs:
+
+    $ ansible prod -m shell -a 'docker logs $(docker ps -q)'
+
+Re-create the container:
+
+    $ ansible prod -m shell -a 'docker service update --force ub-baser_app'
