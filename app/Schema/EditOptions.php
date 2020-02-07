@@ -13,6 +13,7 @@ class EditOptions extends FieldOptions
         'label' => null,  // For boolean input fields
         'cssClass' => null,
         'placeholder' => '',
+        'allow_new_values' => true,  // For array input fields
     ];
 
     /**
@@ -24,5 +25,6 @@ class EditOptions extends FieldOptions
         'label' => 'string',
         'cssClass' => 'string',
         'placeholder' => 'string',
+        'allow_new_values' => 'boolean',
     ];
 }

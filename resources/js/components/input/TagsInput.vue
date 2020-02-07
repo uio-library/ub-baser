@@ -33,7 +33,7 @@ export default {
     return {
       placeholder: get(this.schema, 'edit.placeholder', ''),
       selectizeSettings: {
-        create: true,
+        create: get(this.schema, 'edit.allow_new_values', true),
         preload: true,
         labelField: 'value',
         valueField: 'value',
