@@ -32,6 +32,7 @@
 <script>
 import autocomplete from 'autocomplete.js'
 import { get } from 'lodash/object'
+import axios from 'axios'
 
 let search = null
 
@@ -71,7 +72,7 @@ export default {
             if (cancel) {
               cancel.cancel()
             }
-            cancel = this.$http.CancelToken.source()
+            cancel = axios.CancelToken.source()
 
             this.$http.get(url, {
               cancelToken: cancel.token,
@@ -86,7 +87,7 @@ export default {
                   callback(res.data)
                 },
                 err => {
-                  if (!this.$http.isCancel(err)) {
+                  if (!axios.isCancel(err)) {
                     this.working = false
                   }
                   callback([])

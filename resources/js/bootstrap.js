@@ -57,23 +57,24 @@ Vue.use(VTooltip)
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-Vue.use(VueAxios, axios)
+let csrfToken = document.head.querySelector('meta[name="csrf-token"]')
 
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-
-/**
- * Next we will register the CSRF Token as a common header with Axios so that
- * all outgoing HTTP requests automatically have it attached. This is just
- * a simple convenience so we don't have to attach every token manually.
- */
-
-const token = document.head.querySelector('meta[name="csrf-token"]')
-
-if (token) {
-  axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
+if (csrfToken) {
+  csrfToken = csrfToken.content
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')
+  csrfToken = null
 }
+
+const http = axios.create({
+  timeout: 10000,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    'X-CSRF-TOKEN': csrfToken,
+  }
+});
+
+Vue.use(VueAxios, http)
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
