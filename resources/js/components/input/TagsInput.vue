@@ -5,6 +5,7 @@
         :name="name + '[]'"
         :settings="selectizeSettings"
         :value="value"
+        :placeholder="placeholder"
         @input="onInput($event)"
       >
         <!-- eslint-disable-next-line vue/require-v-for-key -->
@@ -30,6 +31,7 @@ export default {
   },
   data () {
     return {
+      placeholder: get(this.schema, 'edit.placeholder', ''),
       selectizeSettings: {
         create: true,
         preload: true,

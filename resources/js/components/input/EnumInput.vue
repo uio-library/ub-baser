@@ -4,6 +4,7 @@
       :name="name"
       :settings="selectizeSettings"
       :value="value"
+      :placeholder="placeholder"
       @input="onInput($event)"
     >
       <option v-for="val in values" :key="val.id" :value="val.id">{{ val.label }}</option>
@@ -29,6 +30,7 @@ export default {
   },
   data () {
     return {
+      placeholder: get(this.schema, 'edit.placeholder', ''),
       values: cloneDeep(this.schema.values),
       selectizeSettings: {
         // Ref: https://github.com/selectize/selectize.js/blob/master/docs/usage.md
