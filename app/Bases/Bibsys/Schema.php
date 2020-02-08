@@ -8,7 +8,6 @@ class Schema extends BaseSchema
 {
     public $prefix = 'bibsys';
     public $primaryId = 'dokid';
-    public $costLimit = 20000;
 
     protected $schema = [
         'fields' => [

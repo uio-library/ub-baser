@@ -49,7 +49,7 @@ class DataTable
             $queryBuilder->orderByRaw("$col $dir");  //  NULLS LAST");
         }
 
-        $recordCount = $this->getRecordCount($base, $request, $queryBuilder, $schema->costLimit);
+        $recordCount = $this->getRecordCount($base, $request, $queryBuilder);
 
         $queryBuilder->skip($request->start);
         $queryBuilder->take($request->length + 1);
@@ -99,14 +99,14 @@ class DataTable
      * @param Base $base
      * @param SearchRequest $request
      * @param Builder $queryBuilder
-     * @param int $costLimit
      *
      * @return int
      */
-    protected function getRecordCount(Base $base, SearchRequest $request, Builder $queryBuilder, int $costLimit = 0): int
+    protected function getRecordCount(Base $base, SearchRequest $request, Builder $queryBuilder): int
     {
         $viewCls = $base->getClass('RecordView');
         $view = (new $viewCls())->getTable();
+        $costLimit = $base->getSetting('cost_limit');
 
         if ($costLimit) {
             if (!count($request->getQueryParts())) {

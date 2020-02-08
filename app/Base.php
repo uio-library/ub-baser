@@ -18,6 +18,7 @@ use Illuminate\Support\Arr;
  * @property array languages
  * @property array name
  * @property array class_bindings
+ * @property array settings
  */
 class Base extends Model
 {
@@ -34,6 +35,7 @@ class Base extends Model
         'name' => 'array',
         'languages' => 'array',
         'class_bindings' => 'array',
+        'settings' => 'array',
     ];
 
     /**
@@ -213,5 +215,16 @@ class Base extends Model
     {
         $recordClass = $this->getClass('Record');
         return new $recordClass();
+    }
+
+    /**
+     * Get a setting value.
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getSetting(string $name)
+    {
+        return Arr::get($this->settings, $name);
     }
 }
