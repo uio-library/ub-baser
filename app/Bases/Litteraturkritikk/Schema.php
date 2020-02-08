@@ -69,6 +69,7 @@ class Schema extends BaseSchema
 
                         'edit' => [
                             'placeholder' => 'Tittel på den omtalte utgaven av verket',
+                            'help' => 'Skriv inn tittelen på den omtalte utgaven av verket slik den står skrevet på tittelbladet. Ikke bruk anførselstegn med mindre dette er en del av tittelen.',
                         ],
                     ],
 
@@ -80,6 +81,9 @@ class Schema extends BaseSchema
                         'search' => [
                             'advanced' => true,
                             'placeholder' => 'Språket den omtalte utgaven er skrevet på',
+                        ],
+                        'edit' => [
+                            'help' => 'Skriv inn språket den omtalte utgaven er skrevet på. Bruk liten forbokstav. For norsk, skriv bokmål eller nynorsk.',
                         ],
                     ],
 
@@ -93,7 +97,8 @@ class Schema extends BaseSchema
                             'placeholder' => 'Søk kun i originaltitler',
                         ],
                         'edit' => [
-                            'placeholder' => 'Fylles ut hvis tittel på omtalt utgave avviker fra originaltittel, f.eks. ved oversettelse',
+                            'placeholder' => 'Fyll inn hvis tittel på omtalt utgave avviker fra originaltittel, f.eks. ved oversettelse',
+                            'help' => 'Fyll inn om den omtalte utgavens tittel avviker fra originaltittelen, f.eks. ved oversettelser, senere utgaver med endret tittel, eller lignende.<hr>Ved originaltitler på russisk, japansk eller andre ikke-latinske alfabet, kontakt Anne Sæbø ved UB for å få standardisert originaltittel tilsendt fra aktuell fagreferent. Se <a href="/norsk-litteraturkritikk/veiledning" target="_blank">redigeringsveiledning</a> for mer informasjon.',
                         ],
 
                     ],
@@ -107,6 +112,10 @@ class Schema extends BaseSchema
                             'advanced' => true,
                             'placeholder' => 'Språket originalutgaven er skrevet på',
                         ],
+                        'edit' => [
+                            'placeholder' => 'Språket originalutgaven er utgitt på',
+                            'help' => 'Skriv inn språket originalutgaven er skrevet på. Bruk liten forbokstav. For norsk, skriv bokmål eller nynorsk.',
+                        ]
                     ],
 
                     // Originaltittel (transkribert)
@@ -118,7 +127,8 @@ class Schema extends BaseSchema
                             'placeholder' => 'Søk kun i transkriberte titler',
                         ],
                         'edit' => [
-                            'placeholder' => 'Fylles ut hvis originaltittel bruker ikke-latinsk skrift',
+                            'placeholder' => 'Fyll inn hvis originaltittel bruker ikke-latinsk skrift',
+                            'help' => 'Ved originaltitler på russisk, japansk eller andre ikke-latinske alfabet, kontakt Anne Sæbø ved UB for å få standardisert originaltittel tilsendt fra aktuell fagreferent. Se <a href="/norsk-litteraturkritikk/veiledning" target="_blank">redigeringsveiledning</a> for mer informasjon.'
                         ],
                     ],
 
@@ -145,6 +155,7 @@ class Schema extends BaseSchema
 
                         'edit' => [
                             'cssClass' => 'col-md-12',
+                            'help' => 'Trykk på «Legg til person» og begynn å skrive forfatterens navn i feltet. Om vedkommende finnes i personregisteret, velg personens navn fra listen som dukker opp, og trykk deretter «Ok» for å få opp flere informasjonsfelt. Om forfatteren ikke ligger i registeret, skriv inn personens navn og trykk på «Ok» for å legge inn mer informasjon. '
                         ],
                     ],
 
@@ -159,7 +170,7 @@ class Schema extends BaseSchema
                         // 'default' => false,
                         'edit' => [
                             'label' => 'Flere forfattere',
-                            'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
+                            'help' => 'Kryss av her dersom det er flere forfattere enn det er hensiktsmessig å registrere. Forsøk alltid å få med forfatterne som er hovedfokus for omtalen.',
                             'cssClass' => 'col-md-12',
                         ],
                     ],
@@ -172,6 +183,10 @@ class Schema extends BaseSchema
                         'search' => [
                             'advanced' => true,
                         ],
+
+                        'edit' => [
+                            'placeholder' => 'Geografisk utgivelsessted for omtalt utgave',
+                        ]
                     ],
 
                     // År
@@ -188,7 +203,10 @@ class Schema extends BaseSchema
                             'widgetOptions' => [
                                 'minValue' => 1789,
                             ],
-                            'placeholder' => 'Utgivelsesår for omtalt utgave'
+                        ],
+                        'edit' => [
+                            'placeholder' => 'Utgivelsesår for omtalt utgave',
+                            'help' => 'Fyll inn utgivelsesår for den omtalte utgaven av verket.',
                         ],
                     ],
 
@@ -198,8 +216,12 @@ class Schema extends BaseSchema
                         'type' => 'autocomplete',
 
                         'search' => [
-                            'placeholder' => 'Sjanger til det omtalte verket. F.eks. lyrikk, roman, ...',
+                            'placeholder' => 'Sjanger til det omtalte verket. F.eks. lyrikk eller roman',
                             'type' => 'simple',
+                        ],
+                        'edit' => [
+                            'placeholder' => 'Sjanger til det omtalte verket, f.eks. lyrikk eller roman',
+                            'help' => 'Fyll inn sjangeren til det omtalte verket. Bruk kun <a target="_blank" href="/norsk-litteraturkritikk/veiledning#sjanger">databasens egen sjangertypologi</a>.',
                         ],
                     ],
 
@@ -210,6 +232,10 @@ class Schema extends BaseSchema
 
                         'search' => [
                             'advanced' => true,
+                        ],
+                        'edit' => [
+                            'placeholder' => 'Fyll eventuelt inn annen relevant informasjon',
+                            'help' => 'Feltet fungerer som et fotnotefelt hvor annen relevant informasjon kan legges inn, eksempelvis informasjon om utgaven eller om anledningen for omtalen.',
                         ],
                     ],
 
@@ -222,7 +248,8 @@ class Schema extends BaseSchema
                             'advanced' => true,
                         ],
                         'edit' => [
-                            'help' => 'Flere verdier skilles med mellomrom',
+                            'placeholder' => 'Fyll inn lenke til fulltekstversjon dersom verket er tilgjengelig digitalt.',
+                            'help' => 'Kopier og lim inn lenke til fulltekst dersom verket er tilgjengelig digitalt, eksempelvis i Nasjonalbibliotekets digitale arkiv. URLer fra NB.no konverteres automatisk til varige lenker.<hr>Flere lenker skilles med mellomrom – ikke bruk semikolon her.',
                             'cssClass' => 'col-md-12',
                         ],
                     ],
@@ -251,6 +278,7 @@ class Schema extends BaseSchema
                         ],
                         'edit' => [
                             'cssClass' => 'col-md-12',
+                            'help' => 'Trykk på «Legg til person» og begynn å skrive kritikerens navn i feltet. Om vedkommende finnes i personregisteret kan du velge personens navn i listen som dukker opp i feltet, og deretter trykke på «Ok» for å få opp flere informasjonsfelt. Om kritikeren ikke ligger i registeret, skriv inn personens navn og trykk på "Ok" for å legge inn mer informasjon.'
                         ],
                     ],
 
@@ -263,7 +291,7 @@ class Schema extends BaseSchema
                         'search' => false,
                         'edit' => [
                             'label' => 'Flere kritikere',
-                            'help' => 'Kryss av hvis det er flere personer enn dem som er listet opp eksplisitt ovenfor.',
+                            'help' => 'Kryss av her dersom kritikken er signert av flere kritikere enn det er hensiktsmessig å registrere.',
                             'cssClass' => 'col-md-12',
                         ],
                     ],
@@ -276,6 +304,10 @@ class Schema extends BaseSchema
                         'search' => [
                             'placeholder' => 'Publikasjon',
                             'type' => 'simple',
+                        ],
+                        'edit' => [
+                            'placeholder' => 'Tittel på publikasjon',
+                            'help' => 'Fyll inn tittelen på publikasjon kritikken er publisert i. Merk at publikasjoner her omfatter både trykte og digitale medier, som aviser, tidsskrifter, bøker, TV- og radioprogrammer og nettsteder.',
                         ],
                     ],
 
@@ -300,6 +332,10 @@ class Schema extends BaseSchema
                         'search' => [
                             'operators' => ['ex'],
                         ],
+                        'edit' => [
+                            'placeholder' => 'Medieformatet kritikken er publisert i',
+                            'help' => 'Hvilket medieformat er omtalen publisert i? Verdi velges fra <a target="_blank" href="/norsk-litteraturkritikk/veiledning#medieformat">databasens egen typologi for medieformat</a>.',
+                        ],
                     ],
 
                     // Type
@@ -312,6 +348,12 @@ class Schema extends BaseSchema
                             'type' => 'array',
                             'widget' => 'autocomplete',
                             'placeholder' => '',
+                        ],
+                        'edit' => [
+                            'allow_new_values' => false,
+                            'preload' => true,
+                            'placeholder' => 'Velg aktuell kategori for kritikktype',
+                            'help' => 'Hvilken kritikktype er det snakk om? Én eller flere verdier velges fra <a target="_blank" href="/norsk-litteraturkritikk/veiledning#kritikktype">databasens egen typologi for kritikktype</a>. Trykk <code>Enter</code> etter at du valgt kategori fra listen som dukker opp når du klikker på feltet.<hr>Det er mulig å kategorisere kritikken under flere typer, dersom det er aktuelt. Velg/skriv inn én kategori av gangen, og trykk <code>Enter</code> mellom hver kategori, slik at kategoriene vises som enkeltord med en grå boks rundt.',
                         ],
                     ],
 
@@ -326,6 +368,14 @@ class Schema extends BaseSchema
                             'widget' => 'autocomplete',
                             'placeholder' => 'F.eks. teaterkritikk, forfatterportrett, ...',
                         ],
+                        'edit' => [
+                            'placeholder' => 'Emneord fra Humord-vokabularet',
+                            'help' => 'Kan kritikken kategoriseres under relevante emneord? Dette feltet er integrert det kontrollerte emnevokabularet <a target="_blank" href="https://app.uio.no/ub/emnesok/humord/search">Humord</a>.',
+                            'remote_source' => [
+                                'url' => 'https://data.ub.uio.no/skosmos/rest/v1/search?labellang=nb&query={QUERY}*&type=skos:Concept&vocab=humord',
+                            ],
+                            'allow_new_values' => false,
+                        ]
                     ],
 
                     // Dato
@@ -342,6 +392,10 @@ class Schema extends BaseSchema
                                 'minValue' => 1789,
                             ],
                         ],
+
+                        'edit' => [
+                            'help' => 'Skriv inn publiseringsdatoen for omtalen, bruk formatet ÅR-MÅNED-DAG. Om kritikken er publisert i deler over flere datoer, skrives samtlige datoer inn i feltet, adskilt med semikolon og mellomrom. Eksempel: 1885-01-24; 1885-01-31; 1885-02-02',
+                        ]
                     ],
 
                     // Språk
@@ -352,6 +406,10 @@ class Schema extends BaseSchema
                         'search' => [
                             'advanced' => true,
                         ],
+                        'edit' => [
+                            'placeholder' => 'Språket kritikken er skrevet på',
+                            'help' => 'Hvilket språk er kritikken skrevet på? Bruk liten forbokstav. For norske tekster, skriv nynorsk eller bokmål.',
+                        ]
                     ],
 
                     // Tittel
@@ -362,6 +420,11 @@ class Schema extends BaseSchema
                         'search' => [
                             'advanced' => true,
                         ],
+                        'edit' => [
+                            'placeholder' => 'Tittel eller overskrift for kritikken',
+                            'help' => 'Hva er tittelen på kritikken? Ikke bruk anførselstegn, med mindre anførselstegn er en del av selve tittelen.<hr>Om tittel mangler, la feltet stå tomt.'
+                        ]
+
                     ],
 
                     [
@@ -371,40 +434,49 @@ class Schema extends BaseSchema
                         'search' => [
                             'advanced' => true,
                         ],
+                        'edit' => [
+                            'placeholder' => 'Det geografiske stedet kritikken ble publisert',
+                            'help' => 'Hvor ble kritikken publisert? Bruk samme skrivemåte som på tittelbladet. Ved mer enn ett utgivelsessted, bruk semikolon og mellomrom. Eksempel: Christiania; København'
+                        ]
                     ],
                     [
                         'key' => 'aargang',
                         'type' => 'simple',
                         'edit' => [
-                            'help' => 'Tall (1), intervall (1-2) eller flere verdier (1; 3).',
+                            'placeholder' => 'Fyll inn årgang om det er aktuelt',
+                            'help' => 'Skriv inn årgang, dersom det er aktuelt. Bruk arabiske tall. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
                         ],
                     ],
                     [
                         'key' => 'bind',
                         'type' => 'simple',
                         'edit' => [
-                            'help' => 'Tall (1), intervall (1-2) eller flere verdier (1; 3).',
+                            'placeholder' => 'Fyll inn bind om det er aktuelt',
+                            'help' => 'Skriv inn bind, dersom det er aktuelt. Bruk arabiske tall. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
                         ],
                     ],
                     [
                         'key' => 'hefte',
                         'type' => 'simple',
                         'edit' => [
-                            'help' => 'Tall (1), intervall (1-2) eller flere verdier (1; 3).',
+                            'placeholder' => 'Fyll inn hefte om det er aktuelt',
+                            'help' => 'Skriv inn hefte, dersom det er aktuelt. Bruk arabiske tall. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
                         ],
                     ],
                     [
                         'key' => 'nummer',
                         'type' => 'simple',
                         'edit' => [
-                            'help' => 'Tall (1), intervall (1-2) eller flere verdier (1; 3).',
+                            'placeholder' => 'Fyll inn nummer om det er aktuelt',
+                            'help' => 'Skriv inn nummer, dersom det er aktuelt. Bruk arabiske tall. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).',
                         ],
                     ],
                     [
                         'key' => 'sidetall',
                         'type' => 'simple',
                         'edit' => [
-                            'help' => 'Tall (1), intervall (1-2) eller flere verdier (1; 3).',
+                            'placeholder' => 'Fyll inn sidetall om det er aktuelt',
+                            'help' => 'Hvilken eller hvilke sider er kritikken publisert på? Bruk arabiske tall, men unntak av sidetall som oppgis i romertall i selve teksten. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3) eller (220-244; 400-422).',
                         ],
                     ],
                     [
@@ -414,6 +486,10 @@ class Schema extends BaseSchema
                         'search' => [
                             'advanced' => true,
                         ],
+                        'edit' => [
+                            'placeholder' => 'Fyll eventuelt inn annen relevant informasjon',
+                            'help' => 'Dette feltet fungerer som et fotnotefelt hvor annen relevant informasjon legges inn. Om det allerede ligger tematisk informasjon i feltet (sosialistisk, nynorsk, e.l.), skal dette oversettes til aktuelle Humord og flyttes til feltet for emneord.',
+                        ],
                     ],
                     [
                         'key' => 'utgivelseskommentar',
@@ -422,6 +498,9 @@ class Schema extends BaseSchema
                         'search' => [
                             'advanced' => true,
                         ],
+                        'edit' => [
+                            'placeholder' => 'Ikke bruk. Dette feltet skal fases ut.',
+                        ]
                     ],
                     [
                         'key' => 'fulltekst_url',
@@ -430,8 +509,9 @@ class Schema extends BaseSchema
                             'advanced' => true,
                         ],
                         'edit' => [
-                            'help' => 'Flere verdier skilles med mellomrom',
-                        ],
+                            'placeholder' => 'Fyll inn dersom kritikken er tilgjengelig digitalt',
+                            'help' => 'Kopier og lim inn eventuell lenke her, eksempelvis til Nasjonalbibliotekets digitale arkiv, nettaviser, eller NRKs nettradio og nett-TV.'
+                        ]
                     ],
 
                 ],
@@ -478,6 +558,11 @@ class Schema extends BaseSchema
                             'operators' => ['ex'],
                         ],
                         'columnClassName' => 'dt-body-nowrap',
+                        'edit' => [
+                            'placeholder' => 'Oppdater alltid postens korrekturstatus etter endt arbeid',
+                            'help' => 'For å koordinere på ryddig vis mellom alle som arbeider med databasen er det viktig å alltid oppdatere korrekturstatus etter endt arbeid med posten. Om posten nå er ferdig korrekturlest, marker om det er mot fysisk eller digitalt materiale. Om postens verk og/eller kritikk ikke er tilgjengelig digitalt, marker at posten må korrekturleses mot fysisk materiale, dersom du selv ikke har tilgang til det fysiske materiale for øyeblikket.',
+                        ],
+
                     ],
 
                     // Slettet

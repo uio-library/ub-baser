@@ -10,9 +10,9 @@ return [
     'q' => 'Alle felt',
     'person' => 'Person (forfatter, kritiker e.a.)',
 
-    'kritikktype' => 'Type',
+    'kritikktype' => 'Kritikktype',
     'tags' => 'Emneord',
-    'utgivelsessted' => 'Utgivelsessted',
+    'utgivelsessted' => 'Publiseringssted',
     'spraak' => 'Språk',
 
     'type' => 'Kritikktype',
@@ -20,13 +20,13 @@ return [
     'tittel' => 'Kritikkens tittel',
     'kommentar' => 'Kommentar',
     'publikasjon' => 'Publikasjon',
-    'dato' => 'Utgivelsesdato',
+    'dato' => 'Publiseringsdato',
     'aargang' => 'Årgang',
     'bind' => 'Bind',
     'hefte' => 'Hefte',
     'nummer' => 'Nummer',
     'sidetall' => 'Sidetall',
-    'utgivelseskommentar' => 'Utgivelseskommentar',
+    'utgivelseskommentar' => 'Publiseringskommentar (utfases)',
     'sjanger' => 'Sjanger',
     'fulltekst_url' => 'Fulltekst-URL',
 
