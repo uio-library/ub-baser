@@ -6,262 +6,262 @@ use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
 {
-    public $prefix = 'opes';
+    public $prefix = "opes";
 
     protected $schema = [
-        'fields' => [
+        "fields" => [
             // ID
             [
-                'key' => 'id',
-                'type' => 'incrementing',
-                'displayable' => true,
+                "key" => "id",
+                "type" => "incrementing",
+                "displayable" => true,
             ],
             // inventary number
             [
-                'key' => 'inv_no',
-                'type' => 'simple',
+                "key" => "inv_no",
+                "type" => "simple",
             ],
             // Søk i alle felt
             [
-                'key' => 'q',
-                'type' => 'simple',
+                "key" => "q",
+                "type" => "simple",
 
-                'displayable' => false,
-                'edit' => false,
+                "displayable" => false,
+                "edit" => false,
 
-                'search' => [
-                    'type' => 'ts',
-                    'index' => 'any_field_ts',
-                    'operators' => ['eq', 'neq'],
+                "search" => [
+                    "type" => "ts",
+                    "index" => "any_field_ts",
+                    "operators" => ["eq", "neq"],
                 ],
             ],
             // Opprettet
             [
-                'key' => 'created_at',
-                'type' => 'simple',
-                'edit' => false,
-                'search' => false,
-                'columnClassName' => 'dt-body-nowrap',
+                "key" => "created_at",
+                "type" => "simple",
+                "edit" => false,
+                "search" => false,
+                "columnClassName" => "dt-body-nowrap",
             ],
             // Sist endret
             [
-                'key' => 'updated_at',
-                'type' => 'simple',
-                'edit' => false,
-                'search' => false,
-                'columnClassName' => 'dt-body-nowrap',
+                "key" => "updated_at",
+                "type" => "simple",
+                "edit" => false,
+                "search" => false,
+                "columnClassName" => "dt-body-nowrap",
             ],
         ],
-        'groups' => [
+        "groups" => [
             [
-                'label' => 'Background and Physical Properties',
-                'fields' => [
+                "label" => "Background and Physical Properties",
+                "fields" => [
                     // Material
                     [
-                        'key' => 'material_long',
-                        'type' => 'select',
+                        "key" => "material_long",
+                        "type" => "select",
                     ],
                     // Material long
                     //[
-                    //    'key' =>  'material_long',
-                    //    'type' =>  'simple',
+                    //    "key" =>  "material_long",
+                    //    "type" =>  "simple",
                     //
                     //],
                     // Connections
                     [
-                        'key' => 'connections',
-                        'type' => 'simple',
-                        'search' => [
-                            'advanced' => true,
+                        "key" => "connections",
+                        "type" => "simple",
+                        "search" => [
+                            "advanced" => true,
                         ],
                     ],
                     // Size
                     [
-                        'key' => 'size',
-                        'type' => 'simple',
-                        'search' => [
-                            'advanced' => true,
+                        "key" => "size",
+                        "type" => "simple",
+                        "search" => [
+                            "advanced" => true,
                         ],
                     ],
                     // Lines
                     [
-                        'key' => 'lines',
-                        'type' => 'simple',
-                        'search' => [
-                            'advanced' => true,
+                        "key" => "lines",
+                        "type" => "simple",
+                        "search" => [
+                            "advanced" => true,
                         ],
                     ],
                     // Publication side
                     [
-                        'key' => 'publ_side',
-                        'type' => 'select',
+                        "key" => "publ_side",
+                        "type" => "select",
                     ],
                     // Palaeogrfic description
                     [
-                        'key' => 'palaeographic_description',
-                        'type' => 'simple',
+                        "key" => "palaeographic_description",
+                        "type" => "simple",
                     ],
                 ],
             ],
             [
-                'label' => 'Contents',
-                'fields' => [
+                "label" => "Contents",
+                "fields" => [
                     // Date
                     [
-                        'key' => 'date',
-                        'type' => 'simple',
+                        "key" => "date",
+                        "type" => "simple",
                     ],
                     // Origin
                     [
-                        'key' => 'origin',
-                        'type' => 'autocomplete',
+                        "key" => "origin",
+                        "type" => "autocomplete",
                     ],
                     // Language
                     // [
-                    //     'key' =>  'language',
-                    //     'type' =>  'simple',
+                    //     "key" =>  "language",
+                    //     "type" =>  "simple",
                     // ],
                     // Genre
                     [
-                        'key' =>  'genre',
-                        'type' =>  'autocomplete',
+                        "key" =>  "genre",
+                        "type" =>  "autocomplete",
                     ],
                     // Author
                     [
-                        'key' =>  'author',
-                        'type' =>  'autocomplete',
+                        "key" =>  "author",
+                        "type" =>  "autocomplete",
                     ],
                     // Title or type of text
                     [
-                        'key' =>  'title_or_type',
-                        'type' =>  'autocomplete',
+                        "key" =>  "title_or_type",
+                        "type" =>  "autocomplete",
                     ],
                     // Content
                     [
-                        'key' =>  'content',
-                        'type' =>  'simple',
+                        "key" =>  "content",
+                        "type" =>  "simple",
                     ],
                     // Subject Headings
                     [
-                        'key' =>  'subj_headings',
-                        'type' =>  'tags',
-                        'search' => [
-                            'widget' => 'autocomplete',
-                            'type' => 'array',
+                        "key" =>  "subj_headings",
+                        "type" =>  "tags",
+                        "search" => [
+                            "widget" => "autocomplete",
+                            "type" => "array",
                         ],
                     ],
                     // Persons
                     [
-                        'key' =>  'persons',
-                        'type' =>  'tags',
-                        'search' => [
-                            'widget' => 'autocomplete',
-                            'type' => 'array',
+                        "key" =>  "persons",
+                        "type" =>  "tags",
+                        "search" => [
+                            "widget" => "autocomplete",
+                            "type" => "array",
                         ],
                     ],
                     // Geographica
                     [
-                        'key' =>  'geographica',
-                        'type' =>  'autocomplete',
+                        "key" =>  "geographica",
+                        "type" =>  "autocomplete",
                     ],
                     // Translation
                     [
-                        'key' =>  'translation',
-                        'type' =>  'simple',
+                        "key" =>  "translation",
+                        "type" =>  "simple",
                     ],
                     //Provenance
                     [
-                        'key' => 'provenance',
-                        'type' => 'autocomplete',
+                        "key" => "provenance",
+                        "type" => "autocomplete",
                     ],
                     //Acquisition
                     [
-                        'key' => 'acquisition',
-                        'type' => 'simple',
+                        "key" => "acquisition",
+                        "type" => "simple",
                     ],
 
                 ],
             ],
 
             [
-                'label' => 'Information on publication',
-                'search' => false,
-                'fields' => [
+                "label" => "Information on publication",
+                "search" => false,
+                "fields" => [
 
                     // WAIT with this:
                     //        [
-                    //            'key' =>  'Year',
-                    //            'type' => 'simple',
+                    //            "key" =>  "Year",
+                    //            "type" => "simple",
                     //        ],
                     //       [
-                    //            'key' =>  'Pg_no',
-                    //            'type' => 'simple',
+                    //            "key" =>  "Pg_no",
+                    //            "type" => "simple",
                     //        ],
                     //       [
-                    //            'key' =>  'photo',
-                    //            'type' => 'simple',
+                    //            "key" =>  "photo",
+                    //            "type" => "simple",
                     //        ],
                     //       [
-                    //            'key' =>  'sb',
-                    //            'type' => 'simple',
+                    //            "key" =>  "sb",
+                    //            "type" => "simple",
                     //        ],
                     //       [
-                    //            'key' =>  'corrections',
-                    //            'type' => 'simple',
+                    //            "key" =>  "corrections",
+                    //            "type" => "simple",
                     //        ],
                     //       [
-                    //            'key' =>  'preferred_citation',
-                    //            'type' => 'simple',
+                    //            "key" =>  "preferred_citation",
+                    //            "type" => "simple",
                     //        ],
                     //       [
-                    //            'key' =>  'ddbdp_pmichcitation',
-                    //            'type' => 'simple',
+                    //            "key" =>  "ddbdp_pmichcitation",
+                    //            "type" => "simple",
                     //        ],
                     //       [
-                    //             'key' => 'ddbdp_omichcitation',
-                    //            'type' => 'simple',
+                    //             "key" => "ddbdp_omichcitation",
+                    //            "type" => "simple",
                     //        ],
                     //       [
-                    //            'key' =>  'ddbdp_p_rep',
-                    //            'type' => 'simple',
+                    //            "key" =>  "ddbdp_p_rep",
+                    //            "type" => "simple",
                     //        ],
                     //       [
-                    //            'key' =>  'ddbdp_o_rep',
-                    //            'type' => 'simple',
+                    //            "key" =>  "ddbdp_o_rep",
+                    //            "type" => "simple",
                     //        ],
                     //      [
-                    //            'key' => 'ser_vol',
-                    //            'type' => 'simple',
+                    //            "key" => "ser_vol",
+                    //            "type" => "simple",
                     //        ],
                     //      [
-                    //            'key' => 'editor',
-                    //            'type' => 'simple',
+                    //            "key" => "editor",
+                    //            "type" => "simple",
                     //        ],
 
                     // republication
                     [
-                        'key' =>  'rep_ser_old',
-                        'type' =>  'simple',
+                        "key" =>  "rep_ser_old",
+                        "type" =>  "simple",
                     ],
                     // republication
                     [
-                        'key' =>  'rep_pg_no_old',
-                        'type' =>  'simple',
+                        "key" =>  "rep_pg_no_old",
+                        "type" =>  "simple",
                     ],
                     // Further republication
                     [
-                        'key' =>  'further_rep',
-                        'type' =>  'simple',
+                        "key" =>  "further_rep",
+                        "type" =>  "simple",
                     ],
                     // Further republication notes
                     [
-                        'key' =>  'further_replication_note',
-                        'type' =>  'simple',
+                        "key" =>  "further_replication_note",
+                        "type" =>  "simple",
                     ],
                     // Bibliography
                     [
-                        'key' =>  'bibliography',
-                        'type' =>  'simple',
+                        "key" =>  "bibliography",
+                        "type" =>  "simple",
                     ],
 
                 ],
@@ -271,23 +271,23 @@ class Schema extends BaseSchema
                 // we need to add a text line creating a link the imageserver
                 // if possible not the link but a text to click
                 // like Recto Verso. to be done later
-                'label' => 'Images',
-                'search' => false,
-                'fields' => [
+                "label" => "Images",
+                "search" => false,
+                "fields" => [
                     // Image Recto
                     [
                         // print "https://ub-media.uio.no/OPES/jpg/"
-                        'key' => 'fullsizefront_r1',
-                        'type' => 'simple',
-                        'columnClassName' => 'p-1 align-middle text-center',
+                        "key" => "fullsizefront_r1",
+                        "type" => "simple",
+                        "columnClassName" => "p-1 align-middle text-center",
                         // print ".jpg";
                     ],
                     // Image Verso
                     [
                         // print "https://ub-media.uio.no/OPES/jpg/"
-                        'key' => 'fullsizeback_r1',
-                        'type' => 'simple',
-                        'columnClassName' => 'p-1 align-middle text-center',
+                        "key" => "fullsizeback_r1",
+                        "type" => "simple",
+                        "columnClassName" => "p-1 align-middle text-center",
                         // print ".jpg";
                     ],
                 ],

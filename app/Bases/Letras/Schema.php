@@ -6,125 +6,125 @@ use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
 {
-    public $prefix = 'letras';
+    public $prefix = "letras";
 
     protected $schema = [
-        'fields' => [
+        "fields" => [
 
             // ID
             [
-                'key' => 'id',
-                'type' => 'incrementing',
-                'displayable' => true,
+                "key" => "id",
+                "type" => "incrementing",
+                "displayable" => true,
             ],
 
             // Sist endret
             [
-                'key' => 'created_at',
-                'type' => 'simple',
-                'edit' => false,
-                'search' => false,
+                "key" => "created_at",
+                "type" => "simple",
+                "edit" => false,
+                "search" => false,
 
-                'columnClassName' => 'dt-body-nowrap',
+                "columnClassName" => "dt-body-nowrap",
             ],
 
             // Sist endret
             [
-                'key' => 'updated_at',
-                'type' => 'simple',
-                'edit' => false,
-                'search' => false,
+                "key" => "updated_at",
+                "type" => "simple",
+                "edit" => false,
+                "search" => false,
 
-                'columnClassName' => 'dt-body-nowrap',
+                "columnClassName" => "dt-body-nowrap",
             ],
         ],
 
-        'groups' => [
+        "groups" => [
 
             [
-                'label' => 'Verket',
-                'fields' => [
+                "label" => "Verket",
+                "fields" => [
 
                     // Forfatter
                     [
-                        'key' => 'forfatter',
-                        'type' => 'autocomplete',
+                        "key" => "forfatter",
+                        "type" => "autocomplete",
                     ],
 
                     // Land
                     [
-                        'key' => 'land',
-                        'type' => 'autocomplete',
+                        "key" => "land",
+                        "type" => "autocomplete",
                     ],
 
                     // Tittel
                     [
-                        'key' => 'tittel',
-                        'type' => 'simple',
+                        "key" => "tittel",
+                        "type" => "simple",
                     ],
 
                     // Utgivelsesår
                     [
-                        'key' => 'utgivelsesaar',
-                        'type' => 'simple',
+                        "key" => "utgivelsesaar",
+                        "type" => "simple",
                     ],
 
                     // Sjanger
                     [
-                        'key' => 'sjanger',
-                        'type' => 'autocomplete',
+                        "key" => "sjanger",
+                        "type" => "autocomplete",
                     ],
                 ],
             ],
 
             [
-                'label' => 'Oversettelsen',
-                'fields' => [
+                "label" => "Oversettelsen",
+                "fields" => [
 
                     // Oversetter
                     [
-                        'key' => 'oversetter',
-                        'type' => 'simple',
+                        "key" => "oversetter",
+                        "type" => "simple",
                     ],
 
                     // Tittel
                     [
-                        'key' => 'tittel2',
-                        'type' => 'simple',
+                        "key" => "tittel2",
+                        "type" => "simple",
                     ],
 
                     // Utgivelsessted
                     [
-                        'key' => 'utgivelsessted',
-                        'type' => 'simple',
+                        "key" => "utgivelsessted",
+                        "type" => "simple",
                     ],
 
                     // Utgivelsesår
                     [
-                        'key' => 'utgivelsesaar2',
-                        'type' => 'simple',
+                        "key" => "utgivelsesaar2",
+                        "type" => "simple",
                     ],
 
                     // Forlag
                     [
-                        'key' => 'forlag',
-                        'type' => 'simple',
+                        "key" => "forlag",
+                        "type" => "simple",
                     ],
 
                     // Forord/etterord
                     [
-                        'key' => 'foretterord',
-                        'type' => 'simple',
+                        "key" => "foretterord",
+                        "type" => "simple",
 
-                        'search' => [
-                            'advanced' => true,
+                        "search" => [
+                            "advanced" => true,
                         ],
                     ],
 
                     // Språk
                     [
-                        'key' => 'spraak',
-                        'type' => 'simple',
+                        "key" => "spraak",
+                        "type" => "simple",
                     ],
                 ],
             ],
