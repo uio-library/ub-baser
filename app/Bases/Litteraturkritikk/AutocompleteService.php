@@ -95,7 +95,7 @@ class AutocompleteService extends \App\Services\AutocompleteService
         foreach ($query->limit(25)->get() as $res) {
             $data[] = [
                 'id' => $res->id,
-                'value' => $res->etternavn_fornavn,
+                'prefLabel' => $res->etternavn_fornavn,
                 'record' => $res,
             ];
         }
@@ -119,13 +119,13 @@ class AutocompleteService extends \App\Services\AutocompleteService
         ];
 
         $subQueries = implode(' union all ', array_map(function ($field) {
-            return 'select ' . $field . ' as value from litteraturkritikk_records';
+            return 'select ' . $field . ' as "prefLabel" from litteraturkritikk_records';
         }, $languageFields));
 
         $query = \DB::table(\DB::raw('(' . $subQueries . ') subquery'))
-            ->where('value', 'ilike', $term . '%')
-            ->where('value', 'not like', '%;%')
-            ->select('value');
+            ->where('prefLabel', 'ilike', $term . '%')
+            ->where('prefLabel', 'not like', '%;%')
+            ->select('prefLabel');
 
         return $this->getResultsOrderedByPopularity($query);
     }

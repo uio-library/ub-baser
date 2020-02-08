@@ -108,12 +108,12 @@ class BaseController extends Controller
             'q' => ['nullable'],
         ]);
 
-        return response()->json(
-            $autocompleter->complete(
+        return response()->json([
+            'results' => $autocompleter->complete(
                 $fields[$data['field']],
                 Arr::get($data, 'q')
             )
-        );
+        ]);
     }
 
     /**

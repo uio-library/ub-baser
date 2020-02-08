@@ -84,7 +84,7 @@ export default {
               .then(
                 res => {
                   this.working = false
-                  callback(res.data)
+                  callback(res.data.results)
                 },
                 err => {
                   if (!axios.isCancel(err)) {
@@ -94,14 +94,15 @@ export default {
                 }
               )
           },
+          displayKey: 'prefLabel',
         },
       ])
         .on('autocomplete:selected', (event, suggestion, dataset, context) => {
-          this.$emit('value', suggestion.value)
+          this.$emit('value', suggestion.prefLabel)
           this.$emit('selected', suggestion)
         })
         .on('autocomplete:autocompleted', (event, suggestion, dataset, context) => {
-          this.$emit('value', suggestion.value)
+          this.$emit('value', suggestion.prefLabel)
           this.$emit('selected', suggestion)
         })
     },

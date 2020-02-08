@@ -162,7 +162,7 @@ class AutocompleteService implements AutocompleteServiceInterface
      */
     protected function getResultsOrderedByPopularity(Builder $query, $limit = null): array
     {
-        $query->groupBy('value')
+        $query->groupBy('prefLabel')
             ->addSelect(['count' => \DB::raw('COUNT(*)')])
             ->orderBy('count', 'desc');
 
@@ -200,9 +200,9 @@ class AutocompleteService implements AutocompleteServiceInterface
         // Ref: https://stackoverflow.com/a/31757242/489916
         // for the #>> '{}' magick
         return \DB::table(function ($subquery) use ($table, $field) {
-            $subquery->selectRaw("jd.value #>> '{}' as value")
+            $subquery->selectRaw("jd.value #>> '{}' as \"prefLabel\"")
                 ->fromRaw("{$table}, jsonb_array_elements({$table}.{$field->key}) as jd");
-        }, 'all_values')->select('value');
+        }, 'all_values')->select('prefLabel');
     }
 
     /**
@@ -215,7 +215,7 @@ class AutocompleteService implements AutocompleteServiceInterface
     protected function jsonArrayCompleter(SchemaField $field, string $term): array
     {
         $query = $this->newJsonArrayQuery($field)
-            ->where('value', 'ilike', $term . '%');
+            ->where('prefLabel', 'ilike', $term . '%');
 
         return $this->getResultsOrderedByPopularity($query);
     }
@@ -251,7 +251,7 @@ class AutocompleteService implements AutocompleteServiceInterface
         $ts_column = $column . '_ts';
 
         $query = $this->newQuery()
-            ->select("{$column} as value")
+            ->select("{$column} as prefLabel")
             ->whereRaw(
                 "{$ts_column} @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery",
                 [$term]
@@ -270,7 +270,7 @@ class AutocompleteService implements AutocompleteServiceInterface
     protected function simpleStringCompleter(SchemaField $field, string $term): array
     {
         $query = $this->newQuery()
-            ->select("{$field->key} as value")
+            ->select("{$field->key} as prefLabel")
             ->where($field->key, 'ilike', $term . '%');
 
         return $this->getResultsOrderedByPopularity($query);
@@ -285,7 +285,7 @@ class AutocompleteService implements AutocompleteServiceInterface
     protected function simpleLister(SchemaField $field): array
     {
         $query = $this->newQuery()
-            ->select("{$field->key} as value");
+            ->select("{$field->key} as prefLabel");
 
         return $this->getResultsOrderedByPopularity($query, $this->listerLimit);
     }
