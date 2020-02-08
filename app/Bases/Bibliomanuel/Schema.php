@@ -6,9 +6,8 @@ use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
 {
-    public $prefix = "bibliomanuel";
-
     protected $schema = [
+        "id" => "bibliomanuel",
         "fields" => [
 
             // ID

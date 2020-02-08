@@ -6,9 +6,8 @@ use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
 {
-    public $prefix = "opes";
-
     protected $schema = [
+        "id" => "opes",
         "fields" => [
             // ID
             [

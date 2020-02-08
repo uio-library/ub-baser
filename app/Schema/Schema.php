@@ -13,7 +13,6 @@ abstract class Schema implements \JsonSerializable
     const DATATYPE_INT = 'int';
     const DATATYPE_BOOL = 'bool';
 
-    public $prefix;
     public $primaryId = 'id';
 
     protected $schema;
@@ -31,10 +30,10 @@ abstract class Schema implements \JsonSerializable
 
     public function __construct()
     {
-        $this->fields = SchemaFields::make($this->schema['fields'], $this->prefix, $this->schemaOptions);
+        $this->fields = SchemaFields::make($this->schema['fields'], $this->schema['id'], $this->schemaOptions);
 
         foreach (Arr::get($this->schema, 'groups', []) as $group) {
-            $this->groups[] = SchemaGroup::make($group, $this->prefix, $this->schemaOptions);
+            $this->groups[] = SchemaGroup::make($group, $this->schema['id'], $this->schemaOptions);
         }
 
         // Check that schema keys are unique

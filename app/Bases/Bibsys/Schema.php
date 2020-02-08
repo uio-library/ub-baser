@@ -6,10 +6,10 @@ use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
 {
-    public $prefix = "bibsys";
     public $primaryId = "dokid";
 
     protected $schema = [
+        "id" => "bibsys",
         "fields" => [
             // Søk i alle felt
             [
