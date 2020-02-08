@@ -33,8 +33,8 @@ Vue.component('edit-form', EditForm)
 Vue.component('national-library-search', NationalLibrarySearch)
 
 // Code splitting: Components to be loaded as needed
-Vue.component('page-editor', () => import(/* webpackChunkName: "page-editor" */ './components/PageEditor'))
-Vue.component('image-viewer', () => import(/* webpackChunkName: "image-viewer" */ './components/ImageViewer'))
+Vue.component('page-editor', () => import(/* webpackChunkName: 'js/page-editor' */ './components/PageEditor'))
+Vue.component('image-viewer', () => import(/* webpackChunkName: 'js/image-viewer' */ './components/ImageViewer'))
 
 
 Vue.use(Lang, {
