@@ -128,7 +128,7 @@ export default {
 
   methods: {
     fieldIsVisible (field, group) {
-      return field.search.enabled && (!field.search.advanced || this.advanced)
+      return field.search.enabled && (!field.search.advanced || this.advanced || this.field == field.key)
     },
     onFieldChange (value) {
       this.$emit('field', value)
