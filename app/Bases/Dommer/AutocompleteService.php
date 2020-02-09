@@ -45,8 +45,8 @@ class AutocompleteService extends \App\Services\AutocompleteService
         $out = [];
         foreach ($query->get() as $row) {
             $out[] = [
-                'prefLabel' => $row->id,
-                'label' => $row->value,
+                'prefLabel' => $row->value,
+                'value' => $row->id,
             ];
         }
         return $out;

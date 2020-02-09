@@ -10,7 +10,7 @@
         :value="value"
         @input="onInput($event)"
       >
-        <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
+        <option v-for="option in options" :key="option.value" :value="option.value">{{ option.prefLabel }}</option>
       </selectize>
     </div>
   </div>
@@ -65,7 +65,7 @@ export default {
         field: this.schema.key,
       },
     }).then(res => {
-      this.options = res.data
+      this.options = res.data.results
       if (!this.options.length) {
         this.state = 'empty'
       } else {
