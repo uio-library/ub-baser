@@ -5,6 +5,7 @@ namespace App\Bases\Litteraturkritikk;
 use App\Exceptions\NationalLibraryRecordNotFound;
 use App\Services\NationalLibraryApi;
 use Http\Client\Exception\RequestException;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Record extends \App\Record
@@ -415,5 +416,15 @@ class Record extends \App\Record
             'query' => $query,
             'filters' => $filters,
         ];
+    }
+
+    public function isEmpty($field)
+    {
+        $value = $this->{$field};
+        if (is_object($value) && is_a($value, Collection::class)) {
+            return $value->count() == 0;
+        }
+
+        return empty($value);
     }
 }

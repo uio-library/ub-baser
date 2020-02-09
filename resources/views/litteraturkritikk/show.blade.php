@@ -95,14 +95,13 @@
 
                 <dl class="row">
                     @foreach ($group->fields as $field)
-                        @if ($field->displayable && !empty($record->{$field->getModelAttribute()}))
+                        @if ($field->displayable && !$record->isEmpty($field->getModelAttribute()))
                             <dt class="col-sm-3 text-sm-right">
                                 {{ trans('litteraturkritikk.' . $field->key) }}:
                             </dt>
                             <dd class="col-sm-9">
 
                                 @if ($field->type == 'entities')
-
                                     @foreach ($record->{$field->modelAttribute} as $person)
                                         <a href="{{ $base->action('PersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
                                             $person->pivot->pseudonym ? ', under pseudonymet «' . $person->pivot->pseudonym . '»' : ''
