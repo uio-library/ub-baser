@@ -8,6 +8,7 @@
         :name="name"
         :settings="selectSettings"
         :value="value"
+        :placeholder="placeholder"
         @input="onInput($event)"
       >
         <option v-for="option in options" :key="option.value" :value="option.value">{{ option.prefLabel }}</option>
@@ -34,10 +35,11 @@ export default {
   data () {
     return {
       options: [],
+      placeholder: get(this.schema, 'edit.placeholder', ''),
       state: 'loading',
       selectSettings: {
         // Ref: https://github.com/selectize/selectize.js/blob/master/docs/usage.md
-        create: false,
+        create: get(this.schema, 'edit.allow_new_values', false),
         valueField: 'value',
         labelField: 'label',
         searchField: 'label',
@@ -65,7 +67,12 @@ export default {
         field: this.schema.key,
       },
     }).then(res => {
-      this.options = res.data.results
+      this.options = res.data.results.map(res => {
+        if (res.value === undefined) {
+          res.value = res.prefLabel
+        }
+        return res
+      })
       if (!this.options.length) {
         this.state = 'empty'
       } else {

@@ -59,6 +59,7 @@ class AutocompleteService extends \App\Services\AutocompleteService
      */
     protected $listers = [
         'kritikktype' => 'jsonArrayLister',
+        'verk_sjanger' => 'simpleLister',
         'verk_forfatter:person_role' => 'jsonArrayLister',
         'tags' => 'jsonArrayLister',
     ];

@@ -86,7 +86,8 @@ class Schema extends BaseSchema
                             "placeholder" => "Språket den omtalte utgaven er skrevet på",
                         ],
                         "edit" => [
-                            "help" => "Skriv inn språket den omtalte utgaven er skrevet på. Bruk liten forbokstav. For norsk, skriv bokmål eller nynorsk.",
+                            "placeholder" => "Språket den omtalte utgaven er skrevet på",
+                            "help" => "Fyll inn språket den omtalte utgaven er skrevet på. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive og trykk <code>Enter</code> for å velge forslag fra listen som dukker opp. Flere verdier kan registreres ved behov.",
                         ],
                     ],
 
@@ -120,7 +121,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Språket originalutgaven er utgitt på",
-                            "help" => "Skriv inn språket originalutgaven er skrevet på. Bruk liten forbokstav. For norsk, skriv bokmål eller nynorsk.",
+                            "help" => "Fyll inn språket originalutgaven er skrevet på. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive og trykk <code>Enter</code> for å velge forslag fra listen som dukker opp. Flere verdier kan registreres ved behov.",
                         ]
                     ],
 
@@ -165,7 +166,7 @@ class Schema extends BaseSchema
                                 "key" => "pseudonym",
                                 "type" => "simple",
                                 "edit" => [
-                                    "help" => 'Skriv inn pseudonym om det er aktuelt for det omtalte verket, eksempelvis «Bernhard Borge» for André Bjerke.',
+                                    "help" => 'Fyll inn pseudonym om det er aktuelt for det omtalte verket, eksempelvis «Bernhard Borge» for André Bjerke.',
                                 ]
                             ],
                             [
@@ -197,7 +198,7 @@ class Schema extends BaseSchema
 
                         "edit" => [
                             "cssClass" => "col-md-12",
-                            "help" => "Trykk på «Legg til person» og begynn å skrive forfatterens navn i feltet. Om vedkommende finnes i personregisteret, velg personens navn fra listen som dukker opp, og trykk deretter «Ok» for å få opp flere informasjonsfelt. Om forfatteren ikke ligger i registeret, skriv inn personens navn og trykk på «Ok» for å legge inn mer informasjon. "
+                            "help" => "Trykk på «Legg til person» og begynn å skrive forfatterens navn i feltet. Om vedkommende finnes i personregisteret, velg personens navn fra listen som dukker opp. Om forfatteren ikke ligger i registeret, trykk på «Opprett ny» for å opprette personen."
                         ],
 
                     ],
@@ -256,14 +257,14 @@ class Schema extends BaseSchema
                     // Sjanger
                     [
                         "key" => "verk_sjanger",
-                        "type" => "autocomplete",
+                        "type" => "select",
 
                         "search" => [
                             "placeholder" => "Sjanger til det omtalte verket. F.eks. lyrikk eller roman",
-                            "type" => "simple",
                         ],
                         "edit" => [
-                            "placeholder" => "Sjanger til det omtalte verket, f.eks. lyrikk eller roman",
+                            "allow_new_values" => true,
+                            "placeholder" => "Sjanger til det omtalte verket",
                             "help" => "Fyll inn sjangeren til det omtalte verket. Bruk kun <a target=\"_blank\" href=\"/norsk-litteraturkritikk/veiledning#sjanger\">databasens egen sjangertypologi</a>.",
                         ],
                     ],
@@ -354,7 +355,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "cssClass" => "col-md-12",
-                            "help" => "Trykk på «Legg til person» og begynn å skrive kritikerens navn i feltet. Om vedkommende finnes i personregisteret kan du velge personens navn i listen som dukker opp i feltet, og deretter trykke på «Ok» for å få opp flere informasjonsfelt. Om kritikeren ikke ligger i registeret, skriv inn personens navn og trykk på «Ok» for å legge inn mer informasjon."
+                            "help" => "Trykk på «Legg til person» og begynn å skrive kritikerens navn i feltet. Om vedkommende finnes i personregisteret, velg personens navn i listen som dukker opp i feltet. Om kritikeren ikke ligger i registeret, trykk «Opprett ny» for å opprette personen."
                         ],
                     ],
 
@@ -446,7 +447,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Emneord fra Humord-vokabularet",
-                            "help" => "Kan kritikken kategoriseres under relevante emneord? Dette feltet er integrert det kontrollerte emnevokabularet <a target=\"_blank\" href=\"https://app.uio.no/ub/emnesok/humord/search\">Humord</a>.",
+                            "help" => "Kan kritikken kategoriseres under relevante emneord? Dette feltet er integrert det kontrollerte emnevokabularet <a target=\"_blank\" href=\"https://app.uio.no/ub/emnesok/humord/search\">Humord</a>. Skriv inn ett emne av gangen og trykk <code>Enter</code> for å velge det, slik at hvert emne vises med en grå boks rundt.",
                             "remote_source" => [
                                 "url" => "https://data.ub.uio.no/skosmos/rest/v1/search?labellang=nb&query={QUERY}*&type=skos:Concept&vocab=humord",
                             ],
@@ -470,6 +471,7 @@ class Schema extends BaseSchema
                         ],
 
                         "edit" => [
+                            "placeholder" => "YYYY-MM-DD",
                             "help" => "Skriv inn publiseringsdatoen for omtalen, bruk formatet ÅR-MÅNED-DAG. Om kritikken er publisert i deler over flere datoer, skrives samtlige datoer inn i feltet, adskilt med semikolon og mellomrom. Eksempel: 1885-01-24; 1885-01-31; 1885-02-02",
                         ]
                     ],
@@ -487,7 +489,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Språket kritikken er skrevet på",
-                            "help" => "Hvilket språk er kritikken skrevet på? Bruk liten forbokstav. For norske tekster, skriv nynorsk eller bokmål.",
+                            "help" => "Hvilket språk er kritikken skrevet på? Bruk liten forbokstav. For norske tekster, bruk «nynorsk» eller «bokmål». Begynn å skrive og trykk <code>Enter</code> for å velge forslag fra listen som dukker opp. Flere verdier kan registreres ved behov.",
                         ]
                     ],
 
