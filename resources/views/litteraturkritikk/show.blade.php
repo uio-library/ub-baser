@@ -101,13 +101,13 @@
                             </dt>
                             <dd class="col-sm-9">
 
-                                @if ($field->type == 'persons')
+                                @if ($field->type == 'entities')
 
                                     @foreach ($record->{$field->modelAttribute} as $person)
                                         <a href="{{ $base->action('PersonController@show', $person->id) }}">{{ strval($person) }}</a>{{
                                             $person->pivot->pseudonym ? ', under pseudonymet «' . $person->pivot->pseudonym . '»' : ''
                                         }}{{
-                                            !in_array($person->pivot->person_role, ['kritiker', 'forfatter']) ? ' (' . $person->pivot->person_role . ')' : ''
+                                            !in_array($person->pivot->person_role, [['kritiker'], ['forfatter']]) ? ' (' . implode(', ', $person->pivot->person_role) . ')' : ''
                                         }}{{
                                             $person->pivot->kommentar ? ' (' . $person->pivot->kommentar . ')' : ''
                                         }}<br>

@@ -47,17 +47,28 @@ abstract class Schema implements \JsonSerializable
     }
 
     /**
+     * @param bool $withPivotFields
      * @return SchemaField[]
      */
-    public function flat(): array
+    public function flat($withPivotFields = false): array
     {
         $out = [];
         foreach ($this->fields as &$field) {
             $out[] = $field;
+            if ($withPivotFields && isset($field->data['pivotFields'])) {
+                foreach ($field->pivotFields as $pivotField) {
+                    $out[] = $pivotField;
+                }
+            }
         }
         foreach ($this->groups as &$group) {
             foreach ($group->fields as &$field) {
                 $out[] = $field;
+                if ($withPivotFields && isset($field->data['pivotFields'])) {
+                    foreach ($field->pivotFields as $pivotField) {
+                        $out[] = $pivotField;
+                    }
+                }
             }
         }
 
@@ -67,11 +78,12 @@ abstract class Schema implements \JsonSerializable
     /**
      * Return an array of SchemaField indexed by the field keys.
      *
+     * @param bool $withPivotFields
      * @return SchemaField[]
      */
-    public function keyed(): array
+    public function keyed($withPivotFields = false): array
     {
-        $fields = $this->flat();
+        $fields = $this->flat($withPivotFields);
         $out = [];
         foreach ($fields as &$field) {
             $out[$field->key] = $field;
@@ -81,13 +93,14 @@ abstract class Schema implements \JsonSerializable
     }
 
     /**
+     * @param bool $withPivotFields
      * @return string[]
      */
-    public function keys(): array
+    public function keys($withPivotFields = false): array
     {
         return array_map(function ($field) {
             return $field->key;
-        }, $this->flat());
+        }, $this->flat($withPivotFields));
     }
 
     public function jsonSerialize()

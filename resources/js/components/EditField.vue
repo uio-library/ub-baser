@@ -1,29 +1,26 @@
 <template>
-  <div :class="cssClass">
-
-    <div class="d-flex mx-2 my-1 align-items-center">
-
-        <div class="flex-shrink-0 pr-2 text-right" style="width: 150px;" valign="top">
-            <span v-if="schema.type !== 'boolean'">{{ schema.label }}:</span>
-        </div>
-        <div class="flex-grow-1">
-            <component
-                :is="currentType"
-                :name="name"
-                :value="value"
-                :placeholder="placeholder"
-                :schema="schema"
-                :settings="settings"
-                @value="onValue($event)"
-            ></component>
-            <!-- <tt>[{{ this.currentType }}] {{ name}}: {{ value }}</tt>-->
-        </div>
-        <div v-if="helpText" class="flex-shrink-0 ml-2">
-          <v-popover :auto-hide="true" trigger="hover">
-            <em style="font-size: 150%; cursor: help; " class="fa fa-question-circle text-info"></em>
-            <template slot="popover"><div v-html="helpText"></div></template>
-          </v-popover>
-        </div>
+  <div>
+    <div class="edit-label">
+      <v-popover :auto-hide="true" trigger="click" v-if="helpText">
+        <span style="border-bottom: 1px dotted #ccd; cursor: help">{{ schema.label }}</span>:
+        <template slot="popover"><div v-html="helpText"></div></template>
+      </v-popover>
+      <span v-else>
+        {{ schema.label }}:
+      </span>
+    </div>
+    <div class="flex-grow-1">
+      <component
+        :is="currentType"
+        :name="name"
+        :value="value"
+        :placeholder="placeholder"
+        :schema="schema"
+        :settings="settings"
+        ref="component"
+        @value="onValue($event)"
+      ></component>
+      <!-- <tt>[{{ this.currentType }}] {{ name}}: {{ value }}</tt>-->
     </div>
   </div>
 </template>
@@ -47,13 +44,13 @@ export default {
       console.log('[EditField] New value: ', newValue)
       this.$emit('value', newValue)
     },
+    focus () {
+      this.$refs.component.focus()
+    },
   },
   computed: {
     helpText () {
       return get(this.schema, 'edit.help')
-    },
-    cssClass () {
-      return get(this.schema, 'edit.cssClass') || 'col-md-6'
     },
     placeholder () {
       return get(this.schema, 'edit.placeholder')
@@ -62,7 +59,6 @@ export default {
       const type = this.schema.type
       return type.substr(0, 1).toUpperCase() + type.substr(1) + 'Input'
     },
-
     name () {
       return this.schema.key
     },

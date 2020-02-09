@@ -25,8 +25,11 @@ class AddRecordPersonConstraint extends Migration
      */
     public function down()
     {
-        Schema::table('litteraturkritikk_record_person', function (Blueprint $table) {
-            $table->dropUnique('litteraturkritikk_record_person_record_id_person_id_person_role_unique');
-        });
+        try {
+            Schema::table('litteraturkritikk_record_person', function (Blueprint $table) {
+                $table->dropUnique('litteraturkritikk_record_person_record_id_person_id_person_role_unique');
+            });
+        } catch (\PDOException $e) {
+        }
     }
 }

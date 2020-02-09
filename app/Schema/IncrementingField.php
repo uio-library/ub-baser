@@ -6,9 +6,9 @@ class IncrementingField extends SchemaField
 {
     public const TYPE = 'incrementing';
 
-    public function __construct(string $key, array $schemaOptions)
+    public function __construct(string $key, string $schemaPrefix, array $schemaOptions)
     {
-        parent::__construct($key, $schemaOptions);
+        parent::__construct($key, $schemaPrefix, $schemaOptions);
 
         // Defaults
         $this->data['displayable'] = false;

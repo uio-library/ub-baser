@@ -101,7 +101,7 @@ class BaseController extends Controller
     public function autocomplete(Request $request, Base $base, AutocompleteServiceInterface $autocompleter)
     {
         $schema = $base->getSchema();
-        $fields = $schema->keyed();
+        $fields = $schema->keyed(true);
 
         $data = $request->validate([
             'field' => ['required', Rule::in(array_keys($fields))],
@@ -231,9 +231,9 @@ class BaseController extends Controller
         $url = $base->action('show', $record->id);
         if (count($changes)) {
             $this->log(
-                'Oppdaterte <a href="%s">post #%s</a>.',
-                $url,
-                $record->id
+                "Oppdaterte post #{$record->id}\n<a href=\"$url\">[Lenke]</a><ul><li>"
+                . implode("</li><li>", $changes)
+                . "</li></ul>"
             );
         }
         return redirect($url)->with('status', trans('base.notification.recordupdated'));
@@ -362,7 +362,7 @@ class BaseController extends Controller
                 $newValue = intval($newValue);
             }
 
-            if ($field->type == 'persons') {
+            if ($field->type == 'entities') {
                 // Ignore, these are handled by the specific controller (for now)
             } else {
                 if ($record->id) {

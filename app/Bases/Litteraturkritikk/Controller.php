@@ -7,6 +7,7 @@ use App\Exceptions\NationalLibraryRecordNotFound;
 use App\Http\Controllers\BaseController;
 use App\Http\Request;
 use App\Record;
+use App\Schema\EntitiesField;
 use App\Schema\Schema;
 use App\Services\NationalLibraryApi;
 use Illuminate\Validation\ValidationException;
@@ -50,51 +51,42 @@ class Controller extends BaseController
             ]);
         }
 
-        // Sync persons
-        $persons = [];
+        // Sync entities
         foreach ($schema->flat() as $field) {
             $newValue = $request->get($field->key, $field->defaultValue);
 
-            if ($field->type == 'persons') {
-                foreach (json_decode($newValue, true) as $input) {
-                    $persons[] = $input;
-                }
+            if ($field->type == 'entities') {
+                $values = json_decode($newValue, true);
+                $changes = array_merge($changes, $this->syncEntities($record, $field, $values));
             }
         }
-        $changes = array_merge($changes, $this->syncPersons($record, $persons));
 
         return $changes;
     }
 
     /**
-     * Get the first non-standard person role. While the database schema
-     * supports setting role per person, the UI currently only supports
-     * setting it per record. So we threat it as a per-record property for
-     * now. If needed, we can support role per-person in the future.
-     */
-    protected function getPersonRole($record)
-    {
-        foreach ($record->forfattere as $person) {
-            if ($person->pivot->person_role != 'forfatter') {
-                return $person->pivot->person_role;
-            }
-        }
-
-        return '';
-    }
-
-    /**
-     * Sync persons for a record.
-     * (The most messy method in UB-baser?).
+     * Sync entities for a record.
      *
      * @param Record $record
-     * @param array  $input
+     * @param EntitiesField $field
+     * @param array $input
      *
      * @return array
      */
-    protected function syncPersons(Record $record, array $input): array
+    protected function syncEntities(Record $record, EntitiesField $field, array $input): array
     {
-        // Apologies.
+        $attribute = $field->modelAttribute;
+        $pivotTable = $field->pivotTable;
+        $pivotTableKey = $field->pivotTableKey;
+        $entityModel = $field->entityType;
+
+        $pivotFields = array_map(
+            function($field) {
+                return $field->shortKey;
+            },
+            $field->pivotFields
+        );
+
         // Initially, the plan was to use the Eloquent sync() method here, but it doesn't
         // support attaching the same model multiple times with different pivot data, so
         // it can't be used to attach the same author multiple times with different roles.
@@ -103,85 +95,68 @@ class Controller extends BaseController
         $changes = [];
         $names = [];
 
-        // Make a list of current persons
-        $currentPersons = [];
-        foreach ($record->persons as $person) {
-            $names[$person->id] = (string) $person;
-            $currentPersons[] = [
+        // Make a list of current entities
+        $currentEntities = [];
+        foreach ($record->{$attribute} as $entity) {
+            $names[$entity->id] = (string) $entity;
+            $value = [
                 'record_id' => $record->id,
-                'person_id' => $person->id,
-                'person_role' => $person->pivot->person_role,
-                'kommentar' => $person->pivot->kommentar,
-                'pseudonym' => $person->pivot->pseudonym,
-                'posisjon' => $person->pivot->posisjon,
+                $pivotTableKey => $entity->id,
             ];
+            foreach ($pivotFields as $pf) {
+                $value[$pf] = $entity->pivot->{$pf};
+            }
+            $currentEntities[] = $value;
         }
 
-        // Make a list of new persons
-        $persons = [];
+        // Make a list of new entities
+        $entities = [];
         foreach ($input as $inputValue) {
-            $person = $this->findOrCreatePerson($inputValue);
-            $names[$person->id] = (string) $person;
-            $persons[] = [
+            $entity = $entityModel::findOrFail($inputValue['id']);
+            $names[$entity->id] = (string) $entity;
+            $value = [
                 'record_id' => $record->id,
-                'person_id' => $person->id,
-                'person_role' => $inputValue['pivot']['person_role'],
-                'kommentar' => $inputValue['pivot']['kommentar'],
-                'pseudonym' => $inputValue['pivot']['pseudonym'],
-                'posisjon' => $inputValue['pivot']['posisjon'],
+                $pivotTableKey => $entity->id,
             ];
+            foreach ($pivotFields as $pf) {
+                $value[$pf] = ($inputValue['pivot'][$pf] === '') ? null : $inputValue['pivot'][$pf];
+            }
+            $entities[] = $value;
         }
 
         // Compare the two to figure out which updates we need to do on
-        // the record-person pivot table.
-        $delete = array_udiff($currentPersons, $persons, function ($a, $b) {
+        // the record-entity pivot table.
+        $delete = array_udiff($currentEntities, $entities, function ($a, $b) {
             return strcmp(json_encode($a), json_encode($b));
         });
-        $insert = array_udiff($persons, $currentPersons, function ($a, $b) {
+        $insert = array_udiff($entities, $currentEntities, function ($a, $b) {
             return strcmp(json_encode($a), json_encode($b));
         });
 
         // Delete relations that no longer exist
-        foreach ($delete as $recordPerson) {
-            \DB::table('litteraturkritikk_record_person')
-                ->where($recordPerson)
+        foreach ($delete as $entity) {
+            $changes[] = "Fjernet: " . json_encode($entity, JSON_UNESCAPED_UNICODE);
+            \DB::table($pivotTable)
+                ->where([
+                    'record_id' => $entity['record_id'],
+                    $pivotTableKey => $entity[$pivotTableKey],
+                ])
                 ->delete();
-            $changes[] = "Fjernet {$names[$recordPerson['person_id']]} (Rolle: {$recordPerson['person_role']}, " .
-                "pseudonym: {$recordPerson['pseudonym']}, kommentar: {$recordPerson['kommentar']}, posisjon: {$recordPerson['posisjon']})";
         }
 
         // Insert new ones
-        foreach ($insert as $recordPerson) {
-            \DB::table('litteraturkritikk_record_person')
-                ->insert($recordPerson);
-            $changes[] = "La til {$names[$recordPerson['person_id']]} (Rolle: {$recordPerson['person_role']}, " .
-                "pseudonym: {$recordPerson['pseudonym']}, kommentar: {$recordPerson['kommentar']}, posisjon: {$recordPerson['posisjon']})";
+        foreach ($insert as $entity) {
+            $changes[] = "La til: " . json_encode($entity, JSON_UNESCAPED_UNICODE);
+            foreach ($entity as $k => $v) {
+                if (is_array($v)) {
+                    $entity[$k] = json_encode($v);
+                }
+            }
+            \DB::table($pivotTable)
+                ->insert($entity);
         }
 
         return $changes;
-    }
-
-    protected function findOrCreatePerson(array $input)
-    {
-        if (isset($input['id'])) {
-            // It *should* exist. If not, the input is invalid and it's ok to throw an error.
-            return Person::findOrFail($input['id']);
-        }
-
-        $person = Person::create([
-            'etternavn' => $input['etternavn'],
-            'fornavn' => $input['fornavn'],
-            'kjonn' => $input['kjonn'],
-        ]);
-
-        $this->log(
-            'Opprettet <a href="%s">person #%s (%s)</a>.',
-            action('\App\Bases\Litteraturkritikk\PersonController@show', $person->id),
-            $person->id,
-            "{$person->etternavn}, {$person->fornavn}"
-        );
-
-        return $person;
     }
 
     protected function nationalLibrarySearch(

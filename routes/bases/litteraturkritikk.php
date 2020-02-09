@@ -21,12 +21,12 @@ Route::get('nb-search', 'Controller@nationalLibrarySearch');
 Route::get('list', 'Controller@listIndex');
 Route::get('list/{id}', 'Controller@listShow');
 
-Route::post('person', 'PersonController@store');
 Route::get('person/{id}', 'PersonController@show');
 
 Route::middleware('can:litteraturkritikk')
     ->group(function () {
         // Place any routes that should only be available to authorized users here
+        Route::post('person', 'PersonController@store');
         Route::get('person/{id}/edit', 'PersonController@edit');
         Route::put('person/{id}', 'PersonController@update');
         Route::delete('person/{id}', 'PersonController@destroy');

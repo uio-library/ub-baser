@@ -30,6 +30,13 @@ class Person extends \Eloquent
     protected $fillable = ['etternavn', 'fornavn', 'kjonn', 'fodt', 'dod', 'bibsys_id', 'wikidata_id'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['string_representation'];
+
+    /**
      * The records this person belongs to.
      */
     public function records()
@@ -39,19 +46,21 @@ class Person extends \Eloquent
             'litteraturkritikk_record_person',
             'person_id',
             'record_id'
-        )->withPivot('person_role', 'kommentar', 'pseudonym', 'posisjon');
+        )
+            ->using(RecordPerson::class)
+            ->withPivot('person_role', 'kommentar', 'pseudonym', 'posisjon');
     }
 
     public function recordsAsAuthor()
     {
         return $this->records()
-            ->where('person_role', '!=', 'kritiker');
+            ->whereJsonDoesntContain('person_role', 'kritiker');
     }
 
     public function recordsAsCritic()
     {
         return $this->records()
-            ->where('person_role', '=', 'kritiker');
+            ->whereJsonContains('person_role', 'kritiker');
     }
 
     public function normalizedName()
@@ -69,6 +78,11 @@ class Person extends \Eloquent
         }
 
         return $nn;
+    }
+
+    public function getStringRepresentationAttribute()
+    {
+        return $this->normalizedName();
     }
 
     public function __toString()

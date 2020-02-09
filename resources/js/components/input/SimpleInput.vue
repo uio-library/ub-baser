@@ -2,6 +2,7 @@
     <div>
         <input type="text"
                class="form-control"
+               ref="input"
                :name="name"
                :value="value"
                :placeholder="placeholder"
@@ -24,6 +25,9 @@ export default {
   methods: {
     onInput (newValue) {
       this.$emit('value', newValue)
+    },
+    focus () {
+      this.$refs.input.focus()
     },
   },
 }

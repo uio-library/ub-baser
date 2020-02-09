@@ -40,13 +40,14 @@ class AutocompleteService extends \App\Services\AutocompleteService
         'verk_utgivelsessted' => 'simpleStringCompleter',
 
         'kritikktype' => 'jsonArrayCompleter',
+        'verk_forfatter:person_role' => 'jsonArrayCompleter',
         'tags' => 'jsonArrayCompleter',
 
         'verk_tittel' => 'textSearchCompleter',
         'verk_originaltittel' => 'textSearchCompleter',
         'verk_originaltittel_transkribert' => 'textSearchCompleter',
 
-        'person' => 'personCompleter',
+        'persons' => 'personCompleter',
         'verk_forfatter' => 'personCompleter',
         'kritiker' => 'personCompleter',
     ];
@@ -58,6 +59,7 @@ class AutocompleteService extends \App\Services\AutocompleteService
      */
     protected $listers = [
         'kritikktype' => 'jsonArrayLister',
+        'verk_forfatter:person_role' => 'jsonArrayLister',
         'tags' => 'jsonArrayLister',
     ];
 
@@ -119,7 +121,7 @@ class AutocompleteService extends \App\Services\AutocompleteService
         ];
 
         $subQueries = implode(' union all ', array_map(function ($field) {
-            return 'select ' . $field . ' as "prefLabel" from litteraturkritikk_records';
+            return 'select jsonb_array_elements_text(' . $field . ') as "prefLabel" from litteraturkritikk_records';
         }, $languageFields));
 
         $query = \DB::table(\DB::raw('(' . $subQueries . ') subquery'))

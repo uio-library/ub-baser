@@ -585,3 +585,54 @@ div.dataTables_wrapper
     visibility: visible
     opacity: 1
     transition: opacity .15s
+
+
+
+/**
+ * EDIT FORMS
+ */
+
+.edit-field
+  display: flex
+
+.toplevel-field
+  padding: 3px 4px
+
+.toplevel-field > .edit-label
+  padding: 5px 5px
+  width: 150px
+  flex-shrink: 0
+  text-align: right
+  //class="flex-shrink-0 pr-2 pt-1 text-right" style="width: 150px;"
+
+.pivot-field
+  flex-direction: column
+  padding: 0 2px
+
+  > div
+    width: 150px
+    flex-shrink: 0
+    flex-grow: 1
+
+  > .edit-label
+    font-size: 85%
+
+  .form-control, .selectize-input
+    @extend .form-control-sm
+    overflow: visible  // Fixes weird alignment bug
+
+  .selectize-control.multi .selectize-input
+    padding: 3px
+
+
+.pivot-entity
+  display: block
+  padding: 3px 8px
+  border-radius: 3px
+  background: #eee
+  white-space: nowrap
+
+  &:hover
+    background: #e5eff9
+    text-decoration: none
+

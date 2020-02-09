@@ -1,7 +1,7 @@
 <template>
     <div class="autocomplete-input">
         <input type="text"
-              class="form-control"
+              :class="inputClass"
               autocomplete="off"
               ref="input"
               :name="name"
@@ -44,6 +44,10 @@ export default {
     settings: Object,
     value: String,
     placeholder: String,
+    inputClass: {
+      type: String,
+      default: 'form-control',
+    }
   },
   data () {
     return {

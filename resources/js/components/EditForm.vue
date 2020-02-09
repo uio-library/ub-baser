@@ -10,6 +10,7 @@
             <edit-field
                     v-for="field in fields"
                     :key="field.key"
+                    :class="'edit-field toplevel-field ' + cssClasses[field.key]"
                     :schema="schemas[field.key]"
                     :settings="settings"
                     :value="currentValues[field.key]"
@@ -26,6 +27,7 @@
                 <edit-field
                     v-for="field in group.fields"
                     :key="field.key"
+                    :class="'edit-field toplevel-field ' + cssClasses[field.key]"
                     :schema="schemas[field.key]"
                     :settings="settings"
                     :value="currentValues[field.key]"
@@ -39,8 +41,9 @@
 </template>
 
 <script>
-import EditField from './EditField'
+import { get } from 'lodash/object'
 import { cloneDeep } from 'lodash/lang'
+import EditField from './EditField'
 
 export default {
   name: 'edit-form',
@@ -72,6 +75,13 @@ export default {
       let out = this.fields.reduce((out, field) => { out[field.key] = field; return out }, {})
       this.groups.forEach(fieldGroup => {
         out = fieldGroup.fields.reduce((out, field) => { out[field.key] = field; return out }, out)
+      })
+      return out
+    },
+    cssClasses () {
+      let out = {}
+      Object.keys(this.schemas).forEach(key => {
+        out[key] = get(this.schemas[key], 'edit.cssClass') || 'col-md-6'
       })
       return out
     },

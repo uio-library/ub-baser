@@ -34,7 +34,7 @@ class Schema extends BaseSchema
 
             // Person-søk (forfatter eller kritiker)
             [
-                "key" => "person",
+                "key" => "persons",
                 "type" => "autocomplete",
 
                 "displayable" => false,
@@ -76,9 +76,12 @@ class Schema extends BaseSchema
                     // Språk
                     [
                         "key" => "verk_spraak",
-                        "type" => "autocomplete",
+                        "type" => "tags",
+                        "defaultValue" => [],
 
                         "search" => [
+                            "type" => "array",
+                            "widget" => "autocomplete",
                             "advanced" => true,
                             "placeholder" => "Språket den omtalte utgaven er skrevet på",
                         ],
@@ -106,9 +109,12 @@ class Schema extends BaseSchema
                     // Originalspråk
                     [
                         "key" => "verk_originalspraak",
-                        "type" => "autocomplete",
+                        "type" => "tags",
+                        "defaultValue" => [],
 
                         "search" => [
+                            "type" => "array",
+                            "widget" => "autocomplete",
                             "advanced" => true,
                             "placeholder" => "Språket originalutgaven er skrevet på",
                         ],
@@ -135,10 +141,46 @@ class Schema extends BaseSchema
                     // Forfatter
                     [
                         "key" => "verk_forfatter",
-                        "type" => "persons",
-
+                        "type" => "entities",
+                        "entityType" => Person::class,
+                        "entitySchema" => PersonSchema::class,
                         "modelAttribute" => "forfattere",
-                        "personRole" => "forfatter",
+                        "pivotTable" => "litteraturkritikk_record_person",
+                        "pivotTableKey" => "person_id",
+                        "pivotFields" => [
+                            [
+                                "key" => "person_role",
+                                "type" => "tags",
+                                "defaultValue" => ["forfatter"],
+                                "values" => [
+                                    ["id" => "forfatter", "prefLabel" => "Forfatter"],
+                                    ["id" => "redaktør", "prefLabel" => "Redaktør"],
+                                ],
+                                "edit" => [
+                                    "allow_new_values" => false,
+                                    "help" => "Velg aktuell rolle fra listen som dukker opp når du klikker i feltet. Det er mulig å velge mer enn én rolle, men velg kun den eller de rollene som er aktuelle for det omtalte verket. Eksempel: Bjørnstjerne Bjørnson var både forfatter og kritiker, men i forbindelse med Henrik Jægers omtale av Synnøve Solbakken er Bjørnsons rolle kun forfatter.",
+                                ],
+                            ],
+                            [
+                                "key" => "pseudonym",
+                                "type" => "simple",
+                                "edit" => [
+                                    "help" => 'Skriv inn pseudonym om det er aktuelt for det omtalte verket, eksempelvis «Bernhard Borge» for André Bjerke.',
+                                ]
+                            ],
+                            [
+                                "key" => "kommentar",
+                                "type" => "simple",
+                                "edit" => [
+                                    "help" => 'Feltet brukes som et fotnotefelt, viktig tilleggsinformasjon kan legges her.',
+                                ]
+                            ],
+                            [
+                                "key" => "posisjon",
+                                "type" => "simple",
+                                "edit" => false,
+                            ],
+                        ],
 
                         "search" => [
                             "widget" => "autocomplete",
@@ -157,6 +199,7 @@ class Schema extends BaseSchema
                             "cssClass" => "col-md-12",
                             "help" => "Trykk på «Legg til person» og begynn å skrive forfatterens navn i feltet. Om vedkommende finnes i personregisteret, velg personens navn fra listen som dukker opp, og trykk deretter «Ok» for å få opp flere informasjonsfelt. Om forfatteren ikke ligger i registeret, skriv inn personens navn og trykk på «Ok» for å legge inn mer informasjon. "
                         ],
+
                     ],
 
                     // mfl.
@@ -265,10 +308,43 @@ class Schema extends BaseSchema
                     // Kritiker
                     [
                         "key" => "kritiker",
-                        "type" => "persons",
-
+                        "type" => "entities",
+                        "entityType" => Person::class,
+                        "entitySchema" => PersonSchema::class,
                         "modelAttribute" => "kritikere",
-                        "personRole" => "kritiker",
+                        "pivotTable" => "litteraturkritikk_record_person",
+                        "pivotTableKey" => "person_id",
+                        // "personRole" => "kritiker",
+                        "pivotFields" => [
+                            [
+                                "key" => "person_role",
+                                "type" => "tags",
+                                "defaultValue" => ["kritiker"],
+                                "values" => [
+                                    ["id" => "kritiker", "prefLabel" => "Kritiker"],
+                                ],
+                                "edit" => false,
+                            ],
+                            [
+                                "key" => "pseudonym",
+                                "type" => "simple",
+                                "edit" => [
+                                    "help" => 'Skriv inn pseudonym om det er aktuelt for denne kritikken, eksempelvis «En Kvinderøst» for Mathilde Schjøtt.',
+                                ]
+                            ],
+                            [
+                                "key" => "kommentar",
+                                "type" => "simple",
+                                "edit" => [
+                                    "help" => 'Dette feltet brukes som et fotnotefelt, viktig tilleggsinformasjon kan legges her.',
+                                ]
+                            ],
+                            [
+                                "key" => "posisjon",
+                                "type" => "simple",
+                                "edit" => false,
+                            ],
+                        ],
 
                         "search" => [
                             "widget" => "autocomplete",
@@ -401,10 +477,13 @@ class Schema extends BaseSchema
                     // Språk
                     [
                         "key" => "spraak",
-                        "type" => "autocomplete",
+                        "type" => "tags",
+                        "defaultValue" => [],
 
                         "search" => [
                             "advanced" => true,
+                            "type" => "array",
+                            "widget" => "autocomplete",
                         ],
                         "edit" => [
                             "placeholder" => "Språket kritikken er skrevet på",

@@ -8,8 +8,7 @@
         :placeholder="placeholder"
         @input="onInput($event)"
       >
-        <!-- eslint-disable-next-line vue/require-v-for-key -->
-        <option v-for="item in value" :value="item">{{ item }}</option>
+        <option v-for="value in values" :key="value.id" :value="value.id">{{ value.prefLabel }}</option>
       </selectize>
     </div>
 </template>
@@ -18,9 +17,10 @@
 import { get } from 'lodash/object'
 import Selectize from '../wrappers/Selectize'
 import axios from 'axios'
+import {cloneDeep} from "lodash/lang";
 
 const http = axios.create({
-  timeout: 2000,
+  timeout: 10000,
   headers: {}
 })
 
@@ -36,17 +36,18 @@ export default {
     value: Array,
   },
   data () {
-    let preload = get(this.schema, 'edit.preload', false)
-    return {
+    let values = this.value ? this.value.map(x => ({id: x, prefLabel: x})) : []
+    if (this.schema.values !== undefined) {
+      values = cloneDeep(this.schema.values)
+    }
+    let data = {
+      values: values,
       placeholder: get(this.schema, 'edit.placeholder', ''),
       selectizeSettings: {
         create: get(this.schema, 'edit.allow_new_values', true),
-        preload: preload,
         valueField: 'prefLabel',
         searchField: ['prefLabel', 'altLabel'],
-        openOnFocus: preload,
         closeAfterSelect: true,
-        load: this.autocomplete.bind(this),
         render: {
           option: this.renderOption.bind(this),
           item: this.renderItem.bind(this),
@@ -54,6 +55,17 @@ export default {
         },
       },
     }
+
+    if (this.schema.values === undefined) {
+      data.selectizeSettings.load = this.autocomplete.bind(this)
+      data.selectizeSettings.preload = get(this.schema, 'edit.preload', false)
+    }
+    if (data.selectizeSettings.preload) {
+      data.selectizeSettings.openOnFocus = true
+    } else {
+      data.selectizeSettings.openOnFocus = false
+    }
+    return data
   },
   methods: {
     source () {
@@ -76,10 +88,12 @@ export default {
     autocomplete(query, callback) {
       http.get(this.source().url.replace('{QUERY}', query))
         .then(res => {
-          console.log('GOT DATA', res.data)
           callback(res.data.results)
         })
-        .catch(() => callback([]))
+        .catch(err => {
+          console.log('Autocomplete aborted', err)
+          callback([])
+        })
     }
   },
 }

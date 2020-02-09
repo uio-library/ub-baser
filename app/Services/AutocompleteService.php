@@ -178,11 +178,17 @@ class AutocompleteService implements AutocompleteServiceInterface
     /**
      * Create a new query builder using the default model for this base.
      *
+     * @param SchemaField $field
      * @return Builder
      */
-    protected function newQuery(): Builder
+    protected function newQuery(SchemaField $field): Builder
     {
-        $table = (new $this->model())->getTable();
+        if (isset($field->parent)) {
+            $table = $field->parent->pivotTable;
+        } else {
+            $table = (new $this->model())->getTable();
+        }
+
         return \DB::query()->from($table);
     }
 
@@ -195,13 +201,13 @@ class AutocompleteService implements AutocompleteServiceInterface
      */
     protected function newJsonArrayQuery(SchemaField $field, $table = null): Builder
     {
-        $table = $table ?: $this->newQuery()->from;
+        $table = $table ?: $this->newQuery($field)->from;
 
         // Ref: https://stackoverflow.com/a/31757242/489916
         // for the #>> '{}' magick
         return \DB::table(function ($subquery) use ($table, $field) {
             $subquery->selectRaw("jd.value #>> '{}' as \"prefLabel\"")
-                ->fromRaw("{$table}, jsonb_array_elements({$table}.{$field->key}) as jd");
+                ->fromRaw("{$table}, jsonb_array_elements({$table}.{$field->shortKey}) as jd");
         }, 'all_values')->select('prefLabel');
     }
 
@@ -247,10 +253,10 @@ class AutocompleteService implements AutocompleteServiceInterface
             return [];
         }
 
-        $column = $field->key;
+        $column = $field->shortKey;
         $ts_column = $column . '_ts';
 
-        $query = $this->newQuery()
+        $query = $this->newQuery($field)
             ->select("{$column} as prefLabel")
             ->whereRaw(
                 "{$ts_column} @@ (phraseto_tsquery('simple', ?)::text || ':*')::tsquery",
@@ -269,9 +275,9 @@ class AutocompleteService implements AutocompleteServiceInterface
      */
     protected function simpleStringCompleter(SchemaField $field, string $term): array
     {
-        $query = $this->newQuery()
-            ->select("{$field->key} as prefLabel")
-            ->where($field->key, 'ilike', $term . '%');
+        $query = $this->newQuery($field)
+            ->select("{$field->shortKey} as prefLabel")
+            ->where($field->shortKey, 'ilike', $term . '%');
 
         return $this->getResultsOrderedByPopularity($query);
     }
@@ -284,8 +290,8 @@ class AutocompleteService implements AutocompleteServiceInterface
      */
     protected function simpleLister(SchemaField $field): array
     {
-        $query = $this->newQuery()
-            ->select("{$field->key} as prefLabel");
+        $query = $this->newQuery($field)
+            ->select("{$field->shortKey} as prefLabel");
 
         return $this->getResultsOrderedByPopularity($query, $this->listerLimit);
     }

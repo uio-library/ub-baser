@@ -9,7 +9,8 @@
 export default {
   props: {
     value: {
-      default: ''
+      type: Array,
+      default: [],
     },
     settings: {
       type: Object,
@@ -19,10 +20,10 @@ export default {
   mounted () {
     $(this.$el).selectize({
       onInitialize: () => {
-        this.setValue()
+        this.setValue(this.value)
       },
       onChange: value => {
-        //this.$emit('input', value)
+        this.$emit('input', value)
       },
       ...this.settings
     })

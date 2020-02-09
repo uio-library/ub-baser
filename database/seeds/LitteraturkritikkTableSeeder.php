@@ -21,10 +21,10 @@ class LitteraturkritikkTableSeeder extends Seeder
         factory(LitteraturkritikkRecord::class, 50)->create()
             ->each(function ($rec) use ($persons) {
                 $forfatter = $persons[array_rand($persons)];
-                $rec->persons()->attach($forfatter, ['person_role' => 'forfatter']);
+                $rec->persons()->attach($forfatter, ['person_role' => ['forfatter']]);
 
                 $kritiker = $persons[array_rand($persons)];
-                $rec->persons()->attach($kritiker, ['person_role' => 'kritiker']);
+                $rec->persons()->attach($kritiker, ['person_role' => ['kritiker']]);
             });
 
         LitteraturkritikkRecordView::refreshView();

@@ -38,6 +38,9 @@ class Record extends \App\Record
     protected $casts = [
         'kritikktype' => 'array',
         'tags' => 'array',
+        'spraak' => 'array',
+        'verk_spraak' => 'array',
+        'verk_originalspraak' => 'array',
     ];
 
     /**
@@ -62,11 +65,13 @@ class Record extends \App\Record
     {
         return $this->belongsToMany(
             'App\Bases\Litteraturkritikk\Person',
-            'litteraturkritikk_record_person',
-            'record_id',
-            'person_id'
-        )->withPivot('person_role', 'kommentar', 'pseudonym', 'posisjon')
-         ->orderBy('litteraturkritikk_record_person.posisjon', 'asc');
+            'litteraturkritikk_record_person'
+            //'record_id',
+            //'person_id'
+        )
+            ->using(RecordPerson::class)
+            ->withPivot('person_role', 'kommentar', 'pseudonym', 'posisjon')
+            ->orderBy('litteraturkritikk_record_person.posisjon', 'asc');
     }
 
     /**
@@ -75,7 +80,7 @@ class Record extends \App\Record
     public function forfattere()
     {
         return $this->persons()
-            ->where('person_role', '!=', 'kritiker');
+            ->whereJsonDoesntContain('person_role','kritiker');
     }
 
     /**
@@ -84,7 +89,7 @@ class Record extends \App\Record
     public function kritikere()
     {
         return $this->persons()
-            ->where('person_role', '=', 'kritiker');
+            ->whereJsonContains('person_role', 'kritiker');
     }
 
     /**
@@ -221,8 +226,11 @@ class Record extends \App\Record
         $repr = '';
         $forfattere = [];
         foreach ($this->forfattere as $person) {
-            $personRole = ($person->pivot->person_role != 'forfatter') ? ' (' . $person->pivot->person_role . ')' : '';
-            $forfattere[] = strval($person) . $personRole;
+            $forfatter = strval($person);
+            foreach ($person->pivot->person_role as $role) {
+                $forfatter .= ($role != 'forfatter') ? ' (' . $role . ')' : '';
+            }
+            $forfattere[] = $forfatter;
         }
 
         $forfattere = implode($forfatter_delimiter, $forfattere);
@@ -244,6 +252,7 @@ class Record extends \App\Record
 
     public function formatKritikk()
     {
+
         $repr = '';
 
         $kritikere = [];

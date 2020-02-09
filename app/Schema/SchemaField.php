@@ -10,13 +10,17 @@ abstract class SchemaField implements JsonSerializable
 {
     const TYPE = null;
 
+    public $schemaPrefix;
+
     public $data = [];
+
+    public $parent = null;
 
     public static $types = [
         'autocomplete' => AutocompleteField::class,
         'boolean' => BooleanField::class,
         'incrementing' => IncrementingField::class,
-        'persons' => PersonsField::class,
+        'entities' => EntitiesField::class,
         'select' => SelectField::class,
         'enum' => EnumField::class,
         'simple' => SimpleField::class,
@@ -24,9 +28,12 @@ abstract class SchemaField implements JsonSerializable
         'url' => UrlField::class,
     ];
 
-    public function __construct(string $key, array $schemaOptions)
+    public function __construct(string $key, string $schemaPrefix, array $schemaOptions)
     {
+        $keyParts = explode(':', $key);
+        $this->schemaPrefix = $schemaPrefix;
         $this->data['key'] = $key;
+        $this->data['shortKey'] = $keyParts[count($keyParts) - 1];
         $this->data['type'] = static::TYPE;
 
         // Defaults
@@ -41,19 +48,20 @@ abstract class SchemaField implements JsonSerializable
     /**
      * Factory method to initialize a schema field from JSON data.
      *
-     * @param array  $data
+     * @param array $data
      * @param string $schemaPrefix
-     * @param array  $schemaOptions
-     *
+     * @param array $schemaOptions
+     * @param SchemaField $parent
      * @return SchemaField
      */
-    public static function make(array $data, string $schemaPrefix, array $schemaOptions): self
+    public static function make(array $data, string $schemaPrefix, array $schemaOptions = [], SchemaField $parent = null): self
     {
         $field = static::newFieldFromType(
             $data['type'],
             $schemaPrefix,
             $data['key'],
-            $schemaOptions
+            $schemaOptions,
+            $parent
         );
 
         foreach ($data as $key => $value) {
@@ -76,24 +84,31 @@ abstract class SchemaField implements JsonSerializable
      * @param string $schemaPrefix
      * @param string $key
      * @param array $schemaOptions
-     *
+     * @param SchemaField|null $parent
      * @return mixed
      */
     public static function newFieldFromType(
         string $fieldType,
         string $schemaPrefix,
         string $key,
-        array $schemaOptions
+        array $schemaOptions,
+        SchemaField $parent = null
     ): self
     {
         if (!isset(static::$types[$fieldType])) {
             throw new \RuntimeException('Schema contains field of unrecognized type: ' . $fieldType);
         }
 
-        $field = new static::$types[$fieldType]($key, $schemaOptions);
+        $field = new static::$types[$fieldType]($key, $schemaPrefix, $schemaOptions);
         $field->data['label'] = trans("{$schemaPrefix}.{$key}");
+        $field->setParent($parent);
 
         return $field;
+    }
+
+    public function setParent(SchemaField $parent = null): void
+    {
+        $this->parent = $parent;
     }
 
     /**
