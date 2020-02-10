@@ -14,7 +14,7 @@ return [
     'redaktorer' => 'Editor',
     'utgivelsessted' => 'Lugar de publicación',
     'avis' => 'Periódico',
-    'tidsskriftstittel' => 'Revista',
+    'tidsskriftstittel' => 'Título de la revista',
     'nettsted' => 'Página web',
     'utgiver' => 'Editorial',
     'aar' => 'Año',
