@@ -84,7 +84,10 @@ class PageController extends Controller
     {
         $this->authorize($page->permission);
 
-        $page->body = $request->body;
+        // Workaround for CKEditor bug,
+        $body = preg_replace('/ style="margin-left: 0cm;"/', '', $request->body);
+
+        $page->body = $body;
         $page->updated_by = $request->user()->id;
         $page->save();
 
