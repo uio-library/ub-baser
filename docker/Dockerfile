@@ -53,4 +53,5 @@ COPY . .
 
 # 451MB
 
-CMD ["/app/docker/entrypoint.sh"]
+ENTRYPOINT ["/app/docker/entrypoint.sh"]
+CMD ["/app/docker/start.sh"]
