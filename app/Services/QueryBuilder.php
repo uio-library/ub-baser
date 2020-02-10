@@ -67,10 +67,18 @@ class QueryBuilder
             $value = $queryPart['value'];
 
             if ($operator === 'isnull') {
-                $this->query->whereNull($field->getColumn());
+                if ($field->search->type === 'array') {
+                    $this->query->whereRaw($field->getColumn() . " = '[]'::jsonb");
+                } else {
+                    $this->query->whereNull($field->getColumn());
+                }
                 continue;
             } elseif ($operator === 'notnull') {
-                $this->query->whereNotNull($field->getColumn());
+                if ($field->search->type === 'array') {
+                    $this->query->whereRaw($field->getColumn() . " != '[]'::jsonb");
+                } else {
+                    $this->query->whereNotNull($field->getColumn());
+                }
                 continue;
             }
 
@@ -204,12 +212,6 @@ class QueryBuilder
             case 'neq':
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
                 $this->query->whereRaw('NOT ' . $searchConfig->index . ' ~@ ?', [$value]);
-                break;
-            case 'isnull':
-                $this->query->whereRaw($searchConfig->index . " = '[]'::jsonb");
-                break;
-            case 'notnull':
-                $this->query->whereRaw($searchConfig->index . " != '[]'::jsonb");
                 break;
             default:
                 throw new \RuntimeException('Unsupported search operator');
