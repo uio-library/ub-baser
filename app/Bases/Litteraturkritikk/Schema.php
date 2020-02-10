@@ -69,7 +69,7 @@ class Schema extends BaseSchema
 
                         "edit" => [
                             "placeholder" => "Tittel på den omtalte utgaven av verket",
-                            "help" => "Skriv inn tittelen på den omtalte utgaven av verket slik den står skrevet på tittelbladet. Ikke bruk anførselstegn med mindre dette er en del av tittelen.",
+                            "help" => "Skriv inn tittelen på den omtalte utgaven av verket slik den står skrevet på tittelbladet. Ikke bruk anførselstegn med mindre dette er en del av tittelen.<hr>Om utgave ikke spesifiseres, gjør følgende: For norske verk, før inn originalutgaven. For verk hvor originalutgaven ikke er norsk, sjekk om en norsk oversettelse forelå på omtalens publiseringstidspunkt. Hvis ja, før inn oversatt utgave, hvis nei, før inn originalutgaven.",
                         ],
                     ],
 
@@ -87,7 +87,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Språket den omtalte utgaven er skrevet på",
-                            "help" => "Fyll inn språket den omtalte utgaven er skrevet på. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive og trykk <code>Enter</code> for å velge forslag fra listen som dukker opp. Flere verdier kan registreres hvis verket inneholder tekst på flere språk.",
+                            "help" => "Skriv inn språket den omtalte utgaven er skrevet på. Bruk liten forbokstav. For norsk, skriv bokmål eller nynorsk. Begynn å skrive inn aktuelt språk og velg fra listen som dukker opp. Trykk på «opprett [...]» om det aktuelle språket ikke finnes i listen. Flere verdier kan registreres ved behov, skriv da inn et språk av gangen, slik at hvert språk vises med en grå boks rundt.",
                         ],
                     ],
 
@@ -121,7 +121,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Språket originalutgaven er utgitt på",
-                            "help" => "Fyll inn språket originalutgaven er skrevet på. Feltet skal bare brukes hvis feltet «Originaltittel» er fylt ut. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive og trykk <code>Enter</code> for å velge forslag fra listen som dukker opp. Flere verdier kan registreres hvis verket inneholder tekst på flere språk.",
+                            "help" => "Fyll inn språket originalutgaven er skrevet på. Feltet skal bare brukes hvis feltet «Originaltittel» er fylt ut. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive inn aktuelt språk og velg fra listen som dukker opp. Trykk på «opprett [...]» om det aktuelle språket ikke finnes i listen. Flere verdier kan registreres ved behov, skriv da inn et språk av gangen, slik at hvert språk vises med en grå boks rundt.",
                         ]
                     ],
 
@@ -160,7 +160,7 @@ class Schema extends BaseSchema
                                 ],
                                 "edit" => [
                                     "allow_new_values" => false,
-                                    "help" => "Velg aktuell rolle fra listen som dukker opp når du klikker i feltet. Det er mulig å velge mer enn én rolle, men velg kun den eller de rollene som er aktuelle for det omtalte verket. Eksempel: Bjørnstjerne Bjørnson var både forfatter og kritiker, men i forbindelse med Henrik Jægers omtale av Synnøve Solbakken er Bjørnsons rolle kun forfatter.",
+                                    "help" => "Velg aktuell rolle fra listen som dukker opp når du klikker i feltet. Det er mulig å velge mer enn én rolle, men velg kun den eller de rollene som er aktuelle for det omtalte verket. Eksempelvis var B. Bjørnson både forfatter og kritiker, men i forbindelse med H. Jægers omtale av <em>Synnøve Solbakken</em> er Bjørnsons rolle kun forfatter.",
                                 ],
                             ],
                             [
@@ -231,6 +231,7 @@ class Schema extends BaseSchema
 
                         "edit" => [
                             "placeholder" => "Geografisk utgivelsessted for omtalt utgave",
+                            "help" => "Skriv inn utgivelsessted, bruk samme skrivemåte som på tittelbladet. Ved mer enn ett utgivelsessted, bruk «&» som skilletegn mellom stedene. Eksempel: Christiania & København",
                         ]
                     ],
 
@@ -258,15 +259,32 @@ class Schema extends BaseSchema
                     // Sjanger
                     [
                         "key" => "verk_sjanger",
-                        "type" => "select",
+                        "type" => "enum",
+                        "values" => [
+                            ["id" => "lyrikk", "label" => "Lyrikk"],
+                            ["id" => "drama", "label" => "Drama"],
+                            ["id" => "fortelling", "label" => "Fortelling"],
+                            ["id" => "roman", "label" => "Roman"],
+                            ["id" => "kortprosa", "label" => "Kortprosa"],
+                            ["id" => "essay", "label" => "Essay"],
+                            ["id" => "tegneserie", "label" => "Tegneserie"],
+                            ["id" => "annen skjønnlitteratur", "label" => "Annen skjønnlitteratur"],
+                            ["id" => "biografi", "label" => "Biografi"],
+                            ["id" => "taler", "label" => "Taler"],
+                            ["id" => "brev", "label" => "Brev"],
+                            ["id" => "avhandling", "label" => "Avhandling"],
+                            ["id" => "litteraturhistorie", "label" => "Litteraturhistorie"],
+                            ["id" => "lærebok", "label" => "Lærebok"],
+                            ["id" => "annen sakprosa", "label" => "Annen sakprosa"],
+                        ],
 
                         "search" => [
-                            "placeholder" => "Sjanger til det omtalte verket. F.eks. lyrikk eller roman",
+                            "placeholder" => "Sjanger til det omtalte verket",
                         ],
                         "edit" => [
                             "allow_new_values" => true,
                             "placeholder" => "Sjanger til det omtalte verket",
-                            "help" => "Fyll inn sjangeren til det omtalte verket. Bruk kun <a target=\"_blank\" href=\"/norsk-litteraturkritikk/veiledning#sjanger\">databasens egen sjangertypologi</a>.",
+                            "help" => "Fyll inn sjangeren til det omtalte verket. Velg verdi fra <a target=\"_blank\" href=\"/norsk-litteraturkritikk/veiledning#sjanger\">databasens egen sjangertypologi</a>.",
                         ],
                     ],
 
@@ -431,7 +449,7 @@ class Schema extends BaseSchema
                             "allow_new_values" => false,
                             "preload" => true,
                             "placeholder" => "Velg aktuell kategori for kritikktype",
-                            "help" => "Hvilken kritikktype er det snakk om? Én eller flere verdier velges fra <a target=\"_blank\" href=\"/norsk-litteraturkritikk/veiledning#kritikktype\">databasens egen typologi for kritikktype</a>. Trykk <code>Enter</code> etter at du valgt kategori fra listen som dukker opp når du klikker på feltet.<hr>Det er mulig å kategorisere kritikken under flere typer, dersom det er aktuelt. Velg/skriv inn én kategori av gangen, og trykk <code>Enter</code> mellom hver kategori, slik at kategoriene vises som enkeltord med en grå boks rundt.",
+                            "help" => "Hvilken kritikktype er det snakk om? Én eller flere verdier velges fra <a target=\"_blank\" href=\"/norsk-litteraturkritikk/veiledning#kritikktype\">databasens egen typologi for kritikktype</a>. Begynn å skrive inn aktuell kritikktype, og velg riktig kategori fra listen som dukker opp.<hr>Det er mulig å kategorisere kritikken under flere typer, dersom det er aktuelt. Velg/skriv inn én kategori av gangen, slik at kategoriene vises som enkeltord med en grå boks rundt.",
                         ],
                     ],
 
@@ -448,7 +466,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Emneord fra Humord-vokabularet",
-                            "help" => "Kan kritikken kategoriseres under relevante emneord? Dette feltet er integrert det kontrollerte emnevokabularet <a target=\"_blank\" href=\"https://app.uio.no/ub/emnesok/humord/search\">Humord</a>. Skriv inn ett emne av gangen og trykk <code>Enter</code> for å velge det, slik at hvert emne vises med en grå boks rundt.",
+                            "help" => "Kan kritikken kategoriseres under relevante emneord? Dette feltet er integrert det kontrollerte emnevokabularet <a target=\"_blank\" href=\"https://app.uio.no/ub/emnesok/humord/search\">Humord</a>. Det er mulig å legge inn flere emneord, skriv da inn ett emneord av gangen, slik at hvert emne vises med en grå boks rundt.",
                             "remote_source" => [
                                 "url" => "https://data.ub.uio.no/skosmos/rest/v1/search?labellang=nb&query={QUERY}*&type=skos:Concept&vocab=humord",
                             ],
@@ -490,7 +508,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Språket kritikken er skrevet på",
-                            "help" => "Hvilket språk er kritikken skrevet på? Bruk liten forbokstav. For norske tekster, bruk «nynorsk» eller «bokmål». Begynn å skrive og trykk <code>Enter</code> for å velge forslag fra listen som dukker opp. Flere verdier kan registreres ved behov.",
+                            "help" => "Hvilket språk er kritikken skrevet på? Bruk liten forbokstav. For norske tekster, skriv nynorsk eller bokmål. Begynn å skrive inn aktuelt språk og velg fra listen som dukker opp. Trykk på «opprett [...]» om det aktuelle språket ikke finnes i listen. Flere verdier kan registreres ved behov, skriv da inn et språk av gangen, slik at hvert språk vises med en grå boks rundt.",
                         ]
                     ],
 
@@ -517,8 +535,8 @@ class Schema extends BaseSchema
                             "advanced" => true,
                         ],
                         "edit" => [
-                            "placeholder" => "Det geografiske stedet kritikken ble publisert",
-                            "help" => "Hvor ble kritikken publisert? Bruk samme skrivemåte som på tittelbladet. Ved mer enn ett utgivelsessted, bruk semikolon og mellomrom. Eksempel: Christiania; København"
+                            "placeholder" => "Geografisk sted der kritikken ble publisert",
+                            "help" => "Hvor ble kritikken publisert? Bruk samme skrivemåte som på tittelbladet. Ved mer enn ett utgivelsessted, bruk «&» som skilletegn mellom stedene. Eksempel: Christiania & København"
                         ]
                     ],
                     [
@@ -558,7 +576,7 @@ class Schema extends BaseSchema
                         "type" => "simple",
                         "edit" => [
                             "placeholder" => "Fyll inn sidetall om det er aktuelt",
-                            "help" => "Hvilken eller hvilke sider er kritikken publisert på? Bruk arabiske tall, men unntak av sidetall som oppgis i romertall i selve teksten. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3) eller (220-244; 400-422).",
+                            "help" => "Hvilken eller hvilke sider er kritikken publisert på? Bruk arabiske tall, med unntak av sidetall som oppgis i romertall i selve teksten. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3) eller (220-244; 400-422).",
                         ],
                     ],
                     [
@@ -570,7 +588,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Fyll eventuelt inn annen relevant informasjon",
-                            "help" => "Dette feltet fungerer som et fotnotefelt hvor annen relevant informasjon legges inn. Om det allerede ligger tematisk informasjon i feltet (sosialistisk, nynorsk, e.l.), skal dette oversettes til aktuelle Humord og flyttes til feltet for emneord.",
+                            "help" => "Dette feltet fungerer som et fotnotefelt hvor annen relevant informasjon legges inn, for eksempel anledningen for omtalen. Om det allerede ligger tematisk informasjon i feltet (sosialistisk, nynorsk, e.l.), skal dette oversettes til aktuelle Humord og flyttes til feltet for emneord.",
                         ],
                     ],
                     [
@@ -642,7 +660,7 @@ class Schema extends BaseSchema
                         "columnClassName" => "dt-body-nowrap",
                         "edit" => [
                             "placeholder" => "Oppdater alltid postens korrekturstatus etter endt arbeid",
-                            "help" => "For å koordinere på ryddig vis mellom alle som arbeider med databasen er det viktig å alltid oppdatere korrekturstatus etter endt arbeid med posten. Om posten nå er ferdig korrekturlest, marker om det er mot fysisk eller digitalt materiale. Om postens verk og/eller kritikk ikke er tilgjengelig digitalt, marker at posten må korrekturleses mot fysisk materiale, dersom du selv ikke har tilgang til det fysiske materiale for øyeblikket.",
+                            "help" => "Det er viktig å alltid oppdatere korrekturstatus etter endt arbeid med posten. Marker om posten er ferdig korrekturlest, og mot hvilken type materiale. Om postens verk og/eller kritikk ikke er tilgjengelig digitalt, marker at posten må korrekturleses mot fysisk materiale, dersom du selv ikke har tilgang til det fysiske materiale for øyeblikket. Se <a href=\"/norsk-litteraturkritikk/veiledning\">redigeringsveiledning</a> for nærmere informasjon.",
                         ],
 
                     ],

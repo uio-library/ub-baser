@@ -122,7 +122,7 @@
 
                                 @elseif ($field->type == 'enum')
 
-                                    {{ $field->formatValue($record->{$field->key}) }}
+                                    {!! $field->formatValue($record->{$field->key}) !!}
 
                                 @elseif (is_array($record->{$field->key}))
 

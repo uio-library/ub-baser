@@ -29,9 +29,16 @@ export default {
     value: String,
   },
   data () {
+
+    let values = cloneDeep(this.schema.values)
+    if (this.value && values.map(x => String(x.id)).indexOf(String(this.value)) === -1) {
+      values.push({id: this.value, label: this.value + ' (ugyldig verdi!)' })
+    }
+    console.log(values)
+
     return {
       placeholder: get(this.schema, 'edit.placeholder', ''),
-      values: cloneDeep(this.schema.values),
+      values: values,
       selectizeSettings: {
         // Ref: https://github.com/selectize/selectize.js/blob/master/docs/usage.md
         create: false,

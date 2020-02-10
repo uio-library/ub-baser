@@ -14,7 +14,7 @@ class PersonSchema extends BaseSchema
                 "type" => "simple",
                 "edit" => [
                     "placeholder" => "",
-                    "help" => "YO",
+                    "help" => "Skriv inn etternavn. Ved forfatternavn som ikke bruker det latinske alfabetet, eksempelvis russiske navn, kontakt Anne Sæbø ved UB for å få transkribert navn tilsendt fra aktuell fagreferent. Se <a href=\"/norsk-litteraturkritikk/veiledning#forfatter\">redigeringsveiledning</a> for mer informasjon.",
                 ]
             ],
             [
@@ -34,21 +34,21 @@ class PersonSchema extends BaseSchema
                     ["id" => "f", "label" => "Kvinne"],
                 ],
                 "edit" => [
-                    "help" => "YO",
+                    "help" => "Velg aktuell kategori fra listen som dukker opp når du klikker i feltet.",
                 ]
             ],
             [
                 "key" => "fodt",
                 "type" => "simple",
                 "edit" => [
-                    "help" => "YO",
+                    "help" => "For å skille fra andre personer med samme navn. Valgfritt.",
                 ]
             ],
             [
                 "key" => "dod",
                 "type" => "simple",
                 "edit" => [
-                    "help" => "YO",
+                    "help" => "For å skille fra andre personer med samme navn. Valgfritt.",
                 ]
             ],
         ],
