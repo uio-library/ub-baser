@@ -87,7 +87,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Språket den omtalte utgaven er skrevet på",
-                            "help" => "Fyll inn språket den omtalte utgaven er skrevet på. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive og trykk <code>Enter</code> for å velge forslag fra listen som dukker opp. Flere verdier kan registreres ved behov.",
+                            "help" => "Fyll inn språket den omtalte utgaven er skrevet på. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive og trykk <code>Enter</code> for å velge forslag fra listen som dukker opp. Flere verdier kan registreres hvis verket inneholder tekst på flere språk.",
                         ],
                     ],
 
@@ -102,7 +102,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Fyll inn hvis tittel på omtalt utgave avviker fra originaltittel, f.eks. ved oversettelse",
-                            "help" => "Fyll inn om den omtalte utgavens tittel avviker fra originaltittelen, f.eks. ved oversettelser, senere utgaver med endret tittel, eller lignende.<hr>Ved originaltitler på russisk, japansk eller andre ikke-latinske alfabet, kontakt Anne Sæbø ved UB for å få standardisert originaltittel tilsendt fra aktuell fagreferent. Se <a href=\"/norsk-litteraturkritikk/veiledning\" target=\"_blank\">redigeringsveiledning</a> for mer informasjon.",
+                            "help" => "Fyll inn om den omtalte utgavens tittel avviker fra originaltittelen, f.eks. ved oversettelser, senere utgaver med endret tittel, eller lignende.<hr>Ved originaltitler på russisk, japansk eller andre ikke-latinske alfabet, kontakt Anne Sæbø ved UB for å få standardisert originaltittel tilsendt fra aktuell fagreferent. Se <a href=\"/norsk-litteraturkritikk/veiledning#originaltittel\" target=\"_blank\">redigeringsveiledning</a> for mer informasjon.",
                         ],
 
                     ],
@@ -121,7 +121,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Språket originalutgaven er utgitt på",
-                            "help" => "Fyll inn språket originalutgaven er skrevet på. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive og trykk <code>Enter</code> for å velge forslag fra listen som dukker opp. Flere verdier kan registreres ved behov.",
+                            "help" => "Fyll inn språket originalutgaven er skrevet på. Feltet skal bare brukes hvis feltet «Originaltittel» er fylt ut. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive og trykk <code>Enter</code> for å velge forslag fra listen som dukker opp. Flere verdier kan registreres hvis verket inneholder tekst på flere språk.",
                         ]
                     ],
 
@@ -135,7 +135,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Fyll inn hvis originaltittel bruker ikke-latinsk skrift",
-                            "help" => "Ved originaltitler på russisk, japansk eller andre ikke-latinske alfabet, kontakt Anne Sæbø ved UB for å få standardisert originaltittel tilsendt fra aktuell fagreferent. Se <a href=\"/norsk-litteraturkritikk/veiledning\" target=\"_blank\">redigeringsveiledning</a> for mer informasjon."
+                            "help" => "Ved originaltitler på russisk, japansk eller andre ikke-latinske alfabet, kontakt Anne Sæbø ved UB for å få transkribert originaltittel tilsendt fra aktuell fagreferent. Se <a href=\"/norsk-litteraturkritikk/veiledning#originaltittel_transkribert\" target=\"_blank\">redigeringsveiledning</a> for mer informasjon."
                         ],
                     ],
 
@@ -199,7 +199,7 @@ class Schema extends BaseSchema
 
                         "edit" => [
                             "cssClass" => "col-md-12",
-                            "help" => "Trykk på «Legg til person» og begynn å skrive forfatterens navn i feltet. Om vedkommende finnes i personregisteret, velg personens navn fra listen som dukker opp. Om forfatteren ikke ligger i registeret, trykk på «Opprett ny» for å opprette personen."
+                            "help" => "Trykk på «Legg til» og begynn å skrive forfatterens navn i feltet. Om vedkommende finnes i personregisteret, velg personens navn fra listen som dukker opp. Om forfatteren ikke ligger i registeret, trykk på «Opprett ny» for å opprette personen."
                         ],
 
                     ],
@@ -356,7 +356,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "cssClass" => "col-md-12",
-                            "help" => "Trykk på «Legg til person» og begynn å skrive kritikerens navn i feltet. Om vedkommende finnes i personregisteret, velg personens navn i listen som dukker opp i feltet. Om kritikeren ikke ligger i registeret, trykk «Opprett ny» for å opprette personen."
+                            "help" => "Trykk på «Legg til» og begynn å skrive kritikerens navn i feltet. Om vedkommende finnes i personregisteret, velg personens navn i listen som dukker opp i feltet. Om kritikeren ikke ligger i registeret, trykk «Opprett ny» for å opprette personen."
                         ],
                     ],
 
