@@ -31,6 +31,7 @@ return [
     'fulltekst_url' => 'Fulltekst-URL',
 
     'kritiker' => 'Kritiker',
+    'kritiker:person_role' => 'Rolle',
     'kritiker:pseudonym' => 'Pseudonym',
     'kritiker:kommentar' => 'Kommentar',
     'kritiker_mfl' => 'mfl.',

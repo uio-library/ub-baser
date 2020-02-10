@@ -156,6 +156,7 @@ class Schema extends BaseSchema
                                 "values" => [
                                     ["id" => "forfatter", "prefLabel" => "Forfatter"],
                                     ["id" => "redaktør", "prefLabel" => "Redaktør"],
+                                    ["id" => "gjendikter", "prefLabel" => "Gjendikter"],
                                 ],
                                 "edit" => [
                                     "allow_new_values" => false,
@@ -323,8 +324,8 @@ class Schema extends BaseSchema
                                 "defaultValue" => ["kritiker"],
                                 "values" => [
                                     ["id" => "kritiker", "prefLabel" => "Kritiker"],
+                                    ["id" => "redaktør", "prefLabel" => "Redaktør"],
                                 ],
-                                "edit" => false,
                             ],
                             [
                                 "key" => "pseudonym",
