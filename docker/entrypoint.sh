@@ -39,6 +39,12 @@ else
 fi
 
 # ----------------------------------------------------------------------------
+# Wait for Postgres
+
+echo Waiting for DB: ${POSTGRES_HOST}:${POSTGRES_PORT}
+docker/wait-for-it.sh ${POSTGRES_HOST}:${POSTGRES_PORT} -t 30
+
+# ----------------------------------------------------------------------------
 # Optimize Laravel
 # (These commands depend on the environment, so we cannot run them in Dockerfile)
 
@@ -59,12 +65,6 @@ if [ "$APP_ENV" == "production" ]; then
 	echo "Copying opcache settings into $PHP_INI_DIR/conf.d/"
 	cp docker/opcache.ini $PHP_INI_DIR/conf.d/
 fi
-
-# ----------------------------------------------------------------------------
-# Wait for Postgres
-
-echo Waiting for ${POSTGRES_HOST}:${POSTGRES_PORT}
-docker/wait-for-it.sh ${POSTGRES_HOST}:${POSTGRES_PORT} -t 30
 
 # ----------------------------------------------------------------------------
 # Run migrations, if any
