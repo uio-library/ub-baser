@@ -7,7 +7,8 @@
 
 $break-sm: 768px
 $break-md: 992px
-$break-md: 1200px
+//$break-md: 1200px
+$break-xl: 1200px
 
 // Variables
 @import 'variables'
@@ -130,22 +131,34 @@ div.dataTables_wrapper div.dataTables_processing
  * Header
  *******************************************************************/
 
-header
+.header
   background: rgba(0, 0, 0, 0.05)
   margin-bottom: 18px
+  position: relative
+  height: 130px
 
-  #navbar_top
+  .header_top .container-xl
     display: flex
     padding-top: 4px
     justify-content: space-between
 
-  h1
-    padding: 20px 0
-    color: #333
+  .header_bottom
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
 
-    a:link, a:visited
+    h1
+      padding: 20px 0
       color: #333
 
+      @media (max-width: $break-xl)
+        padding: 0
+
+      a:link, a:visited
+        color: #333
+
+header
   .uio-header
     background: black
     img
@@ -342,7 +355,7 @@ div.dataTables_wrapper
 
 /*
   header, .container
-    padding: 20px 0;
+    padding: 20px 0
   }
 
   header #user
@@ -636,3 +649,39 @@ div.dataTables_wrapper
     background: #e5eff9
     text-decoration: none
 
+
+
+/*******************************************************************
+ * Letras
+ *******************************************************************/
+
+.letras .header
+  // Illustrasjonsbilde fra Historia del famoso cavallero Don Quixote de la Mancha. London, 1781
+  background-image: url(https://ub-baser.uio.no/images/letras-banner.jpg)
+  background-position: center top
+  color: white
+  height: 220px
+  position: relative
+  // filter: sepia(0.4)
+
+  .header_top
+    background: rgba(0,0,0,0.5)
+    padding: 3px 0
+    text-shadow: 0 0 2px black
+
+    a
+      color: #7dc2ff
+
+  .header_bottom
+
+    h1
+      font-weight: 600
+      font-size: 70px
+      text-shadow: 0 0 4px black
+
+      a
+        color: white
+
+        &:hover
+          text-decoration: none
+          color: #7dc2ff

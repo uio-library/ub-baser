@@ -10,11 +10,7 @@
     @endcan
 
     {!! $intro !!}
-    <img src="/images/letras-banner.jpg"
-	     style="max-width: 100%;"
-	     alt="Illustrasjonsbilde fra Historia del famoso cavallero Don Quixote de la Mancha. London, 1781"
-             title="Foto: José María Izquierdo (2012)">
-    </p>	
+
     <div class="panel panel-default">
         <div class="panel-body">
             <search-form

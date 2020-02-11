@@ -20,7 +20,7 @@
 
     @yield('head')
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100 {{ isset($base) ? $base->id : '' }}">
 
     <header>
         <div class="{{ App::environment() }}">
@@ -32,8 +32,8 @@
             </div>
         </div>
         <div class="header">
-            <div class="container-xl">
-                <div id="navbar_top">
+            <div class="header_top">
+                <div class="container-xl">
                     <div>
                         <a href="/" >UB-baser</a>
                     </div>
@@ -81,15 +81,19 @@
 
                     </div>
                 </div>
-                <h1>
-                    @hasSection('header')
-                        @yield('header')
-                    @elseif (isset($base))
-                        <a href="{{ $base->action('index') }}">{{ $base->title }}</a>
-                    @else
-                        <a href="/">UB-baser</a>
-                    @endif
-                </h1>
+            </div>
+            <div class="header_bottom">
+                <div class="container-xl">
+                    <h1>
+                        @hasSection('header')
+                            @yield('header')
+                        @elseif (isset($base))
+                            <a href="{{ $base->action('index') }}">{{ $base->title }}</a>
+                        @else
+                            <a href="/">UB-baser</a>
+                        @endif
+                    </h1>
+                </div>
             </div>
         </div>
         @yield('header_after')
@@ -97,7 +101,7 @@
 
     <main id="app" class="flex-shrink-0">
 
-        <div class="container-xl {{ isset($base) ? $base->id : '' }}">
+        <div class="container-xl">
             @if ((new \Jenssegers\Agent\Agent() )->browser() === 'IE')
 
                 <div class="card bg-danger text-white mb-3">
