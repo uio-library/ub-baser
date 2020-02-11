@@ -24,6 +24,6 @@ class EnumField extends SchemaField
             }
         }
 
-        return '(ukjent verdi)';
+        return "<span class=\"bg-danger text-white p-1\">$id</span> <em>(Ugyldig verdi)</em>";
     }
 }
