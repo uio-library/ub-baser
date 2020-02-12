@@ -45,7 +45,7 @@ return [
     'no_records_found' => 'No records found.',
     'records_per_page_setting' => 'Resultats _MENU_ per pàgina',
     'records_shown_of_many' => 'Muestra resultados :start al :end of many',
-    'records_shown_of_total' => 'Showing record :start to :end of :total',
+    'records_shown_of_total' => 'Muestra resultados :start al :end of :total',
     'asc_sort_help' => 'Sorted in ascending order. Press to change to descending order.',
     'desc_sort_help' => 'Sorted in descending order. Press to change to ascending order.',
     'sort_by_this_column' => 'Press to sort by this column (in ascending order).',
