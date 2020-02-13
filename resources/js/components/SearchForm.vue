@@ -107,12 +107,13 @@ export default {
         operator: x.operator,
         value: x.value,
       })),
-      operators: [
+
+     operators: [
         { label: 'lik', value: 'ex' },
-        { label: 'inneholder', value: 'eq' },
-        { label: 'inneholder ikke', value: 'neq' },
-        { label: 'mangler verdi', value: 'isnull' },
-        { label: 'har verdi', value: 'notnull' },
+        { label: this.$t('messages.contains'), value: 'eq' },
+        { label: this.$t('messages.not_contains'), value: 'neq' },
+        { label: this.$t('messages.no_value'), value: 'isnull' },
+        { label: this.$t('messages.has_value'), value: 'notnull' },
       ],
     }
   },
