@@ -13,7 +13,7 @@ return [
     'managepages' => 'Administración del sitio',
     'managebases' => 'Administración de banco de datos',
     'users' => 'Usuarios',
-    'create' => 'Creador',
+    'create' => 'Creat',
     'createuser' => 'Crear nuevo usuario',
     'name' => 'Nombre',
     'email' => 'Correo electrónico',
@@ -33,6 +33,13 @@ return [
     'reset' => 'Buidar',
     'choose' => 'Elegir...',
     'advanced_search' => 'Cerca avançada',
+    'language' => 'Llengua',
+    'previous_record' => 'Previous record',
+    'next_record' => 'Next record',
+    'responsible' => 'Responsible for this website',
+    'please_wait' => 'Please wait...',
+    'no_values' => 'No values found',
+    'unknown_error' => 'An unknown error occured',
 
 // DataTable
     'show_columns' => 'Mostra columnes:',
@@ -50,4 +57,10 @@ return [
     'desc_sort_help' => 'Sorted in descending order. Press to change to ascending order.',
     'sort_by_this_column' => 'Press to sort by this column (in ascending order).',
     'toggle_fullscreen' => 'Toggle fullscreen',
+
+// SearchForm
+    'contains' => 'inclou',
+    'not_contains' => 'no inclou',
+    //'no_value' => 'incluye',
+    //'has_value' => 'incluye',
 ];

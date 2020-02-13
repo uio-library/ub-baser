@@ -3,12 +3,12 @@
 return [
     // Meta
     'id' => 'ID',
-    'created_at' => 'Creado',
-    'updated_at' => 'Última modificación',
+    'created_at' => 'Creat',
+    'updated_at' => 'Darrera modificació',
 
     //Bibliografien
     'forfatter' => 'Escritor',
-    'tittel' => 'Título',
+    'tittel' => 'Títol',
     'antologi' => 'Antologia',
     'boktittel' => 'Títol del llibre',
     'redaktorer' => 'Editor',

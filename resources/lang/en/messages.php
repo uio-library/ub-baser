@@ -58,4 +58,10 @@ return [
     'desc_sort_help' => 'Sorted in descending order. Press to change to ascending order.',
     'sort_by_this_column' => 'Press to sort by this column (in ascending order).',
     'toggle_fullscreen' => 'Toggle fullscreen',
+
+   // SearchForm
+    'contains' => 'Contains',
+    'not_contains' => 'Not contains',
+    'no_value' => 'No Value',
+    'has_value' => 'Has Vaule',
 ];
