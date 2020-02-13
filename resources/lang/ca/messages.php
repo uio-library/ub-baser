@@ -61,6 +61,6 @@ return [
 // SearchForm
     'contains' => 'inclou',
     'not_contains' => 'no inclou',
-    //'no_value' => 'incluye',
-    //'has_value' => 'incluye',
+    'no_value' => 'Cap valor',
+    'has_value' => 'Amb valor',
 ];
