@@ -1,43 +1,57 @@
 <template>
-    <div>
+  <form method="POST" :action="action" class="edit-form">
 
-        <div v-if="error" class="alert alert-danger">
-            {{ error }}
-        </div>
+    <input type="hidden" name="_token" :value="csrfToken">
+    <input type="hidden" name="_method" :value="method" v-if="method == 'PUT'">
 
-        <!-- Top level fields -->
-          <div class="row no-gutters">
-            <edit-field
-                    v-for="field in fields"
-                    :key="field.key"
-                    :class="'edit-field toplevel-field ' + cssClasses[field.key]"
-                    :schema="schemas[field.key]"
-                    :settings="settings"
-                    :value="currentValues[field.key]"
-                    @value="onValue(field.key, $event)"
-            ></edit-field>
-        </div>
-
-        <!-- Grouped fields -->
-        <div class="panel panel-default" v-for="group in groups" :key="group.label">
-            <div class="panel-heading">
-                <h4 class="panel-title" style="border-bottom: 1px solid #666">{{ group.label }}</h4>
-            </div>
-            <div class="row no-gutters">
-                <edit-field
-                    v-for="field in group.fields"
-                    :key="field.key"
-                    :class="'edit-field toplevel-field ' + cssClasses[field.key]"
-                    :schema="schemas[field.key]"
-                    :settings="settings"
-                    :value="currentValues[field.key]"
-                    @value="onValue(field.key, $event)"
-                ></edit-field>
-            </div>
-            <!--{{ json_encode( old($field['key'], $record->{$field['key']}) ) }}-->
-        </div>
-
+    <div v-if="error" class="alert alert-danger">
+      {{ error }}
     </div>
+
+    <!-- Top level fields -->
+    <div class="row no-gutters">
+      <edit-field
+        v-for="field in fields"
+        :key="field.key"
+        :class="'edit-field toplevel-field ' + cssClasses[field.key]"
+        :schema="schemas[field.key]"
+        :settings="settings"
+        :value="currentValues[field.key]"
+        @value="onValue(field.key, $event)"
+      ></edit-field>
+    </div>
+
+    <!-- Grouped fields -->
+    <div class="panel panel-default" v-for="group in groups" :key="group.label">
+      <div class="panel-heading">
+        <h3 class="panel-title" style="border-bottom: 1px solid #666">{{ group.label }}</h3>
+      </div>
+      <div class="row no-gutters">
+        <edit-field
+          v-for="field in group.fields"
+          :key="field.key"
+          :class="'edit-field toplevel-field ' + cssClasses[field.key]"
+          :schema="schemas[field.key]"
+          :settings="settings"
+          :value="currentValues[field.key]"
+          @value="onValue(field.key, $event)"
+        ></edit-field>
+      </div>
+      <!--{{ json_encode( old($field['key'], $record->{$field['key']}) ) }}-->
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-10">
+        <button type="submit" class="btn btn-primary" v-if="method == 'PUT'">{{ $t('messages.update') }}</button>
+        <button type="submit" class="btn btn-primary" v-else>{{ $t('messages.create') }}</button>
+      </div>
+    </div>
+
+    <div style="height: 100px;">
+      <!-- Some spacing for menus -->
+    </div>
+
+  </form>
 </template>
 
 <script>
@@ -51,6 +65,15 @@ export default {
     EditField,
   },
   props: {
+    method: {
+      type: String
+    },
+    action: {
+      type: String
+    },
+    csrfToken: {
+      type: String
+    },
     schema: {
       type: Object,
     },

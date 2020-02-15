@@ -32,17 +32,26 @@ class SelectField extends SchemaField
         $this->data['multiple'] = $value;
     }
 
-    public function formatValue($value)
+    public function formatValue($values)
     {
-        if (isset($this->data['values'])) {
-            foreach ($this->data['values'] as $option) {
-                if ($option['id'] == $value) {
-                    return $option['label'];
-                }
-            }
-
-            return "<span class=\"text-danger\">$value</span>";
+        if (!is_array($values)) {
+            $values = [$values];
         }
-        return $value;
+
+        if (isset($this->data['values'])) {
+            $values = array_map(
+                function($value) {
+                    foreach ($this->data['values'] as $option) {
+                        if ($option['value'] == $value) {
+                            return $option['prefLabel'];
+                        }
+                    }
+                    return "<span class=\"text-danger\">$value</span>";
+                },
+                $values
+            );
+        }
+
+        return implode(', ', $values);
     }
 }

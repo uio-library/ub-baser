@@ -605,11 +605,20 @@ div.dataTables_wrapper
  * EDIT FORMS
  */
 
+.edit-form
+  .form-control
+    font-size: 13px
+
+  h3
+    margin-top: 1.2em
+    font-size: 22px
+
+
 .edit-field
   display: flex
 
 .toplevel-field
-  padding: 3px 4px
+  padding: 4px 4px
 
 .toplevel-field > .edit-label
   padding: 5px 5px
@@ -617,6 +626,9 @@ div.dataTables_wrapper
   flex-shrink: 0
   text-align: right
   //class="flex-shrink-0 pr-2 pt-1 text-right" style="width: 150px;"
+
+  span
+    font-size: 13px
 
 .pivot-field
   flex-direction: column
@@ -632,11 +644,9 @@ div.dataTables_wrapper
 
   .form-control, .selectize-input
     @extend .form-control-sm
-    overflow: visible  // Fixes weird alignment bug
 
   .selectize-control.multi .selectize-input
     padding: 3px
-
 
 .pivot-entity
   display: block
@@ -649,7 +659,18 @@ div.dataTables_wrapper
     background: #e5eff9
     text-decoration: none
 
+.selectize-input, .selectize-input.focus
+  box-shadow: none
 
+.selectize-input.focus
+  color: #495057
+  background-color: #fff
+  border-color: #7eb1e4
+  outline: 0
+  box-shadow: 0 0 0 0.2rem rgba(39, 113, 187, 0.25)
+
+.selectize-input
+  overflow: visible  // Fixes weird alignment bug
 
 /*******************************************************************
  * Letras

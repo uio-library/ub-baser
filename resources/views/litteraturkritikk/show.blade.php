@@ -120,7 +120,7 @@
                                         <a href="{{ $url }}">{{ $url }}</a><br>
                                     @endforeach
 
-                                @elseif ($field->type == 'enum')
+                                @elseif (method_exists($field, 'formatValue'))
 
                                     {!! $field->formatValue($record->{$field->key}) !!}
 

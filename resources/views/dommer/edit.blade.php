@@ -8,56 +8,13 @@
 
     @include('shared.errors')
 
-    <form method="POST" action="{{ $base->action('update', $record->id) }}" class="form-horizontal">
-        @csrf
-        <input type="hidden" name="_method" value="PUT">
-
-        <edit-form
-            :schema="{{ json_encode($schema) }}"
-            :settings="{{ json_encode($settings) }}"
-            :values="{{ json_encode($values) }}"
-        ></edit-form>
-
-        <div class="form-group">
-            <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">{{ trans('messages.update') }}</button>
-            </div>
-        </div>
-
-    </form>
-
-    {{--
-
-    <div class="panel panel-default">
-
-        <div class="panel-heading">
-            <h3 class="panel-title">Slett post</h3>
-        </div>
-
-        <div class="panel-body">
-
-            <form method="POST" action="{{ $base->action('destroy', $record->id) }}">
-                {!! csrf_field() !!}
-
-                <div class="form-group row">
-                    <div class="col-sm-12">
-                        <label>
-                            <input type="checkbox" name="confirm-delete">
-                            {{ trans('messages.confirm-delete') }}
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-sm-12">
-                        <button type="submit" class="btn btn-danger">{{ trans('messages.deleterecord') }}</button>
-                    </div>
-                </div>
-
-            </form>
-
-        </div>
-    </div>
-    --}}
+    <edit-form
+        method="PUT"
+        action="{{ $base->action('update', $record->id) }}"
+        csrf-token="{{ csrf_token() }}"
+        :schema="{{ json_encode($schema) }}"
+        :settings="{{ json_encode($settings) }}"
+        :values="{{ json_encode($values) }}"
+    ></edit-form>
 
 @endsection
