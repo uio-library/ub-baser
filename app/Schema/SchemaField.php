@@ -43,6 +43,15 @@ abstract class SchemaField implements JsonSerializable
         $this->data['datatype'] = Schema::DATATYPE_STRING;
         $this->data['search'] = new SearchOptions($key, static::TYPE, $schemaOptions);
         $this->data['edit'] = new EditOptions();
+
+        $this->setDefaults();
+    }
+
+    /**
+     * Set default value. Override this.
+     */
+    public function setDefaults()
+    {
     }
 
     /**

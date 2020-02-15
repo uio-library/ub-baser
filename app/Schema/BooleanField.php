@@ -6,13 +6,10 @@ class BooleanField extends SchemaField
 {
     public const TYPE = 'boolean';
 
-    public function __construct(string $key, string $schemaPrefix, array $schemaOptions)
+    public function setDefaults()
     {
-        parent::__construct($key, $schemaPrefix, $schemaOptions);
-
         // Defaults
         $this->data['defaultValue'] = false;
-
         $this->data['datatype'] = Schema::DATATYPE_BOOL;
     }
 }
