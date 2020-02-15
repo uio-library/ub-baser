@@ -43,6 +43,7 @@ return [
         'kjonn' => 'Kjønn',
         'fodt' => 'Fødselsår',
         'dod' => 'Dødsår',
+        'kommentar' => 'Kommentar',
         'bibsys_id' => 'Bibsys-ID',
         'wikidata_id' => 'Wikidata-ID',
     ],
@@ -65,4 +66,6 @@ return [
     'verk_forfatter_mfl' => 'mfl.',
     'forfatter_kjonn' => 'Forfatters kjønn',
 
+    'confirm-deleteperson' => 'Jeg er sikker på at jeg ønsker å slette denne personen',
+    'deleteperson' => 'Slett person',
 ];

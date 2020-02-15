@@ -115,11 +115,6 @@
                                         <em>mfl.</em>
                                     @endif
 
-                                @elseif ($field->type == 'url')
-                                    @foreach (explode(' ', $record->{$field->key}) as $url)
-                                        <a href="{{ $url }}">{{ $url }}</a><br>
-                                    @endforeach
-
                                 @elseif (method_exists($field, 'formatValue'))
 
                                     {!! $field->formatValue($record->{$field->key}) !!}

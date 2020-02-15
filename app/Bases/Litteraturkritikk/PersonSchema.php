@@ -29,9 +29,9 @@ class PersonSchema extends BaseSchema
                 "key" => "kjonn",
                 "type" => "select",
                 "values" => [
-                    ["value" => "u", "label" => "Ukjent"],
-                    ["value" => "m", "label" => "Mann"],
-                    ["value" => "f", "label" => "Kvinne"],
+                    ["value" => "u", "prefLabel" => "ukjent"],
+                    ["value" => "m", "prefLabel" => "mann"],
+                    ["value" => "f", "prefLabel" => "kvinne"],
                 ],
                 "edit" => [
                     "help" => "Velg aktuell kategori fra listen som dukker opp når du klikker i feltet.",
@@ -42,6 +42,7 @@ class PersonSchema extends BaseSchema
                 "type" => "simple",
                 "edit" => [
                     "help" => "For å skille fra andre personer med samme navn. Valgfritt.",
+                    "placeholder" => "YYYY (valgfritt)",
                 ]
             ],
             [
@@ -49,6 +50,23 @@ class PersonSchema extends BaseSchema
                 "type" => "simple",
                 "edit" => [
                     "help" => "For å skille fra andre personer med samme navn. Valgfritt.",
+                    "placeholder" => "YYYY (valgfritt)",
+                ]
+            ],
+            [
+                "key" => "bibsys_id",
+                "type" => "simple",
+                "edit" => [
+                    "help" => "Identifikator i Felles autoritetsregister.",
+                    "placeholder" => "(For fremtidig bruk)",
+                ]
+            ],
+            [
+                "key" => "wikidata_id",
+                "type" => "simple",
+                "edit" => [
+                    "help" => "Identifikator i Wikidata.",
+                    "placeholder" => "(For fremtidig bruk)",
                 ]
             ],
         ],

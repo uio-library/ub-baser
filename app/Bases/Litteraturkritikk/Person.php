@@ -89,19 +89,4 @@ class Person extends \Eloquent
     {
         return $this->normalizedName();
     }
-
-    public function kjonnRepr()
-    {
-        if ($this->kjonn == 'm') {
-            return 'mann';
-        }
-        if ($this->kjonn == 'f') {
-            return 'kvinne';
-        }
-        if ($this->kjonn == 'u') {
-            return 'ukjent';
-        }
-
-        return '';
-    }
 }

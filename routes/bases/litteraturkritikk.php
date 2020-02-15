@@ -29,6 +29,7 @@ Route::middleware('can:litteraturkritikk')
         Route::post('person', 'PersonController@store');
         Route::get('person/{id}/edit', 'PersonController@edit');
         Route::put('person/{id}', 'PersonController@update');
+        Route::get('person/{id}/delete', 'PersonController@delete');
         Route::delete('person/{id}', 'PersonController@destroy');
     });
 

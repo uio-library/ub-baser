@@ -12,19 +12,9 @@ use Illuminate\Http\Response;
 class PersonController extends BaseController
 {
     protected $logGroup = 'norsk-litteraturkritikk';
-
-    /**
-     * @return array List of genders.
-     */
-    public static function getGenderList()
-    {
-        return [
-            'f'  => 'Kvinne',
-            'm'  => 'Mann',
-            'u'  => 'Ukjent',
-            // etc...
-        ];
-    }
+    protected $recordClass = 'Person';
+    protected $recordSchema = 'PersonSchema';
+    protected $editView = 'persons.edit';
 
     /**
      * Show a person record.
@@ -36,9 +26,11 @@ class PersonController extends BaseController
      */
     public function show(Request $request, Base $base, $id)
     {
+        $schema = app(PersonSchema::class);
         return response()->view($base->getView('persons.show'), [
             'base' => $base,
-            'person' => Person::withTrashed()->with(
+            'schema' => $schema,
+            'record' => Person::withTrashed()->with(
                 'recordsAsAuthor',
                 'recordsAsAuthor.forfattere',
                 'recordsAsAuthor.kritikere',
@@ -46,23 +38,6 @@ class PersonController extends BaseController
                 'recordsAsCritic.forfattere',
                 'recordsAsCritic.kritikere'
             )->findOrFail($id),
-        ]);
-    }
-
-    /**
-     * Show the form for editing a person record.
-     *
-     * @param Request $request
-     * @param Base $base
-     * @param $id
-     * @return Response
-     */
-    public function edit(Request $request, Base $base, $id)
-    {
-        return response()->view($base->getView('persons.edit'), [
-            'base' => $base,
-            'person' => Person::findOrFail($id),
-            'kjonnliste' => self::getGenderList(),
         ]);
     }
 
@@ -158,6 +133,14 @@ class PersonController extends BaseController
         );
 
         return redirect($url)->with('status', 'Personen ble lagret.');
+    }
+
+    public function delete(Request $request, Base $base, $id)
+    {
+        return response()->view($base->getView('persons.delete'), [
+            'base' => $base,
+            'record' => Person::withTrashed()->findOrFail($id),
+        ]);
     }
 
     /**

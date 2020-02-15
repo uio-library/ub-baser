@@ -4,63 +4,62 @@
 
     <p>
         @can('litteraturkritikk')
-        <a href="{{ action('\App\Bases\Litteraturkritikk\PersonController@edit', $person->id) }}"><em class="fa fa-edit"></em> Rediger person</a>
+            <a href="{{ $base->action('PersonController@edit', $record->id) }}" class="btn btn-outline-primary">
+                <em class="fa fa-edit"></em>
+                Rediger person
+            </a>
+            <a href="{{ $base->action('PersonController@delete', $record->id) }}" class="btn btn-outline-danger">
+                <em class="fa fa-trash"></em>
+                Slett person
+            </a>
         @endcan
     </p>
 
     <h2>
-        {{ strval($person) }}
+        {{ strval($record) }}
     </h2>
 
-    @if ( $person->trashed() )
+    @if ( $record->trashed() )
         <div class="alert alert-danger">
             Denne personen er slettet.
         </div>
     @endif
 
-    @if ($person->kjonn)
-        <div>Kjønn: {{ $person->kjonnRepr() }}</div>
-    @endif
+    <dl class="row">
+        @foreach ($schema->fields as $field)
+            @if ($field->displayable && !empty($record->{$field->key}))
+                <dt class="col-sm-3 text-sm-right">
+                    {{ trans('litteraturkritikk.person.' . $field->key) }}:
+                </dt>
+                <dd class="col-sm-9">
+                    @if (method_exists($field, 'formatValue'))
+                        {!! $field->formatValue($record->{$field->key}) !!}
+                    @else
+                        {{ $record->{$field->key} }}
+                    @endif
+                </dd>
+            @endif
+        @endforeach
+    </dl>
 
-    @if ($person->kommentar)
-        <div>
-            {{ trans('litteraturkritikk.kommentar') }}:
-            {{ $person->kommentar }}
-        </div>
-    @endif
-
-    @if ($person->bibsys_id)
-        <div>
-            {{ trans('litteraturkritikk.bibsys_id') }}:
-            {{ $person->bibsys_id }}
-        </div>
-    @endif
-
-    @if ($person->wikidata_id)
-        <div>
-            {{ trans('litteraturkritikk.wikidata_id') }}:
-            {{ $person->wikidata_id }}
-        </div>
-    @endif
-
-    @if (count($person->recordsAsAuthor))
-    <h3>Omtalt i {{ count($person->recordsAsAuthor ) }} {{ count($person->recordsAsAuthor ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
+    @if (count($record->recordsAsAuthor))
+    <h3>Omtalt i {{ count($record->recordsAsAuthor ) }} {{ count($record->recordsAsAuthor ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
     <ul>
-        @foreach ($person->recordsAsAuthor as $record)
-            <li>{!! $record->representation() !!}</li>
+        @foreach ($record->recordsAsAuthor as $doc)
+            <li>{!! $doc->representation() !!}</li>
         @endforeach
     </ul>
-    <a href="{{ action('\App\Bases\Litteraturkritikk\Controller@index', ['f0' => 'verk_forfatter', 'v0' => strval($person)])  }}">Vis som tabellvisning</a>
+    <a href="{{ $base->action('index', ['f0' => 'verk_forfatter', 'v0' => strval($record)])  }}">Vis som tabellvisning</a>
     @endif
 
-    @if (count($person->recordsAsCritic))
-        <h3>Skribent av {{ count($person->recordsAsCritic ) }} {{ count($person->recordsAsCritic ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
+    @if (count($record->recordsAsCritic))
+        <h3>Skribent av {{ count($record->recordsAsCritic ) }} {{ count($record->recordsAsCritic ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
         <ul>
-            @foreach ($person->recordsAsCritic as $record)
-                <li>{!! $record->representation() !!}</li>
+            @foreach ($record->recordsAsCritic as $doc)
+                <li>{!! $doc->representation() !!}</li>
             @endforeach
         </ul>
-        <a href="{{ action('\App\Bases\Litteraturkritikk\Controller@index', ['f0' => 'kritiker', 'v0' => strval($person)])  }}">Vis som tabellvisning</a>
+        <a href="{{ $base->action('index', ['f0' => 'kritiker', 'v0' => strval($record)])  }}">Vis som tabellvisning</a>
     @endif
 
 @endsection

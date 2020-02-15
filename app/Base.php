@@ -172,11 +172,12 @@ class Base extends Model
     /**
      * Returns the schema object for this base.
      *
+     * @param string $schema
      * @return Schema
      */
-    public function getSchema()
+    public function getSchema($schema = 'Schema')
     {
-        return $this->make('Schema');
+        return $this->make($schema);
     }
 
     /**
@@ -195,11 +196,12 @@ class Base extends Model
      *
      * @param int $id
      * @param bool $withTrashed
+     * @param string $className
      * @return Record
      */
-    public function getRecord($id, $withTrashed = true)
+    public function getRecord($id, $withTrashed = true, $className = 'Record')
     {
-        $recordClass = $this->getClass('Record');
+        $recordClass = $this->getClass($className);
         if ($withTrashed) {
             return $recordClass::withTrashed()->find($id);
         }

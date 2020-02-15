@@ -10,6 +10,7 @@ use App\Schema\Schema;
 use App\Schema\SchemaField;
 use App\Services\AutocompleteServiceInterface;
 use App\Services\DataTable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -18,6 +19,10 @@ use Illuminate\Validation\Rule;
 
 class BaseController extends Controller
 {
+    protected $recordClass = 'Record';
+    protected $recordSchema = 'Schema';
+    protected $editView = 'edit';
+
     public static $defaultColumns = [];
     public static $defaultSortOrder = [];
 
@@ -144,7 +149,7 @@ class BaseController extends Controller
      */
     public function show(Request $request, Base $base, $id)
     {
-        $record = $base->getRecord($id);
+        $record = $base->getRecord($id, true, $this->recordClass);
         if (is_null($record)) {
             abort(404, trans('base.error.recordnotfound'));
         }
@@ -176,13 +181,14 @@ class BaseController extends Controller
         // @TODO: Need to lazy load stuff?? Or can we just add it to the JSON serialization??
         // $record = Record::with('forfattere', 'kritikere')->findOrFail($id);
 
-        $record = $base->getRecord($id);
+        $record = $base->getRecord($id, true, $this->recordClass);
+
         if (is_null($record)) {
             abort(404, trans('base.error.recordnotfound'));
         }
 
         return response()->view(
-            $base->getView('edit'),
+            $base->getView($this->editView),
             $this->formArguments($record, $base)
         );
     }
@@ -222,7 +228,7 @@ class BaseController extends Controller
      */
     public function update(Request $request, Base $base, $id)
     {
-        $record = $base->getRecord($id) ?? abort(trans('base.error.recordnotfound'));
+        $record = $base->getRecord($id, true, $this->recordClass) ?? abort(trans('base.error.recordnotfound'));
 
         $this->validate($request, $this->getValidationRules($record));
 
@@ -249,7 +255,7 @@ class BaseController extends Controller
      */
     public function destroy(Request $request, Base $base, $id)
     {
-        $record = $base->getRecord($id) ?? abort(trans('base.error.recordnotfound'));
+        $record = $base->getRecord($id, true, $this->recordClass) ?? abort(trans('base.error.recordnotfound'));
 
         $record->delete();
 
@@ -271,7 +277,7 @@ class BaseController extends Controller
      */
     public function restore(Base $base, $id)
     {
-        $record = $base->getRecord($id) ?? abort(trans('base.error.recordnotfound'));
+        $record = $base->getRecord($id, true, $this->recordClass) ?? abort(trans('base.error.recordnotfound'));
 
         $record->restore();
 
@@ -308,13 +314,13 @@ class BaseController extends Controller
     /**
      * Construct form arguments according to some schema.
      *
-     * @param Record $record
+     * @param Model $record
      * @param Base $base
      * @return array
      */
-    protected function formArguments(Record $record, Base $base): array
+    protected function formArguments(Model $record, Base $base): array
     {
-        $schema = $base->getSchema();
+        $schema = $base->getSchema($this->recordSchema);
         $values = [];
         foreach ($schema->keyed() as $key => $field) {
             if ($field->has('column')) {
