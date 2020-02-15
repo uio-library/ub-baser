@@ -32,6 +32,9 @@ class Schema extends BaseSchema
                     "index" => "kilde_id",
                     "operators" => ["ex"],
                 ],
+                "edit" => [
+                    "preload" => true,
+                ],
             ],
             [
                 "key" => "aar",

@@ -1,25 +1,30 @@
 <template>
   <div>
-    <div v-if="state === 'failed'" class="text-danger p-1">{{ $t('messages.unknown_error') }}</div>
-    <div v-else-if="state === 'loading'" class="p-1">{{ $t('messages.please_wait') }}</div>
-    <div v-else-if="state === 'empty'" class="p-1">{{ $t('messages.no_values') }}</div>
-    <div v-else>
-      <selectize
-        :name="name"
-        :settings="selectSettings"
-        :value="value"
-        :placeholder="placeholder"
-        @input="onInput($event)"
-      >
-        <option v-for="option in options" :key="option.value" :value="option.value">{{ option.prefLabel }}</option>
-      </selectize>
-    </div>
+    <selectize
+      :multiple="multiple"
+      :name="inputName"
+      :settings="selectizeSettings"
+      :value="currentValue"
+      :placeholder="placeholder"
+    >
+      <option v-for="option in options"
+              :key="option.value"
+              :value="option.value"
+              :data-extra="option.extra">{{ option.prefLabel }}</option>
+    </selectize>
   </div>
 </template>
 
 <script>
 import { get } from 'lodash/object'
-import Selectize from 'vue2-selectize'
+import Selectize from '../wrappers/Selectize'
+import {cloneDeep} from "lodash/lang";
+import axios from 'axios'
+
+const http = axios.create({
+  timeout: 10000,
+  headers: {},
+})
 
 export default {
   name: 'select-input',
@@ -30,62 +35,128 @@ export default {
     name: String,
     schema: Object,
     settings: Object,
-    value: String,
+    value: String | Array,
+  },
+  computed: {
+    multiple () {
+      return get(this.schema, 'multiple', false)
+    },
+    inputName () {
+      if (this.multiple) {
+        return this.name + '[]'
+      }
+      return this.name
+    },
   },
   data () {
-    return {
-      options: [],
-      placeholder: get(this.schema, 'edit.placeholder', ''),
-      state: 'loading',
-      selectSettings: {
-        // Ref: https://github.com/selectize/selectize.js/blob/master/docs/usage.md
-        create: get(this.schema, 'edit.allow_new_values', false),
-        valueField: 'value',
-        labelField: 'label',
-        searchField: 'label',
-        openOnFocus: true,
-        closeAfterSelect: true,
-        render: {
-          option: function(item, escape) {
-            return `<div class="option">${escape(item.label || item.value)}</div>`
-          },
-          item: function(item, escape) {
-            return `<div>${escape(item.label || item.value)}</div>`
-          },
-        },
+    let options = cloneDeep(this.schema.values) || []
+    let preload = get(this.schema, 'edit.preload', false)
+    let value = this.value
+    if (typeof value === 'string') {
+      value = [value]
+    }
+    options.forEach(val => val.extra = JSON.stringify({invalid: false}))
 
-        onOptionAdd: function(item) {
-          console.log('YO', item)
+    let currentValue = null
+    if (value && !preload) {
+      currentValue = value
+      value.forEach(val => {
+        if (options.map(x => String(x.value)).indexOf(String(val)) === -1) {
+          const invalid = this.schema.values && this.schema.values.length > 0
+          options.push({ value: val, prefLabel: val, extra: JSON.stringify({invalid: invalid}) })
         }
+      })
+    }
+
+    let canCreate = false
+    if (get(this.schema, 'edit.allow_new_values', false)) {
+      canCreate = (input) => ({
+        value: input,
+        prefLabel: input,
+        invalid: false,
+      })
+    }
+
+    let selectizeSettings = {
+      // Ref: https://github.com/selectize/selectize.js/blob/master/docs/usage.md
+      create: canCreate,
+      valueField: 'value',
+      labelField: 'prefLabel',
+      searchField: ['prefLabel', 'altLabel'],
+      openOnFocus: false,
+      closeAfterSelect: true,
+      dataAttr: 'data-extra',
+      render: {
+        option: this.renderOption.bind(this),
+        item: this.renderItem.bind(this),
+        option_create: this.renderOptionCreate.bind(this),
       },
+      onChange: (value, k) => {
+        this.$emit('value', value)
+      },
+      onLoad: (data) => {
+        if (preload && !this.preloadComplete) {
+          this.preloadComplete = true
+          console.log('Preload complete')
+          this.currentValue = this.value
+        }
+      }
+    }
+
+    if (this.schema.values === undefined) {
+      selectizeSettings.load = this.autocomplete.bind(this)
+      selectizeSettings.preload = preload
+      if (selectizeSettings.preload) {
+        selectizeSettings.openOnFocus = true
+      }
+    } else {
+      selectizeSettings.openOnFocus = true
+    }
+    return {
+      currentValue: currentValue,
+      preloadComplete: false,
+      options: options,
+      placeholder: get(this.schema, 'edit.placeholder', ''),
+      selectizeSettings: selectizeSettings,
     }
   },
-  mounted () {
-    const url = get(this.settings, 'baseUrl') + '/autocomplete'
-    this.$http.get(url, {
-      params: {
-        field: this.schema.key,
-      },
-    }).then(res => {
-      this.options = res.data.results.map(res => {
-        if (res.value === undefined) {
-          res.value = res.prefLabel
-        }
-        return res
-      })
-      if (!this.options.length) {
-        this.state = 'empty'
-      } else {
-        this.state = 'ok'
-      }
-    }).catch(() => {
-      this.state = 'failed'
-    })
-  },
   methods: {
-    onInput ($event) {
-      this.$emit('value', $event)
+    source () {
+      return get(this.schema, 'edit.remote_source') || {
+        url: get(this.settings, 'baseUrl') + `/autocomplete?field=${this.schema.key}&q={QUERY}`
+      }
     },
+    renderOptionCreate(data, escape) {
+      return `<div class="option create"><em>Opprett «${escape(data.input)}»</em></div>`
+    },
+    renderOption(data, escape) {
+      if (data.altLabel) {
+        return `<div class="option"><em>${escape(data.altLabel)}</em> → ${escape(data.prefLabel)}</div>`
+      }
+      if (data.count) {
+        return `<div class="option">${escape(data.prefLabel)} (${escape(data.count)})</div>`
+      }
+      return `<div class="option">${escape(data.prefLabel)}</div>`
+    },
+    renderItem(data, escape) {
+      if (data.invalid) {
+        return `<div class="text-danger">${escape(data.prefLabel)}</div>`
+      }
+      return `<div>${escape(data.prefLabel)}</div>`
+    },
+    autocomplete(query, callback) {
+      http.get(this.source().url.replace('{QUERY}', query))
+        .then(res => callback(res.data.results.map(res => {
+          if (res.value === undefined) {
+            res.value = res.prefLabel
+          }
+          return res
+        })))
+        .catch(err => {
+          console.log('Autocomplete aborted', err)
+          callback([])
+        })
+    }
   },
 }
 </script>

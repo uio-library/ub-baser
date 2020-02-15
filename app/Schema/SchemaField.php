@@ -22,9 +22,7 @@ abstract class SchemaField implements JsonSerializable
         'incrementing' => IncrementingField::class,
         'entities' => EntitiesField::class,
         'select' => SelectField::class,
-        'enum' => EnumField::class,
         'simple' => SimpleField::class,
-        'tags' => TagsField::class,
         'url' => UrlField::class,
     ];
 

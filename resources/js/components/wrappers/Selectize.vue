@@ -9,8 +9,7 @@
 export default {
   props: {
     value: {
-      type: Array,
-      default: [],
+      type: Array | String,
     },
     settings: {
       type: Object,
@@ -22,11 +21,13 @@ export default {
       onInitialize: () => {
         this.setValue(this.value)
       },
-      onChange: value => {
-        this.$emit('input', value)
-      },
       ...this.settings
     })
+  },
+  watch: {
+    value: function(val) {
+      this.setValue(val)
+    }
   },
   destroyed () {
     if (this.$el.selectize) {
@@ -34,8 +35,8 @@ export default {
     }
   },
   methods: {
-    setValue () {
-      this.$el.selectize.setValue(this.value, true)
+    setValue (value) {
+      this.$el.selectize.setValue(value, true)
     },
   }
 }

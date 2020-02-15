@@ -27,11 +27,11 @@ class PersonSchema extends BaseSchema
             ],
             [
                 "key" => "kjonn",
-                "type" => "enum",
+                "type" => "select",
                 "values" => [
-                    ["id" => "u", "label" => "Ukjent"],
-                    ["id" => "m", "label" => "Mann"],
-                    ["id" => "f", "label" => "Kvinne"],
+                    ["value" => "u", "label" => "Ukjent"],
+                    ["value" => "m", "label" => "Mann"],
+                    ["value" => "f", "label" => "Kvinne"],
                 ],
                 "edit" => [
                     "help" => "Velg aktuell kategori fra listen som dukker opp når du klikker i feltet.",

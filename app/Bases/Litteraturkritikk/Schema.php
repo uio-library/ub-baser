@@ -76,8 +76,9 @@ class Schema extends BaseSchema
                     // Språk
                     [
                         "key" => "verk_spraak",
-                        "type" => "tags",
+                        "type" => "select",
                         "defaultValue" => [],
+                        "multiple" => true,
 
                         "search" => [
                             "type" => "array",
@@ -86,6 +87,7 @@ class Schema extends BaseSchema
                             "placeholder" => "Språket den omtalte utgaven er skrevet på",
                         ],
                         "edit" => [
+                            "allow_new_values" => true,
                             "placeholder" => "Språket den omtalte utgaven er skrevet på",
                             "help" => "Skriv inn språket den omtalte utgaven er skrevet på. Bruk liten forbokstav. For norsk, skriv bokmål eller nynorsk. Begynn å skrive inn aktuelt språk og velg fra listen som dukker opp. Trykk på «opprett [...]» om det aktuelle språket ikke finnes i listen. Flere verdier kan registreres ved behov, skriv da inn et språk av gangen, slik at hvert språk vises med en grå boks rundt.",
                         ],
@@ -110,7 +112,8 @@ class Schema extends BaseSchema
                     // Originalspråk
                     [
                         "key" => "verk_originalspraak",
-                        "type" => "tags",
+                        "type" => "select",
+                        "multiple" => true,
                         "defaultValue" => [],
 
                         "search" => [
@@ -120,6 +123,7 @@ class Schema extends BaseSchema
                             "placeholder" => "Språket originalutgaven er skrevet på",
                         ],
                         "edit" => [
+                            "allow_new_values" => true,
                             "placeholder" => "Språket originalutgaven er utgitt på",
                             "help" => "Fyll inn språket originalutgaven er skrevet på. Feltet skal bare brukes hvis feltet «Originaltittel» er fylt ut. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive inn aktuelt språk og velg fra listen som dukker opp. Trykk på «opprett [...]» om det aktuelle språket ikke finnes i listen. Flere verdier kan registreres ved behov, skriv da inn et språk av gangen, slik at hvert språk vises med en grå boks rundt.",
                         ]
@@ -151,12 +155,13 @@ class Schema extends BaseSchema
                         "pivotFields" => [
                             [
                                 "key" => "person_role",
-                                "type" => "tags",
+                                "type" => "select",
+                                "multiple" => true,
                                 "defaultValue" => ["forfatter"],
                                 "values" => [
-                                    ["id" => "forfatter", "prefLabel" => "forfatter"],
-                                    ["id" => "redaktør", "prefLabel" => "redaktør"],
-                                    ["id" => "gjendikter", "prefLabel" => "gjendikter"],
+                                    ["value" => "forfatter", "prefLabel" => "forfatter"],
+                                    ["value" => "redaktør", "prefLabel" => "redaktør"],
+                                    ["value" => "gjendikter", "prefLabel" => "gjendikter"],
                                 ],
                                 "edit" => [
                                     "allow_new_values" => false,
@@ -259,30 +264,30 @@ class Schema extends BaseSchema
                     // Sjanger
                     [
                         "key" => "verk_sjanger",
-                        "type" => "enum",
+                        "type" => "select",
                         "values" => [
-                            ["id" => "lyrikk", "label" => "lyrikk"],
-                            ["id" => "drama", "label" => "drama"],
-                            ["id" => "fortelling", "label" => "fortelling"],
-                            ["id" => "roman", "label" => "roman"],
-                            ["id" => "kortprosa", "label" => "kortprosa"],
-                            ["id" => "essay", "label" => "essay"],
-                            ["id" => "tegneserie", "label" => "tegneserie"],
-                            ["id" => "annen skjønnlitteratur", "label" => "annen skjønnlitteratur"],
-                            ["id" => "biografi", "label" => "biografi"],
-                            ["id" => "taler", "label" => "taler"],
-                            ["id" => "brev", "label" => "brev"],
-                            ["id" => "avhandling", "label" => "avhandling"],
-                            ["id" => "litteraturhistorie", "label" => "litteraturhistorie"],
-                            ["id" => "lærebok", "label" => "lærebok"],
-                            ["id" => "annen sakprosa", "label" => "annen sakprosa"],
+                            ["value" => "lyrikk", "prefLabel" => "lyrikk"],
+                            ["value" => "drama", "prefLabel" => "drama"],
+                            ["value" => "fortelling", "prefLabel" => "fortelling"],
+                            ["value" => "roman", "prefLabel" => "roman"],
+                            ["value" => "kortprosa", "prefLabel" => "kortprosa"],
+                            ["value" => "essay", "prefLabel" => "essay"],
+                            ["value" => "tegneserie", "prefLabel" => "tegneserie"],
+                            ["value" => "annen skjønnlitteratur", "prefLabel" => "annen skjønnlitteratur"],
+                            ["value" => "biografi", "prefLabel" => "biografi"],
+                            ["value" => "taler", "prefLabel" => "taler"],
+                            ["value" => "brev", "prefLabel" => "brev"],
+                            ["value" => "avhandling", "prefLabel" => "avhandling"],
+                            ["value" => "litteraturhistorie", "prefLabel" => "litteraturhistorie"],
+                            ["value" => "lærebok", "prefLabel" => "lærebok"],
+                            ["value" => "annen sakprosa", "prefLabel" => "annen sakprosa"],
                         ],
 
                         "search" => [
                             "placeholder" => "Sjanger til det omtalte verket",
                         ],
                         "edit" => [
-                            "allow_new_values" => true,
+                            "allow_new_values" => false,
                             "placeholder" => "Sjanger til det omtalte verket",
                             "help" => "Fyll inn sjangeren til det omtalte verket. Velg verdi fra <a target=\"_blank\" href=\"/norsk-litteraturkritikk/veiledning#sjanger\">databasens egen sjangertypologi</a>.",
                         ],
@@ -338,11 +343,15 @@ class Schema extends BaseSchema
                         "pivotFields" => [
                             [
                                 "key" => "person_role",
-                                "type" => "tags",
+                                "type" => "select",
+                                "multiple" => true,
                                 "defaultValue" => ["kritiker"],
                                 "values" => [
-                                    ["id" => "kritiker", "prefLabel" => "kritiker"],
-                                    ["id" => "redaktør", "prefLabel" => "redaktør"],
+                                    ["value" => "kritiker", "prefLabel" => "kritiker"],
+                                    ["value" => "redaktør", "prefLabel" => "redaktør"],
+                                ],
+                                "edit" => [
+                                    "allow_new_values" => false,
                                 ],
                             ],
                             [
@@ -410,25 +419,26 @@ class Schema extends BaseSchema
                     // Medieformat
                     [
                         "key" => "medieformat",
-                        "type" => "enum",
+                        "type" => "select",
                         "columnClassName" => "dt-body-nowrap",
                         "values" => [
-                            ["id" => "avis", "label" => "Avis"],
-                            ["id" => "tidsskrift", "label" => "Tidsskrift"],
-                            ["id" => "bok", "label" => "Bok"],
-                            ["id" => "radio", "label" => "Radio"],
-                            ["id" => "tv", "label" => "TV"],
-                            ["id" => "video", "label" => "Video"],
-                            ["id" => "blogg", "label" => "Blogg"],
-                            ["id" => "podcast", "label" => "Podcast"],
-                            ["id" => "nettmagasin", "label" => "Nettmagasin"],
-                            ["id" => "nettforum", "label" => "Nettforum"],
-                            ["id" => "some", "label" => "Sosiale medier"],
+                            ["value" => "avis", "prefLabel" => "Avis"],
+                            ["value" => "tidsskrift", "prefLabel" => "Tidsskrift"],
+                            ["value" => "bok", "prefLabel" => "Bok"],
+                            ["value" => "radio", "prefLabel" => "Radio"],
+                            ["value" => "tv", "prefLabel" => "TV"],
+                            ["value" => "video", "prefLabel" => "Video"],
+                            ["value" => "blogg", "prefLabel" => "Blogg"],
+                            ["value" => "podcast", "prefLabel" => "Podcast"],
+                            ["value" => "nettmagasin", "prefLabel" => "Nettmagasin"],
+                            ["value" => "nettforum", "prefLabel" => "Nettforum"],
+                            ["value" => "some", "prefLabel" => "Sosiale medier"],
                         ],
                         "search" => [
                             "operators" => ["ex"],
                         ],
                         "edit" => [
+                            "allow_new_values" => false,
                             "placeholder" => "Medieformatet kritikken er publisert i",
                             "help" => "Hvilket medieformat er omtalen publisert i? Verdi velges fra <a target=\"_blank\" href=\"/norsk-litteraturkritikk/veiledning#medieformat\">databasens egen typologi for medieformat</a>.",
                         ],
@@ -437,26 +447,27 @@ class Schema extends BaseSchema
                     // Type
                     [
                         "key" => "kritikktype",
-                        "type" => "tags",
+                        "type" => "select",
+                        "multiple" => true,
                         "defaultValue" => [],
                         "values" => [
-                            ["id" => "bokanmeldelse", "prefLabel" => "bokanmeldelse"],
-                            ["id" => "teateranmeldelse", "prefLabel" => "teateranmeldelse"],
-                            ["id" => "kronikk", "prefLabel" => "kronikk"],
-                            ["id" => "debattinnlegg", "prefLabel" => "debattinnlegg"],
-                            ["id" => "forfatterportrett", "prefLabel" => "forfatterportrett"],
-                            ["id" => "essay", "prefLabel" => "essay"],
-                            ["id" => "artikkel", "prefLabel" => "artikkel"],
-                            ["id" => "pamflett", "prefLabel" => "pamflett"],
-                            ["id" => "avhandling", "prefLabel" => "avhandling"],
-                            ["id" => "litteraturhistorie", "prefLabel" => "litteraturhistorie"],
-                            ["id" => "kåseri", "prefLabel" => "kåseri"],
-                            ["id" => "samtale", "prefLabel" => "samtale"],
-                            ["id" => "parodi", "prefLabel" => "parodi"],
-                            ["id" => "lyrikk", "prefLabel" => "lyrikk"],
-                            ["id" => "roman", "prefLabel" => "roman"],
-                            ["id" => "drama", "prefLabel" => "drama"],
-                            ["id" => "annet", "prefLabel" => "annet"],
+                            ["value" => "bokanmeldelse", "prefLabel" => "bokanmeldelse"],
+                            ["value" => "teateranmeldelse", "prefLabel" => "teateranmeldelse"],
+                            ["value" => "kronikk", "prefLabel" => "kronikk"],
+                            ["value" => "debattinnlegg", "prefLabel" => "debattinnlegg"],
+                            ["value" => "forfatterportrett", "prefLabel" => "forfatterportrett"],
+                            ["value" => "essay", "prefLabel" => "essay"],
+                            ["value" => "artikkel", "prefLabel" => "artikkel"],
+                            ["value" => "pamflett", "prefLabel" => "pamflett"],
+                            ["value" => "avhandling", "prefLabel" => "avhandling"],
+                            ["value" => "litteraturhistorie", "prefLabel" => "litteraturhistorie"],
+                            ["value" => "kåseri", "prefLabel" => "kåseri"],
+                            ["value" => "samtale", "prefLabel" => "samtale"],
+                            ["value" => "parodi", "prefLabel" => "parodi"],
+                            ["value" => "lyrikk", "prefLabel" => "lyrikk"],
+                            ["value" => "roman", "prefLabel" => "roman"],
+                            ["value" => "drama", "prefLabel" => "drama"],
+                            ["value" => "annet", "prefLabel" => "annet"],
                         ],
                         "search" => [
                             "type" => "array",
@@ -474,7 +485,8 @@ class Schema extends BaseSchema
                     // Emneord
                     [
                         "key" => "tags",
-                        "type" => "tags",
+                        "type" => "select",
+                        "multiple" => true,
                         "defaultValue" => [],
 
                         "search" => [
@@ -516,7 +528,8 @@ class Schema extends BaseSchema
                     // Språk
                     [
                         "key" => "spraak",
-                        "type" => "tags",
+                        "type" => "select",
+                        "multiple" => true,
                         "defaultValue" => [],
 
                         "search" => [
@@ -664,13 +677,13 @@ class Schema extends BaseSchema
                     // Korrekturstatus
                     [
                         "key" => "korrekturstatus",
-                        "type" => "enum",
+                        "type" => "select",
                         "datatype" => self::DATATYPE_INT,
                         "values" => [
-                            ["id" => 1, "label" => "Ikke korrekturlest"],
-                            ["id" => 2, "label" => "Må korrekturleses mot fysisk materiale"],
-                            ["id" => 3, "label" => "Korrekturlest mot fysisk materiale"],
-                            ["id" => 4, "label" => "Korrekturlest mot og lenket til digitalt materiale"],
+                            ["value" => 1, "prefLabel" => "Ikke korrekturlest"],
+                            ["value" => 2, "prefLabel" => "Må korrekturleses mot fysisk materiale"],
+                            ["value" => 3, "prefLabel" => "Korrekturlest mot fysisk materiale"],
+                            ["value" => 4, "prefLabel" => "Korrekturlest mot og lenket til digitalt materiale"],
                         ],
                         "search" => [
                             "operators" => ["ex"],
