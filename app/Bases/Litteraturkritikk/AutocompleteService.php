@@ -62,6 +62,9 @@ class AutocompleteService extends \App\Services\AutocompleteService
         'verk_sjanger' => 'simpleLister',
         'verk_forfatter:person_role' => 'jsonArrayLister',
         'tags' => 'jsonArrayLister',
+        'spraak' => 'languageLinter',
+        'verk_spraak' => 'languageLinter',
+        'verk_originalspraak' => 'languageLinter',
     ];
 
     protected function personCompleter(SchemaField $field, string $term): array
@@ -127,6 +130,31 @@ class AutocompleteService extends \App\Services\AutocompleteService
 
         $query = \DB::table(\DB::raw('(' . $subQueries . ') subquery'))
             ->where('prefLabel', 'ilike', $term . '%')
+            ->where('prefLabel', 'not like', '%;%')
+            ->select('prefLabel');
+
+        return $this->getResultsOrderedByPopularity($query);
+    }
+
+    /**
+     * List all languages.
+     *
+     * @param SchemaField $field
+     * @return array
+     */
+    protected function languageLinter(SchemaField $field): array
+    {
+        $languageFields = [
+            'spraak',
+            'verk_spraak',
+            'verk_originalspraak',
+        ];
+
+        $subQueries = implode(' union all ', array_map(function ($field) {
+            return 'select jsonb_array_elements_text(' . $field . ') as "prefLabel" from litteraturkritikk_records';
+        }, $languageFields));
+
+        $query = \DB::table(\DB::raw('(' . $subQueries . ') subquery'))
             ->where('prefLabel', 'not like', '%;%')
             ->select('prefLabel');
 

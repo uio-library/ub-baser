@@ -87,6 +87,7 @@ class Schema extends BaseSchema
                             "placeholder" => "Språket den omtalte utgaven er skrevet på",
                         ],
                         "edit" => [
+                            "preload" => true,
                             "allow_new_values" => true,
                             "placeholder" => "Språket den omtalte utgaven er skrevet på",
                             "help" => "Skriv inn språket den omtalte utgaven er skrevet på. Bruk liten forbokstav. For norsk, skriv bokmål eller nynorsk. Begynn å skrive inn aktuelt språk og velg fra listen som dukker opp. Trykk på «opprett [...]» om det aktuelle språket ikke finnes i listen. Flere verdier kan registreres ved behov, skriv da inn et språk av gangen, slik at hvert språk vises med en grå boks rundt.",
@@ -123,6 +124,7 @@ class Schema extends BaseSchema
                             "placeholder" => "Språket originalutgaven er skrevet på",
                         ],
                         "edit" => [
+                            "preload" => true,
                             "allow_new_values" => true,
                             "placeholder" => "Språket originalutgaven er utgitt på",
                             "help" => "Fyll inn språket originalutgaven er skrevet på. Feltet skal bare brukes hvis feltet «Originaltittel» er fylt ut. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive inn aktuelt språk og velg fra listen som dukker opp. Trykk på «opprett [...]» om det aktuelle språket ikke finnes i listen. Flere verdier kan registreres ved behov, skriv da inn et språk av gangen, slik at hvert språk vises med en grå boks rundt.",
@@ -538,6 +540,7 @@ class Schema extends BaseSchema
                             "widget" => "autocomplete",
                         ],
                         "edit" => [
+                            "preload" => true,
                             "placeholder" => "Språket kritikken er skrevet på",
                             "help" => "Hvilket språk er kritikken skrevet på? Bruk liten forbokstav. For norske tekster, skriv nynorsk eller bokmål. Begynn å skrive inn aktuelt språk og velg fra listen som dukker opp. Trykk på «opprett [...]» om det aktuelle språket ikke finnes i listen. Flere verdier kan registreres ved behov, skriv da inn et språk av gangen, slik at hvert språk vises med en grå boks rundt.",
                         ]
