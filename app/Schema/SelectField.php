@@ -2,6 +2,8 @@
 
 namespace App\Schema;
 
+use App\Base;
+
 class SelectField extends SchemaField
 {
     public const TYPE = 'select';
@@ -32,26 +34,46 @@ class SelectField extends SchemaField
         $this->data['multiple'] = $value;
     }
 
-    public function formatValue($values)
+    public function formatBadge($value, Base $base, $badgeType='badge-primary')
     {
-        if (!is_array($values)) {
-            $values = [$values];
+        $url = $base->action('index', [
+            'f0' => $this->getColumn(),
+            'v0' => $value,
+        ]);
+        return "<a class=\"badge $badgeType\" href=\"$url\">$value</a>";
+    }
+
+
+    public function formatValue($value, Base $base)
+    {
+        if (!is_array($value)) {
+            if (isset($this->data['values'])) {
+                foreach ($this->data['values'] as $option) {
+                    if ($option['value'] == $value) {
+                        return $option['prefLabel'];
+                    }
+                }
+                return '<span class="text-danger">' . $value . '</span>';
+            }
+            return $value;
         }
 
-        if (isset($this->data['values'])) {
-            $values = array_map(
-                function($value) {
+        $value = array_map(
+            function($val) use ($base) {
+                if (isset($this->data['values'])) {
                     foreach ($this->data['values'] as $option) {
-                        if ($option['value'] == $value) {
-                            return $option['prefLabel'];
+                        if ($option['value'] == $val) {
+                            return $this->formatBadge($option['prefLabel'], $base, 'badge-primary');
                         }
                     }
-                    return "<span class=\"text-danger\">$value</span>";
-                },
-                $values
-            );
-        }
+                    return $this->formatBadge($val, $base, 'badge-danger');
+                } else {
+                    return $this->formatBadge($val, $base, 'badge-primary');
+                }
+            },
+            $value
+        );
 
-        return implode('; ', $values);
+        return implode(' ', $value);
     }
 }

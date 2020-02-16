@@ -115,18 +115,13 @@
                                         <em>mfl.</em>
                                     @endif
 
-                                @elseif (method_exists($field, 'formatValue'))
+                                @elseif (method_exists($field, 'formatValue') && mb_strpos($field->key, 'spraak') === false)
 
-                                    {!! $field->formatValue($record->{$field->key}) !!}
+                                    {!! $field->formatValue($record->{$field->key}, $base) !!}
 
                                 @elseif (is_array($record->{$field->key}))
 
-                                    @foreach ($record->{$field->key} as $value)
-                                        <a class="badge badge-primary" href="{{ $base->action('index', [
-                                            'f0' => $field->getColumn(),
-                                            'v0' => $value,
-                                        ]) }}">{{ $value }}</a>
-                                    @endforeach
+                                    {{ implode(';', $record->{$field->key}) }}
 
                                 @elseif ($field->key == 'created_at')
 
