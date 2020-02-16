@@ -6,6 +6,9 @@
       :settings="selectizeSettings"
       :value="currentValue"
       :placeholder="placeholder"
+      @initialize="onInitialize"
+      @change="onChange"
+      @load="onLoad"
     >
       <option v-for="option in options"
               :key="option.value"
@@ -51,22 +54,7 @@ export default {
   data () {
     let options = cloneDeep(this.schema.values) || []
     let preload = get(this.schema, 'edit.preload', false)
-    let value = this.value
-    if (typeof value === 'string') {
-      value = [value]
-    }
     options.forEach(val => val.extra = JSON.stringify({invalid: false}))
-
-    let currentValue = null
-    if (value && !preload) {
-      currentValue = value
-      value.forEach(val => {
-        if (options.map(x => String(x.value)).indexOf(String(val)) === -1) {
-          const invalid = this.schema.values && this.schema.values.length > 0
-          options.push({ value: val, prefLabel: val, extra: JSON.stringify({invalid: invalid}) })
-        }
-      })
-    }
 
     let canCreate = false
     if (get(this.schema, 'edit.allow_new_values', false)) {
@@ -91,16 +79,6 @@ export default {
         item: this.renderItem.bind(this),
         option_create: this.renderOptionCreate.bind(this),
       },
-      onChange: (value, k) => {
-        this.$emit('value', value)
-      },
-      onLoad: (data) => {
-        if (preload && !this.preloadComplete) {
-          this.preloadComplete = true
-          console.log('Preload complete')
-          this.currentValue = this.value
-        }
-      }
     }
 
     if (this.schema.values === undefined) {
@@ -113,7 +91,8 @@ export default {
       selectizeSettings.openOnFocus = true
     }
     return {
-      currentValue: currentValue,
+      currentValue: null,
+      preload: preload,
       preloadComplete: false,
       options: options,
       placeholder: get(this.schema, 'edit.placeholder', ''),
@@ -121,6 +100,25 @@ export default {
     }
   },
   methods: {
+    componentReady (selectize) {
+      const options = Object.keys(selectize.getSelectize().options)
+      // console.log(this.name, options)
+      if (this.value) {
+        const value = (typeof this.value === 'string') ? [this.value] : this.value
+        value.forEach(val => {
+          if (options.indexOf(String(val)) === -1) {
+            console.log(`Add value «${val}» to '${this.name}'.`)
+            const invalid = (this.schema.values && this.schema.values.length > 0)
+            selectize.getSelectize().addOption({
+              value: val,
+              prefLabel: val,
+              invalid: invalid,
+            })
+          }
+        })
+        this.currentValue = this.value
+      }
+    },
     source () {
       return get(this.schema, 'edit.remote_source') || {
         url: get(this.settings, 'baseUrl') + `/autocomplete?field=${this.schema.key}&q={QUERY}`
@@ -156,7 +154,21 @@ export default {
           console.log('Autocomplete aborted', err)
           callback([])
         })
-    }
+    },
+    onChange(value) {
+      this.$emit('value', value)
+    },
+    onInitialize(selectize) {
+      if (!this.preload) {
+        this.componentReady(selectize)
+      }
+    },
+    onLoad(data, selectize) {
+      if (this.preload && !this.preloadComplete) {
+        this.preloadComplete = true
+        this.componentReady(selectize)
+      }
+    },
   },
 }
 </script>

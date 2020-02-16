@@ -19,7 +19,14 @@ export default {
   mounted () {
     $(this.$el).selectize({
       onInitialize: () => {
-        this.setValue(this.value)
+        this.$emit('initialize', this)
+        // this.setValue(this.value)
+      },
+      onChange: val => {
+        this.$emit('change', val)
+      },
+      onLoad: data => {
+        this.$emit('load', data, this)
       },
       ...this.settings
     })
@@ -35,8 +42,11 @@ export default {
     }
   },
   methods: {
+    getSelectize () {
+      return this.$el.selectize
+    },
     setValue (value) {
-      this.$el.selectize.setValue(value, true)
+      this.getSelectize().setValue(value, true)
     },
   }
 }

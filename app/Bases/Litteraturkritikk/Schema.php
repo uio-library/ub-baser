@@ -478,7 +478,6 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "allow_new_values" => false,
-                            "preload" => true,
                             "placeholder" => "Velg aktuell kategori for kritikktype",
                             "help" => "Hvilken kritikktype er det snakk om? Én eller flere verdier velges fra <a target=\"_blank\" href=\"/norsk-litteraturkritikk/veiledning#kritikktype\">databasens egen typologi for kritikktype</a>. Begynn å skrive inn aktuell kritikktype, og velg riktig kategori fra listen som dukker opp.<hr>Det er mulig å kategorisere kritikken under flere typer, dersom det er aktuelt. Velg/skriv inn én kategori av gangen, slik at kategoriene vises som enkeltord med en grå boks rundt.",
                         ],
