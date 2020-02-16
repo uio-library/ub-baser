@@ -143,19 +143,31 @@ class Schema extends BaseSchema
                     // Subject Headings
                     [
                         "key" =>  "subj_headings",
-                        "type" =>  "tags",
+                        "type" =>  "select",
+                        "defaultValue" => [],
+                        "multiple" => true,
                         "search" => [
                             "widget" => "autocomplete",
                             "type" => "array",
+                        ],
+                        "edit" => [
+                            "preload" => true,
+                            "allow_new_values" => true,
                         ],
                     ],
                     // Persons
                     [
                         "key" =>  "persons",
-                        "type" =>  "tags",
+                        "type" =>  "select",
+                        "defaultValue" => [],
+                        "multiple" => true,
                         "search" => [
                             "widget" => "autocomplete",
                             "type" => "array",
+                        ],
+                        "edit" => [
+                            "preload" => true,
+                            "allow_new_values" => true,
                         ],
                     ],
                     // Geographica

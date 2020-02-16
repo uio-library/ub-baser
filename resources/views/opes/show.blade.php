@@ -19,7 +19,7 @@
 
     </div>
 
-    @if ($record->publications[0]->papyri_info_link)
+    @if (count($record->publications) && $record->publications[0]->papyri_info_link)
         <a class="btn btn-link" href="{{ $record->publications[0]->papyri_info_link}}">
             <em class="fa fa-arrow-right"></em>
             View Greek text of this document at papyri.info

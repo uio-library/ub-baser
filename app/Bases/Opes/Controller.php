@@ -33,6 +33,7 @@ class Controller extends BaseController
     protected function getValidationRules(BaseRecord $record): array
     {
         return [
+            'inv_no' => 'required',
             'language_code' => 'size:3',
             'items' => 'min:1',
             'negative_in_copenhagen' => 'boolean',
