@@ -43,9 +43,9 @@
                             {{ __('messages.language') }}:
                             @foreach ($base->languages as $baseLang)
                                 @if ($baseLang == \App::getLocale())
-                                    {{ \Punic\Language::getName($baseLang, $baseLang) }}
+                                    {{ ucfirst(\Punic\Language::getName($baseLang, $baseLang)) }}
                                 @else
-                                    <a href="?lang={{ $baseLang }}">{{ \Punic\Language::getName($baseLang, $baseLang) }}</a>
+                                    <a href="?lang={{ $baseLang }}">{{ ucfirst(\Punic\Language::getName($baseLang, $baseLang)) }}</a>
                                 @endif
                             @endforeach
                             |
