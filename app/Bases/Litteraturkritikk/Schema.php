@@ -458,7 +458,7 @@ class Schema extends BaseSchema
                             ["value" => "teateranmeldelse", "prefLabel" => "teateranmeldelse"],
                             ["value" => "kronikk", "prefLabel" => "kronikk"],
                             ["value" => "debattinnlegg", "prefLabel" => "debattinnlegg"],
-                            ["value" => "forfatterportrett", "prefLabel" => "forfatterportrett"],
+                            ["value" => "portrett", "prefLabel" => "portrett"],
                             ["value" => "essay", "prefLabel" => "essay"],
                             ["value" => "artikkel", "prefLabel" => "artikkel"],
                             ["value" => "pamflett", "prefLabel" => "pamflett"],
