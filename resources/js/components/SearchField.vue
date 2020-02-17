@@ -94,6 +94,10 @@ export default {
           fieldMap = fieldGroup.fields.reduce((out, field) => { out[field.key] = field; return out }, fieldMap)
         })
       }
+      // Disable multiple selects
+      if (fieldMap[this.field].multiple) {
+        fieldMap[this.field].multiple = false
+      }
       return fieldMap[this.field]
     },
     currentType () {
