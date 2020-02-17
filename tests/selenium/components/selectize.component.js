@@ -1,18 +1,33 @@
 class SelectizeComponent {
-  open(container) {
-    const sel = $(`${container} .selectize-input`)
-    sel.waitForDisplayed(3000)
-    sel.click()
+
+  constructor(container) {
+    this.$container = $(container)
+    this.isOpen = false
   }
 
-  selectAndReturnFirstOption(container) {
-    this.open(container)
-    const firstOption = $(`${container} .selectize-dropdown-content > .option`)
-    const value = firstOption.getText()
-    firstOption.click()
+  getValue() {
+    return this.$container.$('.searchFieldValue select').getValue()
+  }
+
+  open () {
+    if (this.isOpen) return
+    this.$container.$('.selectize-input').waitForDisplayed(5000)
+    this.$container.click()
+    this.isOpen = true
+  }
+
+  get firstOption () {
+    this.open()
+    return this.$container.$('.selectize-dropdown-content > .option')
+  }
+
+  selectAndReturnFirstOption() {
+    const value = this.firstOption.getText()
+    this.firstOption.click()
+    this.isOpen = false
     return value
   }
+
 }
 
-module.exports = new SelectizeComponent()
-
+module.exports = SelectizeComponent

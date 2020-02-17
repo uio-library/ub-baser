@@ -1,6 +1,6 @@
 const expect = require('chai').expect
 const page = require('../pageobjects/dommer.index.page')
-const selectizeComponent = require('../components/selectize.component')
+const SelectizeComponent = require('../components/selectize.component')
 
 describe('Dommers populærnavn', function () {
   it('should have the right title', function () {
@@ -14,18 +14,13 @@ describe('Dommers populærnavn', function () {
   })
 
   it('should support search for "kilde"', function () {
-    page.open()
-    page.waitForResults()
-
-    page.setSearchField('kilde')
-    selectizeComponent.selectAndReturnFirstOption('#searchField0')
-
+    const searchField = page.open().searchFields[0]
+    searchField.setType('kilde')
+    searchField.component.selectAndReturnFirstOption()
     page.submitSearch()
-
     browser.waitUntil(() => {
       return browser.getUrl().indexOf('f0=kilde') > -1
     }, 5000)
-
     page.waitForResults()
     expect(page.isTableEmpty()).to.be.false
   })

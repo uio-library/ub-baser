@@ -4,7 +4,7 @@
         <span v-else>Invalid: Schema for "{{ field }}" lacks "search" or "search.operators"</span>
     </div>
     <div v-else class="d-flex my-1" :id="'searchField' + index">
-        <div class="flex-grow-0">
+        <div class="flex-grow-0 searchFieldKey">
             <select class="form-control field-select"
                 :name="`f${index}`"
                 :value="field"
@@ -24,7 +24,7 @@
             </select>
         </div>
 
-        <div v-if="advanced" class="flex-grow-0 mx-1">
+        <div v-if="advanced" class="flex-grow-0 mx-1 searchFieldOperator">
             <select
                 class="form-control field-select"
                 :name="`o${index}`"
@@ -38,7 +38,7 @@
             </select>
         </div>
 
-        <div class="flex-grow-1 mx-1">
+        <div class="flex-grow-1 mx-1 searchFieldValue">
             <component
                 v-if="operator != 'isnull' && operator != 'notnull'"
                 :is="currentType"

@@ -27,6 +27,7 @@ class Page {
       (query ? ('?' + querystring.stringify(query)) : '') +
       (fragment ? ('#' + fragment) : ''),
     )
+    return this
   }
 
   get title () { return browser.getTitle() }

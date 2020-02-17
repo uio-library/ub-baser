@@ -1,17 +1,15 @@
 const Page = require('./page')
+const SearchField = require('../components/searchField.component')
 
 class IndexPage extends Page {
-  setSearchField (value, fieldNo) {
-    fieldNo = fieldNo || '0'
-    const selectBox = $(`select[name="f${fieldNo}"]`)
-    selectBox.selectByAttribute('value', value)
-  }
 
-  setSearchFieldValue (value, fieldNo) {
-    fieldNo = fieldNo || '0'
-    const elem = $(`input[name="v${fieldNo}"]`)
-    elem.waitForDisplayed(3000)
-    elem.setValue(value)
+  open () {
+    super.open()
+    this.searchFields = [
+      new SearchField(0),
+    ]
+    this.waitForResults()
+    return this
   }
 
   submitSearch () {
