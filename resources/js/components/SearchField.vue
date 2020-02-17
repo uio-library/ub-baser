@@ -147,6 +147,10 @@ export default {
     },
     onFieldChange (fieldName) {
       this.$emit('field', fieldName)
+      if (this.currentType == 'SelectInput') {
+        console.log('Resetting value since select input values are generally not compatible')
+        this.$emit('value', '')
+      }
     },
   },
 }
