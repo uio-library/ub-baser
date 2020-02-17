@@ -20,7 +20,7 @@ describe('Norsk litteraturkritikk', function () {
 
     IndexPage.dataTable.scrollIntoView()
     const verkTittelFromTable = IndexPage.firstResult.$('td').getText()
-    IndexPage.firstResult.click()
+    IndexPage.firstResult.$('td').click()
 
     expect(browser.getUrl()).to.contain('/record/')
     const verkTittelFromRecordPage = RecordPage.getFieldValue('verk_tittel').getText()
