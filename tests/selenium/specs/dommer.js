@@ -15,7 +15,7 @@ describe('Dommers populærnavn', function () {
 
   it('should support search for "kilde"', function () {
     page.open()
-    page.waitForTableToLoad()
+    page.waitForResults()
 
     page.setSearchField('kilde')
     selectizeComponent.selectAndReturnFirstOption('#searchField0')
@@ -26,7 +26,7 @@ describe('Dommers populærnavn', function () {
       return browser.getUrl().indexOf('f0=kilde') > -1
     }, 5000)
 
-    page.waitForTableToLoad()
+    page.waitForResults()
     expect(page.isTableEmpty()).to.be.false
   })
 })

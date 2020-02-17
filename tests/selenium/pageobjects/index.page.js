@@ -29,6 +29,16 @@ class IndexPage extends Page {
     return this.getResults()
   }
 
+  get dataTable () {
+    this.waitForResults()
+    return $('#DataTables_Table_0_wrapper')
+  }
+
+  get firstResult () {
+    this.waitForResults()
+    return $('#DataTables_Table_0_wrapper tbody tr')
+  }
+
   isTableEmpty () {
     this.waitForResults()
     if ($$('#DataTables_Table_0_wrapper td.dataTables_empty').length) {
