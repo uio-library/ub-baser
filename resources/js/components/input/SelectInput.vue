@@ -39,6 +39,7 @@ export default {
     schema: Object,
     settings: Object,
     value: String | Array,
+    placeholder: String,
   },
   computed: {
     multiple () {
@@ -95,7 +96,6 @@ export default {
       preload: preload,
       preloadComplete: false,
       options: options,
-      placeholder: get(this.schema, 'edit.placeholder', ''),
       selectizeSettings: selectizeSettings,
     }
   },
