@@ -473,8 +473,6 @@ class Schema extends BaseSchema
                         ],
                         "search" => [
                             "type" => "array",
-                            "widget" => "autocomplete",
-                            "placeholder" => "",
                         ],
                         "edit" => [
                             "allow_new_values" => false,
