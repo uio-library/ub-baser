@@ -1,5 +1,5 @@
 <template>
-    <form id="searchForm" method="GET" :action="baseUrl" class="pb-3">
+    <form id="searchForm" method="GET" :action="baseUrl" class="pb-3 search-form">
 
         <div v-if="error" class="alert alert-danger">
             {{ error }}
