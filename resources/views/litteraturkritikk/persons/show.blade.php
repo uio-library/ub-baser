@@ -33,7 +33,7 @@
                 </dt>
                 <dd class="col-sm-9">
                     @if (method_exists($field, 'formatValue'))
-                        {!! $field->formatValue($record->{$field->key}) !!}
+                        {!! $field->formatValue($record->{$field->key}, $base) !!}
                     @else
                         {{ $record->{$field->key} }}
                     @endif
@@ -43,23 +43,27 @@
     </dl>
 
     @if (count($record->recordsAsAuthor))
-    <h3>Omtalt i {{ count($record->recordsAsAuthor ) }} {{ count($record->recordsAsAuthor ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
-    <ul>
-        @foreach ($record->recordsAsAuthor as $doc)
-            <li>{!! $doc->representation() !!}</li>
-        @endforeach
-    </ul>
-    <a href="{{ $base->action('index', ['f0' => 'verk_forfatter', 'v0' => strval($record)])  }}">Vis som tabellvisning</a>
+        <div id="recordsAsAuthor">
+            <h3>Omtalt i {{ count($record->recordsAsAuthor ) }} {{ count($record->recordsAsAuthor ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
+            <ul>
+                @foreach ($record->recordsAsAuthor as $doc)
+                    <li>{!! $doc->representation() !!}</li>
+                @endforeach
+            </ul>
+            <a href="{{ $base->action('index', ['f0' => 'verk_forfatter', 'v0' => strval($record)])  }}">Vis som tabellvisning</a>
+        </div>
     @endif
 
     @if (count($record->recordsAsCritic))
-        <h3>Skribent av {{ count($record->recordsAsCritic ) }} {{ count($record->recordsAsCritic ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
-        <ul>
-            @foreach ($record->recordsAsCritic as $doc)
-                <li>{!! $doc->representation() !!}</li>
-            @endforeach
-        </ul>
-        <a href="{{ $base->action('index', ['f0' => 'kritiker', 'v0' => strval($record)])  }}">Vis som tabellvisning</a>
+        <div id="recordsAsCritic">
+            <h3>Skribent av {{ count($record->recordsAsCritic ) }} {{ count($record->recordsAsCritic ) == 1 ? 'kritikk' : 'kritikker' }}</h3>
+            <ul>
+                @foreach ($record->recordsAsCritic as $doc)
+                    <li>{!! $doc->representation() !!}</li>
+                @endforeach
+            </ul>
+            <a href="{{ $base->action('index', ['f0' => 'kritiker', 'v0' => strval($record)])  }}">Vis som tabellvisning</a>
+        </div>
     @endif
 
 @endsection

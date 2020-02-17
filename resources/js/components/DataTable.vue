@@ -322,14 +322,17 @@ export default {
             })
             .on('click', $event => {
               const link = `${this.baseUrl}/record/${data[this.schema.primaryId]}`
-              const drag = [
-                Math.sqrt(($event.clientX - mouseDownPos[0])**2),
-                Math.sqrt(($event.clientY - mouseDownPos[1])**2),
-              ]
-              if (drag[0] > 10 || drag[1] > 10) {
-                // Cancel, this was a drag, not a click
-                return
+              if (mouseDownPos !== null) {
+                const drag = [
+                  Math.sqrt(($event.clientX - mouseDownPos[0])**2),
+                  Math.sqrt(($event.clientY - mouseDownPos[1])**2),
+                ]
+                if (drag[0] > 10 || drag[1] > 10) {
+                  // Cancel, this was a drag, not a click
+                  return
+                }
               }
+              mouseDownPos = null
               if ($event.ctrlKey || $event.metaKey) {
                 window.open(link, '_blank')
               } else {

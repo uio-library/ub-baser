@@ -99,7 +99,7 @@
                             <dt class="col-sm-3 text-sm-right">
                                 {{ trans('litteraturkritikk.' . $field->key) }}:
                             </dt>
-                            <dd class="col-sm-9">
+                            <dd class="col-sm-9 {{ $field->key }}">
 
                                 @if ($field->type == 'entities')
                                     @foreach ($record->{$field->modelAttribute} as $person)

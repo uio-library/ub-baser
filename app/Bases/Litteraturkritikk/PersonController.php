@@ -27,17 +27,20 @@ class PersonController extends BaseController
     public function show(Request $request, Base $base, $id)
     {
         $schema = app(PersonSchema::class);
+        $record = Person::withTrashed()->with(
+            'recordsAsAuthor',
+            'recordsAsAuthor.forfattere',
+            'recordsAsAuthor.kritikere',
+            'recordsAsCritic',
+            'recordsAsCritic.forfattere',
+            'recordsAsCritic.kritikere'
+        )->findOrFail($id);
+
         return response()->view($base->getView('persons.show'), [
             'base' => $base,
             'schema' => $schema,
-            'record' => Person::withTrashed()->with(
-                'recordsAsAuthor',
-                'recordsAsAuthor.forfattere',
-                'recordsAsAuthor.kritikere',
-                'recordsAsCritic',
-                'recordsAsCritic.forfattere',
-                'recordsAsCritic.kritikere'
-            )->findOrFail($id),
+            'title' => $record->getStringRepresentationAttribute(),
+            'record' => $record,
         ]);
     }
 

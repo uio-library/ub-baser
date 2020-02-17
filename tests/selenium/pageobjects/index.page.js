@@ -18,23 +18,25 @@ class IndexPage extends Page {
     $('form[id="searchForm"] button[type="submit"]').click()
   }
 
-  waitForTableToLoad () {
+  getResults () {
+    return $$('#DataTables_Table_0_wrapper tbody tr')
+  }
+
+  waitForResults () {
     browser.waitUntil(() => {
       return this.getResults().length !== 0
-    }, 5000, 'expected results within 5 secs')
+    }, 10000, 'expected results within 10 secs')
+    return this.getResults()
   }
 
   isTableEmpty () {
-    this.waitForTableToLoad()
+    this.waitForResults()
     if ($$('#DataTables_Table_0_wrapper td.dataTables_empty').length) {
       return true
     }
     return false
   }
 
-  getResults () {
-    return $$('#DataTables_Table_0_wrapper tbody tr')
-  }
 }
 
 module.exports = IndexPage
