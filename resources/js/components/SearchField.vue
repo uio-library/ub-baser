@@ -42,6 +42,7 @@
             <component
                 v-if="operator != 'isnull' && operator != 'notnull'"
                 :is="currentType"
+                :key="currentSchema.key"
                 :name="`v${index}`"
                 :value="value"
                 :placeholder="placeholder"
@@ -127,6 +128,16 @@ export default {
         console.log('Operator no longer part of menu. Resetting to:', values[0])
         this.$emit('operator', values[0])
       }
+    },
+    currentType (newValue, oldValue) {
+      if (oldValue === 'SimpleInput' && newValue === 'AutocompleteInput') {
+        return
+      }
+      if (oldValue === 'AutocompleteInput' && newValue === 'SimpleInput') {
+        return
+      }
+      console.log('Resetting value since type changed from ', oldValue, ' to ', newValue)
+      this.$emit('value', '')
     }
   },
 
@@ -134,8 +145,8 @@ export default {
     fieldIsVisible (field, group) {
       return field.search.enabled && (!field.search.advanced || this.advanced || this.field == field.key)
     },
-    onFieldChange (value) {
-      this.$emit('field', value)
+    onFieldChange (fieldName) {
+      this.$emit('field', fieldName)
     },
   },
 }

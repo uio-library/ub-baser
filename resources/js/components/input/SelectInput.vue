@@ -116,8 +116,8 @@ export default {
             })
           }
         })
-        this.currentValue = this.value
       }
+      this.currentValue = this.value
     },
     source () {
       return get(this.schema, 'edit.remote_source') || {
