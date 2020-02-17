@@ -409,7 +409,7 @@ class Schema extends BaseSchema
                         "type" => "autocomplete",
 
                         "search" => [
-                            "placeholder" => "Publikasjon",
+                            "placeholder" => "Navn på tidsskrift, avis e.l.",
                             "type" => "simple",
                         ],
                         "edit" => [
@@ -438,6 +438,7 @@ class Schema extends BaseSchema
                         ],
                         "search" => [
                             "operators" => ["ex"],
+                            "placeholder" => "Velg fra menyen",
                         ],
                         "edit" => [
                             "allow_new_values" => false,
@@ -473,6 +474,7 @@ class Schema extends BaseSchema
                         ],
                         "search" => [
                             "type" => "array",
+                            "placeholder" => "Velg fra menyen",
                         ],
                         "edit" => [
                             "allow_new_values" => false,
@@ -491,7 +493,7 @@ class Schema extends BaseSchema
                         "search" => [
                             "type" => "array",
                             "widget" => "autocomplete",
-                            "placeholder" => "F.eks. teaterkritikk, forfatterportrett, ...",
+                            "placeholder" => "F.eks. modernisme, politisk litteratur, ...",
                         ],
                         "edit" => [
                             "placeholder" => "Emneord fra Humord-vokabularet",
@@ -573,6 +575,9 @@ class Schema extends BaseSchema
                     [
                         "key" => "aargang",
                         "type" => "simple",
+                        "search" => [
+                            "advanced" => true,
+                        ],
                         "edit" => [
                             "placeholder" => "Fyll inn årgang om det er aktuelt",
                             "help" => "Skriv inn årgang, dersom det er aktuelt. Bruk arabiske tall. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).",
@@ -581,6 +586,9 @@ class Schema extends BaseSchema
                     [
                         "key" => "bind",
                         "type" => "simple",
+                        "search" => [
+                            "advanced" => true,
+                        ],
                         "edit" => [
                             "placeholder" => "Fyll inn bind om det er aktuelt",
                             "help" => "Skriv inn bind, dersom det er aktuelt. Bruk arabiske tall. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).",
@@ -589,6 +597,9 @@ class Schema extends BaseSchema
                     [
                         "key" => "hefte",
                         "type" => "simple",
+                        "search" => [
+                            "advanced" => true,
+                        ],
                         "edit" => [
                             "placeholder" => "Fyll inn hefte om det er aktuelt",
                             "help" => "Skriv inn hefte, dersom det er aktuelt. Bruk arabiske tall. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).",
@@ -597,6 +608,9 @@ class Schema extends BaseSchema
                     [
                         "key" => "nummer",
                         "type" => "simple",
+                        "search" => [
+                            "advanced" => true,
+                        ],
                         "edit" => [
                             "placeholder" => "Fyll inn nummer om det er aktuelt",
                             "help" => "Skriv inn nummer, dersom det er aktuelt. Bruk arabiske tall. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3).",
@@ -605,6 +619,9 @@ class Schema extends BaseSchema
                     [
                         "key" => "sidetall",
                         "type" => "simple",
+                        "search" => [
+                            "advanced" => true,
+                        ],
                         "edit" => [
                             "placeholder" => "Fyll inn sidetall om det er aktuelt",
                             "help" => "Hvilken eller hvilke sider er kritikken publisert på? Bruk arabiske tall, med unntak av sidetall som oppgis i romertall i selve teksten. Skriv inn tall (1), intervall (1-2) eller flere verdier adskilt av semikolon fulgt av mellomrom (1; 3) eller (220-244; 400-422).",
@@ -687,6 +704,7 @@ class Schema extends BaseSchema
                         ],
                         "search" => [
                             "operators" => ["ex"],
+                            "placeholder" => "Velg fra menyen",
                         ],
                         "columnClassName" => "dt-body-nowrap",
                         "edit" => [
