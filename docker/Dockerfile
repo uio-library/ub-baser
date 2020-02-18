@@ -22,7 +22,7 @@ WORKDIR /app/
 #RUN a2enmod rewrite ssl headers
 #RUN a2dissite 000-default
 
-
+USER root
 
 RUN mkdir -p \
     ./storage/app \
@@ -31,7 +31,7 @@ RUN mkdir -p \
     ./storage/framework/views \
     ./storage/import \
     ./storage/logs \
-  && chown -R www-data:www-data ./storage
+  && chown -R default ./storage
 
 COPY docker/include $APACHE_CONFDIR/include
 COPY docker/sites-available $APACHE_CONFDIR/sites-available
