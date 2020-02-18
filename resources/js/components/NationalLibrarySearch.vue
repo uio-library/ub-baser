@@ -26,10 +26,10 @@ export default {
 
   methods: {
     buildApiQueryString () {
-
       const magicMap = {
         'name': 'api_namecreators',
         'title': 'api_title',
+        'series': 'api_series',
       }
       const q = this.query
       let url = `q=${q.query}&filter=contentClasses%3Ajp2&`
