@@ -13,3 +13,6 @@ storage/debugbar
 public/mix-manifest.json
 public/fonts
 composer.lock
+.project
+.buildpath
+.settings
