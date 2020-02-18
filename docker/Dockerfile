@@ -4,7 +4,7 @@
 #
 
 # ---------------------------------------------------------------------------
-FROM php:7.4-apache
+FROM registry.redhat.io/rhscl/php-73-rhel7
 
 LABEL maintainer="d.m.heggo@ub.uio.no"
 

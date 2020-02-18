@@ -1,6 +1,6 @@
-FROM postgres:12
+FROM registry.redhat.io/rhscl/postgresql-12-rhel7
 
-RUN localedef -i nb_NO -c -f UTF-8 -A /usr/share/locale/locale.alias nb_NO.UTF-8
+#RUN localedef -i nb_NO -c -f UTF-8 -A /usr/share/locale/locale.alias nb_NO.UTF-8
 
 # Warning: scripts in /docker-entrypoint-initdb.d are only run
 # if you start the container with a data directory that is empty.
