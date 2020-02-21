@@ -7,39 +7,8 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class ImportCommand extends Command
+abstract class ImportCommand extends Command
 {
-    /**
-     * The name of the console command.
-     *
-     * @var string
-     */
-    protected $name = 'import';
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['folder', InputArgument::REQUIRED, 'The folder to import data from'],
-        ];
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['force', 'f', InputOption::VALUE_NONE, 'Whether to delete existing data without asking', null],
-        ];
-    }
-
     protected function getForceArg()
     {
         $force = $this->option('force');
@@ -61,26 +30,87 @@ class ImportCommand extends Command
      */
     protected function processValue(string $column, string $value)
     {
-        return trim($value);
+        $value = trim($value);
+        if ($value === 'TRUE') return 1;
+        if ($value === 'FALSE') return 0;
+        if ($value === '') return null;
+
+        return $value;
     }
 
-    protected function readTsvFileHeader(string $filename)
+    protected function importTabularFile(string $format, string $folder, string $filename, string $table)
+    {
+        $filename = rtrim($folder, '/') . '/' . ltrim($filename, '/');
+
+        $this->comment("Importing rows from $filename into $table");
+
+        $columns = $this->readFileHeader($format, $filename);
+
+        $dbCols = \Schema::getColumnListing($table);
+        foreach ($columns as $col) {
+            if (!in_array($col, $dbCols)) {
+                throw new ErrorException(sprintf(
+                    "The column '%s' from %s was not found in the %s table",
+                    $col,
+                    $filename,
+                    $table
+                ));
+            }
+        }
+
+        $overrides = [
+            'created_by' => 1,
+            'updated_by' => 1,
+        ];
+
+        $buffer = [];
+        $rows = 0;
+        foreach ($this->readFileRows($format, $filename, $columns) as $row) {
+            $rows++;
+            foreach ($overrides as $k => $v) {
+                if (isset($row[$k])) {
+                    $row[$k] = $v;
+                }
+            }
+            $buffer[] = $row;
+            if (count($buffer) > 1000) {
+                \DB::table($table)->insert($buffer);
+                $this->comment("Imported 1000 rows");
+                $buffer = [];
+            }
+        }
+        if (count($buffer) > 0) {
+            \DB::table($table)->insert($buffer);
+        }
+        $this->comment("Imported $rows rows from $filename into $table");
+    }
+
+    protected function readFileHeader(string $format, string $filename)
     {
         $handle = fopen($filename, 'r');
         if ($handle === false) {
             throw new ErrorException('Failed to open file: ' . $filename);
         }
-        $header = explode("\t", stream_get_line($handle, 1024 * 1024, "\n"));
+        $header = $this->readRow($format, $handle);
         fclose($handle);
         return $header;
     }
 
-    protected function readTsvFileRows(string $filename, array $columnNames)
+    protected function readRow(string $format, $handle)
     {
-        // Note: We don't use the build-in csv_ functions in PHP because they don't allow us to
-        // not use a quoting character. (We could have set the quoting character to some character
-        // that is very unlikely to be encountered, but that's just stupid.)
+        if ($format === 'tsv') {
+            // Note: We don't use the build-in csv_ functions in PHP because they don't allow us to
+            // not use a quoting character. (We could have set the quoting character to some character
+            // that is very unlikely to be encountered, but that's just stupid.)
+            $line = stream_get_line($handle, 1024 * 1024, "\n");
+            return explode("\t", $line);
+        }
 
+        return fgetcsv($handle);
+    }
+
+    protected function readFileRows(string $format, string $filename, array $columnNames)
+    {
         $handle = fopen($filename, 'r');
         if ($handle === false) {
             throw new ErrorException('Failed to open file: ' . $filename);
@@ -90,8 +120,7 @@ class ImportCommand extends Command
         stream_get_line($handle, 1024 * 1024, "\n");
 
         $lineNo = 0;
-        while (($row = stream_get_line($handle, 1024 * 1024, "\n")) !== false) {
-            $row = explode("\t", $row);
+        while (($row = $this->readRow($format, $handle)) !== false) {
             $lineNo++;
             if (count($row) != count($columnNames)) {
                 throw new ErrorException(sprintf(
@@ -112,38 +141,7 @@ class ImportCommand extends Command
 
     protected function importTsvFile(string $folder, string $filename, string $table)
     {
-        $filename = rtrim($folder, '/') . '/' . ltrim($filename, '/');
-
-        $this->comment("Importing rows from $filename into $table");
-
-        $columns = $this->readTsvFileHeader($filename);
-
-        $dbCols = \Schema::getColumnListing($table);
-        foreach ($columns as $col) {
-            if (!in_array($col, $dbCols)) {
-                throw new ErrorException(sprintf(
-                    "The column '%s' from %s was not found in the %s table",
-                    $col,
-                    $filename,
-                    $table
-                ));
-            }
-        }
-
-        $buffer = [];
-        $rows = 0;
-        foreach ($this->readTsvFileRows($filename, $columns) as $row) {
-            $rows++;
-            $buffer[] = $row;
-            if (count($buffer) > 1000) {
-                \DB::table($table)->insert($buffer);
-                $buffer = [];
-            }
-        }
-        if (count($buffer) > 0) {
-            \DB::table($table)->insert($buffer);
-        }
-        $this->comment("Imported $rows rows from $filename into $table");
+        return $this->importTabularFile('tsv', $folder, $filename, $table);
     }
 
     protected function ensureTableEmpty(string $tableName, bool $force = false)
@@ -193,36 +191,5 @@ class ImportCommand extends Command
         \DB::unprepared(
             "SELECT pg_catalog.setval(pg_get_serial_sequence('$table', '$column'), MAX($column)) FROM $table"
         );
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $folder = $this->argument('folder');
-        $force = $this->getForceArg();
-
-        $this->call('import:dommer', [
-            '--force' => $force,
-            'folder' => "$folder/dommer",
-        ]);
-
-        $this->call('import:letras', [
-            '--force' => $force,
-            'folder' => "$folder/letras",
-        ]);
-
-        $this->call('import:bibliomanuel', [
-            '--force' => $force,
-            'folder' => "$folder/bibliomanuel",
-        ]);
-
-        $this->call('import:litteraturkritikk', [
-            '--force' => $force,
-            'folder' => "$folder/litteraturkritikk",
-        ]);
     }
 }
