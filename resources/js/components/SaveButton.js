@@ -67,12 +67,22 @@ export default class SaveButton extends Plugin {
     })
   }
 
-  setFailed () {
-    this.view.set({
-      isEnabled: true,
-      class: 'ck-savebutton ck-savebutton-error',
-      label: 'Lagring feilet!',
-      tooltip: 'Trykk for å prøve igjen.',
-    })
+  setFailed (err, details) {
+    if (err === 'locked') {
+      this.view.set({
+        isEnabled: true,
+        class: 'ck-savebutton ck-savebutton-error',
+        label: 'Låst',
+        tooltip: details,
+      })
+    } else {
+      this.view.set({
+        isEnabled: true,
+        class: 'ck-savebutton ck-savebutton-error',
+        label: 'Lagring feilet!',
+        tooltip: 'Det oppsto en ukjent feil. Trykk for å prøve igjen.',
+      })
+    }
+    // Can we programatically show the tooltip too?
   }
 }

@@ -1,5 +1,9 @@
 <template>
   <div>
+    <p v-if="!exists" class="alert alert-success">
+      OBS: Du er i ferd med å opprette en ny side.
+    </p>
+
     <ckeditor5
       :editor="editor"
       v-model="editorData"
@@ -50,7 +54,6 @@ import SaveButton from './SaveButton'
  */
 
 let saveButton = null
-let dirty = false
 export default {
   name: 'ckeditor',
   components: {
@@ -60,26 +63,53 @@ export default {
     data: String,
     imageUploadUrl: String,
     updateUrl: String,
+    lockUrl: String,
+    unlockUrl: String,
     csrfToken: String,
+    existed: Boolean,
   },
   created () {
-    window.addEventListener('beforeunload', this.onUnload)
-  },
-  destroyed () {
-    window.removeEventListener('beforeunload', this.onUnload)
-  },
-  methods: {
-    onUnload (evt) {
-      if ( dirty ) {
+    this.onBeforeUnload = (evt) => {
+      if (this.lock) {
         // Cancel the event
         evt.preventDefault();
         // Chrome requires returnValue to be set
         evt.returnValue = '';
       }
-    },
+    }
+    this.onUnload = () => {
+      if (this.lock) {
+        console.log('Unlocking')
+
+        const formData = new FormData();
+        formData.append('lock', this.lock);
+        formData.append('_token', this.csrfToken);
+
+        navigator.sendBeacon(this.unlockUrl, formData)
+      }
+    }
+    window.addEventListener('beforeunload', this.onBeforeUnload)
+    window.addEventListener('unload', this.onUnload);
+  },
+  destroyed () {
+    window.removeEventListener('beforeunload', this.onBeforeUnload)
+    // window.removeEventListener('unload', this.onUnload)
+  },
+  methods: {
     onEditorInput () {
-      dirty = true
-      saveButton.setDirty()
+      if (this.exists && this.lock === null) {
+        this.lock = 'obtaining'
+        this.$http.post(this.lockUrl).then(res => {
+          console.log(res.data)
+          this.lock = res.data.lock_id
+          saveButton.setDirty()
+        }).catch(err => {
+          const msg = `Beklager, siden er låst av ${err.response.data.user}. Prøv igjen senere.`
+          this.lock = null
+          saveButton.setFailed('locked', msg)
+          alert(msg)
+        })
+      }
     },
 
     onInitSaveButton (btn) {
@@ -90,11 +120,13 @@ export default {
       saveButton.setSaving()
       this.$http.post(this.updateUrl, {
         body: this.editorData,
+        lock: this.lock,
       }).then(res => {
         saveButton.setSaved()
-        dirty = false
+        this.exists = true
+        this.lock = null
       }).catch(err => {
-        saveButton.setFailed()
+        saveButton.setFailed('savefailed', err)
       })
     },
   },
@@ -102,6 +134,8 @@ export default {
     return {
       editor: ClassicEditor,
       editorData: this.data,
+      lock: null,
+      exists: this.existed,
       editorConfig: {
         plugins: [
           Bold,

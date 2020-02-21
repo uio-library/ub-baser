@@ -25,7 +25,7 @@ class Page extends Model
      */
     public function updatedBy()
     {
-        return $this->belongsTo('App\User', 'updated_by', 'id');
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 
     /**
@@ -33,7 +33,15 @@ class Page extends Model
      */
     public function base()
     {
-        return $this->belongsTo('App\Base');
+        return $this->belongsTo(Base::class);
+    }
+
+    /**
+     * Get page locks.
+     */
+    public function locks()
+    {
+        return $this->morphMany(Lock::class, 'lockable');
     }
 
     /**

@@ -26,18 +26,6 @@ class PageController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param \App\Page $page
@@ -73,16 +61,80 @@ class PageController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Page $page
+     *
+     * @return JsonResponse
+     */
+    public function lock(Page $page)
+    {
+        $this->authorize($page->permission);
+
+        $lock = $page->locks()->first();
+
+        if ($lock) {
+            $user = ($lock->user->id = auth()->id()) ? 'deg (i et annet vindu)' : $lock->user->name;
+            return response()->json([
+                'error' => 'locked',
+                'user' => $user,
+            ], 423);
+        }
+
+        $lock = $page->locks()->create([
+            'user_id' => auth()->user()->id,
+            'lockable_id' => $page->id,
+            'lockable_type' => Page::class,
+        ]);
+
+        $this->log('Locked page ' . $page->id);
+
+        return response()->json([
+            'status' => 'ok',
+            'lock_id' => $lock->id,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Request $request
+     * @param Page $page
+     * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function unlock(Request $request, Page $page)
+    {
+        $this->authorize($page->permission);
+
+        $lock = $page->locks()->where('id', '=', $request->get('lock'))->first();
+        $lock->delete();
+        $this->log('Unlocked page ' . $page->id);
+
+        return response('ok');
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Page                $page
+     * @param Page                $page
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function update(Request $request, Page $page)
     {
         $this->authorize($page->permission);
+
+        if ($page->exists) {
+            $lock = $page->locks()->where('id', '=', $request->get('lock'))->first();
+            if (is_null($lock)) {
+                return response()->json([
+                    'error' => 'Invalid lock',
+                ], 423);
+            }
+            $lock->delete();
+        }
 
         // Workaround for CKEditor bug,
         $body = preg_replace('/ style="margin-left: 0cm;"/', '', $request->body);
@@ -97,8 +149,9 @@ class PageController extends Controller
             $page->slug
         );
 
-        return redirect()->action('PageController@show', ['page' => $page->slug])
-            ->with('status', 'Siden ble lagret.');
+        return response()->json([
+            'status' => 'ok',
+        ]);
     }
 
     protected function storeThumb(FilesystemManager $fm, ImageManager $im, $file, $maxWidth, $maxHeight, $filename)

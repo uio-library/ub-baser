@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImportOpesCommand::class,
         \App\Console\Commands\PurgeLogs::class,
         \App\Console\Commands\Deployed::class,
+        \App\Console\Commands\PurgeLocks::class,
     ];
 
     /**
@@ -35,5 +36,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command(\App\Console\Commands\PurgeLocks::class)->hourly();
+        $schedule->command(\App\Console\Commands\PurgeLogs::class)->daily();
     }
 }

@@ -26,6 +26,9 @@ export default {
 
   methods: {
     buildApiQueryString () {
+
+      // Should we add profile=wwwnbno ??
+
       const magicMap = {
         'name': 'api_namecreators',
         'title': 'api_title',
