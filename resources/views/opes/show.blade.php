@@ -22,7 +22,7 @@
     @if (count($record->publications) && $record->publications[0]->papyri_info_link)
         <a class="btn btn-link" href="{{ $record->publications[0]->papyri_info_link}}">
             <em class="fa fa-arrow-right"></em>
-            View Greek text of this document at papyri.info
+            View record at papyri.info
         </a>
     @endif
 
@@ -75,16 +75,18 @@
 
 
             @foreach ($schema->groups as $group)
-                @if ($group->label != 'Images')
+                @if (!in_array($group->label, ['Images', 'Information on publication']))
                     <h4>{{ $group->label }}</h4>
                     <dl class="row">
                         @foreach ($group->fields as $field)
-                            @if ($field->displayable && !empty($record->{$field->key}))
+                            @if ($field->displayable)
                                 <dt class="col-sm-3 text-sm-right">
                                     {{ $field->label }}:
                                 </dt>
                                 <dd class="col-sm-9">
-                                    @if (is_array($record->{$field->key}))
+                                    @if (empty($record->{$field->key}))
+                                        <span class="text-muted">–</span>
+                                    @elseif (is_array($record->{$field->key}))
                                         @foreach($record->{$field->key} as $value)
                                             <a href="{{ $base->action('index', ['f0' => $field->key, 'v0' => $value]) }}" class="badge badge-primary">{{ $value }}</a>
                                         @endforeach
@@ -112,15 +114,17 @@
                                 @endif
                             @endforeach
                         </dl>
-                        @if ($publication->papyri_info_link)
-                            <a class="btn btn-link" href="{{ $publication->papyri_info_link }}">
-                                <em class="fa fa-arrow-right"></em>
-                                View record at papyri.info
-                            </a>
-                        @endif
                     </li>
                 @endforeach
             </ul>
+
+            <h4 class="mt-3">Bibliography</h4>
+
+            @if (empty($record->bibliography))
+                <span class="text-muted">–</span>
+            @else
+                <ul><li>{{ $record->bibliography }}</li></ul>
+            @endif
 
         </div>
     </div>

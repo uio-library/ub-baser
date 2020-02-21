@@ -41,6 +41,7 @@ return [
     'quote' => 'Quote',
     'further_replication_note' => 'Further replication note',
     'extent_genre'=> 'Extent Genre',
+    'language'=> 'Language',
     'language_code'=> 'Language code',
     'date1'=> 'Date1',
     'date2'=> 'Date2',

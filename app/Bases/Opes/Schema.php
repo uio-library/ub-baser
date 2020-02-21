@@ -120,10 +120,10 @@ class Schema extends BaseSchema
                         "type" => "autocomplete",
                     ],
                     // Language
-                    // [
-                    //     "key" =>  "language",
-                    //     "type" =>  "simple",
-                    // ],
+                    [
+                        "key" =>  "language",
+                        "type" =>  "simple",
+                    ],
                     // Genre
                     [
                         "key" =>  "genre",
