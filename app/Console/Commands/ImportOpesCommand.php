@@ -19,11 +19,49 @@ class ImportOpesCommand extends ImportCommand
     protected $description = 'Import data for "Opes"';
 
     /**
+     * Import file format.
+     *
+     * @var string
+     */
+    protected $fileFormat = 'tsv';
+
+    /**
+     * Tables to import.
+     *
+     * @var string[]
+     */
+    protected $tables = [
+        'opes',
+        'opes_publications',
+    ];
+
+    /**
+     * Sequences to update
+     *
+     * @var string[]
+     */
+    protected $sequences = [
+        'opes.id',
+        'opes_publications.id',
+    ];
+
+    /**
+     * Views to refresh.
+     *
+     * @var string[]
+     */
+    protected $views = [
+        'opes_view',
+    ];
+
+    /**
      * Process a single value. This method can be overriden in an importer
      * to do some kind of processing before the data are inserted into the database,
      * e.g. converting a string value to a JSON value.
      *
-     * @return array
+     * @param string $column
+     * @param string $value
+     * @return mixed
      */
     protected function processValue(string $column, string $value)
     {
@@ -75,34 +113,5 @@ class ImportOpesCommand extends ImportCommand
         }
 
         return $value;
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        // Check if tables are empty. Ask to empty them if not.
-        if (!$this->ensureTablesEmpty(['opes_publications', 'opes'])) {
-            return;
-        }
-
-        // Import data from TSV files
-        $this->importTsvFile($this->argument('folder'), 'opes.tsv', 'opes');
-
-        // Import data from TSV files
-        $this->importTsvFile($this->argument('folder'), 'opes_publications.tsv', 'opes_publications');
-
-        // Fix auto-incrementing sequences
-        $this->updateSequence('opes', 'id');
-        $this->updateSequence('opes_publications', 'id');
-
-        // Refresh views
-        $this->refreshView('opes_view');
-
-        // Done!
-        $this->comment('Import complete');
     }
 }

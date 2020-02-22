@@ -19,30 +19,38 @@ class ImportDommerCommand extends ImportCommand
     protected $description = 'Import data for "Dommers populærnavn"';
 
     /**
-     * Execute the console command.
+     * Import file format.
      *
-     * @return mixed
+     * @var string
      */
-    public function handle()
-    {
-        // Check if tables are empty. Ask to empty them if not.
-        if (!$this->ensureTablesEmpty(['dommer', 'dommer_kilder'])) {
-            return;
-        }
+    protected $fileFormat = 'tsv';
 
-        // Import data from TSV files
-        $folder = $this->argument('folder');
-        $this->importTsvFile($folder, 'dommer_kilder.tsv', 'dommer_kilder');
-        $this->importTsvFile($folder, 'dommer.tsv', 'dommer');
+    /**
+     * Tables to import.
+     *
+     * @var string[]
+     */
+    protected $tables = [
+        'dommer_kilder',
+        'dommer',
+    ];
 
-        // Refresh views
-        $this->refreshView('dommer_view');
+    /**
+     * Sequences to update
+     *
+     * @var string[]
+     */
+    protected $sequences = [
+        'dommer_kilder.id',
+        'dommer.id',
+    ];
 
-        // Fix auto-incrementing sequences
-        $this->updateSequence('dommer_kilder', 'id');
-        $this->updateSequence('dommer', 'id');
-
-        // Done!
-        $this->comment('Import complete');
-    }
+    /**
+     * Views to refresh.
+     *
+     * @var string[]
+     */
+    protected $views = [
+        'dommer_view'
+    ];
 }

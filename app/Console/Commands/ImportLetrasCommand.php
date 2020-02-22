@@ -19,24 +19,27 @@ class ImportLetrasCommand extends ImportCommand
     protected $description = 'Import data for "Letras"';
 
     /**
-     * Execute the console command.
+     * Import file format.
      *
-     * @return mixed
+     * @var string
      */
-    public function handle()
-    {
-        // Check if tables are empty. Ask to empty them if not.
-        if (!$this->ensureTablesEmpty(['letras'])) {
-            return;
-        }
+    protected $fileFormat = 'tsv';
 
-        // Import data from TSV files
-        $this->importTsvFile($this->argument('folder'), 'letras.tsv', 'letras');
+    /**
+     * Tables to import.
+     *
+     * @var string[]
+     */
+    protected $tables = [
+        'letras',
+    ];
 
-        // Fix auto-incrementing sequences
-        $this->updateSequence('letras', 'id');
-
-        // Done!
-        $this->comment('Import complete');
-    }
+    /**
+     * Sequences to update
+     *
+     * @var string[]
+     */
+    protected $sequences = [
+        'letras.id',
+    ];
 }

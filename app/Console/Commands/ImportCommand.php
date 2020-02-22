@@ -9,6 +9,65 @@ use Symfony\Component\Console\Input\InputOption;
 
 abstract class ImportCommand extends Command
 {
+    /**
+     * The name of the console command.
+     *
+     * @var string
+     */
+    protected $name = 'import';
+
+    /**
+     * Import file format.
+     *
+     * @var string
+     */
+    protected $fileFormat = 'csv';
+
+    /**
+     * Tables to import.
+     *
+     * @var string[]
+     */
+    protected $tables = [];
+
+    /**
+     * Views to refresh.
+     *
+     * @var string[]
+     */
+    protected $views = [];
+
+    /**
+     * Sequences to update
+     *
+     * @var string[]
+     */
+    protected $sequences = [];
+
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [
+            ['folder', InputArgument::REQUIRED, 'The folder to import data from'],
+        ];
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Whether to delete existing data without asking', null],
+        ];
+    }
+
     protected function getForceArg()
     {
         $force = $this->option('force');
@@ -26,7 +85,9 @@ abstract class ImportCommand extends Command
      * to do some kind of processing before the data are inserted into the database,
      * e.g. converting a string value to a JSON value.
      *
-     * @return array
+     * @param string $column
+     * @param string $value
+     * @return mixed
      */
     protected function processValue(string $column, string $value)
     {
@@ -102,8 +163,11 @@ abstract class ImportCommand extends Command
             // Note: We don't use the build-in csv_ functions in PHP because they don't allow us to
             // not use a quoting character. (We could have set the quoting character to some character
             // that is very unlikely to be encountered, but that's just stupid.)
-            $line = stream_get_line($handle, 1024 * 1024, "\n");
-            return explode("\t", $line);
+            $line = fgets($handle);
+            if ($line === false) {
+                return false;
+            }
+            return explode("\t", rtrim($line, "\n"));
         }
 
         return fgetcsv($handle);
@@ -137,11 +201,6 @@ abstract class ImportCommand extends Command
             yield $indexedRow;
         }
         fclose($handle);
-    }
-
-    protected function importTsvFile(string $folder, string $filename, string $table)
-    {
-        return $this->importTabularFile('tsv', $folder, $filename, $table);
     }
 
     protected function ensureTableEmpty(string $tableName, bool $force = false)
@@ -183,13 +242,49 @@ abstract class ImportCommand extends Command
     /**
      * Update a Postgres sequence for a column to match the maximum value of the column.
      */
-    protected function updateSequence(string $table, string $column)
+    protected function updateSequence(string $sequence)
     {
-        $table = filter_var($table, FILTER_SANITIZE_STRING);
-        $column = filter_var($column, FILTER_SANITIZE_STRING);
-        $this->comment("Updating sequence: $table.$column");
+        $sequence = filter_var($sequence, FILTER_SANITIZE_STRING);
+        $this->comment("Updating sequence: $sequence");
+        list($table, $column) = explode('.', $sequence);
         \DB::unprepared(
             "SELECT pg_catalog.setval(pg_get_serial_sequence('$table', '$column'), MAX($column)) FROM $table"
         );
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        // Check if tables are empty. Ask to empty them if not.
+        if (!$this->ensureTablesEmpty($this->tables)) {
+            return;
+        }
+
+        // Import data from CSV files
+        foreach ($this->tables as $table) {
+            $this->importTabularFile(
+                $this->fileFormat,
+                $this->argument('folder'),
+                $table . '.' . $this->fileFormat,
+                $table
+            );
+        }
+
+        // Fix auto-incrementing sequences
+        foreach ($this->sequences as $sequence) {
+            $this->updateSequence($sequence);
+        }
+
+        // Refresh views
+        foreach ($this->views as $view) {
+            $this->refreshView($view);
+        }
+
+        // Done!
+        $this->comment('Import complete');
     }
 }

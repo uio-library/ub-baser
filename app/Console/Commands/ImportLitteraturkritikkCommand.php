@@ -17,41 +17,42 @@ class ImportLitteraturkritikkCommand extends ImportCommand
     protected $name = 'import:litteraturkritikk';
 
     /**
-     * Execute the console command.
+     * Import file format.
      *
-     * @return mixed
+     * @var string
      */
-    public function handle()
-    {
-        // Check if tables are empty. Ask to empty them if not.
-        if (!$this->ensureTablesEmpty([
-            'litteraturkritikk_records',
-            'litteraturkritikk_personer',
-            'litteraturkritikk_record_person',
-            'litteraturkritikk_kritikktyper',
-        ])) {
-            return;
-        }
+    protected $fileFormat = 'csv';
 
-        // Import data from CSV files
-        $this->importTabularFile('csv', $this->argument('folder'), 'litteraturkritikk_records.csv', 'litteraturkritikk_records');
+    /**
+     * Tables to import.
+     *
+     * @var string[]
+     */
+    protected $tables = [
+        'litteraturkritikk_records',
+        'litteraturkritikk_personer',
+        'litteraturkritikk_record_person',
+        'litteraturkritikk_kritikktyper',
+    ];
 
-        $this->importTabularFile('csv', $this->argument('folder'), 'litteraturkritikk_personer.csv', 'litteraturkritikk_personer');
+    /**
+     * Sequences to update
+     *
+     * @var string[]
+     */
+    protected $sequences = [
+        'litteraturkritikk_records.id',
+        'litteraturkritikk_personer.id',
+        'litteraturkritikk_record_person.id',
+        'litteraturkritikk_kritikktyper.id',
+    ];
 
-        $this->importTabularFile('csv', $this->argument('folder'), 'litteraturkritikk_record_person.csv', 'litteraturkritikk_record_person');
-
-        $this->importTabularFile('csv', $this->argument('folder'), 'litteraturkritikk_kritikktyper.csv', 'litteraturkritikk_kritikktyper');
-
-        // Fix auto-incrementing sequences
-        $this->updateSequence('litteraturkritikk_records', 'id');
-        $this->updateSequence('litteraturkritikk_personer', 'id');
-        $this->updateSequence('litteraturkritikk_record_person', 'id');
-        $this->updateSequence('litteraturkritikk_kritikktyper', 'id');
-
-        // Refresh views
-        // $this->refreshView('litteraturkritikk_record_search');
-
-        // Done!
-        $this->comment('Import complete');
-    }
+    /**
+     * Views to refresh.
+     *
+     * @var string[]
+     */
+    protected $views = [
+        'litteraturkritikk_records_search',
+    ];
 }

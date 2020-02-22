@@ -19,22 +19,27 @@ class ImportBibliomanuelCommand extends ImportCommand
     protected $description = 'Import data for "Bibliografi om Manuel"';
 
     /**
-     * Execute the console command.
+     * Import file format.
      *
-     * @return mixed
+     * @var string
      */
-    public function handle()
-    {
-        // Check if tables are empty. Ask to empty them if not.
-        if (!$this->ensureTablesEmpty(['bibliomanuel'])) {
-            return;
-        }
+    protected $fileFormat = 'tsv';
 
-        // Import data from TSV files
-        $folder = $this->argument('folder');
-        $this->importTsvFile($folder, 'bibliomanuel.tsv', 'bibliomanuel');
+    /**
+     * Tables to import.
+     *
+     * @var string[]
+     */
+    protected $tables = [
+        'bibliomanuel',
+    ];
 
-        // Done!
-        $this->comment('Import complete');
-    }
+    /**
+     * Sequences to update
+     *
+     * @var string[]
+     */
+    protected $sequences = [
+        'bibliomanuel.id',
+    ];
 }
