@@ -8,6 +8,13 @@ class SelectField extends SchemaField
 {
     public const TYPE = 'select';
 
+    public $operators = [
+        Operators::IS,
+        Operators::NOT,
+        Operators::IS_NULL,
+        Operators::NOT_NULL,
+    ];
+
     public function setDefaults()
     {
         // Defaults

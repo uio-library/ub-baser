@@ -36,7 +36,7 @@ class EntitiesField extends SchemaField
         $values = array_map(
             function($value) {
                 $value['key'] = $this->key . ':' . $value['key'];
-                return self::make($value, $this->schemaPrefix, [], $this);
+                return self::make($value, $this->schemaPrefix, $this);
             },
             $values
         );

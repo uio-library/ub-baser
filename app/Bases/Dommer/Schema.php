@@ -2,6 +2,7 @@
 
 namespace App\Bases\Dommer;
 
+use App\Schema\Operators;
 use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
@@ -30,7 +31,6 @@ class Schema extends BaseSchema
                 "search" => [
                     "type"=> "simple",
                     "index" => "kilde_id",
-                    "operators" => ["ex"],
                 ],
                 "edit" => [
                     "preload" => true,
@@ -48,6 +48,12 @@ class Schema extends BaseSchema
                     "widgetOptions" => [
                         "minValue" => 1848,
                         "maxValue" => 2012,
+                    ],
+                    "operators" => [
+                        Operators::IN_RANGE,
+                        Operators::OUTSIDE_RANGE,
+                        Operators::IS_NULL,
+                        Operators::NOT_NULL,
                     ],
                 ],
             ],

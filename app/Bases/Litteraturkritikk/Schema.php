@@ -2,6 +2,7 @@
 
 namespace App\Bases\Litteraturkritikk;
 
+use App\Schema\Operators;
 use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
@@ -27,8 +28,8 @@ class Schema extends BaseSchema
                 "search" => [
                     "placeholder" => "Forfatter, kritiker, ord i tittel, kommentar, etc... Avslutt med * om du føler for å trunkere.",
                     "type" => "ts",
-                    "index" => "any_field_ts",
-                    "operators" => ["eq", "neq"],
+                    "ts_index" => "any_field_ts",
+                    "operators" => [Operators::CONTAINS, Operators::NOT_CONTAINS],
                 ],
             ],
 
@@ -43,8 +44,8 @@ class Schema extends BaseSchema
                 "search" => [
                     "placeholder" => "Fornavn og/eller etternavn",
                     "type" => "ts",
-                    "index" => "person_ts",
-                    "operators" => ["eq", "neq"],
+                    "ts_index" => "person_ts",
+                    "operators" => [Operators::CONTAINS, Operators::NOT_CONTAINS],
                 ],
             ],
         ],
@@ -64,7 +65,7 @@ class Schema extends BaseSchema
                         "search" => [
                             "placeholder" => "Tittel på omtalt verk",
                             "type" => "ts",
-                            "index" => "verk_tittel_ts",
+                            "ts_index" => "verk_tittel_ts",
                         ],
 
                         "edit" => [
@@ -195,12 +196,12 @@ class Schema extends BaseSchema
                             "widget" => "autocomplete",
                             "placeholder" => "Fornavn og/eller etternavn",
                             "type" => "ts",
-                            "index" => "forfatter_ts",
+                            "ts_index" => "forfatter_ts",
                             "operators" => [
-                                "eq",
-                                "neq",
-                                "isnull",
-                                "notnull",
+                                Operators::CONTAINS,
+                                Operators::NOT_CONTAINS,
+                                Operators::IS_NULL,
+                                Operators::NOT_NULL,
                             ],
                         ],
 
@@ -255,6 +256,12 @@ class Schema extends BaseSchema
                             "widget" => "rangeslider",
                             "widgetOptions" => [
                                 "minValue" => 1789,
+                            ],
+                            "operators" => [
+                                Operators::IN_RANGE,
+                                Operators::OUTSIDE_RANGE,
+                                Operators::IS_NULL,
+                                Operators::NOT_NULL,
                             ],
                         ],
                         "edit" => [
@@ -381,7 +388,7 @@ class Schema extends BaseSchema
                             "widget" => "autocomplete",
                             "placeholder" => "Fornavn og/eller etternavn",
                             "type" => "ts",
-                            "index" => "kritiker_ts",
+                            "ts_index" => "kritiker_ts",
                         ],
                         "edit" => [
                             "cssClass" => "col-md-12",
@@ -437,7 +444,6 @@ class Schema extends BaseSchema
                             ["value" => "some", "prefLabel" => "sosiale medier"],
                         ],
                         "search" => [
-                            "operators" => ["ex"],
                             "placeholder" => "Velg fra menyen",
                         ],
                         "edit" => [
@@ -517,6 +523,12 @@ class Schema extends BaseSchema
                             "widget" => "rangeslider",
                             "widgetOptions" => [
                                 "minValue" => 1789,
+                            ],
+                            "operators" => [
+                                Operators::IN_RANGE,
+                                Operators::OUTSIDE_RANGE,
+                                Operators::IS_NULL,
+                                Operators::NOT_NULL,
                             ],
                         ],
 
@@ -703,7 +715,6 @@ class Schema extends BaseSchema
                             ["value" => 4, "prefLabel" => "Korrekturlest mot og lenket til digitalt materiale"],
                         ],
                         "search" => [
-                            "operators" => ["ex"],
                             "placeholder" => "Velg fra menyen",
                         ],
                         "columnClassName" => "dt-body-nowrap",

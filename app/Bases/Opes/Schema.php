@@ -2,6 +2,7 @@
 
 namespace App\Bases\Opes;
 
+use App\Schema\Operators;
 use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
@@ -30,8 +31,11 @@ class Schema extends BaseSchema
 
                 "search" => [
                     "type" => "ts",
-                    "index" => "any_field_ts",
-                    "operators" => ["eq", "neq"],
+                    "ts_index" => "any_field_ts",
+                    "operators" => [
+                        Operators::CONTAINS,
+                        Operators::NOT_CONTAINS
+                    ],
                 ],
             ],
             // Opprettet

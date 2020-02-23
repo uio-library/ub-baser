@@ -16,24 +16,16 @@ abstract class Schema implements \JsonSerializable
     public $primaryId = 'id';
 
     protected $schema;
-    protected $schemaOptions = [
-        'defaultOperators' => [
-            'eq',
-            'neq',
-            'isnull',
-            'notnull',
-        ],
-    ];
 
     public $fields = [];
     public $groups = [];
 
     public function __construct()
     {
-        $this->fields = SchemaFields::make($this->schema['fields'], $this->schema['id'], $this->schemaOptions);
+        $this->fields = SchemaFields::make($this->schema['fields'], $this->schema['id']);
 
         foreach (Arr::get($this->schema, 'groups', []) as $group) {
-            $this->groups[] = SchemaGroup::make($group, $this->schema['id'], $this->schemaOptions);
+            $this->groups[] = SchemaGroup::make($group, $this->schema['id']);
         }
 
         // Check that schema keys are unique

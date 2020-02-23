@@ -11,13 +11,13 @@ class SchemaGroup implements \JsonSerializable
     public $searchable;
     public $fields;
 
-    public static function make(array $data, string $schemaPrefix, array $options): self
+    public static function make(array $data, string $schemaPrefix): self
     {
         $schemaGroup = new self();
         $schemaGroup->label = $data['label'];
         $schemaGroup->displayable = Arr::get($data, 'displayable', true);
         $schemaGroup->searchable = Arr::get($data, 'searchable', true);
-        $schemaGroup->fields = SchemaFields::make($data['fields'], $schemaPrefix, $options);
+        $schemaGroup->fields = SchemaFields::make($data['fields'], $schemaPrefix);
 
         return $schemaGroup;
     }

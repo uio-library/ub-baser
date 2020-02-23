@@ -60,9 +60,20 @@ return [
     'sort_by_this_column' => 'Trykk for å sortere etter denne kolonnen (stigende rekkefølge)',
     'toggle_fullscreen' => 'Fullskjerm',
 
-   // SearchForm
-    'contains' => 'inneholder',
-    'not_contains' => 'inneholder ikke',
-    'no_value' => 'mangler verdi',
-    'has_value' => 'har verdi',
+    // SearchForm
+    'operators' => [
+        'contains' => 'inneholder',
+        'notcontains' => 'inneholder ikke',
+
+        'begins' => 'starter med',
+        'ends' => 'slutter med',
+        'eq' => 'eksakt lik',
+        'ne' => 'ikke eksakst lik',
+        'is' => 'er',
+        'not' => 'er ikke',
+        'isnull' => 'ikke registrert / tom',
+        'notnull' => 'registrert / ikke tom',
+        'in' => 'er i området',
+        'outside' => 'er utenfor området',
+    ],
 ];

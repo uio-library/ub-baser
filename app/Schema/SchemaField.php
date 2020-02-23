@@ -16,6 +16,15 @@ abstract class SchemaField implements JsonSerializable
 
     public $parent = null;
 
+    public $operators = [
+        Operators::CONTAINS,
+        Operators::NOT_CONTAINS,
+        Operators::BEGINS_WITH,
+        Operators::ENDS_WITH,
+        Operators::IS_NULL,
+        Operators::NOT_NULL,
+    ];
+
     public static $types = [
         'autocomplete' => AutocompleteField::class,
         'boolean' => BooleanField::class,
@@ -26,7 +35,7 @@ abstract class SchemaField implements JsonSerializable
         'url' => UrlField::class,
     ];
 
-    public function __construct(string $key, string $schemaPrefix, array $schemaOptions)
+    public function __construct(string $key, string $schemaPrefix)
     {
         $keyParts = explode(':', $key);
         $this->schemaPrefix = $schemaPrefix;
@@ -39,7 +48,7 @@ abstract class SchemaField implements JsonSerializable
         $this->data['orderable'] = true;
         $this->data['defaultValue'] = null;
         $this->data['datatype'] = Schema::DATATYPE_STRING;
-        $this->data['search'] = new SearchOptions($key, static::TYPE, $schemaOptions);
+        $this->data['search'] = new SearchOptions($key, static::TYPE, $this->operators);
         $this->data['edit'] = new EditOptions();
 
         $this->setDefaults();
@@ -57,17 +66,15 @@ abstract class SchemaField implements JsonSerializable
      *
      * @param array $data
      * @param string $schemaPrefix
-     * @param array $schemaOptions
      * @param SchemaField $parent
      * @return SchemaField
      */
-    public static function make(array $data, string $schemaPrefix, array $schemaOptions = [], SchemaField $parent = null): self
+    public static function make(array $data, string $schemaPrefix, SchemaField $parent = null): self
     {
         $field = static::newFieldFromType(
             $data['type'],
             $schemaPrefix,
             $data['key'],
-            $schemaOptions,
             $parent
         );
 
@@ -75,7 +82,7 @@ abstract class SchemaField implements JsonSerializable
             if (in_array($key, ['type', 'key'])) {
                 // pass
             } elseif (method_exists($field, 'set' . Str::ucfirst($key))) {
-                $field->{'set' . Str::ucfirst($key)}($value, $schemaOptions);
+                $field->{'set' . Str::ucfirst($key)}($value);
             } else {
                 throw new \RuntimeException('Unknown schema attribute: ' . $key);
             }
@@ -90,7 +97,6 @@ abstract class SchemaField implements JsonSerializable
      * @param string $fieldType
      * @param string $schemaPrefix
      * @param string $key
-     * @param array $schemaOptions
      * @param SchemaField|null $parent
      * @return mixed
      */
@@ -98,7 +104,6 @@ abstract class SchemaField implements JsonSerializable
         string $fieldType,
         string $schemaPrefix,
         string $key,
-        array $schemaOptions,
         SchemaField $parent = null
     ): self
     {
@@ -106,7 +111,7 @@ abstract class SchemaField implements JsonSerializable
             throw new \RuntimeException('Schema contains field of unrecognized type: ' . $fieldType);
         }
 
-        $field = new static::$types[$fieldType]($key, $schemaPrefix, $schemaOptions);
+        $field = new static::$types[$fieldType]($key, $schemaPrefix);
         $field->data['label'] = trans("{$schemaPrefix}.{$key}");
         $field->setParent($parent);
 
@@ -122,9 +127,8 @@ abstract class SchemaField implements JsonSerializable
      * Set options passed to the Vue input component handling search input.
      *
      * @param array|false $value
-     * @param array $options
      */
-    public function setSearch($value, array $options): void
+    public function setSearch($value): void
     {
         $this->data['search']->init($value);
     }

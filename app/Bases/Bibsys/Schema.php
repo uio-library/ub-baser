@@ -2,6 +2,7 @@
 
 namespace App\Bases\Bibsys;
 
+use App\Schema\Operators;
 use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
@@ -45,8 +46,11 @@ class Schema extends BaseSchema
                 "search" => [
                     "placeholder" => "Du kan søke etter objektid, dokid, knyttid, avdeling, samling, tekst i MARC-posten, osv.",
                     "type" => "ts",
-                    "index" => "any_field_ts",
-                    "operators" => ["eq", "neq"],
+                    "ts_index" => "any_field_ts",
+                    "operators" => [
+                        Operators::CONTAINS,
+                        Operators::NOT_CONTAINS,
+                    ],
                 ],
             ],
         ],
@@ -61,7 +65,9 @@ class Schema extends BaseSchema
                         "type" => "simple",
 
                         "search" => [
-                            "operators" => ["ex"],
+                            "operators" => [
+                                Operators::EQUALS,
+                            ],
                             "case" => "LOWER_CASE",
                         ],
                         "orderable" => false,
@@ -98,7 +104,9 @@ class Schema extends BaseSchema
                         "key" => "dokid",
                         "type" => "simple",
                         "search" => [
-                            "operators" => ["ex"],
+                            "operators" => [
+                                Operators::EQUALS,
+                            ],
                             "case" => "LOWER_CASE",
                         ],
                         "orderable" => false,
@@ -109,7 +117,9 @@ class Schema extends BaseSchema
                         "key" => "strekkode",
                         "type" => "simple",
                         "search" => [
-                            "operators" => ["ex"],
+                            "operators" => [
+                                Operators::EQUALS,
+                            ],
                             "case" => "LOWER_CASE",
                         ],
                         "orderable" => false,
@@ -129,7 +139,9 @@ class Schema extends BaseSchema
                         "type" => "simple",
                         "orderable" => false,
                         "search" => [
-                            "operators" => ["ex"],
+                            "operators" => [
+                                Operators::EQUALS,
+                            ],
                             "placeholder" => "Du kan høyretrunkere med *",
                             "index" => "lower(avdeling)",
                             "case" => "LOWER_CASE",
@@ -143,7 +155,9 @@ class Schema extends BaseSchema
                         "orderable" => false,
                         "search" => [
                             "placeholder" => "Du kan høyretrunkere med *",
-                            "operators" => ["ex"],
+                            "operators" => [
+                                Operators::EQUALS,
+                            ],
                             "index" => "lower(samling)",
                             "case" => "LOWER_CASE",
                         ],
@@ -156,7 +170,9 @@ class Schema extends BaseSchema
                         "orderable" => false,
                         "search" => [
                             "placeholder" => "Du kan høyretrunkere med *",
-                            "operators" => ["ex"],
+                            "operators" => [
+                                Operators::EQUALS,
+                            ],
                             "index" => "lower(hyllesignatur)",
                             "case" => "LOWER_CASE",
                         ],
@@ -246,7 +262,9 @@ class Schema extends BaseSchema
                         "key" => "seriedokid",
                         "type" => "simple",
                         "search" => [
-                            "operators" => ["ex"],
+                            "operators" => [
+                                Operators::EQUALS,
+                            ],
                             "case" => "LOWER_CASE",
                         ],
                         "orderable" => false,

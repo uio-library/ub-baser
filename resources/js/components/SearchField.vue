@@ -77,7 +77,6 @@ export default {
     schema: Object,
     settings: Object,
     field: String,
-    operators: Array,
     operator: String,
     value: String,
   },
@@ -106,9 +105,10 @@ export default {
       return type.substr(0, 1).toUpperCase() + type.substr(1) + 'Input'
     },
     currentOperators () {
-      return this.operators.filter(
-        op => this.currentSchema.search.operators.indexOf(op.value) !== -1
-      )
+      return this.currentSchema.search.operators.map(op => ({
+        label: this.$t('messages.operators.' + op),
+        value: op,
+      }))
     },
     fields () {
       return this.schema.fields.filter(field => this.fieldIsVisible(field))

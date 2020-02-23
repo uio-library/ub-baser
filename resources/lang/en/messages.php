@@ -59,9 +59,19 @@ return [
     'sort_by_this_column' => 'Press to sort by this column (in ascending order).',
     'toggle_fullscreen' => 'Toggle fullscreen',
 
-   // SearchForm
-    'contains' => 'Contains',
-    'not_contains' => 'Not contains',
-    'no_value' => 'No Value',
-    'has_value' => 'Has Vaule',
+    // SearchForm
+    'operators' => [
+        'contains' => 'contains',
+        'notcontains' => 'not contains',
+        'begins' => 'begins with',
+        'ends' => 'ends with',
+        'eq' => 'is exactly',
+        'ne' => 'is not exactly',
+        'is' => 'is',
+        'not' => 'is not',
+        'isnull' => 'is empty',
+        'notnull' => 'is not empty',
+        'in' => 'in range',
+        'outside' => 'outside range',
+    ],
 ];

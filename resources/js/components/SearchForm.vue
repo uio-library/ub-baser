@@ -16,7 +16,6 @@
                 :settings="settings"
                 :field="field.field"
                 @field="field.field = $event"
-                :operators="operators"
                 :operator="field.operator"
                 @operator="field.operator = $event"
                 :value="field.value"
@@ -107,24 +106,15 @@ export default {
         operator: x.operator,
         value: x.value,
       })),
-
-     operators: [
-        { label: 'lik', value: 'ex' },
-        { label: this.$t('messages.contains'), value: 'eq' },
-        { label: this.$t('messages.not_contains'), value: 'neq' },
-        { label: this.$t('messages.no_value'), value: 'isnull' },
-        { label: this.$t('messages.has_value'), value: 'notnull' },
-      ],
     }
   },
 
   methods: {
-
     addField () {
       console.log(this.firstSearchField)
       this.query.push({
         field: this.firstSearchField.key,
-        operator: get(this.firstSearchField, 'search.operators.0', 'eq'),
+        operator: get(this.firstSearchField, 'search.operators.0', 'contains'),
         value: '',
       })
     },

@@ -2,8 +2,6 @@
 
 namespace App\Schema;
 
-use Illuminate\Support\Arr;
-
 class SearchOptions extends FieldOptions
 {
     /**
@@ -19,6 +17,7 @@ class SearchOptions extends FieldOptions
         'widgetOptions' => [],
         'case' => null,  // Either Schema::UPPER_CASE or Schema::LOWER_CASE
         'index' => null,
+        'ts_index' => null,
     ];
 
     /**
@@ -34,14 +33,15 @@ class SearchOptions extends FieldOptions
         'widgetOptions' => 'array',
         'case' => 'string',
         'index' => 'string',
+        'ts_index' => 'string',
     ];
 
-    public function __construct($key, $fieldType, $defaults)
+    public function __construct($key, $fieldType, $defaultOperators)
     {
         $this->data['index'] = $key;
         $this->data['type'] = $fieldType;
         $this->data['widget'] = $fieldType;
-        $this->data['operators'] = Arr::get($defaults, 'defaultOperators', []);
+        $this->data['operators'] = $defaultOperators;
     }
 
     public function getDefaultOperator()

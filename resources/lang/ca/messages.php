@@ -41,7 +41,7 @@ return [
     'no_values' => 'No values found',
     'unknown_error' => 'An unknown error occured',
 
-// DataTable
+    // DataTable
     'show_columns' => 'Mostra columnes:',
     'first' => 'First',
     'previous' => 'Anterior',
@@ -58,9 +58,12 @@ return [
     'sort_by_this_column' => 'Press to sort by this column (in ascending order).',
     'toggle_fullscreen' => 'Toggle fullscreen',
 
-// SearchForm
-    'contains' => 'inclou',
-    'not_contains' => 'no inclou',
-    'no_value' => 'Cap valor',
-    'has_value' => 'Amb valor',
+    // SearchForm
+    'operators' => [
+        'contains' => 'inclou',
+        'not_contains' => 'no inclou',
+        'isnull' => 'Cap valor',
+        'notnull' => 'Amb valor',
+        // TODO
+    ],
 ];
