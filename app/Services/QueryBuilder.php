@@ -192,6 +192,8 @@ class QueryBuilder
         $operatorMap = [
             Operators::EQUALS => '=',
             Operators::NOT_EQUALS => '<>',
+            Operators::IS => '=',
+            Operators::NOT => '<>',
             Operators::CONTAINS => 'ILIKE',
             Operators::NOT_CONTAINS => 'NOT ILIKE',
             Operators::BEGINS_WITH => 'ILIKE',
