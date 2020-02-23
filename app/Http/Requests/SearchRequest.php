@@ -35,18 +35,19 @@ class SearchRequest extends Request
                 continue;
             }
             $idx = $matches[1];
+            if (!isset($fields[$fieldName])) {
+                continue;
+            }
+            $field = $fields[$fieldName];
             $value = Arr::get($this, "v$idx");
-            $operator = Arr::get($this, "o$idx");
+            $operator = Arr::get($this, "o$idx", $field->search->operators[0]);
             $boolean = Arr::get($this, "c$idx");
 
             if ($value === null && !in_array($operator, ['isnull', 'notnull'])) {
                 continue;
             }
-            if (!isset($fields[$fieldName])) {
-                continue;
-            }
             $inputs[] = [
-                'field' => $fieldName,
+                'field' => $field->key,
                 'operator' => $operator,
                 'value' => $value,
                 'boolean' => $boolean,
