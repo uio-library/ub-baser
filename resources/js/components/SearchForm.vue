@@ -104,12 +104,13 @@ export default {
 
   methods: {
     addField () {
-      const lastField = this.query[this.query.length - 1]
-      this.query.push({
-        field: lastField.field,
-        operator: lastField.operator,
-        value: '',
-      })
+      if (this.query.length) {
+        const lastField = this.query[this.query.length - 1]
+        this.query.push({ field: lastField.field, operator: lastField.operator, value: '' })
+      } else {
+        const enabled = this.allFields.filter(field => field.search.enabled)
+        this.query.push({ field: enabled[0].key, operator: enabled[0].search.operators[0], value: '' })
+      }
     },
 
   },
