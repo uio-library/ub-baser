@@ -3,12 +3,12 @@
 @section('content')
 
     <div class="row">
-        <div class="col col-auto">
+        <div class="col-sm col-auto">
             <h2>
                 {{ $record->inv_no }}
             </h2>
         </div>
-        <div class="col text-sm-right">
+        <div class="col-sm text-sm-right">
             <a class="btn btn-outline-primary" href="{{ $base->action('show', ['id' => $record->prevRecord() ]) }}">
                 « {{ __('messages.previous_record') }}
             </a>
@@ -27,7 +27,7 @@
     @endif
 
     <div class="row record-view">
-        <div class="col-6">
+        <div class="col-sm-6">
             @if ($record->fullsizefront_r1 || $record->fullsizeback_r1)
                 @if ($record->fullsizefront_r1)
                 <div>
@@ -55,7 +55,7 @@
                 </div>
             @endif
         </div>
-        <div class="col">
+        <div class="col-sm">
 
             {{--
                 <table>
