@@ -29,12 +29,14 @@
                     style="width:50px"
             ><em class="fa fa-plus"></em></button>
 
-            <button v-else
-                    type="button"
-                    disabled
-                    class="btn"
-                    style="width:50px"
-            >og</button>
+            <select v-else
+              style="width:50px"
+              class="form-control field-select"
+              :name="`c${fieldIndex}`"
+            >
+              <option value="and">{{ $t('messages.and') }}</option>
+              <option value="or">{{ $t('messages.or') }}</option>
+            </select>
         </search-field>
 
         <div class="d-flex py-1">

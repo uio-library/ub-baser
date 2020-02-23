@@ -8,6 +8,7 @@ use App\Schema\Operators;
 use App\Schema\Schema;
 use App\Schema\SearchOptions;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -58,80 +59,89 @@ class QueryBuilder
         $this->fields = $this->schema->keyed();
     }
 
-    public function process()
+    public function process(): EloquentBuilder
     {
         $this->query = $this->base->getClass('RecordView')::query();
 
+        $boolean = 'and';
         foreach ($this->request->getQueryParts() as $queryPart) {
-            $field = $this->fields[$queryPart['field']];
-            $operator = $queryPart['operator'] ?: $field->getDefaultSearchOperator();
-            $value = $queryPart['value'];
-
-            if ($operator === Operators::IS_NULL) {
-                if ($field->search->type === 'array') {
-                    $this->query->whereRaw($field->getColumn() . " = '[]'::jsonb");
-                } else {
-                    $this->query->whereNull($field->getColumn());
-                }
-                continue;
-            } elseif ($operator === Operators::NOT_NULL) {
-                if ($field->search->type === 'array') {
-                    $this->query->whereRaw($field->getColumn() . " != '[]'::jsonb");
-                } else {
-                    $this->query->whereNotNull($field->getColumn());
-                }
-                continue;
-            }
-
-            $searchType = $field->search->type;
-            if (in_array($operator, [Operators::BEGINS_WITH, Operators::ENDS_WITH])) {
-                $searchType = 'simple';
-            }
-
-            switch ($searchType) {
-                case 'ts':
-                    $this->addTextSearchTerm($field->search, $operator, $value);
-                    break;
-                case 'range':
-                    $this->addRangeSearchTerm($field->search, $operator, $value);
-                    break;
-                case 'array':
-                    $this->addArraySearchTerm($field->search, $operator, $value);
-                    break;
-                default:
-                    $this->addSimpleTerm($field->search, $operator, $value);
-            }
+            $this->query->where(function ($query) use ($queryPart) {
+                $this->addQueryPart($query, $queryPart);
+            }, null, null, $boolean);
+            $boolean = $queryPart['boolean'];
         }
-
         return $this->query;
     }
 
-    protected function addTextSearchTerm(SearchOptions $searchConfig, string $operator, ?string $value): void
+    public function addQueryPart(EloquentBuilder $query, array $input): void
+    {
+        $field = $this->fields[$input['field']];
+        $operator = $input['operator'] ?: $field->getDefaultSearchOperator();
+        $value = $input['value'];
+
+        if ($operator === Operators::IS_NULL) {
+            if ($field->search->type === 'array') {
+                $query->whereRaw($field->getColumn() . " = '[]'::jsonb");
+            } else {
+                $query->whereNull($field->getColumn());
+            }
+            return;
+        } elseif ($operator === Operators::NOT_NULL) {
+            if ($field->search->type === 'array') {
+                $query->whereRaw($field->getColumn() . " != '[]'::jsonb");
+            } else {
+                $query->whereNotNull($field->getColumn());
+            }
+            return;
+        }
+
+        $searchType = $field->search->type;
+        if (in_array($operator, [Operators::BEGINS_WITH, Operators::ENDS_WITH])) {
+            $searchType = 'simple';
+        }
+
+        switch ($searchType) {
+            case 'ts':
+                $this->addTextSearchTerm($query, $field->search, $operator, $value);
+                return;
+            case 'range':
+                $this->addRangeSearchTerm($query, $field->search, $operator, $value);
+                return;
+            case 'array':
+                $this->addArraySearchTerm($query, $field->search, $operator, $value);
+                return;
+            default:
+                $this->addSimpleTerm($query, $field->search, $operator, $value);
+                return;
+        }
+    }
+
+    protected function addTextSearchTerm(EloquentBuilder $query, SearchOptions $searchConfig, string $operator, ?string $value): void
     {
         if (Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
             // Phrase
-            $query = "phraseto_tsquery('simple', ?)";
+            $queryTerm = "phraseto_tsquery('simple', ?)";
         } elseif (Str::endsWith($value, '*')) {
             // Prefix / ending wildcard
-            $query = "(phraseto_tsquery('simple', ?)::text || ':*')::tsquery";
+            $queryTerm = "(phraseto_tsquery('simple', ?)::text || ':*')::tsquery";
         } else {
             // Keyword
-            $query = "plainto_tsquery('simple', ?)";
+            $queryTerm = "plainto_tsquery('simple', ?)";
         }
 
         switch ($operator) {
             case Operators::CONTAINS:
-                $this->query->whereRaw($searchConfig->ts_index . ' @@ ' . $query, [$value]);
+                $query->whereRaw($searchConfig->ts_index . ' @@ ' . $queryTerm, [$value]);
                 break;
             case Operators::NOT_CONTAINS:
-                $this->query->whereRaw('NOT ' . $searchConfig->ts_index . ' @@ ' . $query, [$value]);
+                $query->whereRaw('NOT ' . $searchConfig->ts_index . ' @@ ' . $queryTerm, [$value]);
                 break;
             default:
                 throw new \RuntimeException('Unsupported search operator');
         }
     }
 
-    protected function addSimpleTerm(SearchOptions $searchConfig, string $operator, ?string $value): void
+    protected function addSimpleTerm(EloquentBuilder $query, SearchOptions $searchConfig, string $operator, ?string $value): void
     {
         switch ($operator) {
             case Operators::CONTAINS:
@@ -193,37 +203,35 @@ class QueryBuilder
         }
 
         $sqlOperator = $operatorMap[$operator];
-        $this->query->whereRaw("{$searchConfig->index} {$sqlOperator} ?", [$value]);
+        $query->whereRaw("{$searchConfig->index} {$sqlOperator} ?", [$value]);
     }
 
-    protected function addRangeSearchTerm(SearchOptions $searchConfig, string $operator, ?string $value): void
+    protected function addRangeSearchTerm(EloquentBuilder $query, SearchOptions $searchConfig, string $operator, ?string $value): void
     {
         $value = explode('-', $value);
         if (count($value) == 2) {
             switch ($operator) {
                 case Operators::IN_RANGE:
-                    $this->query->where($searchConfig->index, '>=', intval($value[0]))
-                        ->where($searchConfig->index, '<=', intval($value[1]));
+                    $query->whereBetween($searchConfig->index, [intval($value[0]),  intval($value[1])]);
                     return;
                 case Operators::OUTSIDE_RANGE:
-                    $this->query->where($searchConfig->index, '<', intval($value[0]))
-                        ->orWhere($searchConfig->index, '>', intval($value[1]));
+                    $query->whereNotBetween($searchConfig->index, [intval($value[0]),  intval($value[1])]);
                     return;
             }
         }
         throw new \Error('Unsupported search operator');
     }
 
-    protected function addArraySearchTerm(SearchOptions $searchConfig, string $operator, ?string $value): void
+    protected function addArraySearchTerm(EloquentBuilder $query, SearchOptions $searchConfig, string $operator, ?string $value): void
     {
         switch ($operator) {
             case Operators::IS:
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-                $this->query->whereRaw($searchConfig->index . ' ~@ ?', [$value]);
+                $query->whereRaw($searchConfig->index . ' ~@ ?', [$value]);
                 break;
             case Operators::NOT:
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-                $this->query->whereRaw('NOT ' . $searchConfig->index . ' ~@ ?', [$value]);
+                $query->whereRaw('NOT ' . $searchConfig->index . ' ~@ ?', [$value]);
                 break;
             default:
                 throw new \Error('Unsupported search operator');

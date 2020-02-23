@@ -37,6 +37,7 @@ class SearchRequest extends Request
             $idx = $matches[1];
             $value = Arr::get($this, "v$idx");
             $operator = Arr::get($this, "o$idx");
+            $boolean = Arr::get($this, "c$idx");
 
             if ($value === null && !in_array($operator, ['isnull', 'notnull'])) {
                 continue;
@@ -48,6 +49,7 @@ class SearchRequest extends Request
                 'field' => $fieldName,
                 'operator' => $operator,
                 'value' => $value,
+                'boolean' => $boolean,
             ];
         }
 

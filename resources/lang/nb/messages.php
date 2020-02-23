@@ -76,4 +76,6 @@ return [
         'in' => 'er i området',
         'outside' => 'er utenfor området',
     ],
+    'and' => 'og',
+    'or' => 'eller',
 ];

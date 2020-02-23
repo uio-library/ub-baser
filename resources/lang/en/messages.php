@@ -74,4 +74,6 @@ return [
         'in' => 'in range',
         'outside' => 'outside range',
     ],
+    'and' => 'and',
+    'or' => 'or',
 ];
