@@ -86,15 +86,6 @@ export default {
       return fields
     },
 
-    firstSearchField () {
-      for (let i = 0; i < this.allFields.length; i++) {
-        if (this.allFields[i].search.enabled) {
-          return this.allFields[i]
-        }
-      }
-      throw new Error('Found no search fields!')
-    },
-
   },
 
   data () {
@@ -111,10 +102,10 @@ export default {
 
   methods: {
     addField () {
-      console.log(this.firstSearchField)
+      const lastField = this.query[this.query.length - 1]
       this.query.push({
-        field: this.firstSearchField.key,
-        operator: get(this.firstSearchField, 'search.operators.0', 'contains'),
+        field: lastField.field,
+        operator: lastField.operator,
         value: '',
       })
     },
