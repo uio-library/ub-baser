@@ -6,6 +6,12 @@ use Illuminate\Console\Command;
 
 class PurgeLocks extends Command
 {
+    protected function logInfo($msg)
+    {
+        $this->info($msg);
+        \Log::info($msg);
+    }
+
     /**
      * The name and signature of the console command.
      *
