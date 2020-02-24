@@ -236,10 +236,18 @@ class BaseController extends Controller
 
         $url = $base->action('show', $record->id);
         if (count($changes)) {
+            $changeList = implode("\n", array_map(
+                function ($change) {
+                    return "<li>$change</li>";
+                },
+                $changes
+            ));
+
             $this->log(
-                "Oppdaterte post #{$record->id}\n<a href=\"$url\">[Lenke]</a><ul><li>"
-                . implode("</li><li>", $changes)
-                . "</li></ul>"
+                "Oppdaterte post #%s\n<a href=\"%s\">[Lenke]</a><ul>%s</ul>",
+                $record->id,
+                $url,
+                $changeList
             );
         }
         return redirect($url)->with('status', trans('base.notification.recordupdated'));
