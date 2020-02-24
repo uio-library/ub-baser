@@ -280,7 +280,7 @@ class Schema extends BaseSchema
                 // we need to add a text line creating a link the imageserver
                 // if possible not the link but a text to click
                 // like Recto Verso. to be done later
-                "key" => "images"
+                "key" => "images",
                 "search" => false,
                 "fields" => [
                     // Image Recto

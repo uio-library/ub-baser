@@ -679,8 +679,7 @@ class Schema extends BaseSchema
 
             // Posten
             [
-                "label" => "Databaseposten",
-
+                "key" => "databaseposten",
                 "fields" => [
 
                     // Opprettet

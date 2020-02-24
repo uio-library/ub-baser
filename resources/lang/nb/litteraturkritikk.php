@@ -2,12 +2,15 @@
 
 return [
 
-    // Meta- og fellesfelt
+    // Databaseposten
     'id' => 'ID',
+    'databaseposten' => 'Databaseposten',
     'created_at' => 'Opprettet',
     'updated_at' => 'Sist endret',
     'deleted_at' => 'Slettet',
     'korrekturstatus' => 'Korrekturstatus',
+
+    // Fellesfelt
     'q' => 'Alle felt',
     'persons' => 'Person (forfatter, kritiker e.a.)',
     'person' => [
