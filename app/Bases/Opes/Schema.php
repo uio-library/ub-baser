@@ -57,19 +57,13 @@ class Schema extends BaseSchema
         ],
         "groups" => [
             [
-                "label" => "Background and Physical Properties",
+                "key" => "background_and_physical",
                 "fields" => [
                     // Material
                     [
                         "key" => "material_long",
                         "type" => "select",
                     ],
-                    // Material long
-                    //[
-                    //    "key" =>  "material_long",
-                    //    "type" =>  "simple",
-                    //
-                    //],
                     // Connections
                     [
                         "key" => "connections",
@@ -107,7 +101,7 @@ class Schema extends BaseSchema
                 ],
             ],
             [
-                "label" => "Contents",
+                "key" => "contents",
                 "fields" => [
                     // Date
                     [
@@ -199,7 +193,7 @@ class Schema extends BaseSchema
             ],
 
             [
-                "label" => "Information on publication",
+                "key" => "publication_info",
                 "search" => false,
                 "fields" => [
 
@@ -286,7 +280,7 @@ class Schema extends BaseSchema
                 // we need to add a text line creating a link the imageserver
                 // if possible not the link but a text to click
                 // like Recto Verso. to be done later
-                "label" => "Images",
+                "key" => "images"
                 "search" => false,
                 "fields" => [
                     // Image Recto

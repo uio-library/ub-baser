@@ -57,7 +57,7 @@ class Schema extends BaseSchema
 
         "groups" => [
             [
-                "label" => "Objektpost",
+                "key" => "objektpost",
                 "fields" => [
 
                     [
@@ -96,7 +96,7 @@ class Schema extends BaseSchema
                 ],
             ],
             [
-                "label" => "Dokumentpost",
+                "key" => "dokumentpost",
                 "fields" => [
 
                     // Dokid

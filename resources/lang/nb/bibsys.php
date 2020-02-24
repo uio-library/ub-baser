@@ -4,12 +4,14 @@ return [
     'any_field_ts' => 'Alle felt',
 
     // Objektpost
+    'objektpost' => 'Objektpost',
     'objektid' => 'Objektid',
     'marc_record' => 'MARC-post',
     'title_statement' => 'Tittel/ansvarsangivelse (245)',
     'pub_date' => 'Publiseringsdato (260 $c)',
 
     // Dokumentpost
+    'dokumentpost' => 'Dokumentpost',
     'dokid' => 'Dokid',
     'strekkode' => 'Knyttid',
     'avdeling' => 'Avdeling',

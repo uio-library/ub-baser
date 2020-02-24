@@ -6,18 +6,20 @@ use Illuminate\Support\Arr;
 
 class SchemaGroup implements \JsonSerializable
 {
-    public $label;
+    public $key;
     public $displayable;
     public $searchable;
     public $fields;
+    public $schemaPrefix;
 
     public static function make(array $data, string $schemaPrefix): self
     {
         $schemaGroup = new self();
-        $schemaGroup->label = $data['label'];
+        $schemaGroup->key = $data['key'];
         $schemaGroup->displayable = Arr::get($data, 'displayable', true);
         $schemaGroup->searchable = Arr::get($data, 'searchable', true);
         $schemaGroup->fields = SchemaFields::make($data['fields'], $schemaPrefix);
+        $schemaGroup->schemaPrefix = $schemaPrefix;
 
         return $schemaGroup;
     }
@@ -33,10 +35,11 @@ class SchemaGroup implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'label' => $this->label,
+            'key' => $this->key,
             'displayable' => $this->displayable,
             'searchable' => $this->searchable,
             'fields' => $this->fields,
+            'label' => trans("{$this->schemaPrefix}.{$this->key}"),
         ];
     }
 }

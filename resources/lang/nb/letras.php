@@ -6,14 +6,16 @@ return [
     'created_at' => 'Opprettet',
     'updated_at' => 'Sist endret',
 
-    // Verket
+    // Tekst
+    'tekst' => 'Tekst',
     'forfatter' => 'Forfatter',
     'land' => 'Land',
     'tittel' => 'Tittel',
     'utgivelsesaar' => 'Utgivelsesår',
     'sjanger' => 'Sjanger',
 
-    // Oversettelsen
+    // Oversettelse
+    'oversettelse' => 'Oversettelse',
     'oversetter' => 'Oversetter',
     'tittel2' => 'Tittel',
     'utgivelsessted' => 'Utgivelsessted',
@@ -21,4 +23,5 @@ return [
     'forlag' => 'Forlag',
     'foretterord' => 'For- eller etterord',
     'spraak' => 'Språk',
+
 ];

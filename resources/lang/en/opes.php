@@ -4,6 +4,12 @@
 return [
     'q' => 'All fields',
     'inv_no' => 'Inventory Number',
+
+    'background_and_physical' => 'Background and Physical Properties',
+    'contents' => 'Contents',
+    'publication_info' => 'Information on Publication',
+    'images' => 'Images',
+
     'title_or_type' => 'Title / Type of text',
     'section_or_side' => 'Section or side',
     'material' => 'Material (abbr.)',

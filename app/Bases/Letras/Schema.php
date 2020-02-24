@@ -39,7 +39,7 @@ class Schema extends BaseSchema
         "groups" => [
 
             [
-                "label" => "Verket",
+                "key" => "tekst",
                 "fields" => [
 
                     // Forfatter
@@ -95,7 +95,7 @@ class Schema extends BaseSchema
             ],
 
             [
-                "label" => "Oversettelsen",
+                "key" => "oversettelse",
                 "fields" => [
 
                     // Oversetter

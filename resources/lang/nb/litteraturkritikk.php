@@ -2,6 +2,7 @@
 
 return [
 
+    // Meta- og fellesfelt
     'id' => 'ID',
     'created_at' => 'Opprettet',
     'updated_at' => 'Sist endret',
@@ -9,12 +10,23 @@ return [
     'korrekturstatus' => 'Korrekturstatus',
     'q' => 'Alle felt',
     'persons' => 'Person (forfatter, kritiker e.a.)',
+    'person' => [
+        'etternavn' => 'Etternavn',
+        'fornavn' => 'Fornavn',
+        'kjonn' => 'Kjønn',
+        'fodt' => 'Fødselsår',
+        'dod' => 'Dødsår',
+        'kommentar' => 'Kommentar',
+        'bibsys_id' => 'Bibsys-ID',
+        'wikidata_id' => 'Wikidata-ID',
+    ],
 
+    // Kritikken
+    'kritikken' => 'Kritikken',
     'kritikktype' => 'Kritikktype',
     'tags' => 'Emneord',
     'utgivelsessted' => 'Publiseringssted',
     'spraak' => 'Språk',
-
     'type' => 'Kritikktype',
     'medieformat' => 'Medieformat',
     'tittel' => 'Kritikkens tittel',
@@ -37,20 +49,11 @@ return [
     'kritiker_mfl' => 'mfl.',
     'kritiker_kjonn' => 'Kritikers kjønn',
 
-    'person' => [
-        'etternavn' => 'Etternavn',
-        'fornavn' => 'Fornavn',
-        'kjonn' => 'Kjønn',
-        'fodt' => 'Fødselsår',
-        'dod' => 'Dødsår',
-        'kommentar' => 'Kommentar',
-        'bibsys_id' => 'Bibsys-ID',
-        'wikidata_id' => 'Wikidata-ID',
-    ],
+    // Omtale av
+    'omtale_av' => 'Omtale av',
     'verk_forfatter:person_role' => 'Rolle',
     'verk_forfatter:pseudonym' => 'Pseudonym',
     'verk_forfatter:kommentar' => 'Kommentar',
-
     'verk_tittel' => 'Tittel',
     'verk_originaltittel' => 'Originaltittel',
     'verk_originaltittel_transkribert' => 'Originaltittel (transkribert)',
@@ -61,11 +64,11 @@ return [
     'verk_kommentar' => 'Kommentar',
     'verk_utgivelsessted' => 'Utgivelsessted',
     'verk_fulltekst_url' => 'Fulltekst-URL',
-
     'verk_forfatter' => 'Forfatter',
     'verk_forfatter_mfl' => 'mfl.',
     'forfatter_kjonn' => 'Forfatters kjønn',
 
+    // Grensesnitt
     'confirm-deleteperson' => 'Jeg er sikker på at jeg ønsker å slette denne personen',
     'deleteperson' => 'Slett person',
 ];

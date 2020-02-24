@@ -52,9 +52,9 @@ class Schema extends BaseSchema
 
         "groups" => [
 
-            // Verket
+            // Omtale av
             [
-                "label" => "Omtale av",
+                "key" => "omtale_av"
                 "fields" => [
 
                     // Tittel
@@ -336,7 +336,7 @@ class Schema extends BaseSchema
 
             // Kritikken
             [
-                "label" => "Kritikken",
+                "key" => "kritikken",
                 "fields" => [
 
                     // Kritiker
