@@ -10,7 +10,7 @@ class SchemaGroup implements \JsonSerializable
     public $displayable;
     public $searchable;
     public $fields;
-    public $schemaPrefix;
+    public $label;
 
     public static function make(array $data, string $schemaPrefix): self
     {
@@ -19,7 +19,7 @@ class SchemaGroup implements \JsonSerializable
         $schemaGroup->displayable = Arr::get($data, 'displayable', true);
         $schemaGroup->searchable = Arr::get($data, 'searchable', true);
         $schemaGroup->fields = SchemaFields::make($data['fields'], $schemaPrefix);
-        $schemaGroup->schemaPrefix = $schemaPrefix;
+        $schemaGroup->label = trans("{$schemaPrefix}.{$schemaGroup->key}");
 
         return $schemaGroup;
     }
@@ -39,7 +39,7 @@ class SchemaGroup implements \JsonSerializable
             'displayable' => $this->displayable,
             'searchable' => $this->searchable,
             'fields' => $this->fields,
-            'label' => trans("{$this->schemaPrefix}.{$this->key}"),
+            'label' => $this->label,
         ];
     }
 }
