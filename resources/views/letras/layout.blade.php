@@ -2,7 +2,7 @@
 @section('db-title', 'Letras')
 
 @section('header')
-<a href="{{ action('\App\Bases\Letras\Controller@index') }}">Letras</a>
+<a href="{{ $base->action('index') }}">Letras</a>
 @endsection
 
 @section('head')
@@ -12,11 +12,14 @@
 @section('footer-column1')
     <ul class="list-unstyled">
         <li>
-            Basen driftes av <a href="https://www.ub.uio.no/">Universitetsbiblioteket</a>.
+            @lang('letras.footer_line1', [
+                'publisher' => '<a href="https://www.ub.uio.no/">' . trans('letras.ubo') . '</a>'
+            ])
         </li>
         <li>
-        	For spørsmål og innspill, kontakt
-            <a href="https://www.ub.uio.no/om/ansatte/uhs/uhsfagstudier/jmaria/index.html">Jose Maria Izquierdo</a>.
+            @lang('letras.footer_line2', [
+                'contact' => '<a href="https://www.ub.uio.no/om/ansatte/uhs/uhsfagstudier/jmaria/index.html">Jose Maria Izquierdo</a>',
+            ])
         </li>
     </ul>
 @endsection

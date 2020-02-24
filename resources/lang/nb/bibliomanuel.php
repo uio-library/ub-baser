@@ -6,7 +6,7 @@ return [
     'created_at' => 'Opprettet',
     'updated_at' => 'Sist endret',
 
-    //Bibliografien
+    // Felt
     'forfatter' => 'Forfatter',
     'tittel' => 'Tittel',
     'antologi' => 'Antologi',
@@ -28,4 +28,9 @@ return [
     'issn' => 'ISSN',
     'eissn' => 'e-ISSN',
     'url' => 'URL',
+
+    // Grensesnitt
+    'footer_line1' => 'Basen driftes av :publisher.',
+    'ubo' => 'Universitetsbiblioteket i Oslo',
+    'footer_line2' => 'For spørsmål og innspill, kontakt :contact.',
 ];

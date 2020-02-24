@@ -6,7 +6,7 @@ return [
     'created_at' => 'Created',
     'updated_at' => 'Last modified',
 
-    //Bibliografien
+    // Felt
     'forfatter' => 'Author',
     'tittel' => 'Title',
     'antologi' => 'Anthology',
@@ -28,4 +28,9 @@ return [
     'issn' => 'ISSN',
     'eissn' => 'e-ISSN',
     'url' => 'URL',
+
+    // Grensesnitt
+    'footer_line1' => 'Operated by :publisher.',
+    'ubo' => 'University of Oslo Library',
+    'footer_line2' => 'For questions or feedback, contact :contact.',
 ];

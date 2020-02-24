@@ -24,4 +24,8 @@ return [
     'foretterord' => 'For- eller etterord',
     'spraak' => 'Språk',
 
+    // Grensesnitt
+    'footer_line1' => 'Basen driftes av :publisher.',
+    'ubo' => 'Universitetsbiblioteket i Oslo',
+    'footer_line2' => 'For spørsmål og innspill, kontakt :contact.',
 ];

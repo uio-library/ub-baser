@@ -6,7 +6,7 @@ return [
     'created_at' => 'Creado',
     'updated_at' => 'Última modificación',
 
-    //Bibliografien
+    // Felt
     'forfatter' => 'Escritor',
     'tittel' => 'Título',
     'antologi' => 'Antología',
@@ -28,4 +28,9 @@ return [
     'issn' => 'ISSN',
     'eissn' => 'e-ISSN',
     'url' => 'URL',
+
+    // Grensesnitt
+    'footer_line1' => 'Este banco de datos lo gestiona la :publisher.',
+    'ubo' => 'Biblioteca Universitaria de Oslo',
+    'footer_line2' => 'Para preguntas y comentarios contacte con :contact.',
 ];

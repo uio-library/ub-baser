@@ -4,11 +4,14 @@
 @section('footer-column1')
     <ul class="list-unstyled">
         <li>
-            Basen driftes av <a href="https://www.ub.uio.no/">Universitetsbiblioteket</a>.
+            @lang('bibliomanuel.footer_line1', [
+                'publisher' => '<a href="https://www.ub.uio.no/">' . trans('bibliomanuel.ubo') . '</a>'
+            ])
         </li>
         <li>
-        	For spørsmål og innspill, kontakt
-            <a href="https://www.ub.uio.no/om/ansatte/uhs/uhsfagstudier/jmaria/index.html">Jose Maria Izquierdo</a>.
+            @lang('bibliomanuel.footer_line2', [
+                'contact' => '<a href="https://www.ub.uio.no/om/ansatte/uhs/uhsfagstudier/jmaria/index.html">Jose Maria Izquierdo</a>',
+            ])
         </li>
     </ul>
 @endsection
