@@ -54,7 +54,7 @@ class Schema extends BaseSchema
 
             // Omtale av
             [
-                "key" => "omtale_av"
+                "key" => "omtale_av",
                 "fields" => [
 
                     // Tittel
