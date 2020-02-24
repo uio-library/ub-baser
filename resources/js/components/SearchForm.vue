@@ -26,11 +26,11 @@
                     class="btn btn-primary"
                     id="addFieldButton"
                     @click="addField()"
-                    style="width: 4.4rem"
+                    style="width: 4.8rem"
             ><em class="fa fa-plus"></em></button>
 
             <select v-else
-              style="width: 4.4rem"
+              style="width: 4.8rem"
               class="custom-select field-select"
               :name="`c${fieldIndex}`"
             >
