@@ -26,12 +26,12 @@
                     class="btn btn-primary"
                     id="addFieldButton"
                     @click="addField()"
-                    style="width:50px"
+                    style="width: 4.4rem"
             ><em class="fa fa-plus"></em></button>
 
             <select v-else
-              style="width:50px"
-              class="form-control field-select"
+              style="width: 4.4rem"
+              class="custom-select field-select"
               :name="`c${fieldIndex}`"
             >
               <option value="and">{{ $t('messages.and') }}</option>

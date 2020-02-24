@@ -5,7 +5,7 @@
     </div>
     <div v-else class="d-flex my-1" :id="'searchField' + index">
         <div class="flex-grow-0 searchFieldKey">
-            <select class="form-control field-select"
+            <select class="custom-select field-select"
                 :name="`f${index}`"
                 :value="field"
                 @change="onFieldChange($event.target.value)"
@@ -26,7 +26,7 @@
 
         <div v-if="advanced" class="flex-grow-0 mx-1 searchFieldOperator">
             <select
-                class="form-control field-select"
+                class="custom-select field-select"
                 :name="`o${index}`"
                 :value="operator"
                 @input="$emit('operator', $event.target.value)"
