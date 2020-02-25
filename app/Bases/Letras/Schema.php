@@ -72,6 +72,16 @@ class Schema extends BaseSchema
                         ],
                     ],
 
+                    // Utgitt i
+                    [
+                        "key" => "utgitti",
+                        "type" => "simple",
+                        "search" => [
+                            "placeholder" => "Utgitt i",
+                            "type" => "simple",
+                        ],
+                    ],
+
                     // Utgivelsesår
                     [
                         "key" => "utgivelsesaar",
@@ -117,6 +127,16 @@ class Schema extends BaseSchema
                             "type" => "simple",
                         ],
 
+                    ],
+
+                    // Utgitt i
+                    [
+                        "key" => "utgitti2",
+                        "type" => "simple",
+                        "search" => [
+                            "placeholder" => "Utgitt i",
+                            "type" => "simple",
+                        ],
                     ],
 
                     // Utgivelsessted
