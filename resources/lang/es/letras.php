@@ -11,6 +11,7 @@ return [
     'forfatter' => 'Escritor',
     'land' => 'País',
     'tittel' => 'Título',
+    'utgitti' => 'Editado en',
     'utgivelsesaar' => 'Año de publicación',
     'sjanger' => 'Género',
 
@@ -18,6 +19,7 @@ return [
     'oversettelse' => 'Traducción',
     'oversetter' => 'Traductor',
     'tittel2' => 'Título',
+    'utgitti2' => 'Editado en',
     'utgivelsessted' => 'Lugar de publicación',
     'utgivelsesaar2' => 'Año de publicación',
     'forlag' => 'Editorial',

@@ -11,6 +11,7 @@ return [
     'forfatter' => 'Forfatter',
     'land' => 'Land',
     'tittel' => 'Tittel',
+    'utgitti' => 'Utgitt i',
     'utgivelsesaar' => 'Utgivelsesår',
     'sjanger' => 'Sjanger',
 
@@ -18,6 +19,7 @@ return [
     'oversettelse' => 'Oversettelse',
     'oversetter' => 'Oversetter',
     'tittel2' => 'Tittel',
+    'utgitti2' => 'Utgitt i',
     'utgivelsessted' => 'Utgivelsessted',
     'utgivelsesaar2' => 'Utgivelsesår',
     'forlag' => 'Forlag',
