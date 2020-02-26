@@ -26,6 +26,7 @@ class AddUtgittIToLetras extends Migration
      */
     public function down()
     {
-        Schema::drop('letras');
+        $table->dropColumn('utgitti');
+        $table->dropColumn('utgitti2');
     }
 }
