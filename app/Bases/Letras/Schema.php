@@ -63,7 +63,7 @@ class Schema extends BaseSchema
                     // Utgitt i
                     [
                         "key" => "utgitti",
-                        "type" => "simple",
+                        "type" => "autocomplete",
                     ],
 
                     // Utgivelsesår
@@ -104,13 +104,13 @@ class Schema extends BaseSchema
                     // Utgitt i
                     [
                         "key" => "utgitti2",
-                        "type" => "simple",
+                        "type" => "autocomplete",
                     ],
 
                     // Utgivelsessted
                     [
                         "key" => "utgivelsessted",
-                        "type" => "simple",
+                        "type" => "autocomplete",
                     ],
 
                     // Utgivelsesår
@@ -122,7 +122,7 @@ class Schema extends BaseSchema
                     // Forlag
                     [
                         "key" => "forlag",
-                        "type" => "simple",
+                        "type" => "autocomplete",
                     ],
 
                     // Forord/etterord
