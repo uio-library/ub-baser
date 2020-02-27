@@ -16,7 +16,7 @@ exports.config = {
   user: process.env.SAUCE_USERNAME,
   key: process.env.SAUCE_ACCESS_KEY,
   region: 'us', // 'eu' didn't work yet with my account
-  sauceConnect: true,
+  // sauceConnect: true,
 
   //
   // Ref: https://docs.saucelabs.com/reference/platforms-configurator
