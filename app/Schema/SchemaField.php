@@ -112,7 +112,11 @@ abstract class SchemaField implements JsonSerializable
         }
 
         $field = new static::$types[$fieldType]($key, $schemaPrefix);
-        $field->data['label'] = trans("{$schemaPrefix}.{$key}");
+        $localizedLabel = trans("{$schemaPrefix}.{$key}");
+        if (is_array($localizedLabel)) {
+            $localizedLabel = Arr::get($localizedLabel, '_');
+        }
+        $field->data['label'] = $localizedLabel;
         $field->setParent($parent);
 
         return $field;

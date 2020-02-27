@@ -12,8 +12,8 @@ return [
 
     // Fellesfelt
     'q' => 'Alle felt',
-    'persons' => 'Person (forfatter, kritiker e.a.)',
     'person' => [
+        '_' => 'Person (forfatter, kritiker e.a.)',
         'etternavn' => 'Etternavn',
         'fornavn' => 'Fornavn',
         'kjonn' => 'Kjønn',
