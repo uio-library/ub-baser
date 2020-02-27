@@ -46,4 +46,5 @@ before_script:
   - curl --fail http://localhost:8080/
 
 script:
+  - ./vendor/bin/phplint ./ --exclude=vendor --exclude=node_modules
   - npm run test@sauce
