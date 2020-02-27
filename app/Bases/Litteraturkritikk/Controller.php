@@ -78,6 +78,7 @@ class Controller extends BaseController
         $attribute = $field->modelAttribute;
         $pivotTable = $field->pivotTable;
         $pivotTableKey = $field->pivotTableKey;
+        $relatedPivotKey = $field->relatedPivotKey;
         $entityModel = $field->entityType;
 
         $pivotFields = array_map(
@@ -100,7 +101,7 @@ class Controller extends BaseController
         foreach ($record->{$attribute} as $entity) {
             $names[$entity->id] = (string) $entity;
             $value = [
-                'record_id' => $record->id,
+                $relatedPivotKey => $record->id,
                 $pivotTableKey => $entity->id,
             ];
             foreach ($pivotFields as $pf) {
@@ -115,7 +116,7 @@ class Controller extends BaseController
             $entity = $entityModel::findOrFail($inputValue['id']);
             $names[$entity->id] = (string) $entity;
             $value = [
-                'record_id' => $record->id,
+                $relatedPivotKey => $record->id,
                 $pivotTableKey => $entity->id,
             ];
             foreach ($pivotFields as $pf) {
@@ -138,7 +139,7 @@ class Controller extends BaseController
             $changes[] = "Fjernet: " . json_encode($entity, JSON_UNESCAPED_UNICODE);
             \DB::table($pivotTable)
                 ->where([
-                    'record_id' => $entity['record_id'],
+                    $relatedPivotKey => $entity[$relatedPivotKey],
                     $pivotTableKey => $entity[$pivotTableKey],
                 ])
                 ->delete();

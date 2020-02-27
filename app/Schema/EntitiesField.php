@@ -6,6 +6,14 @@ class EntitiesField extends SchemaField
 {
     public const TYPE = 'entities';
 
+    /**
+     * Set default value.
+     */
+    public function setDefaults()
+    {
+        $this->data['relatedPivotKey'] = 'record_id';
+    }
+
     public function setModelAttribute(string $value)
     {
         $this->data['modelAttribute'] = $value;
@@ -29,6 +37,11 @@ class EntitiesField extends SchemaField
     public function setPivotTableKey(string $value)
     {
         $this->data['pivotTableKey'] = $value;
+    }
+
+    public function setRelatedPivotKey(string $value)
+    {
+        $this->data['relatedPivotKey'] = $value;
     }
 
     public function setPivotFields(array $values)
