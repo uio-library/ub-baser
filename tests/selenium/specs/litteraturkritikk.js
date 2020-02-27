@@ -18,7 +18,7 @@ describe('Norsk litteraturkritikk: search page', function () {
   it('should keep input when changing to a search field of similar type', function () {
     const searchField = indexPage.open().searchFields[0]
     searchField.setValue('Hello world')
-    searchField.setType('persons')
+    searchField.setType('person')
     expect(searchField.getValue()).to.equal('Hello world')
   })
 

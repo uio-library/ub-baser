@@ -26,7 +26,9 @@ class AddUtgittIToLetras extends Migration
      */
     public function down()
     {
-        $table->dropColumn('utgitti');
-        $table->dropColumn('utgitti2');
+        Schema::table('letras', function (Blueprint $table) {
+            $table->dropColumn('utgitti');
+            $table->dropColumn('utgitti2');
+        });
     }
 }
