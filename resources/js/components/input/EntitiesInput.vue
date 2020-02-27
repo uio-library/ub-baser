@@ -98,10 +98,6 @@ export default {
     schema: Object,
     settings: Object,
     value: Array,
-    entityType: {
-      type: String,
-      default: 'person',
-    }
   },
   data () {
     return {
@@ -114,13 +110,16 @@ export default {
     }
   },
   computed: {
+    entityType () {
+      return this.schema.entityType.split('\\').pop().toLowerCase()
+    },
     baseUrl () {
       return get(this.settings, 'baseUrl') + '/' + this.entityType
     },
     autocompleteSchema () {
       return {
         type: 'autocomplete',
-        key: 'persons',
+        key: this.entityType,
       }
     },
     jsonSerialized () {

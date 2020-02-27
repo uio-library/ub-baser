@@ -35,7 +35,7 @@ class Schema extends BaseSchema
 
             // Person-søk (forfatter eller kritiker)
             [
-                "key" => "persons",
+                "key" => "person",
                 "type" => "autocomplete",
 
                 "displayable" => false,

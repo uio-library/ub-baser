@@ -47,7 +47,7 @@ class AutocompleteService extends \App\Services\AutocompleteService
         'verk_originaltittel' => 'textSearchCompleter',
         'verk_originaltittel_transkribert' => 'textSearchCompleter',
 
-        'persons' => 'personCompleter',
+        'person' => 'personCompleter',
         'verk_forfatter' => 'personCompleter',
         'kritiker' => 'personCompleter',
     ];
