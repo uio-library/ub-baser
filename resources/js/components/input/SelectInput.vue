@@ -10,6 +10,7 @@
       @change="onChange"
       @load="onLoad"
     >
+      <option v-if="!multiple" value="">{{ placeholder }}</option>
       <option v-for="option in options"
               :key="option.value"
               :value="option.value"
