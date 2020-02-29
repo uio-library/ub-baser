@@ -109,6 +109,8 @@ export default {
           saveButton.setFailed('locked', msg)
           alert(msg)
         })
+      } else if (!this.exists) {
+        saveButton.setDirty()
       }
     },
 
