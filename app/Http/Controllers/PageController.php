@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Page;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Http\File;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 
@@ -16,7 +20,7 @@ class PageController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -28,9 +32,8 @@ class PageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Page $page
-     *
-     * @return \Illuminate\Http\Response
+     * @param Page $page
+     * @return Response
      */
     public function show(Page $page)
     {
@@ -46,9 +49,8 @@ class PageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Page $page
-     *
-     * @return \Illuminate\Http\Response
+     * @param Page $page
+     * @return Response
      */
     public function edit(Page $page)
     {
@@ -64,7 +66,6 @@ class PageController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Page $page
-     *
      * @return JsonResponse
      */
     public function lock(Page $page)
@@ -100,8 +101,8 @@ class PageController extends Controller
      *
      * @param Request $request
      * @param Page $page
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return Response
+     * @throws AuthorizationException
      */
     public function unlock(Request $request, Page $page)
     {
@@ -117,9 +118,8 @@ class PageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param Page                $page
-     *
+     * @param Request $request
+     * @param Page $page
      * @return JsonResponse
      */
     public function update(Request $request, Page $page)
@@ -154,7 +154,17 @@ class PageController extends Controller
         ]);
     }
 
-    protected function storeThumb(FilesystemManager $fm, ImageManager $im, $file, $maxWidth, $maxHeight, $filename)
+    /**
+     * Generate and store a thumbnail.
+     *
+     * @param FilesystemManager $fm
+     * @param ImageManager $im
+     * @param File|UploadedFile  $file
+     * @param int $maxWidth
+     * @param int $maxHeight
+     * @param string $filename
+     */
+    private function storeThumb(FilesystemManager $fm, ImageManager $im, $file, $maxWidth, $maxHeight, $filename)
     {
         $blob = $im->make($file->path())
             ->resize($maxWidth, $maxHeight, function ($constraint) {
@@ -217,17 +227,5 @@ class PageController extends Controller
         return response()->json([
             'urls' => $urls,
         ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
