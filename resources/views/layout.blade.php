@@ -23,80 +23,80 @@
 <body class="d-flex flex-column h-100 {{ isset($base) ? $base->id : '' }}">
 
     <header>
-        <div class="{{ App::environment() }}">
-            This is the '{{ App::environment() }}' environment
-        </div>
-        <div class="uio-header">
-            <div class="container-xl">
-                <a href="https://www.uio.no/" title="Universitetet i Oslo"><img src="/images/uio-logo.svg" alt="Universitetet i Oslo"></a>
+        @section('header')
+            <div class="{{ App::environment() }}">
+                This is the '{{ App::environment() }}' environment
             </div>
-        </div>
-        <div class="header">
-            <div class="header_top">
+            <div class="uio-header">
                 <div class="container-xl">
-                    <div>
-                        <a href="/" >UB-baser</a>
+                    <a href="https://www.uio.no/" title="Universitetet i Oslo"><img src="/images/uio-logo.svg" alt="Universitetet i Oslo"></a>
+                </div>
+            </div>
+            <div class="header">
+                <div class="header_top">
+                    <div class="container-xl">
+                        <div>
+                            <a href="/" >UB-baser</a>
+                        </div>
+                        <div id="user">
+
+                            @if (isset($base) && (count($base->languages) > 1))
+                                {{ __('messages.language') }}:
+                                @foreach ($base->languages as $baseLang)
+                                    @if ($baseLang == \App::getLocale())
+                                        {{ Str::ucfirst(\Punic\Language::getName($baseLang, $baseLang)) }}
+                                    @else
+                                        <a href="?lang={{ $baseLang }}">{{ Str::ucfirst(\Punic\Language::getName($baseLang, $baseLang)) }}</a>
+                                    @endif
+                                @endforeach
+                                |
+                            @endif
+
+                            @if (Auth::check())
+
+                                @can('admin')
+                                <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a> |
+                                @endcan
+
+                                <a href="{{ action('LogEntryController@index') }}">{{ trans('messages.logs') }}</a> |
+
+                                {!! trans('messages.loggedinas', [
+                                    'user' => '<a href="' . action('AccountController@index') . '" id="user_name">' . Auth::user()->name . '</a>'
+                                ]) !!}
+
+                                | <a href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+
+                            @else
+
+                                <span id="user_name"></span><!-- Empty for tests -->
+                                <a href="{{ URL::current() }}?login=true">{{ trans('messages.login') }}</a>
+
+                            @endif
+                        </div>
                     </div>
-                    <div id="user">
-
-                        @if (isset($base) && (count($base->languages) > 1))
-                            {{ __('messages.language') }}:
-                            @foreach ($base->languages as $baseLang)
-                                @if ($baseLang == \App::getLocale())
-                                    {{ Str::ucfirst(\Punic\Language::getName($baseLang, $baseLang)) }}
-                                @else
-                                    <a href="?lang={{ $baseLang }}">{{ Str::ucfirst(\Punic\Language::getName($baseLang, $baseLang)) }}</a>
-                                @endif
-                            @endforeach
-                            |
-                        @endif
-
-                        @if (Auth::check())
-
-                            @can('admin')
-                            <a href="{{ action('Admin\AdminController@index') }}">{{ trans('messages.admin') }}</a> |
-                            @endcan
-
-                            <a href="{{ action('LogEntryController@index') }}">{{ trans('messages.logs') }}</a> |
-
-                            {!! trans('messages.loggedinas', [
-                                'user' => '<a href="' . action('AccountController@index') . '" id="user_name">' . Auth::user()->name . '</a>'
-                            ]) !!}
-
-                            | <a href="{{ route('logout') }}"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-
-                        @else
-
-                            <span id="user_name"></span><!-- Empty for tests -->
-                            <a href="{{ URL::current() }}?login=true">{{ trans('messages.login') }}</a>
-
-                        @endif
-
+                </div>
+                <div class="header_bottom">
+                    <div class="container-xl">
+                        <h1>
+                            @hasSection('h1-title')
+                                @yield('h1-title')
+                            @elseif (isset($base))
+                                <a href="{{ $base->action('index') }}">{{ $base->title }}</a>
+                            @else
+                                <a href="/">UB-baser</a>
+                            @endif
+                        </h1>
                     </div>
                 </div>
             </div>
-            <div class="header_bottom">
-                <div class="container-xl">
-                    <h1>
-                        @hasSection('header')
-                            @yield('header')
-                        @elseif (isset($base))
-                            <a href="{{ $base->action('index') }}">{{ $base->title }}</a>
-                        @else
-                            <a href="/">UB-baser</a>
-                        @endif
-                    </h1>
-                </div>
-            </div>
-        </div>
-        @yield('header_after')
+        @show
     </header>
 
     <main id="app" class="flex-shrink-0">

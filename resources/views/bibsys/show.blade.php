@@ -1,15 +1,8 @@
-@extends('bibsys.layout')
+@extends('base.show')
 
-@section('content')
-
-    <h2>
-        Viser {{ $record->objektid }} + {{ $record->dokid }}
-    </h2>
-
+@section('record')
     <h4 class="mt-4">Objektpost</h4>
     <div class="col-sm-9 text-sm text-monospace" style="white-space: pre">{!! $record->marc_record_formatted !!}</div>
-
-
 
     <h4 class="mt-4">Dokumentpost</h4>
     <dl class="row">
@@ -32,5 +25,4 @@
             @endif
         @endforeach
     </dl>
-
 @endsection

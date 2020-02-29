@@ -1,23 +1,6 @@
-@extends('opes.layout')
+@extends('base.show')
 
-@section('content')
-
-    <div class="row">
-        <div class="col-sm col-auto">
-            <h2>
-                {{ $record->inv_no }}
-            </h2>
-        </div>
-        <div class="col-sm text-sm-right">
-            <a class="btn btn-outline-primary" href="{{ $base->action('show', ['id' => $record->prevRecord() ]) }}">
-                « {{ __('messages.previous_record') }}
-            </a>
-            <a class="btn btn-outline-primary" href="{{ $base->action('show', ['id' => $record->nextRecord() ]) }}">
-                {{ __('messages.next_record') }} »
-            </a>
-        </div>
-
-    </div>
+@section('record')
 
     @if (count($record->publications) && $record->publications[0]->papyri_info_link)
         <a class="btn btn-link" href="{{ $record->publications[0]->papyri_info_link}}">
@@ -128,6 +111,5 @@
 
         </div>
     </div>
-
 @endsection
 

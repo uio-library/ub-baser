@@ -166,7 +166,7 @@ class Record extends \App\Record
      */
     public function getTitle(): string
     {
-        return $this->tittel ?: '#' . $this->id;
+        return $this->tittel ?: 'Post ' . $this->id;
     }
 
     public function formatKritikkType($name)

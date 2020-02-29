@@ -33,4 +33,12 @@ class BibsysDokument extends Record
     {
         return $this->belongsTo('App\User', 'objektid');
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTitle(): string
+    {
+        return "Viser {$this->objektid} + {$this->dokid }";
+    }
 }

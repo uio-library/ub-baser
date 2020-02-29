@@ -1,8 +1,8 @@
 @extends('layout')
 @section('db-title', $base->title)
 
-@section('header')
-<a href="{{ $base->action('index') }}">{{ $base->title }}</a>
+@section('h1-title')
+    <a href="{{ $base->action('index') }}">{{ $base->title }}</a>
 @endsection
 
 @section('footer-column1')

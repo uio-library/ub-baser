@@ -1,14 +1,6 @@
 @extends('layout')
 @section('db-title', 'Letras')
 
-@section('header')
-<a href="{{ $base->action('index') }}">Letras</a>
-@endsection
-
-@section('head')
-
-@endsection
-
 @section('footer-column1')
     <ul class="list-unstyled">
         <li>

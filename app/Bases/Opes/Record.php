@@ -50,38 +50,7 @@ class Record extends BaseRecord
      */
     public function getTitle(): string
     {
-        return sprintf('P.Oslo %s', $this->inv_no);
+        return $this->inv_no;
         // return sprintf('%s (%s)', $this->tittel2, $this->utgivelsesaar2);
-    }
-
-    public function nextRecord(): int
-    {
-        $rec = self::where('id', '>', $this->id)
-            ->orderBy('id', 'asc')
-            ->limit(1)
-            ->select('id')
-            ->first();
-        if (is_null($rec)) {
-            $rec = self::orderBy('id', 'asc')
-                ->select('id')
-                ->first();
-        }
-
-        return $rec->id;
-    }
-
-    public function prevRecord(): int
-    {
-        $rec = self::where('id', '<', $this->id)
-            ->orderBy('id', 'desc')
-            ->select('id')
-            ->first();
-        if (is_null($rec)) {
-            $rec = self::orderBy('id', 'desc')
-                ->select('id')
-                ->first();
-        }
-
-        return $rec->id;
     }
 }

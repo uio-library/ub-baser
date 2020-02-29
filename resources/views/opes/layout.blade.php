@@ -2,8 +2,8 @@
 
 @section('db-title', 'OPES')
 
-@section('header')
-<a href="{{ action('\App\Bases\Opes\Controller@index') }}">OPES – Oslo Papyri Electronic System</a>
+@section('h1-title')
+    <a href="{{ $base->action('index') }}">OPES – Oslo Papyri Electronic System</a>
 @endsection
 
 @section('footer-column1')
