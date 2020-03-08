@@ -5,11 +5,19 @@
     <div class="mb-1">
         <small class="text-muted">
             @section('record_header')
-                <a  href="{{ $base->action('show', ['id' => $record->prevRecord() ]) }}">« {{ __('messages.previous_record') }}</a>
+                <a  href="{{ $base->action('prev', $currentQuery) }}">« {{ __('messages.previous_record') }}</a>
                 |
-                <a href="{{ URL::previous() }}">{{ __('messages.back_to_search') }}</a>
+                <a href="{{ $base->action('index', $currentQuery) }}">{{ __('messages.back_to_search') }}</a>
                 |
-                <a  href="{{ $base->action('show', ['id' => $record->nextRecord() ]) }}">{{ __('messages.next_record') }} »</a>
+                <a  href="{{ $base->action('next', $currentQuery) }}">{{ __('messages.next_record') }} »</a>
+                (sortert etter
+                @foreach ($order as $o)
+                    {{ mb_strtolower(__("{$base->id}.{$o['key']}")) }}
+                    ({{ __("messages.{$o['direction']}") }})
+                    @if (!$loop->last)
+                        ,
+                    @endif
+                @endforeach)
             @show
         </small>
     </div>

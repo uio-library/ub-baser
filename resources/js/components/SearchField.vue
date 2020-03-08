@@ -29,7 +29,7 @@
                 class="custom-select field-select"
                 :name="`o${index}`"
                 :value="operator"
-                @input="$emit('operator', $event.target.value)"
+                @input="onOperatorChange($event.target.value)"
             >
                 <option v-for="option in currentOperators"
                         :key="option.value"
@@ -53,7 +53,24 @@
         </div>
 
         <div class="flex-grow-0">
-            <slot></slot>
+            <button v-if="isLast"
+                  type="button"
+                  class="btn btn-primary"
+                  id="addFieldButton"
+                  @click="$emit('addField')"
+                  style="width: 4.8rem"
+            ><em class="fa fa-plus"></em></button>
+
+            <select v-else
+                    style="width: 4.8rem"
+                    class="custom-select field-select"
+                    :name="`c${index}`"
+                    :value="boolean"
+                    @input="$emit('boolean', $event.target.value)"
+            >
+                <option value="and">{{ $t('messages.and') }}</option>
+                <option value="or">{{ $t('messages.or') }}</option>
+            </select>
         </div>
     </div>
 </template>
@@ -78,7 +95,9 @@ export default {
     settings: Object,
     field: String,
     operator: String,
+    boolean: String,
     value: String,
+    isLast: Boolean,
   },
 
   computed: {
@@ -152,6 +171,12 @@ export default {
         this.$emit('value', '')
       }
     },
+    onOperatorChange (value) {
+      this.$emit('operator', value)
+      if (value === 'isnull' || value === 'notnull') {
+        this.$emit('value', '')
+      }
+    }
   },
 }
 </script>

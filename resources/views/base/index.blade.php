@@ -13,25 +13,18 @@
 
     {!! $intro !!}
 
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <search-form
-                :initial-query="{{ json_encode($processedQuery) }}"
-                :schema="{{ json_encode($schema) }}"
-                :settings="{{ json_encode($settings) }}"
-                :advanced-search="{{ json_encode($advancedSearch) }}"
-            ></search-form>
-        </div>
-    </div>
-
-    <data-table
-        v-once
-        prefix="{{ $base->id }}"
-        base-url="{{ $base->action('index') }}"
+    <search-page
         :schema="{{ json_encode($schema) }}"
+
+        :initial-query="{{ json_encode($processedQuery) }}"
+        :settings="{{ json_encode($settings) }}"
+        :advanced-search="{{ json_encode($advancedSearch) }}"
+
+        results-component="data-table"
+        base-id="{{ $base->id }}"
+        base-url="{{ $base->action('index') }}"
         :default-columns="{{ json_encode($defaultColumns) }}"
-        :order="{{ json_encode($order) }}"
-        :query="{{ json_encode($query, JSON_FORCE_OBJECT) }}"
-    ></data-table>
+        :default-order="{{ json_encode($defaultOrder) }}"
+    ></search-page>
 
 @endsection

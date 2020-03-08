@@ -21,11 +21,13 @@ import Lang from 'laravel-vue-lang';
 import DataTable from './components/DataTable'
 import OpesDataTable from './components/bases/opes/OpesDataTable'
 import SearchForm from './components/SearchForm'
+import SearchPage from './components/SearchPage'
 import EditForm from './components/EditForm'
 import NationalLibrarySearch from './components/NationalLibrarySearch'
 
 Vue.config.devtools = true
 
+Vue.component('search-page', SearchPage)
 Vue.component('data-table', DataTable)
 Vue.component('opes-data-table', OpesDataTable)
 Vue.component('search-form', SearchForm)

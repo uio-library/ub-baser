@@ -57,6 +57,7 @@ return [
     'records_per_page_setting' => 'Vis _MENU_ poster per side',
     'records_shown_of_many' => 'Viser post :start til :end av mange',
     'records_shown_of_total' => 'Viser post :start til :end av :total',
+    'desc_sort_help' => 'Sortert i synkende rekkefølge. Trykk for å endre til stigende.',
     'asc_sort_help' => 'Sortert i stigende rekkefølge. Trykk for å endre til synkende.',
     'desc_sort_help' => 'Sortert i synkende rekkefølge. Trykk for å endre til stigende.',
     'sort_by_this_column' => 'Trykk for å sortere etter denne kolonnen (stigende rekkefølge)',
@@ -80,4 +81,6 @@ return [
     ],
     'and' => 'og',
     'or' => 'eller',
+    'asc' => 'stigende',
+    'desc' => 'synkende',
 ];

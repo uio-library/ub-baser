@@ -134,6 +134,8 @@ class RouteServiceProvider extends ServiceProvider
                                 Route::get('/', 'Controller@index');
                                 Route::get('/{numeric}', 'Controller@redirectToRecord');
                                 Route::get('/record/', 'Controller@redirectToHome');
+                                Route::get('/prev', 'Controller@prev');
+                                Route::get('/next', 'Controller@next');
                                 Route::get('/record/{id}', 'Controller@show');
 
                                 // Authorized routes for this base

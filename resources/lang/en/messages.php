@@ -78,4 +78,6 @@ return [
     ],
     'and' => 'and',
     'or' => 'or',
+    'asc' => 'ascending',
+    'desc' => 'descending',
 ];

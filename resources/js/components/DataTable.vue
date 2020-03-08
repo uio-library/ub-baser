@@ -6,7 +6,7 @@
 -->
 <template>
 
-    <div>
+    <div v-once>
 
         <div ref="spinner" style="height:300px; display: flex; justify-content: center; align-items: center">
             <div class="lds-heart"><div></div></div>
@@ -76,7 +76,7 @@ export default {
     defaultColumns: {
       type: Array,
     },
-    order: {
+    defaultOrder: {
       type: Array,
     },
     baseUrl: {
@@ -132,19 +132,26 @@ export default {
       })
       return columns
     },
+  },
 
-    defaultOrder () {
+  methods: {
+
+    getOrder() {
       const visibleColumns = this.getVisibleColumns()
 
       const keys = this.columns.map(col => col.data)
-      let order = this.getSessionValue('order', this.order)
+      let order = this.defaultOrder
       order = order.filter(item => visibleColumns.indexOf(item.key) !== -1)
       return order.map(item => [keys.indexOf(item.key), item.direction])
     },
 
-  },
-
-  methods: {
+    getLink(recordId) {
+      let url = `${this.baseUrl}/record/${recordId}`
+      if (window.location.search) {
+        url += window.location.search
+      }
+      return url
+    },
 
     getVisibleColumns () {
       return this.getSessionValue('columns', this.defaultColumns)
@@ -304,7 +311,7 @@ export default {
           },
         },
         columns: this.columns,
-        order: this.defaultOrder,
+        order: this.getOrder(),
 
         searching: false,
         processing: true,
@@ -316,12 +323,11 @@ export default {
             .on('mousedown', $event => { mouseDownPos = [$event.clientX, $event.clientY] })
             .on('keypress', $event => {
               if ($event.keyCode === 13) {
-                const link = `${this.baseUrl}/record/${data[this.schema.primaryId]}`
-                window.location = link
+                window.location = this.getLink(data[this.schema.primaryId])
               }
             })
             .on('click', $event => {
-              const link = `${this.baseUrl}/record/${data[this.schema.primaryId]}`
+              const link = this.getLink(data[this.schema.primaryId])
               if (mouseDownPos !== null) {
                 const drag = [
                   Math.sqrt(($event.clientX - mouseDownPos[0])**2),
@@ -355,7 +361,7 @@ export default {
       $(container).toggleClass('dataTablesFullscreen')
       // Notify the fixedHeader plugin
       $(window).trigger('datatable:togglefullscreen')
-    }
+    },
   },
 
   mounted () {
@@ -413,10 +419,14 @@ export default {
     })
 
     table.on('order', () => {
-      let order = table.order()
-      // Map indices to key names before storing
-      order = order.map(item => ({key: this.columns[item[0]].data, direction: item[1]}))
-      this.storeSessionValue('order', order)
+      const defaultOrder = this.defaultOrder.map(item => item.key + ':' + item.direction).join(',')
+      const order = table.order().map(item => (this.columns[item[0]].data +':' + item[1])).join(',')
+      console.log(defaultOrder, order)
+      if (order === defaultOrder) {
+        this.$emit('order', {order: ''})
+      } else {
+        this.$emit('order', {order})
+      }
     })
 
     table.on('xhr', ( e, settings, json, xhr ) => {

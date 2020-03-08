@@ -3,13 +3,13 @@
 namespace App\Services;
 
 use App\Base;
+use App\Http\Requests\DataTableRequest;
 use App\Http\Requests\SearchRequest;
 use App\Schema\Operators;
 use App\Schema\Schema;
 use App\Schema\SearchOptions;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class QueryBuilder
@@ -45,7 +45,7 @@ class QueryBuilder
      * @param SearchRequest $request
      * @return Builder
      */
-    public static function fromRequest(SearchRequest $request)
+    public static function fromDataTableRequest(SearchRequest $request): EloquentBuilder
     {
         $instance = new static($request);
         return $instance->process();
@@ -64,7 +64,7 @@ class QueryBuilder
         $this->query = $this->base->getClass('RecordView')::query();
 
         $boolean = 'and';
-        foreach ($this->request->getQueryParts() as $queryPart) {
+        foreach ($this->request->parseQuery() as $queryPart) {
             $this->query->where(function ($query) use ($queryPart) {
                 $this->addQueryPart($query, $queryPart);
             }, null, null, $boolean);

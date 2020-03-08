@@ -4,20 +4,27 @@ namespace App\Http\Requests;
 
 use App\Base;
 use App\Http\Request;
+use App\Schema\Schema;
 use App\Services\QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class SearchRequest extends Request
 {
-    public function getFields(): array
-    {
-        return app(Base::class)->getSchema()->keyed();
-    }
-
     public function makeQueryBuilder(): Builder
     {
-        return QueryBuilder::fromRequest($this);
+        return QueryBuilder::fromDataTableRequest($this);
+    }
+
+    public function getSchema(): Schema
+    {
+        return app(Base::class)->getSchema();
+    }
+
+    public function getFields(): array
+    {
+        return $this->getSchema()->keyed();
     }
 
     /**
@@ -26,34 +33,105 @@ class SearchRequest extends Request
      *
      * @return array
      */
-    public function getQueryParts(): array
+    public function parseQuery(): array
     {
         $fields = $this->getFields();
         $inputs = [];
-        foreach ($this->all() as $key => $fieldName) {
-            if (!preg_match('/^f([0-9]+)$/', $key, $matches)) {
-                continue;
-            }
-            $idx = $matches[1];
-            if (!isset($fields[$fieldName])) {
-                continue;
-            }
-            $field = $fields[$fieldName];
-            $value = Arr::get($this, "v$idx");
-            $operator = Arr::get($this, "o$idx", $field->search->operators[0]);
-            $boolean = Arr::get($this, "c$idx");
 
-            if ($value === null && !in_array($operator, ['isnull', 'notnull'])) {
+        $query = $this->get('q', '');
+
+        $parts = preg_split('/ (AND|OR) /', $query, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        if (count($parts)) {
+            $parts[] = 'AND';
+        }
+
+        while (count($parts) > 0) {
+            $part = array_shift($parts);
+            $boolean = array_shift($parts);
+
+            $tmp = explode(' ', $part, 3);
+            if (count($tmp) == 2) {
+                if (in_array($tmp[1], ['isnull', 'notnull'])) {
+                    $tmp[] = null;
+                }
+            }
+            if (count($tmp) != 3) {
+                // Skip invalid value
                 continue;
             }
+
+            list($key, $op, $value) = $tmp;
+            if (!isset($fields[$key])) {
+                continue;
+            }
+
+            // $operator = Arr::get($this, "o$idx", $field->search->operators[0]);
             $inputs[] = [
-                'field' => $field->key,
-                'operator' => $operator,
+                'field' => $key,
+                'operator' => $op,
                 'value' => $value,
-                'boolean' => $boolean,
+                'boolean' => strtolower($boolean),
             ];
         }
 
         return $inputs;
+    }
+
+    public function getSortOrder($defaultSortOrder)
+    {
+        $out = [];
+        $orderBy = $this->get('order', '');
+        if ($orderBy === '') {
+            return $defaultSortOrder;
+        }
+
+        $parts = explode(',', $this->get('order', ''));
+        foreach ($parts as $part) {
+            $tmp = explode(':', $part);
+            if (count($tmp) == 1) {
+                $out[] = ['key' => $tmp[0], 'direction' => 'asc'];
+            } else {
+                $out[] = ['key' => $tmp[0], 'direction' => $tmp[1]];
+            }
+        }
+
+        return $out;
+    }
+
+    protected function getSortedIds(string $dir, array $defaultSortOrder): Collection
+    {
+        $fields = $this->getFields();
+
+        $sortOrder = $this->getSortOrder($defaultSortOrder);
+
+        // Ensure deterministic ordering
+        $sortOrder[] = ['key' => 'id', 'direction' => 'desc'];
+
+        $qb = $this->makeQueryBuilder();
+
+        foreach ($sortOrder as $s) {
+            $key = $s['key'];
+            if (!isset($fields[$key])) {
+                // Invalid
+                continue;
+            }
+            $qb->orderBy($key, $s['direction']);
+        }
+
+        return $qb->select('id')->get()->pluck('id');
+    }
+
+    public function getNextRecord(array $defaultSortOrder, $id): int
+    {
+        $ids = $this->getSortedIds('asc', $defaultSortOrder);
+        $pos = $ids->search($id);
+        return isset($ids[$pos + 1]) ? $ids[$pos + 1] : $ids[0];
+    }
+
+    public function getPreviousRecord(array $defaultSortOrder, $id): int
+    {
+        $ids = $this->getSortedIds('desc', $defaultSortOrder);
+        $pos = $ids->search($id);
+        return isset($ids[$pos - 1]) ? $ids[$pos - 1] : $ids[count($ids) - 1];
     }
 }

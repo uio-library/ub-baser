@@ -1,9 +1,10 @@
 <template>
-    <form id="searchForm" method="GET" :action="baseUrl" class="pb-3 search-form">
+  <div>
+    <form id="searchForm" method="GET" :action="baseUrl" class="pb-3 search-form" @submit.prevent="onSubmit()">
 
-        <div v-if="error" class="alert alert-danger">
+        <diy v-if="error" class="alert alert-danger">
             {{ error }}
-        </div>
+        </diy>
 
         <search-field
                 v-for="(field, fieldIndex) in query"
@@ -14,29 +15,23 @@
                 :index="fieldIndex"
                 :schema="schema"
                 :settings="settings"
+
                 :field="field.field"
                 @field="field.field = $event"
+
                 :operator="field.operator"
                 @operator="field.operator = $event"
+
                 :value="field.value"
                 @value="field.value = $event"
-        >
-            <button v-if="fieldIndex == query.length - 1"
-                    type="button"
-                    class="btn btn-primary"
-                    id="addFieldButton"
-                    @click="addField()"
-                    style="width: 4.8rem"
-            ><em class="fa fa-plus"></em></button>
 
-            <select v-else
-              style="width: 4.8rem"
-              class="custom-select field-select"
-              :name="`c${fieldIndex}`"
-            >
-              <option value="and">{{ $t('messages.and') }}</option>
-              <option value="or">{{ $t('messages.or') }}</option>
-            </select>
+                :boolean="field.boolean"
+                @boolean="field.boolean = $event"
+
+                :is-last="fieldIndex === query.length - 1"
+
+                @addField="addField()"
+        >
         </search-field>
 
         <div class="d-flex py-1">
@@ -53,6 +48,7 @@
             </div>
         </div>
     </form>
+  </div>
 </template>
 
 <script>
@@ -98,6 +94,7 @@ export default {
         field: x.field,
         operator: x.operator,
         value: x.value,
+        boolean: x.boolean,
       })),
     }
   },
@@ -106,13 +103,25 @@ export default {
     addField () {
       if (this.query.length) {
         const lastField = this.query[this.query.length - 1]
-        this.query.push({ field: lastField.field, operator: lastField.operator, value: '' })
+        this.query.push({ field: lastField.field, operator: lastField.operator, value: '', boolean: 'and' })
       } else {
         const enabled = this.allFields.filter(field => field.search.enabled)
-        this.query.push({ field: enabled[0].key, operator: enabled[0].search.operators[0], value: '' })
+        this.query.push({ field: enabled[0].key, operator: enabled[0].search.operators[0], value: '', boolean: 'and' })
       }
     },
+    onSubmit () {
+      let query = this.query
+        .filter(q => q.value !== '' || ['isnull', 'notnull'].indexOf(q.operator) !== -1)
+        .map(q => `${q.field} ${q.operator} ${q.value} ${q.boolean.toUpperCase()}`)
+        .join(' ')
+      if (query.endsWith(' AND')) query = query.substr(0, query.length - 4)
+      if (query.endsWith(' OR')) query = query.substr(0, query.length - 3)
 
+      this.$emit('submit', {
+        q: query,
+        advanced: this.advanced ? 'true' : '',
+      })
+    }
   },
 
   mounted () {
@@ -125,6 +134,7 @@ export default {
     if (!this.query.length) {
       this.addField()
     }
+    this.onSubmit()
   },
 }
 </script>

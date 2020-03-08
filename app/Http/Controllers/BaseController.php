@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Base;
 use App\Http\Request;
+use App\Http\Requests\DataTableRequest;
 use App\Http\Requests\SearchRequest;
 use App\Record;
 use App\Schema\Schema;
 use App\Schema\SchemaField;
 use App\Services\AutocompleteServiceInterface;
-use App\Services\DataTable;
+use App\Services\DataTableProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -64,27 +65,26 @@ class BaseController extends Controller
             'settings' => $this->globalSettings($base),
 
             'query' => $request->all(),
-            'processedQuery' => $request->getQueryParts(),
-            'advancedSearch' => ($request->advanced === 'on'),
+            'processedQuery' => $request->parseQuery(),
+            'advancedSearch' => ($request->advanced === 'true'),
 
             'intro' => $base->getIntro(),
 
             'defaultColumns' => static::$defaultColumns,
-            'order' => static::$defaultSortOrder,
+            'defaultOrder' => $request->getSortOrder(static::$defaultSortOrder),
         ]);
     }
 
     /**
      * Generate JSON response for DataTables.
      *
-     * @param SearchRequest $request
-     * @param Schema $schema
+     * @param DataTableRequest $request
+     * @param DataTableProvider $provider
      * @return JsonResponse
      */
-    public function data(SearchRequest $request, Schema $schema)
+    public function data(DataTableRequest $request, DataTableProvider $provider)
     {
-        $dataTable = app(DataTable::class);
-        $response = $dataTable->formatResponse($request, $schema);
+        $response = $provider->processRequest($request);
 
         return response()->json([
             'draw' => $request->draw,
@@ -142,12 +142,12 @@ class BaseController extends Controller
     /**
      * Show a record.
      *
-     * @param Request $request
+     * @param SearchRequest $request
      * @param Base $base
      * @param $id
      * @return Response
      */
-    public function show(Request $request, Base $base, $id)
+    public function show(SearchRequest $request, Base $base, $id)
     {
         $record = $base->getRecord($id, true, $this->recordClass);
         if (is_null($record)) {
@@ -157,6 +157,9 @@ class BaseController extends Controller
             abort(404, trans('base.error.recordtrashed'));
         }
 
+        $query = $request->query();
+        $query['id'] = $id;
+
         return response()->view(
             $base->getView('show'),
             [
@@ -164,6 +167,8 @@ class BaseController extends Controller
                 'base' => $base,
                 'schema' => $base->getSchema(),
                 'record'  => $record,
+                'currentQuery' => $query,
+                'order' => $request->getSortOrder(static::$defaultSortOrder),
             ]
         );
     }
@@ -424,5 +429,29 @@ class BaseController extends Controller
     public function redirectToHome(Base $base)
     {
         return redirect($base->action('index'));
+    }
+
+    public function prev(Base $base, SearchRequest $request)
+    {
+        $id = $request->getPreviousRecord(static::$defaultSortOrder, $request->id);
+
+        $model = $base->getClass('RecordView')::find($id);
+
+        $query = $request->query();
+        $query['id'] = $model->id;
+
+        return redirect($base->action('show', $query));
+    }
+
+    public function next(Base $base, SearchRequest $request)
+    {
+        $id = $request->getNextRecord(static::$defaultSortOrder, $request->id);
+
+        $model = $base->getClass('RecordView')::find($id);
+
+        $query = $request->query();
+        $query['id'] = $model->id;
+
+        return redirect($base->action('show', $query));
     }
 }

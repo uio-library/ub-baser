@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Base;
 use App\Http\Request;
 use App\Http\Requests\SearchRequest;
+use App\Http\Requests\DataTableRequest;
 use App\Schema\Schema;
 use App\Services\AutocompleteServiceInterface;
 use Illuminate\Support\ServiceProvider;
@@ -44,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
         $requestClasses = [
             Request::class,
             SearchRequest::class,
+            DataTableRequest::class,
         ];
 
         foreach ($requestClasses as $cls) {
