@@ -17,7 +17,7 @@ class IndexPage extends Page {
   }
 
   getResults () {
-    return $$('#DataTables_Table_0_wrapper tbody tr')
+    return $$('.dataTables_wrapper tbody tr')
   }
 
   waitForResults () {
@@ -29,7 +29,7 @@ class IndexPage extends Page {
 
   get dataTable () {
     this.waitForResults()
-    return $('#DataTables_Table_0_wrapper')
+    return $('.dataTables_wrapper')
   }
 
   get firstResult () {
@@ -39,7 +39,7 @@ class IndexPage extends Page {
 
   isTableEmpty () {
     this.waitForResults()
-    if ($$('#DataTables_Table_0_wrapper td.dataTables_empty').length) {
+    if ($$('.dataTables_wrapper td.dataTables_empty').length) {
       return true
     }
     return false

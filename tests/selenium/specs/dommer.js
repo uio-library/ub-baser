@@ -19,7 +19,7 @@ describe('Dommers populærnavn', function () {
     searchField.component.selectAndReturnFirstOption()
     page.submitSearch()
     browser.waitUntil(() => {
-      return browser.getUrl().indexOf('f0=kilde') > -1
+      return browser.getUrl().indexOf('q=kilde') !== -1
     }, 5000)
     page.waitForResults()
     expect(page.isTableEmpty()).to.be.false
