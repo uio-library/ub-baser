@@ -83,10 +83,6 @@ class DataTableRequest extends SearchRequest
         // Ensure deterministic ordering
         $queryBuilder->orderBy('id', 'desc');
 
-        // LIMIT / OFFSET
-        $queryBuilder->skip($this->start);
-        $queryBuilder->take($this->length + 1);
-
         return [$queryBuilder, $colMap];
     }
 }

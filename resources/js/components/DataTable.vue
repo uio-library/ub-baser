@@ -79,6 +79,9 @@ export default {
     defaultOrder: {
       type: Array,
     },
+    initialOrder: {
+      type: Array,
+    },
     baseUrl: {
       type: String,
     },
@@ -140,7 +143,7 @@ export default {
       const visibleColumns = this.getVisibleColumns()
 
       const keys = this.columns.map(col => col.data)
-      let order = this.defaultOrder
+      let order = this.initialOrder
       order = order.filter(item => visibleColumns.indexOf(item.key) !== -1)
       return order.map(item => [keys.indexOf(item.key), item.direction])
     },
@@ -421,7 +424,6 @@ export default {
     table.on('order', () => {
       const defaultOrder = this.defaultOrder.map(item => item.key + ':' + item.direction).join(',')
       const order = table.order().map(item => (this.columns[item[0]].data +':' + item[1])).join(',')
-      console.log(defaultOrder, order)
       if (order === defaultOrder) {
         this.$emit('order', {order: ''})
       } else {

@@ -17,13 +17,11 @@
         :schema="schema"
         :default-columns="defaultColumns"
         :default-order="defaultOrder"
+        :initial-order="order"
         :query="query"
         @order="onOrder($event)"
       ></component>
     </div>
-
-    <!--:order="{{ json_encode($order) }}"
-    # :query="{{ json_encode($query, JSON_FORCE_OBJECT) }}"-->
 
   </div>
 </template>
@@ -47,11 +45,13 @@ export default {
     baseUrl: String,
     defaultColumns: Array,
     defaultOrder: Array,
+    initialOrder: Array,
   },
 
-  data: () => {
+  data() {
     return {
-      query: null
+      query: null,
+      order: cloneDeep(this.initialOrder)
     }
   },
 
@@ -84,6 +84,14 @@ export default {
     },
 
     onOrder(query) {
+      if (!query.order) {
+        this.order = cloneDeep(this.initialOrder)
+      } else {
+        this.order = query.order.split(',').map(item => {
+          const t = item.split(':')
+          return {key: t[0], direction: t.length ? t[1] : 'asc'}
+        })
+      }
       this.pushState(query)
     }
   },

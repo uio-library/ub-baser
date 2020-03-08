@@ -12,7 +12,14 @@ class DataTableProvider
     {
         list($queryBuilder, $colMap) = $request->makeQueryBuilderAndColumnMap();
 
-        $data = $queryBuilder->get()
+        // Count *before* we apply limit!
+        $recordCount = $this->getRecordCount($request, $queryBuilder);
+
+        // Then get data
+        $data = $queryBuilder
+            ->skip($request->start)
+            ->take($request->length + 1)
+            ->get()
             ->map(function ($row) use ($colMap) {
                 $out = [];
                 foreach ($row->toArray() as $k => $v) {
@@ -27,14 +34,11 @@ class DataTableProvider
                 return $out;
             });
 
-        $base = app(Base::class);
-
         $reachedEnd = (count($data) < $request->length + 1);
         if (!$reachedEnd) {
             $data->pop();
         }
 
-        $recordCount = $this->getRecordCount($base, $request, $queryBuilder);
         $unknownCount = false;
         if ($recordCount === -1) {
             $recordCount = $request->start + $request->length;
@@ -57,14 +61,14 @@ class DataTableProvider
      * Get record count estimates #postgres_specific
      * Returns -1 if $costLimit is set and the cost of the query overshoots this value.
      *
-     * @param Base $base
      * @param DataTableRequest $request
      * @param Builder $queryBuilder
      *
      * @return int
      */
-    protected function getRecordCount(Base $base, DataTableRequest $request, Builder $queryBuilder): int
+    protected function getRecordCount(DataTableRequest $request, Builder $queryBuilder): int
     {
+        $base = $request->getBase();
         $viewCls = $base->getClass('RecordView');
         $view = (new $viewCls())->getTable();
         $costLimit = $base->getSetting('cost_limit');

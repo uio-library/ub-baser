@@ -71,7 +71,9 @@ class BaseController extends Controller
             'intro' => $base->getIntro(),
 
             'defaultColumns' => static::$defaultColumns,
-            'defaultOrder' => $request->getSortOrder(static::$defaultSortOrder),
+
+            'order' => $request->getSortOrder(static::$defaultSortOrder),
+            'defaultOrder' => static::$defaultSortOrder,
         ]);
     }
 

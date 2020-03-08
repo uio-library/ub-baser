@@ -24,6 +24,8 @@
         base-id="{{ $base->id }}"
         base-url="{{ $base->action('index') }}"
         :default-columns="{{ json_encode($defaultColumns) }}"
+
+        :initial-order="{{ json_encode($order) }}"
         :default-order="{{ json_encode($defaultOrder) }}"
     ></search-page>
 
