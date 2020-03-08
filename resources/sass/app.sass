@@ -132,8 +132,6 @@ div.dataTables_wrapper div.dataTables_processing
  *******************************************************************/
 
 .header
-  position: relative
-  height: 130px
 
   .header_top .container-xl
     display: flex
@@ -141,13 +139,12 @@ div.dataTables_wrapper div.dataTables_processing
     justify-content: space-between
 
   .header_bottom
-    position: absolute
-    bottom: 0
-    left: 0
-    right: 0
+    min-height: 110px
+    display: flex
+    flex-direction: column-reverse
 
     h1
-      padding: 20px 0
+      padding: 15px 0
       color: #333
 
       @media (max-width: $break-xl)
@@ -706,8 +703,6 @@ div.dataTables_wrapper
   background-image: url(https://ub-baser.uio.no/images/letras-banner.jpg)
   background-position: center top
   color: white
-  height: 220px
-  position: relative
   // filter: sepia(0.4)
 
   .header_top
@@ -719,6 +714,7 @@ div.dataTables_wrapper
       color: #7dc2ff
 
   .header_bottom
+    min-height: 180px
 
     h1
       font-weight: 600
