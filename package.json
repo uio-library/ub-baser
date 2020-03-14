@@ -41,7 +41,7 @@
     "@openfonts/pt-sans_all": "^1.44.0",
     "@sentry/browser": "^5.11.1",
     "@sentry/integrations": "^5.11.1",
-    "acorn": "^7.1.0",
+    "acorn": "^7.1.1",
     "autocomplete.js": "^0.37.1",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
