@@ -41,7 +41,7 @@ describe('Norsk litteraturkritikk: search page', function () {
     searchField.component.selectAndReturnFirstOption()
     indexPage.submitSearch()
     browser.waitUntil(() => {
-      return browser.getUrl().indexOf('f0=kritikktype') > -1
+      return browser.getUrl().indexOf('q=kritikktype') > -1
     }, 5000)
     indexPage.waitForResults()
     expect(indexPage.isTableEmpty()).to.be.false
