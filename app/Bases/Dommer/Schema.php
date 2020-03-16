@@ -60,6 +60,15 @@ class Schema extends BaseSchema
             [
                 "key" => "side",
                 "type" => "simple",
+
+                "search" => [
+                    "operators" => [
+                        Operators::EQUALS,
+                        Operators::NOT_EQUALS,
+                        Operators::IS_NULL,
+                        Operators::NOT_NULL,
+                    ],
+                ],
             ],
         ],
 
