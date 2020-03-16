@@ -100,12 +100,13 @@ class SearchRequest extends Request
 
     protected function getSortedIds(string $dir, array $defaultSortOrder): Collection
     {
-        $fields = $this->getFields();
+        $schema = $this->getSchema();
+        $fields = $schema->keyed();
 
         $sortOrder = $this->getSortOrder($defaultSortOrder);
 
         // Ensure deterministic ordering
-        $sortOrder[] = ['key' => 'id', 'direction' => 'desc'];
+        $sortOrder[] = ['key' => $schema->primaryId, 'direction' => 'desc'];
 
         $qb = $this->makeQueryBuilder();
 

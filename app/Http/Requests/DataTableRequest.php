@@ -63,6 +63,7 @@ class DataTableRequest extends SearchRequest
 
     public function makeQueryBuilderAndColumnMap(): array
     {
+        $schema = $this->getSchema();
         $queryBuilder = $this->makeQueryBuilder();
 
         // SELECT
@@ -81,7 +82,7 @@ class DataTableRequest extends SearchRequest
         }
 
         // Ensure deterministic ordering
-        $queryBuilder->orderBy('id', 'desc');
+        $queryBuilder->orderBy($schema->primaryId, 'desc');
 
         return [$queryBuilder, $colMap];
     }
