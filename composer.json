@@ -10,7 +10,7 @@
         "ext-json": "*",
         "ext-pdo": "*",
         "ext-pdo_pgsql": "*",
-        "aacotroneo/laravel-saml2": "dev-patch-1",
+        "aacotroneo/laravel-saml2": "~2.1",
         "barryvdh/laravel-debugbar": "~3.0",
         "doctrine/dbal": "~2.9",
         "fideloper/proxy": "^4.0",
@@ -34,12 +34,6 @@
         "overtrue/phplint": "^1.2",
         "squizlabs/php_codesniffer": "^3.4"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "https://github.com/danmichaelo/laravel-saml2"
-        }
-    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
