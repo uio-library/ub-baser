@@ -1,5 +1,5 @@
 <template>
-  <a :href="'https://www.nb.no/search?' + searchQueryString" class="btn btn-outline-success btn-sm">
+  <a :href="link" class="btn btn-outline-success btn-sm">
     <em class="fa fa-search"></em>
     Søk etter fulltekst i NB
     <span v-if="state === 'complete'">({{ responseOverview.totalElements}} treff)</span>
@@ -13,19 +13,20 @@ export default {
 
   props: {
     baseUrl: String,
+    recordId: Number,
     query: Object,
   },
 
   data () {
     return {
-      searchQueryString: this.buildSearchQueryString(),
+      link: this.buildLink(),
       responseOverview: {},
       state: 'pending',
     }
   },
 
   methods: {
-    buildApiQueryString () {
+    buildQuery() {
 
       // Should we add profile=wwwnbno ??
 
@@ -35,7 +36,7 @@ export default {
         'series': 'api_series',
       }
       const q = this.query
-      let url = `q=${q.query}&filter=contentClasses%3Ajp2&`
+      let url = `record=${this.recordId}&q=${q.query}&filter=contentClasses%3Ajp2&`
       return url + Object.keys(q.filters).map(key => {
         let value = q.filters[key]
         if (key == 'date') {
@@ -48,9 +49,9 @@ export default {
       }).join('&')
     },
 
-    buildSearchQueryString () {
+    buildLink() {
       const q = this.query
-      let url = `q=${q.query}&filter=contentClasses%3Ajp2&`
+      let url = `https://www.nb.no/search?q=${q.query}&filter=contentClasses%3Ajp2&`
       return url + Object.keys(q.filters).map(key => {
         let value = q.filters[key]
         if (key == 'date') {
@@ -62,7 +63,7 @@ export default {
   },
 
   mounted () {
-    this.$http.get(this.baseUrl + '?' + this.buildApiQueryString())
+    this.$http.get(this.baseUrl + '?' + this.buildQuery())
       .then(res => {
         console.log('Response:', res.data)
         this.responseOverview = res.data.page

@@ -167,12 +167,15 @@ class Controller extends BaseController
     ) {
         // Note: Because of the repeated filter= statements, we need to get the unprocessed query string
         $query = $request->server->get('QUERY_STRING');
+        $recordId = $request->server->get('recordId');
 
         try {
             return response()->json($api->search($query));
         } catch (HttpErrorResponse $ex) {
-            \Log::info('NB-søk lot seg ikke utføre: "' . htmlspecialchars($query) . '"');
-
+            \Log::info(
+                '[Post ' . htmlspecialchars($recordId) . '] ' .
+                'NB-søk lot seg ikke utføre: "' . htmlspecialchars($query) . '"'
+            );
             return response()->json(['error' => $ex], $ex->response->getStatusCode());
         }
     }

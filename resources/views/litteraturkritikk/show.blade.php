@@ -32,6 +32,7 @@
                 @elseif ($group->label != 'Databaseposten')
                     <national-library-search
                         base-url="{{ $base->action('nationalLibrarySearch') }}"
+                        :record-id="{{ $record->id }}"
                         :query="{{ json_encode($record->nationalLibrarySearchQuery($group->label)) }}"
                     ></national-library-search>
                 @endif
