@@ -2,6 +2,7 @@
 
 namespace App\Bases\Litteraturkritikk;
 
+use App\Exceptions\HttpErrorResponse;
 use App\Exceptions\NationalLibraryRecordNotFound;
 use App\Services\NationalLibraryApi;
 use Http\Client\Exception\RequestException;
@@ -111,7 +112,10 @@ class Record extends \App\Record
         if (is_null($value)) {
             return null;
         }
+
+        /* @var NationalLibraryApi $api */
         $api = app(NationalLibraryApi::class);
+
         $urls = explode(' ', $value);
 
         $urls = array_map(function ($url) use ($api, $field) {
@@ -121,7 +125,7 @@ class Record extends \App\Record
                     \Log::info("Endret NB-URL-en <a href=\"$url\">$url</a> til <a href=\"$newUrl\">$newUrl</a>");
                 }
                 return $newUrl;
-            } catch (RequestException $ex) {
+            } catch (HttpErrorResponse $ex) {
                 \Log::info("Klarte ikke å slå opp NB-urlen <a href=\"$url\">$url</a>");
 
                 throw new NationalLibraryRecordNotFound($url, $field);

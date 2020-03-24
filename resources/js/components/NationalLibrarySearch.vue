@@ -62,13 +62,14 @@ export default {
   },
 
   mounted () {
-    console.log(this.query)
-
     this.$http.get(this.baseUrl + '?' + this.buildApiQueryString())
       .then(res => {
         console.log('Response:', res.data)
         this.responseOverview = res.data.page
         this.state = 'complete'
+      })
+      .catch(err => {
+        this.state = 'error'
       })
   },
 

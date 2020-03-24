@@ -3,6 +3,7 @@
 namespace App\Bases\Litteraturkritikk;
 
 use App\Base;
+use App\Exceptions\HttpErrorResponse;
 use App\Exceptions\NationalLibraryRecordNotFound;
 use App\Http\Controllers\BaseController;
 use App\Http\Request;
@@ -167,9 +168,13 @@ class Controller extends BaseController
         // Note: Because of the repeated filter= statements, we need to get the unprocessed query string
         $query = $request->server->get('QUERY_STRING');
 
-        return response()->json(
-            $api->request($query)
-        );
+        try {
+            return response()->json($api->search($query));
+        } catch (HttpErrorResponse $ex) {
+            \Log::info('NB-søk lot seg ikke utføre: "' . htmlspecialchars($query) . '"');
+
+            return response()->json(['error' => $ex], $ex->response->getStatusCode());
+        }
     }
 
     protected function listIndex(Base $base, Request $request, AggregateLists $lists)

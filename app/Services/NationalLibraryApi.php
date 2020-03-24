@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use Http\Client\Exception\RequestException;
+use App\Exceptions\HttpErrorResponse;
 use Illuminate\Support\Arr;
-use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 
@@ -20,7 +19,6 @@ class NationalLibraryApi
 
     /**
      * @param string $url
-     * @throws ClientExceptionInterface
      * @return string
      */
     public function resolveUrl(string $url): string
@@ -51,38 +49,35 @@ class NationalLibraryApi
 
     /**
      * @param string $id
-     * @throws ClientExceptionInterface
      * @return array
      */
     public function lookup(string $id): array
     {
-        $url = $this->baseUrl . '/' . $id;
+        return $this->getJson($this->baseUrl . '/' . $id);
+    }
+
+    /**
+     * @param string $query
+     * @return array
+     */
+    public function search(string $query): array
+    {
+        return $this->getJson($this->baseUrl . '?' . $query);
+    }
+
+    /**
+     * @param string $url
+     * @return array
+     * @throws HttpErrorResponse
+     */
+    protected function getJson(string $url): array
+    {
         $request = $this->factory->createRequest('GET', $url);
         $response = $this->http->sendRequest($request);
 
         if ($response->getStatusCode() != 200) {
-            throw new RequestException($response->getBody(), $request);
+            throw new HttpErrorResponse($response, $request);
         }
-
-        return json_decode($response->getBody(), true);
-    }
-
-    public function request(string $query): array
-    {
-        // https://api.nb.no/catalog/v1/items?q=2%20Engelstad%20Kundera&filter=mediatype:tidsskrift&filter=title:Samtiden&filter=date:[19790101%20TO%2019791231]
-        // q=2+Engelstad+Kundera&mediatype=tidsskrift&title=Samtiden&fromDate=19790101&toDate=19791231"
-        // ?q=2%20Engelstad%20Kundera&filter=mediatype:tidsskrift&
-
-        // filter=digital:Ja&filter=contentClasses%3Ajp2&filter=api_title%3ASamtiden&
-        //
-        // filter=date:[19790101%20TO%2019791231]&aggs=mediatype&aggs=month&size=6&profile=wwwnbno
-
-        // https://api.nb.no/catalog/v1/items?q=2%20Engelstad%20Kundera&filter=mediatype:tidsskrift&filter=digital:Ja&filter=contentClasses%3Ajp2&filter=api_title%3ASamtiden&filter=date:[19790101%20TO%2019791231]&aggs=mediatype&aggs=month&size=11&profile=wwwnbno
-        $url = $this->baseUrl . '?' . $query;
-        $request = $this->factory->createRequest('GET', $url);
-        //dd($request->getUri());
-
-        $response = $this->http->sendRequest($request);
 
         return json_decode($response->getBody(), true);
     }
