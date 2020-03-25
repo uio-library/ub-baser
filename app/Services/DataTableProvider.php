@@ -71,7 +71,7 @@ class DataTableProvider
         $base = $request->getBase();
         $viewCls = $base->getClass('RecordView');
         $view = (new $viewCls())->getTable();
-        $costLimit = $base->getSetting('cost_limit');
+        $costLimit = $base->config('costLimit');
 
         if ($costLimit) {
             if (!count($request->parseQuery())) {

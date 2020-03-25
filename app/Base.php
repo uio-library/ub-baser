@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Bases\Config;
 use App\Http\Controllers\PageController;
 use App\Schema\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,6 @@ use Illuminate\Support\Arr;
  * @property array languages
  * @property array name
  * @property array class_bindings
- * @property array settings
  */
 class Base extends Model
 {
@@ -35,7 +35,6 @@ class Base extends Model
         'name' => 'array',
         'languages' => 'array',
         'class_bindings' => 'array',
-        'settings' => 'array',
     ];
 
     /**
@@ -57,6 +56,8 @@ class Base extends Model
      * @var bool
      */
     public $incrementing = false;
+    private $_config;
+    private $_schema;
 
     /**
      * Get the title in the default language.
@@ -177,7 +178,34 @@ class Base extends Model
      */
     public function getSchema($schema = 'Schema')
     {
-        return $this->make($schema);
+        if (is_null($this->_schema)) {
+            $this->_schema = $this->make($schema);
+        }
+        return $this->_schema;
+    }
+
+    /**
+     * Returns the config object for this base.
+     *
+     * @return Config
+     */
+    public function getConfig()
+    {
+        if (is_null($this->_config)) {
+            $this->_config = $this->make('Config');
+        }
+        return $this->_config;
+    }
+
+    /**
+     * Returns a config value for this base.
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function config($key)
+    {
+        return $this->getConfig()->get($key);
     }
 
     /**
@@ -217,16 +245,5 @@ class Base extends Model
     {
         $recordClass = $this->getClass('Record');
         return new $recordClass();
-    }
-
-    /**
-     * Get a setting value.
-     *
-     * @param string $name
-     * @return mixed
-     */
-    public function getSetting(string $name)
-    {
-        return Arr::get($this->settings, $name);
     }
 }
