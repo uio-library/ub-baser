@@ -4,7 +4,7 @@ namespace App\Bases\Bibsys;
 
 use App\Schema\SchemaField;
 
-class AutocompleteService extends \App\Services\AutocompleteService
+class AutocompleteService extends \App\Bases\AutocompleteService
 {
     /**
      * The completer method to use if no field-specific completer was found.

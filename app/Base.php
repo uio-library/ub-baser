@@ -18,14 +18,9 @@ use Illuminate\Support\Arr;
  * @property string default_language
  * @property array languages
  * @property array name
- * @property array class_bindings
  */
 class Base extends Model
 {
-    protected $default_class_bindings = [
-        'AutocompleteService' => '\App\Services\AutocompleteService',
-    ];
-
     /**
      * The attributes that should be cast to native types.
      *
@@ -34,7 +29,6 @@ class Base extends Model
     protected $casts = [
         'name' => 'array',
         'languages' => 'array',
-        'class_bindings' => 'array',
     ];
 
     /**
@@ -47,7 +41,6 @@ class Base extends Model
         'default_language',
         'languages',
         'name',
-        'class_bindings',
     ];
 
     /**
@@ -92,14 +85,14 @@ class Base extends Model
      */
     public function fqn(string $className = null)
     {
-        $base = '\\App\\Bases\\' . $this->namespace;
+        $base = 'App\\Bases\\' . $this->namespace;
         if (is_null($className)) {
-            return $base;
+            return '\\' . $base;
         }
-        if (substr($className, 0, 1) == '\\') {
-            return $className;
+        if (strpos($className, $base) === false) {
+            $className = $base . '\\' . $className;
         }
-        return $base . '\\' . $className;
+        return '\\' . $className;
     }
 
     /**
@@ -110,7 +103,9 @@ class Base extends Model
      */
     public function getClass(string $className)
     {
-        $className = $this->class_bindings[$className] ?? $this->default_class_bindings[$className] ?? $className;
+        if ($className !== 'Config') {
+            $className = $this->getConfig()->getClassBinding($className);
+        }
         return $this->fqn($className);
     }
 

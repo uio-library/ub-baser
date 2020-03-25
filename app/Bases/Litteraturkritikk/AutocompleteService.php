@@ -5,7 +5,7 @@ namespace App\Bases\Litteraturkritikk;
 use App\Schema\SchemaField;
 use Illuminate\Support\Arr;
 
-class AutocompleteService extends \App\Services\AutocompleteService
+class AutocompleteService extends \App\Bases\AutocompleteService
 {
     /**
      * The completer method to use if no field-specific completer was found.

@@ -8,7 +8,16 @@ class Config
 
     public $resultsComponent = 'data-table';
 
-    public function get($key) {
+    public $classBindings = [
+    ];
+
+    public function get($key)
+    {
         return $this->{$key};
+    }
+
+    public function getClassBinding($name)
+    {
+        return $this->classBindings[$name] ?? $name;
     }
 }

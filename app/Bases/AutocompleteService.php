@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Bases;
 
 use App\Base;
 use App\Schema\SchemaField;
+use App\Services\AutocompleteServiceInterface;
 use Illuminate\Database\Query\Builder;
 
 /**
