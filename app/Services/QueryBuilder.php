@@ -179,7 +179,7 @@ class QueryBuilder
                 if (Str::endsWith($value, '*')) {
                     // Prefix / ending wildcard
                     $value = rtrim($value, '*') . '%';
-                    $operator = Operators::LIKE;
+                    $operator = Operators::BEGINS_WITH;
                 }
         }
 

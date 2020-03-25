@@ -141,6 +141,7 @@ class Schema extends BaseSchema
                         "search" => [
                             "operators" => [
                                 Operators::EQUALS,
+                                Operators::BEGINS_WITH,
                             ],
                             "placeholder" => "Du kan høyretrunkere med *",
                             "index" => "lower(avdeling)",
@@ -157,6 +158,7 @@ class Schema extends BaseSchema
                             "placeholder" => "Du kan høyretrunkere med *",
                             "operators" => [
                                 Operators::EQUALS,
+                                Operators::BEGINS_WITH,
                             ],
                             "index" => "lower(samling)",
                             "case" => "LOWER_CASE",
@@ -172,6 +174,7 @@ class Schema extends BaseSchema
                             "placeholder" => "Du kan høyretrunkere med *",
                             "operators" => [
                                 Operators::EQUALS,
+                                Operators::BEGINS_WITH,
                             ],
                             "index" => "lower(hyllesignatur)",
                             "case" => "LOWER_CASE",
