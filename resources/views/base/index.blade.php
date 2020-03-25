@@ -20,7 +20,7 @@
         :settings="{{ json_encode($settings) }}"
         :advanced-search="{{ json_encode($advancedSearch) }}"
 
-        results-component="data-table"
+        results-component="{{ $base->config('resultsComponent') }}"
         base-id="{{ $base->id }}"
         base-url="{{ $base->action('index') }}"
         :default-columns="{{ json_encode($defaultColumns) }}"
