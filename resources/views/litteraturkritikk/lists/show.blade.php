@@ -42,8 +42,7 @@
                 @endif
             <td class="text-nowrap">
                 <a href="{{ $base->action('index', [
-                    'f0' => $list->field,
-                    'v0' => $agg->value,
+                    'q' => $list->field . ' eq ' . $agg->value,
                 ]) }}">{{ $agg->record_count }} poster</a>
             </td>
         </tr>
