@@ -89,7 +89,7 @@ class Base extends Model
         if (is_null($className)) {
             return '\\' . $base;
         }
-        if (strpos($className, $base) === false) {
+        if (strpos($className, 'App\\') === false) {
             $className = $base . '\\' . $className;
         }
         return '\\' . $className;
