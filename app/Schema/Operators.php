@@ -13,9 +13,6 @@ class Operators
     const EQUALS = 'eq';
     const NOT_EQUALS = 'ne';
 
-    const IS = 'is';
-    const NOT = 'not';
-
     const IN_RANGE = 'in';
     const OUTSIDE_RANGE = 'outside';
 

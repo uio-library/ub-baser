@@ -9,8 +9,8 @@ class SelectField extends SchemaField
     public const TYPE = 'select';
 
     public $operators = [
-        Operators::IS,
-        Operators::NOT,
+        Operators::EQUALS,
+        Operators::NOT_EQUALS,
         Operators::IS_NULL,
         Operators::NOT_NULL,
     ];

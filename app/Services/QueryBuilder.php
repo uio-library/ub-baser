@@ -175,12 +175,21 @@ class QueryBuilder
                 break;
 
             case Operators::EQUALS:
-            case Operators::NOT_EQUALS:
                 if (Str::endsWith($value, '*')) {
                     // Prefix / ending wildcard
                     $value = rtrim($value, '*') . '%';
                     $operator = Operators::BEGINS_WITH;
                 }
+                break;
+
+            case Operators::NOT_EQUALS:
+                // @TODO
+                // if (Str::endsWith($value, '*')) {
+                //     // Prefix / ending wildcard
+                //     $value = rtrim($value, '*') . '%';
+                //     $operator = Operators::NOT_BEGINS_WITH;
+                // }
+                break;
         }
 
         if ($searchConfig->case === Schema::UPPER_CASE) {
@@ -192,8 +201,6 @@ class QueryBuilder
         $operatorMap = [
             Operators::EQUALS => '=',
             Operators::NOT_EQUALS => '<>',
-            Operators::IS => '=',
-            Operators::NOT => '<>',
             Operators::CONTAINS => 'ILIKE',
             Operators::NOT_CONTAINS => 'NOT ILIKE',
             Operators::BEGINS_WITH => 'ILIKE',
@@ -227,11 +234,11 @@ class QueryBuilder
     protected function addArraySearchTerm(EloquentBuilder $query, SearchOptions $searchConfig, string $operator, ?string $value): void
     {
         switch ($operator) {
-            case Operators::IS:
+            case Operators::EQUALS:
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
                 $query->whereRaw($searchConfig->index . ' ~@ ?', [$value]);
                 break;
-            case Operators::NOT:
+            case Operators::NOT_EQUALS:
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
                 $query->whereRaw('NOT ' . $searchConfig->index . ' ~@ ?', [$value]);
                 break;
