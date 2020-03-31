@@ -55,7 +55,7 @@ class DataTableRequest extends SearchRequest
                 throw new \RuntimeException('Invalid sort direction');
             }
             $field = $requestedFields[$idx];
-            $ordering[] = $field->getViewColumn() . ' ' . $order['dir'];
+            $ordering[] = $field->getSortColumn() . ' ' . $order['dir'];
         }
 
         return $ordering;

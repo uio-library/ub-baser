@@ -251,6 +251,9 @@ class Schema extends BaseSchema
                         "columnClassName" => "dt-body-nowrap",
 
                         "search" => [
+
+                            "sort_index" => "verk_dato_s",
+
                             "advanced" => true,
                             "type" => "range",
                             "widget" => "rangeslider",

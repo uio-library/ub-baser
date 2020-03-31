@@ -217,6 +217,11 @@ abstract class SchemaField implements JsonSerializable
         return $this->get('viewColumn', $this->getColumn());
     }
 
+    public function getSortColumn()
+    {
+        return $this->search->sort_index ?: $this->getViewColumn();
+    }
+
     public function getDefaultSearchOperator()
     {
         return $this->search->getDefaultOperator();

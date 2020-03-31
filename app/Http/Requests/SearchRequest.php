@@ -116,7 +116,8 @@ class SearchRequest extends Request
                 // Invalid
                 continue;
             }
-            $qb->orderBy($key, $s['direction']);
+            $field = $fields[$key];
+            $qb->orderBy($field->getSortColumn(), $s['direction']);
         }
 
         return $qb->select('id')->get()->pluck('id');

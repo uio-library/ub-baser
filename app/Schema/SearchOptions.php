@@ -18,6 +18,7 @@ class SearchOptions extends FieldOptions
         'case' => null,  // Either Schema::UPPER_CASE or Schema::LOWER_CASE
         'index' => null,
         'ts_index' => null,
+        'sort_index' => null,
     ];
 
     /**
@@ -34,6 +35,7 @@ class SearchOptions extends FieldOptions
         'case' => 'string',
         'index' => 'string',
         'ts_index' => 'string',
+        'sort_index' => 'string',
     ];
 
     public function __construct($key, $fieldType, $defaultOperators)
