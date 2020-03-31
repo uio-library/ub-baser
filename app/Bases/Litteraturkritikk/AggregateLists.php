@@ -20,7 +20,7 @@ class AggregateLists
         [
             'id' => 3,
             'label' => 'Liste over språk',
-            'type' => 'simple',
+            'type' => 'array',
             'field' => 'spraak',
         ],
         [
@@ -32,13 +32,13 @@ class AggregateLists
         [
             'id' => 5,
             'label' => 'Omtalt verk: Liste over språk',
-            'type' => 'simple',
+            'type' => 'array',
             'field' => 'verk_spraak',
         ],
         [
             'id' => 6,
             'label' => 'Omtalt verk: Liste over originalspråk',
-            'type' => 'simple',
+            'type' => 'array',
             'field' => 'verk_originalspraak',
         ],
         [
