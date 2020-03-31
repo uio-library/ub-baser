@@ -269,7 +269,7 @@ class Schema extends BaseSchema
                         ],
                         "edit" => [
                             "placeholder" => "Utgivelsesår for omtalt utgave",
-                            "help" => "Fyll inn utgivelsesår for den omtalte utgaven av verket.",
+                            "help" => "Fyll inn utgivelsesår for den omtalte utgaven av verket. For utgivelsesår før år 0, skriv inn årstallet etterfulgt av mellomrom og 'fvt.' (inkludert punktum).",
                         ],
                     ],
 
