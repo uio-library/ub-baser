@@ -95,56 +95,51 @@ class Schema extends BaseSchema
                         ],
                     ],
 
-                    // Originaltittel
+                    // Utgivelsessted
                     [
-                        "key" => "verk_originaltittel",
+                        "key" => "verk_utgivelsessted",
                         "type" => "autocomplete",
 
                         "search" => [
                             "advanced" => true,
-                            "placeholder" => "Søk kun i originaltitler",
                         ],
+
                         "edit" => [
-                            "placeholder" => "Fyll inn hvis tittel på omtalt utgave avviker fra originaltittel, f.eks. ved oversettelse",
-                            "help" => "Fyll inn om den omtalte utgavens tittel avviker fra originaltittelen, f.eks. ved oversettelser, senere utgaver med endret tittel, eller lignende.<hr>Ved originaltitler på russisk, japansk eller andre ikke-latinske alfabet, kontakt Anne Sæbø ved UB for å få standardisert originaltittel tilsendt fra aktuell fagreferent. Se <a href=\"/norsk-litteraturkritikk/veiledning#originaltittel\" target=\"_blank\">redigeringsveiledning</a> for mer informasjon.",
-                        ],
-
-                    ],
-
-                    // Originalspråk
-                    [
-                        "key" => "verk_originalspraak",
-                        "type" => "select",
-                        "multiple" => true,
-                        "defaultValue" => [],
-
-                        "search" => [
-                            "type" => "array",
-                            "widget" => "autocomplete",
-                            "advanced" => true,
-                            "placeholder" => "Språket originalutgaven er skrevet på",
-                        ],
-                        "edit" => [
-                            "preload" => true,
-                            "allow_new_values" => true,
-                            "placeholder" => "Språket originalutgaven er utgitt på",
-                            "help" => "Fyll inn språket originalutgaven er skrevet på. Feltet skal bare brukes hvis feltet «Originaltittel» er fylt ut. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive inn aktuelt språk og velg fra listen som dukker opp. Trykk på «opprett [...]» om det aktuelle språket ikke finnes i listen. Flere verdier kan registreres ved behov, skriv da inn et språk av gangen, slik at hvert språk vises med en grå boks rundt.",
+                            "placeholder" => "Geografisk utgivelsessted for omtalt utgave",
+                            "help" => "Skriv inn utgivelsessted, bruk samme skrivemåte som på tittelbladet. Ved mer enn ett utgivelsessted, bruk «&» som skilletegn mellom stedene. Eksempel: Christiania & København",
                         ]
                     ],
 
-                    // Originaltittel (transkribert)
+                    // År
                     [
-                        "key" => "verk_originaltittel_transkribert",
-                        "type" => "autocomplete",
+                        "key" => "verk_dato",
+                        "type" => "simple",
+
+                        "columnClassName" => "dt-body-nowrap",
+
                         "search" => [
+
+                            "sort_index" => "verk_dato_s",
+
                             "advanced" => true,
-                            "placeholder" => "Søk kun i transkriberte titler",
+                            "type" => "range",
+                            "widget" => "rangeslider",
+                            "widgetOptions" => [
+                                "minValue" => 1789,
+                            ],
+                            "operators" => [
+                                Operators::IN_RANGE,
+                                Operators::OUTSIDE_RANGE,
+                                Operators::IS_NULL,
+                                Operators::NOT_NULL,
+                            ],
                         ],
                         "edit" => [
-                            "placeholder" => "Fyll inn hvis originaltittel bruker ikke-latinsk skrift",
-                            "help" => "Ved originaltitler på russisk, japansk eller andre ikke-latinske alfabet, kontakt Anne Sæbø ved UB for å få transkribert originaltittel tilsendt fra aktuell fagreferent. Se <a href=\"/norsk-litteraturkritikk/veiledning#originaltittel_transkribert\" target=\"_blank\">redigeringsveiledning</a> for mer informasjon."
+                            "placeholder" => "Utgivelsesår for omtalt utgave",
+                            "help" => "Fyll inn utgivelsesår for den omtalte utgaven av verket. For utgivelsesår før år 0, skriv inn årstallet etterfulgt av mellomrom og 'fvt.' (inkludert punktum).",
                         ],
                     ],
+
 
                     // Forfatter
                     [
@@ -228,37 +223,74 @@ class Schema extends BaseSchema
                         ],
                     ],
 
-                    // Utgivelsessted
+                    // Originaltittel
                     [
-                        "key" => "verk_utgivelsessted",
+                        "key" => "verk_originaltittel",
                         "type" => "autocomplete",
 
                         "search" => [
                             "advanced" => true,
+                            "placeholder" => "Søk kun i originaltitler",
+                        ],
+                        "edit" => [
+                            "placeholder" => "Fyll inn hvis tittel på omtalt utgave avviker fra originaltittel, f.eks. ved oversettelse",
+                            "help" => "Fyll inn om den omtalte utgavens tittel avviker fra originaltittelen, f.eks. ved oversettelser, senere utgaver med endret tittel, eller lignende.<hr>Ved originaltitler på russisk, japansk eller andre ikke-latinske alfabet, kontakt Anne Sæbø ved UB for å få standardisert originaltittel tilsendt fra aktuell fagreferent. Se <a href=\"/norsk-litteraturkritikk/veiledning#originaltittel\" target=\"_blank\">redigeringsveiledning</a> for mer informasjon.",
                         ],
 
+                    ],
+
+                    // Originalspråk
+                    [
+                        "key" => "verk_originalspraak",
+                        "type" => "select",
+                        "multiple" => true,
+                        "defaultValue" => [],
+
+                        "search" => [
+                            "type" => "array",
+                            "widget" => "autocomplete",
+                            "advanced" => true,
+                            "placeholder" => "Språket originalutgaven er skrevet på",
+                        ],
                         "edit" => [
-                            "placeholder" => "Geografisk utgivelsessted for omtalt utgave",
-                            "help" => "Skriv inn utgivelsessted, bruk samme skrivemåte som på tittelbladet. Ved mer enn ett utgivelsessted, bruk «&» som skilletegn mellom stedene. Eksempel: Christiania & København",
+                            "preload" => true,
+                            "allow_new_values" => true,
+                            "placeholder" => "Språket originalutgaven er utgitt på",
+                            "help" => "Fyll inn språket originalutgaven er skrevet på. Feltet skal bare brukes hvis feltet «Originaltittel» er fylt ut. Bruk liten forbokstav. For norsk, bruk «bokmål» eller «nynorsk». Begynn å skrive inn aktuelt språk og velg fra listen som dukker opp. Trykk på «opprett [...]» om det aktuelle språket ikke finnes i listen. Flere verdier kan registreres ved behov, skriv da inn et språk av gangen, slik at hvert språk vises med en grå boks rundt.",
                         ]
                     ],
 
-                    // År
+                    // Originaltittel (transkribert)
                     [
-                        "key" => "verk_dato",
+                        "key" => "verk_originaltittel_transkribert",
+                        "type" => "autocomplete",
+                        "search" => [
+                            "advanced" => true,
+                            "placeholder" => "Søk kun i transkriberte titler",
+                        ],
+                        "edit" => [
+                            "placeholder" => "Fyll inn hvis originaltittel bruker ikke-latinsk skrift",
+                            "help" => "Ved originaltitler på russisk, japansk eller andre ikke-latinske alfabet, kontakt Anne Sæbø ved UB for å få transkribert originaltittel tilsendt fra aktuell fagreferent. Se <a href=\"/norsk-litteraturkritikk/veiledning#originaltittel_transkribert\" target=\"_blank\">redigeringsveiledning</a> for mer informasjon."
+                        ],
+                    ],
+
+
+                    // Original utgivelsesdato
+                    [
+                        "key" => "verk_originaldato",
                         "type" => "simple",
 
                         "columnClassName" => "dt-body-nowrap",
 
                         "search" => [
 
-                            "sort_index" => "verk_dato_s",
+                            "sort_index" => "verk_originaldato_s",
 
                             "advanced" => true,
                             "type" => "range",
                             "widget" => "rangeslider",
                             "widgetOptions" => [
-                                "minValue" => 1789,
+                                "minValue" => -500,
                             ],
                             "operators" => [
                                 Operators::IN_RANGE,
@@ -268,8 +300,8 @@ class Schema extends BaseSchema
                             ],
                         ],
                         "edit" => [
-                            "placeholder" => "Utgivelsesår for omtalt utgave",
-                            "help" => "Fyll inn utgivelsesår for den omtalte utgaven av verket. For utgivelsesår før år 0, skriv inn årstallet etterfulgt av mellomrom og 'fvt.' (inkludert punktum).",
+                            "placeholder" => "Utgivelsesår for originalutgave",
+                            "help" => "Fyll inn utgivelsesår for originalutgaven av verket. Feltet skal bare brukes hvis feltet «Originaltittel» er fylt ut. For utgivelsesår før år 0, skriv inn årstallet etterfulgt av mellomrom og 'fvt.' (inkludert punktum).",
                         ],
                     ],
 
