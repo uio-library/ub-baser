@@ -425,13 +425,4 @@ class Record extends \App\Record
         ];
     }
 
-    public function isEmpty($field)
-    {
-        $value = $this->{$field};
-        if (is_object($value) && is_a($value, Collection::class)) {
-            return $value->count() == 0;
-        }
-
-        return empty($value);
-    }
 }
