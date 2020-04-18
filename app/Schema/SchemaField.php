@@ -30,6 +30,7 @@ abstract class SchemaField implements JsonSerializable
         'boolean' => BooleanField::class,
         'incrementing' => IncrementingField::class,
         'entities' => EntitiesField::class,
+        'search_only' => SearchOnlyField::class,
         'select' => SelectField::class,
         'simple' => SimpleField::class,
         'url' => UrlField::class,
@@ -44,7 +45,8 @@ abstract class SchemaField implements JsonSerializable
         $this->data['type'] = static::TYPE;
 
         // Defaults
-        $this->data['displayable'] = true;
+        $this->data['showInTableView'] = true;
+        $this->data['showInRecordView'] = true;
         $this->data['orderable'] = true;
         $this->data['defaultValue'] = null;
         $this->data['datatype'] = Schema::DATATYPE_STRING;
@@ -158,13 +160,23 @@ abstract class SchemaField implements JsonSerializable
     }
 
     /**
-     * Set whether the field should be displayed or not.
+     * Set whether the field should be displayed in table view or not.
      *
      * @param bool $value
      */
-    public function setDisplayable(bool $value): void
+    public function setShowInTableView(bool $value): void
     {
-        $this->data['displayable'] = $value;
+        $this->data['showInTableView'] = $value;
+    }
+
+    /**
+     * Set whether the field should be displayed in record view or not.
+     *
+     * @param bool $value
+     */
+    public function setShowInRecordView(bool $value): void
+    {
+        $this->data['showInRecordView'] = $value;
     }
 
     /**

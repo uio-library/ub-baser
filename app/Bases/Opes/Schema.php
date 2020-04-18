@@ -14,7 +14,7 @@ class Schema extends BaseSchema
             [
                 "key" => "id",
                 "type" => "incrementing",
-                "displayable" => true,
+                "showInRecordView" => true,
             ],
             // inventary number
             [
@@ -24,10 +24,7 @@ class Schema extends BaseSchema
             // Søk i alle felt
             [
                 "key" => "q",
-                "type" => "simple",
-
-                "displayable" => false,
-                "edit" => false,
+                "type" => "search_only",
 
                 "search" => [
                     "type" => "ts",

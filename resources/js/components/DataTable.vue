@@ -95,14 +95,14 @@ export default {
   computed: {
 
     fields () {
-      return this.schema.fields.filter(field => field.displayable !== false)
+      return this.schema.fields.filter(field => field.showInTableView !== false)
     },
 
     groups () {
       return this.schema.groups.map(group => (
         {
           label: group.label,
-          fields: group.fields.filter(field => field.displayable !== false),
+          fields: group.fields.filter(field => field.showInTableView !== false),
         }
       ))
     },
@@ -113,7 +113,7 @@ export default {
       const columns = []
 
       const processField = (field) => {
-        if (field.displayable === false) {
+        if (field.showInTableView === false) {
           return
         }
         const col = {

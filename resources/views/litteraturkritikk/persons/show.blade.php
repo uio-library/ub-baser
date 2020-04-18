@@ -27,7 +27,7 @@
 
     <dl class="row">
         @foreach ($schema->fields as $field)
-            @if ($field->displayable && !empty($record->{$field->key}))
+            @if ($field->showInRecordView && !empty($record->{$field->key}))
                 <dt class="col-sm-3 text-sm-right">
                     {{ trans('litteraturkritikk.person.' . $field->key) }}:
                 </dt>

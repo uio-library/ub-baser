@@ -7,7 +7,7 @@
     <h4 class="mt-4">Dokumentpost</h4>
     <dl class="row">
         @foreach ($schema->groups[1]->fields as $field)
-            @if ($field->displayable)
+            @if ($field->showInRecordView)
                 <dt class="col-sm-3 text-sm-right text-monospace">{{ $field->label }}</dt>
                 <dd class="col-sm-9 text-sm text-monospace">
                     @if ($field->key == 'har_hefter')

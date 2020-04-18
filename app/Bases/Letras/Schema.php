@@ -14,7 +14,7 @@ class Schema extends BaseSchema
             [
                 "key" => "id",
                 "type" => "incrementing",
-                "displayable" => true,
+                "showInRecordView" => true,
             ],
 
             // Sist endret

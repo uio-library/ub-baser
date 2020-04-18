@@ -7,7 +7,7 @@ use Illuminate\Support\Arr;
 class SchemaGroup implements \JsonSerializable
 {
     public $key;
-    public $displayable;
+    public $showInRecordView;
     public $searchable;
     public $fields;
     public $label;
@@ -16,7 +16,7 @@ class SchemaGroup implements \JsonSerializable
     {
         $schemaGroup = new self();
         $schemaGroup->key = $data['key'];
-        $schemaGroup->displayable = Arr::get($data, 'displayable', true);
+        $schemaGroup->showInRecordView = Arr::get($data, 'showInRecordView', true);
         $schemaGroup->searchable = Arr::get($data, 'searchable', true);
         $schemaGroup->fields = SchemaFields::make($data['fields'], $schemaPrefix);
         $schemaGroup->label = trans("{$schemaPrefix}.{$schemaGroup->key}");
@@ -36,7 +36,7 @@ class SchemaGroup implements \JsonSerializable
     {
         return [
             'key' => $this->key,
-            'displayable' => $this->displayable,
+            'showInRecordView' => $this->showInRecordView,
             'searchable' => $this->searchable,
             'fields' => $this->fields,
             'label' => $this->label,

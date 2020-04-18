@@ -20,12 +20,10 @@ class Schema extends BaseSchema
             // Søk i alle felt
             [
                 "key" => "q",
-                "type" => "simple",
-
-                "displayable" => false,
-                "edit" => false,
+                "type" => "search_only",
 
                 "search" => [
+                    "widget" => "simple",
                     "placeholder" => "Forfatter, kritiker, ord i tittel, kommentar, etc... Avslutt med * om du føler for å trunkere.",
                     "type" => "ts",
                     "ts_index" => "any_field_ts",
@@ -36,10 +34,7 @@ class Schema extends BaseSchema
             // Person-søk (forfatter eller kritiker)
             [
                 "key" => "person",
-                "type" => "autocomplete",
-
-                "displayable" => false,
-                "edit" => false,
+                "type" => "search_only",
 
                 "search" => [
                     "placeholder" => "Fornavn og/eller etternavn",
@@ -212,7 +207,8 @@ class Schema extends BaseSchema
                         "key" => "verk_forfatter_mfl",
                         "type" => "boolean",
 
-                        "displayable" => false,
+                        "showInTableView" => false,
+                        "showInRecordView" => false,
                         "search" => false,
 
                         // "default" => false,
@@ -436,7 +432,8 @@ class Schema extends BaseSchema
                         "key" => "kritiker_mfl",
                         "type" => "boolean",
                         // "default" => false,
-                        "displayable" => false,
+                        "showInTableView" => false,
+                        "showInRecordView" => false,
                         "search" => false,
                         "edit" => [
                             "label" => "Flere kritikere",

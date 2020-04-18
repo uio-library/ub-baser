@@ -64,4 +64,15 @@ abstract class FieldOptions implements JsonSerializable
     {
         return $this->data[$key];
     }
+
+    /**
+     * Dynamically modify attribute.
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function __set($key, $value)
+    {
+        return $this->data[$key] = $value;
+    }
 }

@@ -15,10 +15,7 @@ class Schema extends BaseSchema
             // Søk i alle felt
             [
                 "key" => "any_field_ts",
-                "type" => "simple",
-
-                "displayable" => false,
-                "edit" => false,
+                "type" => "search_only",
 
                 // ------------------------------
                 /*

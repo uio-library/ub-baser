@@ -62,7 +62,7 @@
                     <h4>{{ $group->label }}</h4>
                     <dl class="row">
                         @foreach ($group->fields as $field)
-                            @if ($field->displayable)
+                            @if ($field->showInRecordView)
                                 <dt class="col-sm-3 text-sm-right">
                                     {{ $field->label }}:
                                 </dt>
