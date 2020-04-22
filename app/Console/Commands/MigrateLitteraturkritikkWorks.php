@@ -15,7 +15,7 @@ class MigrateLitteraturkritikkWorks extends Command
      *
      * @var string
      */
-    protected $signature = 'migrate:lkworks';
+    protected $signature = 'migrate:nlk-works';
 
     /**
      * The console command description.
@@ -38,13 +38,14 @@ class MigrateLitteraturkritikkWorks extends Command
     {
         return \DB::table('litteraturkritikk_record_person')
             ->where('record_id', '=', $record->id)
-            ->where('person_role', '!=', 'kritiker')
+            ->where('person_role', '!=', '["kritiker"]')
             ->join('litteraturkritikk_personer', function ($join) {
                 $join->on('litteraturkritikk_personer.id', '=', 'litteraturkritikk_record_person.person_id');
             })
             ->get();
     }
 
+    /*
     protected function migrateCritics($record)
     {
         $critics = \DB::table('litteraturkritikk_record_person')
@@ -56,7 +57,7 @@ class MigrateLitteraturkritikkWorks extends Command
             ->get();
 
         foreach ($critics as $critic) {
-            \DB::table('litteraturkritikk_person_contributions')
+            \DB::table('litteraturkritikk_record_person')
                 ->insert([
                     'contribution_type' => Record::class,
                     'contribution_id' => $record->id,
@@ -68,6 +69,7 @@ class MigrateLitteraturkritikkWorks extends Command
                 ]);
         }
     }
+    */
 
     protected function getWorksMentioned($rec, $contributions): array
     {
@@ -85,6 +87,10 @@ class MigrateLitteraturkritikkWorks extends Command
             'verk_utgivelsessted',
             'verk_forfatter_mfl',
             'verk_fulltekst_url',
+            'verk_originaltittel',
+            'verk_originalspraak',
+            'verk_origintaltittel_transkribert',
+            'verk_originaldato',
         ];
 
         $works = [];
@@ -236,11 +242,16 @@ class MigrateLitteraturkritikkWorks extends Command
     {
         $migrated = 0;
 
+        $this->info("Starting migration");
+
+        $cnt = Record::count();
+
         foreach (Record::orderBy('id')->get() as $rec) {
         // foreach (\DB::table('litteraturkritikk_records')->orderBy('id')->get() as $rec) {
 
             // Migrate critics
-            $this->migrateCritics($rec);
+            // NOPE, we have moved away from this approach, they will stay!
+            // $this->migrateCritics($rec);
 
             // Get authors/editors
             $contributions = $this->getAuthorsMentioned($rec);
@@ -249,8 +260,10 @@ class MigrateLitteraturkritikkWorks extends Command
             $works = $this->getWorksMentioned($rec, $contributions);
             $workCount = count($works['works']);
 
-            if ($workCount) {
-                // This record discusses one or more works
+            // $this->info("$migrated / $cnt : Works: $workCount");
+
+            if ($workCount > 0) {
+                // Case 1: This record discusses one or more works
                 $this->info("Record {$rec->id} discusses {$workCount} work(s)");
                 for ($n = 0; $n < $workCount; $n++) {
                     $work_id = $this->findOrCreateWork($works['works'][$n]);
@@ -275,5 +288,7 @@ class MigrateLitteraturkritikkWorks extends Command
 //                break;
 //            }
         }
+
+        $this->info("Done!");
     }
 }

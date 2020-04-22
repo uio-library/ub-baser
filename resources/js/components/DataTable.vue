@@ -78,6 +78,7 @@ import { difference } from 'lodash/array'
 import Cookie from 'js-cookie'
 
 let lastResponse = {};
+let initialized = false;
 
 export default {
   name: 'data-table',
@@ -100,7 +101,7 @@ export default {
     prefix: {
       type: String,
     },
-    query: {
+    searchParams: {
       type: Object,
     },
   },
@@ -329,7 +330,8 @@ export default {
         ajax: {
           url: `${this.baseUrl}/data`,
           data: (input) => {
-            return Object.assign({}, input, this.query)
+            console.log('QUERY', input)
+            return Object.assign({}, input, this.searchParams)
           },
           error: (xhr, ajaxOptions, thrownError) => {
             $(this.$refs.spinner).hide()
@@ -447,6 +449,7 @@ export default {
       // We're ready!
       $(this.$refs.spinner).hide()
       $(this.$refs.main).css('opacity', '1')
+      initialized = true
     })
 
     table.on('complete', (event) => {
@@ -457,13 +460,20 @@ export default {
       this.storeSessionValue('page-length', len)
     })
 
-    table.on('order', () => {
+    table.on('order', (evt) => {
       const defaultOrder = this.defaultOrder.map(item => item.key + ':' + item.direction).join(',')
       const order = table.order().map(item => (this.columns[item[0]].data +':' + item[1])).join(',')
+
+      console.log('DataTable on order:', order)
+
+      if (!initialized) {
+        return
+      }
+
       if (order === defaultOrder) {
-        this.$emit('order', {order: ''})
+        this.$emit('order', [])
       } else {
-        this.$emit('order', {order})
+        this.$emit('order', order)
       }
     })
 

@@ -109,17 +109,13 @@ export default {
         this.query.push({ field: enabled[0].key, operator: enabled[0].search.operators[0], value: '', boolean: 'and' })
       }
     },
-    onSubmit () {
-      let query = this.query
-        .filter(q => q.value !== '' || ['isnull', 'notnull'].indexOf(q.operator) !== -1)
-        .map(q => `${q.field} ${q.operator} ${q.value} ${q.boolean.toUpperCase()}`)
-        .join(' ')
-      if (query.endsWith(' AND')) query = query.substr(0, query.length - 4)
-      if (query.endsWith(' OR')) query = query.substr(0, query.length - 3)
-
+    onSubmit (updateHistory = true) {
       this.$emit('submit', {
-        q: query,
-        advanced: this.advanced ? 'true' : '',
+        search: {
+          q: this.query,
+          advanced: this.advanced ? 'true' : '',
+        },
+        updateHistory,
       })
     }
   },
@@ -134,7 +130,7 @@ export default {
     if (!this.query.length) {
       this.addField()
     }
-    this.onSubmit()
+    this.onSubmit(false)
   },
 }
 </script>

@@ -1,15 +1,29 @@
 <template>
   <div>
 
+    <div>
+      searchParams: {{ params }}
+    </div>
+
+    <div>
+      query: {{ query }}
+    </div>
+
+    <div>
+      order: {{ order }}
+    </div>
+
+    DEF-ORDER: {{ defaultOrder }}
+
     <search-form
-      :initial-query="initialQuery"
+      :initial-query="query"
       :schema="schema"
       :settings="settings"
       :advanced-search="advancedSearch"
       @submit="onSubmit($event)"
     ></search-form>
 
-    <div v-if="query">
+    <div v-if="params">
       <component
         :is="resultsComponent"
         :prefix="baseId"
@@ -17,8 +31,8 @@
         :schema="schema"
         :default-columns="defaultColumns"
         :default-order="defaultOrder"
+        :search-params="params"
         :initial-order="order"
-        :query="query"
         @order="onOrder($event)"
       ></component>
     </div>
@@ -28,7 +42,10 @@
 
 <script>
 
+import { pick } from 'lodash/object'
 import { cloneDeep } from 'lodash/lang'
+import searchParams from './SearchStateService'
+
 export default {
 
   name: "SearchPage",
@@ -37,7 +54,7 @@ export default {
     schema: Object,
     // Search form
     settings: Object,
-    initialQuery: Array,
+    // initialQuery: Array,
     advancedSearch: Boolean,
     // Results
     resultsComponent: String,
@@ -45,54 +62,50 @@ export default {
     baseUrl: String,
     defaultColumns: Array,
     defaultOrder: Array,
-    initialOrder: Array,
+    // initialOrder: Array,
   },
 
   data() {
+    searchParams.init(window.location.search)
+
     return {
-      query: null,
-      order: cloneDeep(this.initialOrder)
+      query: searchParams.parseQuery(),
+      order: searchParams.parseOrder(),
+      params: pick(searchParams.asObject(), ['q', 'advanced']),
+    }
+  },
+
+  mounted() {
+    window.onpopstate = (event) => {
+      console.log('POP state', window.location.search)
+      // Since DataTable is not really reactive, we re-load it
+      searchParams.init(window.location.search)
+      this.params = null
+      this.$nextTick(() => {
+        this.query = searchParams.parseQuery()
+        this.order = searchParams.parseOrder()
+        this.params = pick(searchParams.asObject(), ['q', 'advanced'])
+      })
     }
   },
 
   methods: {
-    pushState(query) {
-      let searchParams = new URLSearchParams(window.location.search)
-      Object.keys(query).forEach(q => {
-        if (query[q] === '') {
-          searchParams.delete(q)
-        } else {
-          searchParams.set(q, query[q])
-        }
-      })
-      let params = searchParams.toString()
-      if (params) params = '?' + params
 
-      window.history.pushState(
-        null,
-        '',
-        window.location.pathname + params
-      )
-    },
-
-    onSubmit(query) {
-      this.pushState(query)
-      this.query = null
-      this.$nextTick(() => {
-        this.query = cloneDeep(query)
-      })
-    },
-
-    onOrder(query) {
-      if (!query.order) {
-        this.order = cloneDeep(this.initialOrder)
-      } else {
-        this.order = query.order.split(',').map(item => {
-          const t = item.split(':')
-          return {key: t[0], direction: t.length ? t[1] : 'asc'}
-        })
+    onSubmit(evt) {
+      if (evt.updateHistory) {
+        searchParams.setQuery(evt.search)
       }
-      this.pushState(query)
+
+      // Since DataTable is not really reactive, we re-load it
+      this.params = null
+      this.$nextTick(() => {
+        this.params = pick(searchParams.asObject(), ['q', 'advanced'])
+      })
+    },
+
+    onOrder(value) {
+      console.log('onOrder', value)
+      searchParams.setOrder(value)
     }
   },
 }

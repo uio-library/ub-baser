@@ -16,7 +16,6 @@
     <search-page
         :schema="{{ json_encode($schema) }}"
 
-        :initial-query="{{ json_encode($processedQuery) }}"
         :settings="{{ json_encode($settings) }}"
         :advanced-search="{{ json_encode($advancedSearch) }}"
 
@@ -25,7 +24,6 @@
         base-url="{{ $base->action('index') }}"
         :default-columns="{{ json_encode($defaultColumns) }}"
 
-        :initial-order="{{ json_encode($order) }}"
         :default-order="{{ json_encode($defaultOrder) }}"
     ></search-page>
 
