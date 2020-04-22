@@ -1,5 +1,17 @@
 <template>
     <div>
+      <div v-if="schema.multiline">
+        <textarea
+           class="form-control"
+           ref="input"
+           :name="name"
+           :value="value"
+           :placeholder="placeholder"
+           style="height: 200px"
+           @input="onInput($event.target.value)"
+        ></textarea>
+      </div>
+      <div v-else>
         <input type="text"
                class="form-control"
                ref="input"
@@ -8,6 +20,7 @@
                :placeholder="placeholder"
                @input="onInput($event.target.value)"
         >
+      </div>
     </div>
 </template>
 
