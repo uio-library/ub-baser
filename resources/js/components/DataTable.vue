@@ -64,6 +64,7 @@
 <script>
 import { get } from 'lodash/object'
 import { difference } from 'lodash/array'
+import Cookie from 'js-cookie'
 
 let lastResponse = {};
 
@@ -197,15 +198,19 @@ export default {
 
     getSessionValue (name, defaultValue) {
       const key = `ub-baser-${this.prefix}-${name}`
-      if (sessionStorage.getItem(key) !== null) {
-        return JSON.parse(sessionStorage.getItem(key))
+
+      let value = Cookie.get(key)
+
+      if (value === undefined) {
+        return defaultValue
       }
-      return defaultValue
+
+      return JSON.parse(value)
     },
 
     storeSessionValue (name, value) {
       const key = `ub-baser-${this.prefix}-${name}`
-      sessionStorage.setItem(key, JSON.stringify(value))
+      Cookie.set(key, JSON.stringify(value))
     },
 
     initColumnSelector () {

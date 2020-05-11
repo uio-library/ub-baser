@@ -55,6 +55,7 @@
     "datatables.net-plugins": "^1.10.20",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
+    "js-cookie": "^2.2.1",
     "laravel-mix": "^4.0.7",
     "laravel-vue-lang": "^2.0.1",
     "lodash": "^4.17.15",
