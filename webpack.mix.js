@@ -2,7 +2,7 @@
 
 const mix = require('laravel-mix')
 require('laravel-vue-lang/mix')
-require('laravel-mix-imagemin')
+// require('laravel-mix-imagemin')
 
 const imageminMozjpeg = require('imagemin-mozjpeg')
 
@@ -18,6 +18,7 @@ mix.js('resources/js/app.js', 'public/js')
   .sourceMaps(true, 'inline-source-map')
   .version()
 
+/*
 mix.imagemin({
   from: 'images/*',
 }, {
@@ -34,8 +35,9 @@ mix.imagemin({
     }),
   ],
 })
+*/
 
-// mix.copy('./resources/images/*', 'public/images')
+mix.copy('./resources/images/*', 'public/images')
 
 mix.sass('resources/sass/app.sass', 'public/css')
   .version()
