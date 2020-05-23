@@ -29,9 +29,19 @@ class BibsysDokument extends Record
      */
     protected $table = 'bibsys_dok';
 
-    public function createdBy()
+    public function objektPost()
     {
-        return $this->belongsTo('App\User', 'objektid');
+        return $this->belongsTo(BibsysObjekt::class, 'objektid');
+    }
+
+    public function seriePost()
+    {
+        return $this->belongsTo(BibsysDokument::class, 'dokid', 'seriedokid');
+    }
+
+    public function serieMedlemmer()
+    {
+        return $this->hasMany(BibsysDokument::class, 'seriedokid', 'dokid');
     }
 
     /**

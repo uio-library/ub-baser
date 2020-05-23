@@ -27,6 +27,11 @@ class BibsysObjekt extends Record
      */
     protected $table = 'bibsys';
 
+    public function dokumentPoster()
+    {
+        return $this->hasMany(BibsysDokument::class, 'objektid');
+    }
+
     /**
      * Get a title for this record that can be used in the <title> element etc.
      *
