@@ -20,6 +20,13 @@ class BibsysDokument extends Record
      */
     public $incrementing = false;
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
     public static $prefix = 'bibsys';
 
     /**

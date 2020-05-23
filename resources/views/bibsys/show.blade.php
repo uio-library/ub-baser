@@ -9,7 +9,7 @@
         @foreach ($schema->groups[1]->fields as $field)
             @if ($field->showInRecordView)
                 <dt class="col-sm-3 text-sm-right text-monospace">{{ $field->label }}</dt>
-                <dd class="col-sm-9 text-sm text-monospace">
+                <dd class="col-sm-9 text-sm text-monospace {{ $field->key }}">
                     @if ($field->key == 'har_hefter')
                         @if ($record->{$field->key} == '1')
                             <a href="{{ $base->action('index', ['q' => 'seriedokid eq ' . $record->dokid]) }}">Vis hefter</a>

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(BibliomanuelTableSeeder::class);
         $this->call(OpesTableSeeder::class);
         $this->call(PagesTableSeeder::class);
+        $this->call(BibsysTableSeeder::class);
 
         Model::reguard();
     }

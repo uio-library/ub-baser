@@ -2,7 +2,9 @@
 
 namespace App\Bases\Bibsys;
 
-class BibsysView extends BibsysObjekt
+use App\Bases\Interfaces\RecordViewInterface;
+
+class BibsysView extends BibsysObjekt implements RecordViewInterface
 {
     /**
      * The primary key associated with the table.
@@ -24,6 +26,11 @@ class BibsysView extends BibsysObjekt
      * @var bool
      */
     public $incrementing = false;
+
+    public static function refreshView()
+    {
+        \DB::unprepared('REFRESH MATERIALIZED VIEW bibsys_search');
+    }
 
     public function getFormattedMarcRecord()
     {
