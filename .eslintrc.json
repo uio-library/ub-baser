@@ -5,6 +5,7 @@
     },
     "extends": [
         "plugin:vue/essential",
+        "plugin:chai-expect/recommended",
         "standard"
     ],
     "globals": {
@@ -21,10 +22,19 @@
         "sourceType": "module"
     },
     "plugins": [
-        "vue"
+        "vue",
+        "chai-expect"
     ],
     "rules": {
         "comma-dangle": ["error", "always-multiline"],
         "standard/no-callback-literal": "off"
-    }
-}
+    },
+    "overrides": [
+      {
+        "files": ["**/specs/bibsys.js"],
+        "rules": {
+          "no-unused-expressions": "off"
+        }
+      }
+    ]
+   }
