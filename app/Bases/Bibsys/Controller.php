@@ -2,10 +2,7 @@
 
 namespace App\Bases\Bibsys;
 
-use App\Base;
 use App\Http\Controllers\BaseController as BaseController;
-use App\Http\Requests\SearchRequest;
-use Illuminate\Http\Response;
 
 class Controller extends BaseController
 {
