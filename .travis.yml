@@ -43,7 +43,7 @@ install:
 before_script:
   - ./dev.sh ps
   - ./dev.sh logs
-  - curl --fail http://localhost:8080/
+  - curl --fail http://localhost:8081/
 
 script:
   - ./vendor/bin/phplint ./ --exclude=vendor --exclude=node_modules

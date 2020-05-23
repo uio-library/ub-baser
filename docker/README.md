@@ -43,8 +43,8 @@ Instead of running `php artisan create:admin` locally, you can run it inside the
 
 Note: The source for this command is `app/Console/Commands/CreateAdminCommand.php`
 
-Now you should be able to login at http://localhost/login
-and add additional rights at http://localhost/admin/users/1/edit
+Now you should be able to login at http://localhost:8080/login
+and add additional rights at http://localhost:8080/admin/users/1/edit
 
 ### Importing data
 
@@ -97,7 +97,7 @@ To run tests:
 
 If you use Docker Machine:
 
-	BASE_URL="http://$(docker-machine ip):8080" npm run test
+	BASE_URL="http://$(docker-machine ip):8081" npm run test
 
 To run a specific test:
 

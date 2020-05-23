@@ -35,7 +35,7 @@ services:
       - POSTGRES_PASSWORD=ub-baser-dev
       - APP_KEY=DoesNotNeedToBeRandomInDevEnviro
     ports:
-      - 80:80
+      - 8080:80
     volumes:
       - ../..:/app/:delegated
       - storage:/app/storage:delegated

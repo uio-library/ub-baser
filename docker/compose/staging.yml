@@ -34,7 +34,7 @@ services:
       - POSTGRES_PASSWORD=ub-baser-staging
       - APP_KEY=DoesNotNeedToBeRandomInDevEnviro
     ports:
-      - 8080:80
+      - 8081:80
     volumes:
       - ../..:/app/
       - storage:/app/storage
