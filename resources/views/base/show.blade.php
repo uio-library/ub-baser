@@ -36,13 +36,13 @@
                     @section('record_toolbar')
                         @can($base->id)
 
-                            <a href="{{ $base->action('edit', $record->id) }}" class="btn btn-outline-primary">
+                            <a href="{{ $base->action('edit', $record->{$schema->primaryId}) }}" class="btn btn-outline-primary">
                                 <em class="fa fa-edit"></em>
                                 {{ __('messages.edit') }}
                             </a>
 
                             @if ($base->usesSoftDeletes() && $record->trashed())
-                                <form style="display: inline-block" action="{{ $base->action('restore', $record->id) }}" method="post">
+                                <form style="display: inline-block" action="{{ $base->action('restore', $record->{$schema->primaryId}) }}" method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-outline-danger btn-xs">
                                         <em class="fa fa-undo"></em>
@@ -50,7 +50,7 @@
                                     </button>
                                 </form>
                             @else
-                                <form style="display: inline-block" action="{{ $base->action('destroy', $record->id) }}" method="post">
+                                <form style="display: inline-block" action="{{ $base->action('destroy', $record->{$schema->primaryId}) }}" method="post">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="btn btn-outline-danger btn-xs">
