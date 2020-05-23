@@ -1,30 +1,31 @@
 #!/bin/bash
+set -euo pipefail
 
 APP_ENV=${APP_ENV:-development}
 PROJECT_NAME="ub-baser-${APP_ENV}"
 APP_VERSION="$(git rev-parse HEAD)"
 
 if [ ! -f "docker/compose/${APP_ENV}.yml" ]; then
-	echo "------------------------------------"
-	echo "Invalid environment: '${APP_ENV}'"
-	echo "------------------------------------"
+	echo "============================================================================================================"
+	echo "ERROR: Invalid environment: '${APP_ENV}'"
+	echo "============================================================================================================"
 	exit 1
 fi
 
-echo "------------------------------------"
-echo "Using the '${APP_ENV}' environment"
-echo "------------------------------------"
+echo "============================================================================================================"
+echo "dev.sh: Using the '${APP_ENV}' environment"
+echo "============================================================================================================"
 
 # --------------------------------------------------------------------------------
 # Check requirements
 
 if ! command -v npm >/dev/null ; then
-	echo "NPM not found"
+	echo "ERROR: NPM not found"
 	exit 1
 fi
 
 if ! command -v php >/dev/null ; then
-	echo "PHP not found"
+	echo "ERROR: PHP not found"
 	exit 1
 fi
 
@@ -32,6 +33,10 @@ fi
 # Install dependencies
 
 if [ ! -d "vendor" ]; then
+  echo "============================================================================================================"
+  echo "STEP: composer install"
+  echo "============================================================================================================"
+
 	curl -sS https://getcomposer.org/installer | php --
   if [ ! -z "$GITHUB_TOKEN" ]; then
     php composer.phar config github-oauth.github.com "$GITHUB_TOKEN"
@@ -40,7 +45,14 @@ if [ ! -d "vendor" ]; then
 fi
 
 if [ ! -d "node_modules" ]; then
+  echo "============================================================================================================"
+  echo "STEP: npm install"
+  echo "============================================================================================================"
 	npm install
+
+  echo "============================================================================================================"
+  echo "STEP: npm build"
+  echo "============================================================================================================"
 	if [ "${APP_ENV}" == "development" ]; then
 		npm run development
 	else
