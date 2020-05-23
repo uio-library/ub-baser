@@ -2,6 +2,6 @@
 
 namespace App\Bases\Interfaces;
 
-class RecordViewInterface
+interface RecordInterface
 {
 }
