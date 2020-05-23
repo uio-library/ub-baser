@@ -36,6 +36,7 @@ jobs:
       with:
         php-version: '7.4'
         extensions: pdo, pdo_pgsql, gd
+
     - uses: actions/setup-node@v2-beta
       with:
         node-version: '12'
@@ -57,10 +58,6 @@ jobs:
       run: composer install --prefer-dist
       env:
         COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Prepare the application
-      run: |
-        php artisan key:generate
 
     # ---
 
