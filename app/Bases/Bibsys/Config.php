@@ -12,4 +12,9 @@ class Config extends BaseConfig
         'Record' => BibsysView::class,
         'RecordView' => BibsysView::class,
     ];
+
+    /**
+     * @var bool Whether this base use soft deletes.
+     */
+    public $softDeletes = false;
 }

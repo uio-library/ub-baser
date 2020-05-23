@@ -151,14 +151,15 @@ class BaseController extends Controller
      */
     public function show(SearchRequest $request, Base $base, $id)
     {
-        $record = $base->getRecord($id, true, $this->recordClass);
+        $record = $base->getRecord($id, $base->usesSoftDeletes(), $this->recordClass);
         if (is_null($record)) {
             abort(404, trans('base.error.recordnotfound'));
         }
-        if (!\Auth::check() && $record->trashed()) {
+        if ($base->usesSoftDeletes() && !\Auth::check() && $record->trashed()) {
             abort(404, trans('base.error.recordtrashed'));
         }
 
+        $schema = $base->getSchema();
         $query = $request->query();
         $query['id'] = $id;
 
@@ -435,24 +436,28 @@ class BaseController extends Controller
 
     public function prev(Base $base, SearchRequest $request)
     {
+        $schema = $base->getSchema();
+        $idField = $schema->primaryId;
         $id = $request->getPreviousRecord(static::$defaultSortOrder, $request->id);
 
         $model = $base->getClass('RecordView')::find($id);
 
         $query = $request->query();
-        $query['id'] = $model->id;
+        $query['id'] = $model->{$idField};
 
         return redirect($base->action('show', $query));
     }
 
     public function next(Base $base, SearchRequest $request)
     {
+        $schema = $base->getSchema();
+        $idField = $schema->primaryId;
         $id = $request->getNextRecord(static::$defaultSortOrder, $request->id);
 
         $model = $base->getClass('RecordView')::find($id);
 
         $query = $request->query();
-        $query['id'] = $model->id;
+        $query['id'] = $model->{$idField};
 
         return redirect($base->action('show', $query));
     }

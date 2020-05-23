@@ -196,11 +196,12 @@ class Base extends Model
      * Returns a config value for this base.
      *
      * @param string $key
+     * @param mixed $default
      * @return mixed
      */
-    public function config($key)
+    public function config($key, $default = null)
     {
-        return $this->getConfig()->get($key);
+        return $this->getConfig()->get($key, $default);
     }
 
     /**
@@ -240,5 +241,15 @@ class Base extends Model
     {
         $recordClass = $this->getClass('Record');
         return new $recordClass();
+    }
+
+    /**
+     * Returns true if the base use soft deletes.
+     *
+     * @return boolean
+     */
+    public function usesSoftDeletes()
+    {
+        return boolval($this->config('softDeletes', true));
     }
 }

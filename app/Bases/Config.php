@@ -11,9 +11,9 @@ class Config
     public $classBindings = [
     ];
 
-    public function get($key)
+    public function get($key, $default = null)
     {
-        return $this->{$key};
+        return isset($this->{$key}) ? $this->{$key} : $default;
     }
 
     public function getClassBinding($name)

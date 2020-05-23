@@ -120,17 +120,17 @@ class SearchRequest extends Request
             $qb->orderBy($field->getSortColumn(), $s['direction']);
         }
 
-        return $qb->select('id')->get()->pluck('id');
+        return $qb->select($schema->primaryId)->get()->pluck($schema->primaryId);
     }
 
-    public function getNextRecord(array $defaultSortOrder, $id): int
+    public function getNextRecord(array $defaultSortOrder, $id)
     {
         $ids = $this->getSortedIds('asc', $defaultSortOrder);
         $pos = $ids->search($id);
         return isset($ids[$pos + 1]) ? $ids[$pos + 1] : $ids[0];
     }
 
-    public function getPreviousRecord(array $defaultSortOrder, $id): int
+    public function getPreviousRecord(array $defaultSortOrder, $id)
     {
         $ids = $this->getSortedIds('desc', $defaultSortOrder);
         $pos = $ids->search($id);

@@ -24,4 +24,13 @@ class BibsysView extends BibsysObjekt
      * @var bool
      */
     public $incrementing = false;
+
+    public function getFormattedMarcRecord()
+    {
+        return preg_replace(
+            ['/^\*/m', '/\n/', '/\$([a-z0-9])/'],
+            ['', '<br>', '<span style="font-weight: bold">$\1 </span>'],
+            $this->marc_record
+        );
+    }
 }

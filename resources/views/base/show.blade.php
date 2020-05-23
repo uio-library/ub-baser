@@ -5,19 +5,21 @@
     <div class="mb-1">
         <small class="text-muted">
             @section('record_header')
-                <a  href="{{ $base->action('prev', $currentQuery) }}">« {{ __('messages.previous_record') }}</a>
+                <a href="{{ $base->action('prev', $currentQuery) }}">« {{ __('messages.previous_record') }}</a>
                 |
                 <a href="{{ $base->action('index', $currentQuery) }}">{{ __('messages.back_to_search') }}</a>
                 |
-                <a  href="{{ $base->action('next', $currentQuery) }}">{{ __('messages.next_record') }} »</a>
-                (sortert etter
-                @foreach ($order as $o)
-                    {{ mb_strtolower(__("{$base->id}.{$o['key']}")) }}
-                    ({{ __("messages.{$o['direction']}") }})
-                    @if (!$loop->last)
-                        ,
-                    @endif
-                @endforeach)
+                <a href="{{ $base->action('next', $currentQuery) }}">{{ __('messages.next_record') }} »</a>
+                @if (count($order))
+                    (sortert etter
+                    @foreach ($order as $o)
+                        {{ mb_strtolower(__("{$base->id}.{$o['key']}")) }}
+                        ({{ __("messages.{$o['direction']}") }})
+                        @if (!$loop->last)
+                            ,
+                        @endif
+                    @endforeach)
+                @endif
             @show
         </small>
     </div>
@@ -39,7 +41,7 @@
                                 {{ __('messages.edit') }}
                             </a>
 
-                            @if ($record->trashed())
+                            @if ($base->usesSoftDeletes() && $record->trashed())
                                 <form style="display: inline-block" action="{{ $base->action('restore', $record->id) }}" method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-outline-danger btn-xs">
@@ -64,7 +66,7 @@
         </div>
 
         <div class="record">
-            @if ($record->trashed())
+            @if ($base->usesSoftDeletes() && $record->trashed())
                 <div class="alert alert-danger">
                     {{ __('base.status.recordtrashed') }}
                 </div>
