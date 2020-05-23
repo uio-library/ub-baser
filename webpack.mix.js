@@ -115,7 +115,8 @@ Mix.listen('configReady', webpackConfig => {
 mix.webpackConfig({
   plugins: [
     new CKEditorWebpackPlugin({
-      language: 'nb'
+      language: 'nb',
+      buildAllTranslationsToSeparateFiles: true,
     }),
     // new BundleAnalyzerPlugin(),
   ],
