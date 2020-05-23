@@ -1,0 +1,96 @@
+name: Build & test
+
+on:
+  push
+
+jobs:
+  tests:
+
+    runs-on: ubuntu-latest
+
+    env:
+      BROADCAST_DRIVER: log
+      DB_CONNECTION: pgsql
+      DB_HOST: localhost
+      DB_PASSWORD: postgres
+      DB_USERNAME: postgres
+      DB_DATABASE: postgres
+
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP, with composer and extensions
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        extensions: pdo, pdo_pgsql, gd
+    - uses: actions/setup-node@v2-beta
+      with:
+        node-version: '12'
+
+    # ---
+
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache composer dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install composer dependencies
+      run: composer install --prefer-dist
+      env:
+        COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Prepare the application
+      run: |
+        php artisan key:generate
+
+    # ---
+
+    - name: Get node.js cache directory
+      id: node-cache-dir
+      run: echo "::set-output name=dir::$(npm config get cache)"
+
+    - name: Cache node.js dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.node-cache-dir.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: ${{ runner.os }}-node-
+
+    - name: Install node.js dependencies
+      run: npm install
+
+    # ---
+
+    - name: Lint PHP files
+      run: ./vendor/bin/phplint ./ --exclude=vendor --exclude=node_modules
+
+    - name: Start dev server
+      run: |
+        ./dev.sh up -d
+        curl --fail http://localhost:8081/
+
+    # ---
+
+    - name: Run tests at Sauce
+      run: npm run test@sauce
+      env:
+        DB_PORT: ${{ job.services.postgres.ports[5432] }}
