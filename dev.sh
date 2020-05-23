@@ -80,6 +80,8 @@ docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" $CMD
 
 docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" ps
 
+docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" logs
+
 if [[ $CMD == "up -d"* ]]; then
 
     echo "============================================================================================================"
@@ -92,6 +94,7 @@ if [[ $CMD == "up -d"* ]]; then
     echo "Waiting for host to be available at $APP_HOST, this may take some time"
     SECONDS=0
     until $(curl --output /dev/null --silent --head --fail $APP_HOST); do
+        docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" logs
         printf '.'
         sleep 5
     done
