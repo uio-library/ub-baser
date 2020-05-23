@@ -10,24 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      BROADCAST_DRIVER: log
-      DB_CONNECTION: pgsql
-      DB_HOST: localhost
-      DB_PASSWORD: postgres
-      DB_USERNAME: postgres
-      DB_DATABASE: postgres
       APP_ENV: staging
-
-    services:
-      postgres:
-        image: postgres:12
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432/tcp
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
 
     steps:
 
