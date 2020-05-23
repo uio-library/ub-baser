@@ -6,7 +6,7 @@ const urljoin = require('url-join')
  */
 class Page {
   constructor () {
-    this.baseUrl = '/'
+    this.baseUrl = ''
   }
 
   /**

@@ -2,7 +2,7 @@ const Page = require('./page')
 
 class LoginPage extends Page {
   open () {
-    super.open('/login')
+    super.open('login')
   }
 
   loginAs (username, password) {
