@@ -7,25 +7,25 @@ APP_VERSION="$(git rev-parse HEAD)"
 
 if [ ! -f "docker/compose/${APP_ENV}.yml" ]; then
 	echo "============================================================================================================"
-	echo "ERROR: Invalid environment: '${APP_ENV}'"
+	echo "[dev.sh] ERROR: Invalid environment: '${APP_ENV}'"
 	echo "============================================================================================================"
 	exit 1
 fi
 
 echo "============================================================================================================"
-echo "dev.sh: Using the '${APP_ENV}' environment"
+echo "[dev.sh] Starting using '${APP_ENV}' env @ ${APP_VERSION}"
 echo "============================================================================================================"
 
 # --------------------------------------------------------------------------------
 # Check requirements
 
 if ! command -v npm >/dev/null ; then
-	echo "ERROR: NPM not found"
+	echo "[dev.sh] ERROR: NPM not found"
 	exit 1
 fi
 
 if ! command -v php >/dev/null ; then
-	echo "ERROR: PHP not found"
+	echo "[dev.sh] ERROR: PHP not found"
 	exit 1
 fi
 
@@ -34,7 +34,7 @@ fi
 
 if [ ! -d "vendor" ]; then
   echo "============================================================================================================"
-  echo "STEP: composer install"
+  echo "[dev.sh] composer install"
   echo "============================================================================================================"
 
 	curl -sS https://getcomposer.org/installer | php --
@@ -46,12 +46,12 @@ fi
 
 if [ ! -d "node_modules" ]; then
   echo "============================================================================================================"
-  echo "STEP: npm install"
+  echo "[dev.sh] npm install"
   echo "============================================================================================================"
 	npm install
 
   echo "============================================================================================================"
-  echo "STEP: npm build"
+  echo "[dev.sh] npm build"
   echo "============================================================================================================"
 	if [ "${APP_ENV}" == "development" ]; then
 		npm run development
@@ -85,7 +85,7 @@ docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" logs
 if [[ $CMD == "up -d"* ]]; then
 
     echo "============================================================================================================"
-    echo "STEP: Starting app"
+    echo "[dev.sh] Waiting for app to be ready"
     echo "============================================================================================================"
 
     APP_ID="$(docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" ps -q app)"
@@ -94,8 +94,8 @@ if [[ $CMD == "up -d"* ]]; then
     echo "Waiting for host to be available at $APP_HOST, this may take some time"
     SECONDS=0
     until $(curl --output /dev/null --silent --head --fail $APP_HOST); do
-        docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" logs
-        printf '.'
+        echo "=== Still not ready ==="
+        docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" exec app sh -c 'tail storage/logs/*.log'
         sleep 5
     done
     duration=$SECONDS
