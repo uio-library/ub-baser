@@ -48,4 +48,4 @@ before_script:
 
 script:
   - ./vendor/bin/phplint ./ --exclude=vendor --exclude=node_modules
-  - npm run test@sauce
+  - SAUCE_TUNNEL=$TRAVIS_JOB_NUMBER SAUCE_BUILD=$TRAVIS_BUILD_NUMBER npm run test@sauce

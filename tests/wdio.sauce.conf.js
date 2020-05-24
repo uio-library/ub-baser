@@ -4,8 +4,8 @@ const BASE_URL = process.env.BASE_URL || 'http://localhost:8081'
 
 const sauceOptions = {
   'sauce:options': {
-    tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-    build: process.env.TRAVIS_BUILD_NUMBER,
+    tunnelIdentifier: process.env.SAUCE_TUNNEL,
+    build: process.env.SAUCE_BUILD,
     // trustAllSSLCertificates: true,
   }
 }

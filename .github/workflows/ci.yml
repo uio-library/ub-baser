@@ -5,7 +5,7 @@ on:
   repository_dispatch:
 
 jobs:
-  tests:
+  build:
 
     runs-on: ubuntu-latest
 
@@ -80,8 +80,16 @@ jobs:
 
     # ---
 
+    - uses: saucelabs/sauce-connect-action@v1
+      with:
+        username: ${{ secrets.SAUCE_USERNAME }}
+        accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+        tunnelIdentifier: gha-${{ github.job }}
+
     - name: Run tests at Sauce
       run: npm run test@sauce
       env:
+        SAUCE_TUNNEL: gha-${{ github.job }}
+        SAUCE_BUILD: $GIT_SHA
         SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
         SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
