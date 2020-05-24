@@ -26,6 +26,13 @@ jobs:
       with:
         node-version: '12'
 
+    - name: Inspect environment
+      run: |
+        docker -v
+        docker-compose -v
+        php -v
+        node -v
+
     # ---
 
     - name: Get composer cache directory

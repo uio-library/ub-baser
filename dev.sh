@@ -95,7 +95,7 @@ if [[ $CMD == "up -d"* ]]; then
     SECONDS=0
     until $(curl --output /dev/null --silent --head --fail $APP_HOST); do
         echo "=== Still not ready ==="
-        docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" exec app sh -c 'tail storage/logs/*.log'
+        docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" exec -T app sh -c 'tail storage/logs/*.log'
         sleep 5
     done
     duration=$SECONDS
