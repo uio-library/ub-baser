@@ -94,12 +94,18 @@ if [[ $CMD == "up -d"* ]]; then
     echo "Waiting for host to be available at $APP_HOST, this may take some time"
     SECONDS=0
     until $(curl --output /dev/null --silent --head --fail $APP_HOST); do
-        echo "[dev.sh]] Still not ready"
-        docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" exec -T app sh -c 'tail -n 100 storage/logs/*.log || echo "No log files yet"'
+        if [[ $SECONDS -gt 30 ]]; then
+            docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" exec -T app sh -c 'tail -n 200 storage/logs/*.log || echo "No log files yet"'
+            echo "[dev.sh] App still not ready after $SECONDS seconds"
+        fi
+        printf .
         sleep 5
     done
     duration=$SECONDS
     echo
-    echo "Startup took $(($duration / 60)) m $(($duration % 60)) s"
-    echo "Server ready at $APP_HOST"
+
+    echo "============================================================================================================"
+    echo "[dev.sh] Server ready at $APP_HOST - Startup took $(($duration / 60)) m $(($duration % 60)) s"
+    echo "============================================================================================================"
+
 fi

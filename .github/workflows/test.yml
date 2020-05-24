@@ -76,13 +76,12 @@ jobs:
       run: ./vendor/bin/phplint ./ --exclude=vendor --exclude=node_modules
 
     - name: Start dev server
-      run: |
-        ./dev.sh up -d
-        curl --fail http://localhost:8081/
+      run: ./dev.sh up -d
 
     # ---
 
     - name: Run tests at Sauce
       run: npm run test@sauce
       env:
-        DB_PORT: ${{ job.services.postgres.ports[5432] }}
+        SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+        SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
