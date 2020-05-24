@@ -67,6 +67,9 @@ jobs:
     - name: Install node.js dependencies
       run: npm install
 
+    - name: Build node.js files
+      run: npm run production
+
     # ---
 
     - name: Lint PHP files
