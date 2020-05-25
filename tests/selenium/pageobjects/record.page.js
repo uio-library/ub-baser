@@ -4,7 +4,12 @@ class RecordPage extends Page {
   getFieldValue (fieldKey) {
     return $('.' + fieldKey)
   }
-  openRecord(id) {
+
+  getRecordTitle () {
+    return $('.record-title').getText()
+  }
+
+  openRecord (id) {
     this.open(`${id}`)
   }
 }

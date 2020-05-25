@@ -22,8 +22,7 @@ describe('Bibsys katalogdump', function () {
     indexPage.firstResult.$('td').click()
 
     expect(browser.getUrl()).to.contain('/record/')
-    const dokidFromrecordPage = recordPage.getFieldValue('dokid').getText()
-
-    expect(dokidFromrecordPage).to.equal(dokidFromTable)
+    expect(recordPage.getRecordTitle()).to.have.string(dokidFromTable)
+    expect(recordPage.getFieldValue('dokid').getText()).to.equal(dokidFromTable)
   })
 })

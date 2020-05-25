@@ -4,7 +4,7 @@ namespace App\Bases\Bibsys;
 
 use App\Bases\Interfaces\RecordViewInterface;
 
-class BibsysView extends BibsysObjekt implements RecordViewInterface
+class BibsysView extends BibsysDokument implements RecordViewInterface
 {
     /**
      * The primary key associated with the table.

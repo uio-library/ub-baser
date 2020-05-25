@@ -28,7 +28,7 @@
         <div class="pb-2 mt-2 mb-3">
             <div class="d-flex align-items-end">
                 <div>
-                    <h2 class="mb-0">
+                    <h2 class="mb-0 record-title">
                         {{ $record->getTitle() }}
                     </h2>
                 </div>
