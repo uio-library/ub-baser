@@ -101,7 +101,7 @@ class Schema extends BaseSchema
 
                         "edit" => [
                             "placeholder" => "Geografisk utgivelsessted for omtalt utgave",
-                            "help" => "Skriv inn utgivelsessted, bruk samme skrivemåte som på tittelbladet. Ved mer enn ett utgivelsessted, bruk «&» som skilletegn mellom stedene. Eksempel: Christiania & København",
+                            "help" => "Skriv inn utgivelsessted, bruk samme skrivemåte som på tittelbladet. Ved mer enn ett utgivelsessted, bruk «&» som skilletegn mellom stedene. Eksempel: Kristiania & København",
                         ]
                     ],
 
