@@ -41,6 +41,7 @@ class Schema extends BaseSchema
                 // ------------------------------
 
                 "search" => [
+                    "widget" => "simple",
                     "placeholder" => "Du kan søke etter objektid, dokid, knyttid, avdeling, samling, tekst i MARC-posten, osv.",
                     "type" => "ts",
                     "ts_index" => "any_field_ts",
