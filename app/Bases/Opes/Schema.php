@@ -27,6 +27,7 @@ class Schema extends BaseSchema
                 "type" => "search_only",
 
                 "search" => [
+                    "widget" => "simple",
                     "type" => "ts",
                     "ts_index" => "any_field_ts",
                     "operators" => [
