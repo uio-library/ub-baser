@@ -78,10 +78,6 @@ esac
 
 docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" $CMD
 
-docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" ps
-
-docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" logs
-
 if [[ $CMD == "up -d"* ]]; then
 
     echo "============================================================================================================"
