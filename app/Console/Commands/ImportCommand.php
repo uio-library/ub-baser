@@ -260,7 +260,7 @@ abstract class ImportCommand extends Command
     public function handle()
     {
         // Check if tables are empty. Ask to empty them if not.
-        if (!$this->ensureTablesEmpty($this->tables)) {
+        if (!$this->ensureTablesEmpty(array_reverse($this->tables))) {
             return;
         }
 
