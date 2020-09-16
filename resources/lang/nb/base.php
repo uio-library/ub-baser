@@ -21,5 +21,7 @@ return [
     ],
     'status' => [
         'recordtrashed' => 'Denne posten er markert som forkastet. Den vises ikke i søk og ikke for ikke-innloggede brukere.',
+        'unpublished' => 'Denne posten er ikke publisert enda.',
+        'unpublished_loggedin' => 'Denne posten er upublisert. Den vises kun for innloggede brukere.',
     ],
 ];

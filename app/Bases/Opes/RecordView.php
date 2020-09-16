@@ -15,4 +15,9 @@ class RecordView extends Record
     {
         \DB::unprepared('REFRESH MATERIALIZED VIEW opes_view');
     }
+
+    public static function query()
+    {
+        return parent::query()->where('public', 1);
+    }
 }
