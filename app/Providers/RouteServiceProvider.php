@@ -125,10 +125,11 @@ class RouteServiceProvider extends ServiceProvider
 
                         // Routes that do not need session
                         Route::get('/autocomplete', 'Controller@autocomplete');
-                        Route::get('/data', 'Controller@data');
 
                         Route::middleware('web')
                             ->group(function () use ($base) {
+
+                                Route::get('/data', 'Controller@data');
 
                                 // Standard routes for this base
                                 Route::get('/', 'Controller@index');

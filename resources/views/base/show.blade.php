@@ -59,6 +59,9 @@
                                     </button>
                                 </form>
                             @endif
+
+                            @yield('actions')
+
                         @endcan
                     @show
                 </div>

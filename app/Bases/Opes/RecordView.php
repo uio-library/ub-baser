@@ -2,6 +2,8 @@
 
 namespace App\Bases\Opes;
 
+use Illuminate\Support\Facades\Auth;
+
 class RecordView extends Record
 {
     /**
@@ -18,6 +20,9 @@ class RecordView extends Record
 
     public static function query()
     {
-        return parent::query()->where('public', 1);
+        if (!Auth::check()) {
+            return parent::query()->where('public', 1);
+        }
+        return parent::query();
     }
 }

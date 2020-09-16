@@ -22,4 +22,6 @@
 Route::middleware('can:opes')
     ->group(function () {
         // Place any routes that should only be available to authorized users here
+        Route::post('record/{record}/publish', 'Controller@publish');
+        Route::post('record/{record}/unpublish', 'Controller@unpublish');
     });

@@ -3,7 +3,10 @@
 namespace App\Bases\Opes;
 
 use App\Http\Controllers\BaseController;
+use App\Http\Request;
 use App\Record as BaseRecord;
+use App\Base;
+use Illuminate\Http\RedirectResponse;
 
 class Controller extends BaseController
 {
@@ -39,5 +42,49 @@ class Controller extends BaseController
             'negative_in_copenhagen' => 'boolean',
             'date_cataloged' => 'date_format:Y-m-d',
         ];
+    }
+
+    /**
+     * Publish the specified resource.
+     *
+     * @param Request $request
+     * @param Base $base
+     * @param Record $record
+     * @return RedirectResponse
+     */
+    public function publish(Request $request, Base $base, Record $record)
+    {
+        $record->public = 1;
+        $record->save();
+
+        $url = $base->action('show', $record->id);
+        $this->log(
+            'Publiserte <a href="%s">post #%s</a>.',
+            $url,
+            $record->id
+        );
+        return redirect($url)->with('status', trans('base.notification.recordpublished'));
+    }
+
+    /**
+     * Unpublish the specified resource.
+     *
+     * @param Request $request
+     * @param Base $base
+     * @param Record $record
+     * @return RedirectResponse
+     */
+    public function unpublish(Request $request, Base $base, Record $record)
+    {
+        $record->public = 0;
+        $record->save();
+
+        $url = $base->action('show', $record->id);
+        $this->log(
+            'Avpubliserte <a href="%s">post #%s</a>.',
+            $url,
+            $record->id
+        );
+        return redirect($url)->with('status', trans('base.notification.recordunpublished'));
     }
 }

@@ -17,6 +17,8 @@ return [
         'recordrecovered' => 'Record restored.',
         'recordupdated' => 'Record updated.',
         'recordcreated' => 'Record created.',
+        'recordpublished' => 'Record published.',
+        'recordunpublished' => 'Record unpublished.',
     ],
     'status' => [
         'recordtrashed' => 'This record is deprecated. It\'s not displayed to non-logged in users, and does not show up in search results.',

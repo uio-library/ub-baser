@@ -43,6 +43,8 @@ return [
     'please_wait' => 'Please wait...',
     'no_values' => 'No values found',
     'unknown_error' => 'An unknown error occured',
+    'publish' => 'Publish',
+    'unpublish' => 'Unpublish',
 
     // DataTable
     'show_columns' => 'Show columns:',

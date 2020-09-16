@@ -1,5 +1,23 @@
 @extends('base.show')
 
+@section('actions')
+    @if ($record->public)
+        <form style="display: inline-block" action="{{ $base->action('unpublish', $record->{$schema->primaryId}) }}" method="post">
+            @csrf
+            <button type="submit" class="btn btn-outline-danger btn-xs">
+                {{ __('messages.unpublish') }}
+            </button>
+        </form>
+    @else
+        <form style="display: inline-block" action="{{ $base->action('publish', $record->{$schema->primaryId}) }}" method="post">
+            @csrf
+            <button type="submit" class="btn btn-outline-success btn-xs">
+                {{ __('messages.publish') }}
+            </button>
+        </form>
+    @endif
+@endsection
+
 @section('record')
 
     @if (!$record->public && !Auth::check())
@@ -11,7 +29,6 @@
     @else
 
         @if (!$record->public)
-
             <div class="alert alert-warning">
                 {{ __('base.status.unpublished_loggedin') }}
             </div>
