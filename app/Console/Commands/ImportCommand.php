@@ -212,7 +212,7 @@ abstract class ImportCommand extends Command
             } elseif (!$this->confirm("The '$tableName' table is not empty! Delete the $count existing rows? [y|N]")) {
                 return false;
             }
-            \DB::table($tableName)->delete();
+            \DB::table($tableName)->truncate();
         }
         return true;
     }
