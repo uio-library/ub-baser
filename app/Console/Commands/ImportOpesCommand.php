@@ -23,7 +23,7 @@ class ImportOpesCommand extends ImportCommand
      *
      * @var string
      */
-    protected $fileFormat = 'tsv';
+    protected $fileFormat = 'csv';
 
     /**
      * Tables to import.
@@ -53,65 +53,4 @@ class ImportOpesCommand extends ImportCommand
     protected $views = [
         'opes_view',
     ];
-
-    /**
-     * Process a single value. This method can be overriden in an importer
-     * to do some kind of processing before the data are inserted into the database,
-     * e.g. converting a string value to a JSON value.
-     *
-     * @param string $column
-     * @param string $value
-     * @return mixed
-     */
-    protected function processValue(string $column, string $value)
-    {
-        $value = trim($value, " \t\n\r\0\x0B\"");
-
-        switch ($column) {
-            case 'persons':
-            case 'subj_headings':
-                $value = explode(';', $value);
-                $value = array_map(function ($x) {
-                    return trim($x);
-                }, $value);
-                $value = json_encode($value);
-                break;
-
-            case 'negative_in_copenhagen':
-                $value = (substr($value, 0, 3) === 'Yes') ? '1' : '0';
-                break;
-
-            case 'date1':
-            case 'date2':
-                if ($value !== '') {
-                    //$value = preg_replace('/\/.*$/', '', $value);
-                    //$value = preg_replace('/\(\?\)/', '', $value);
-                    if (!is_numeric($value)) {
-                        echo "Warning: '$column' is not numeric: $value\n";
-                    }
-                }
-                break;
-
-            case 'date_cataloged':
-                if ($value !== '') {
-                    $value = explode('.', $value);
-                    if (count($value) != 3) {
-                        echo 'INVALID DATE: ' . implode('.', $value);
-                        die;
-                    }
-                    $value = sprintf('%s-%s-%s', $value[2], $value[1], $value[0]);
-                }
-                break;
-
-            case 'ddbdp_pmichcitation':
-                $value = strtolower(str_replace(':', ';', $value));
-                break;
-        }
-
-        if (empty($value)) {
-            $value = null;
-        }
-
-        return $value;
-    }
 }
