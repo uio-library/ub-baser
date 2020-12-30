@@ -17,9 +17,13 @@ and calls docker-compose with the configuration in
 [`docker/compose.dev.yml`](https://github.com/scriptotek/ub-baser/blob/master/docker/compose.dev.yml)
 and any arguments given to the script.
 
-To bring everything up:
+To prevent Composer from running into rate-limiting when fetching dependencies from the GitHub API, a [GitHub personal access token](https://github.com/settings/tokens/new) is needed. Only read access to public repos is needed, so don't check any of the scopes.
 
-	./dev.sh up
+To bring everything up, run:
+
+	GITHUB_TOKEN=YOUR-TOKEN-HERE ./dev.sh up
+
+The `GITHUB_TOKEN` will be stored in a file `auth.json`, so you only need to specify it the first time you run `dev.sh`.
 
 This starts two containers: `db` (the Postgres database) and `app` (Apache + PHP).
 Note that it can take a minute or two before everything is ready.
