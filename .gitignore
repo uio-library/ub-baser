@@ -16,3 +16,4 @@ composer.lock
 .project
 .buildpath
 .settings
+auth.json
