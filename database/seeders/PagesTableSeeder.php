@@ -1,17 +1,21 @@
 <?php
 
+namespace Database\Seeders;
+
+use App\Page;
 use Illuminate\Database\Seeder;
 
-class OpesTableSeeder extends Seeder
+class PagesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      *
      * @return void
-     *              this is a test
      */
     public function run()
     {
-        //
+        Page::factory()
+            ->times(10)
+            ->create();
     }
 }

@@ -1,8 +1,11 @@
 <?php
 
+namespace Database\Seeders;
+
+use App\User;
 use Illuminate\Database\Seeder;
 
-class BibliomanuelTableSeeder extends Seeder
+class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +14,6 @@ class BibliomanuelTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        User::factory()->times(10)->create();
     }
 }

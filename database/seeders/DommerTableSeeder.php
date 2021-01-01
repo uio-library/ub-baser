@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Bases\Dommer\DommerKilde;
 use App\Bases\Dommer\Record;
 use App\Bases\Dommer\RecordView;
@@ -14,11 +16,15 @@ class DommerTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(DommerKilde::class, 4)->create()->each(function ($kilde) {
-            $kilde->poster()->createMany(
-                factory(Record::class, 8)->make()->toArray()
-            );
-        });
+        DommerKilde::factory()
+            ->times(4)
+            ->create()
+            ->each(function ($kilde) {
+                $kilde->poster()->createMany(
+                    factory(Record::class, 8)->make()->toArray()
+                );
+            });
+
         RecordView::refreshView();
     }
 }

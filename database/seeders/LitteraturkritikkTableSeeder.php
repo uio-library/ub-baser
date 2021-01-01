@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Bases\Litteraturkritikk\Person as LitteraturkritikkPerson;
 use App\Bases\Litteraturkritikk\Record as LitteraturkritikkRecord;
 use App\Bases\Litteraturkritikk\RecordView as LitteraturkritikkRecordView;
@@ -19,27 +21,35 @@ class LitteraturkritikkTableSeeder extends Seeder
         $possibleValues = [
             'verk_sjanger' => array_map(
                 // single
-                function($x) { return $x['value']; },
+                function ($x) {
+                    return $x['value'];
+                },
                 $schema->keyed()['verk_sjanger']->values
             ),
             'kritikktype' => array_map(
                 // multiple
-                function($x) { return [$x['value']]; },
+                function ($x) {
+                    return [$x['value']];
+                },
                 $schema->keyed()['kritikktype']->values
             ),
             'medieformat' => array_map(
                 // single
-                function($x) { return $x['value']; },
+                function ($x) {
+                    return $x['value'];
+                },
                 $schema->keyed()['medieformat']->values
             ),
         ];
 
-        $persons = factory(LitteraturkritikkPerson::class, 20)
+        $persons = LitteraturkritikkPerson::factory()
+            ->times(20)
             ->create()
             ->pluck('id')
             ->toArray();
 
-        factory(LitteraturkritikkRecord::class, 50)
+        LitteraturkritikkRecord::factory()
+            ->times(50)
             ->make()
             ->each(function ($rec, $key) use ($persons, $possibleValues) {
                 // For controlled fields, assign from allowed values. For the tests, we need at least

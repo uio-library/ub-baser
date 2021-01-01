@@ -1,21 +1,37 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Bases\Litteraturkritikk\Person as LitteraturkritikkPerson;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(LitteraturkritikkPerson::class, function (Faker $faker) {
-    return [
-        'fodt' => $faker->year,
-        //'dod' => $faker->year(),
-        //'created_at' => $faker->un(),
-        //'id' => $faker->un(),
-        //'updated_at' => $faker->un(),
-        //'wikidata_id' => $faker->un(),
-        'etternavn' => $faker->lastName,
-        'fornavn' => $faker->firstName,
-        'kjonn' => $faker->randomElement(['m', 'f']),
-        //'bibsys_id' => $faker->un(),
-    ];
-});
+class LitteraturkritikkPersonFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = LitteraturkritikkPerson::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'fodt' => $this->faker->year,
+            //'dod' => $this->faker->year(),
+            //'created_at' => $this->faker->un(),
+            //'id' => $this->faker->un(),
+            //'updated_at' => $this->faker->un(),
+            //'wikidata_id' => $this->faker->un(),
+            'etternavn' => $this->faker->lastName,
+            'fornavn' => $this->faker->firstName,
+            'kjonn' => $this->faker->randomElement(['m', 'f']),
+            //'bibsys_id' => $this->faker->un(),
+        ];
+    }
+}

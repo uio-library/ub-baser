@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Bases\Bibsys\BibsysObjekt;
 use App\Bases\Bibsys\BibsysDokument;
 use App\Bases\Bibsys\BibsysView;
@@ -14,12 +16,15 @@ class BibsysTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(BibsysObjekt::class, 10)
+        BibsysObjekt::factory()
+            ->times(10)
             ->create()
             ->each(function (BibsysObjekt $rec) {
                 $n = rand(1, 3);
                 for ($i = 0; $i <= $n; $i++) {
-                    $rec->dokumentPoster()->save(factory(BibsysDokument::class)->make());
+                    $rec->dokumentPoster()->save(
+                        BibsysDokument::factory()->make()
+                    );
                 }
             });
 

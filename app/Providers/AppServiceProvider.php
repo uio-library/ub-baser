@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     public $bindings = [
-        \Psr\Http\Client\ClientInterface::class => \RicardoFiorani\GuzzlePsr18Adapter\Client::class,
+        \Psr\Http\Client\ClientInterface::class => \DivineOmega\Psr18GuzzleAdapter\Client::class,
         \Psr\Http\Message\RequestFactoryInterface::class => \Http\Factory\Guzzle\RequestFactory::class,
     ];
 

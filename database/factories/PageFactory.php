@@ -1,19 +1,36 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Page;
 use App\Providers\AuthServiceProvider;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Page::class, function (Faker $faker) {
-    $namespace = $faker->randomElement(AuthServiceProvider::listGates());
-    return [
-        'slug' => $namespace . '/' . $faker->slug,
-        'layout' => 'layouts.' . $namespace,
-        'permission' => $namespace,
-        'title' => $faker->title,
-        'body' => str_replace("\n", "</p>\n<p>", '<p>' . $faker->text . '</p>'),
-        'updated_by' => $faker->numberBetween(1, 10),
-    ];
-});
+class PageFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Page::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $namespace = $this->faker->randomElement(AuthServiceProvider::listGates());
+
+        return [
+            'slug' => $namespace . '/' . $this->faker->slug,
+            'layout' => 'layouts.' . $namespace,
+            'permission' => $namespace,
+            'title' => $this->faker->title,
+            'body' => str_replace("\n", "</p>\n<p>", '<p>' . $this->faker->text . '</p>'),
+            'updated_by' => $this->faker->numberBetween(1, 10),
+        ];
+    }
+}
