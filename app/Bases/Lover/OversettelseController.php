@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Bases\Lover;
 
-use App\Oversettelse;
+use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Http\Request;
 
-class OversettelseController extends Controller
+class RecordController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class OversettelseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Oversettelse  $oversettelse
+     * @param  \App\Record  $Record
      * @return \Illuminate\Http\Response
      */
-    public function show(Oversettelse $oversettelse)
+    public function show(Record $Record)
     {
         //
     }
@@ -52,10 +52,10 @@ class OversettelseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Oversettelse  $oversettelse
+     * @param  \App\Record  $Record
      * @return \Illuminate\Http\Response
      */
-    public function edit(Oversettelse $oversettelse)
+    public function edit(Record $Record)
     {
         //
     }
@@ -64,10 +64,10 @@ class OversettelseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Oversettelse  $oversettelse
+     * @param  \App\Record  $Record
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Oversettelse $oversettelse)
+    public function update(Request $request, Record $Record)
     {
         //
     }
@@ -75,10 +75,10 @@ class OversettelseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Oversettelse  $oversettelse
+     * @param  \App\Record  $Record
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Oversettelse $oversettelse)
+    public function destroy(Record $Record)
     {
         //
     }
