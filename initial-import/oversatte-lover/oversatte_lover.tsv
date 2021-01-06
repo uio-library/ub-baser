@@ -1,0 +1,627 @@
+id	dato	nummer	dok_type	created_at	updated_at	tittel	kort_tittel	note
+1	1741-02-17	0	lov	28-APR-98	13-APR-18	Forbud paa Vimpel-Føring		
+2	1814-05-17	0	lov	28-APR-98	17-DEC-19	Kongeriget Norges Grundlov, given i Rigsforsamlingen paa Eidsvold den 17de Mai 1814	Grunnloven - Grl.	
+3	1842-08-08	0	lov	18-MAY-12	18-MAY-12	Lov angaaende arvefølgen i det nuværende Jarlsbergs grevskab m.v.		Opphevet ved lov-1990-06-15-18
+4	1884-06-14	3	lov	28-APR-98	19-SEP-14	Lov om beskyttelse av undersjøiske kabler og rørledninger utenfor sjøterritoriet	Lov om undersjøiske kabler	
+5	1893-07-20	1	lov	28-APR-98	13-MAY-04	Lov om sjøfarten		Opphevet ved lov-1994-06-24-39
+6	1898-11-28	0	lov	28-APR-98	19-SEP-14	Lov om Umyndiggjørelse	Umyndiggjørelsesloven - uml.	
+7	1898-12-10	1	lov	28-APR-98	21-NOV-03	Lov om Norges Flag	Flaggloven	
+8	1902-05-22	10	lov	28-APR-98	19-SEP-14	Almindelig borgerlig Straffelov	Straffeloven - strl.	
+9	1903-06-09	7	lov	28-APR-98	27-OCT-98	Lov om Statskontrol med Skibes Sjødygtighed m.v.	Sjødygtighedsloven - sjødl.	
+10	1910-07-02	7	lov	28-APR-98	19-SEP-14	Lov om Styret for det industrielle Retsvern		
+11	1911-08-18	8	lov	28-APR-98	12-NOV-03	Lov om skatt av formue og inntekt	Skatteloven	Opphevet ved lov-1999-03-26-14
+12	1915-06-24	5	lov	28-APR-98	21-NOV-03	Lov om kontroll med post- og telegrafforsendelser og med telefonsamtaler	Lov om kontroll av post- og teletjenester	
+13	1915-08-13	5	lov	28-APR-98	23-JUL-14	Lov om domstolene	Domstolloven	
+14	1916-06-30	1	lov	28-APR-98	19-SEP-14	Lov om kommisjon	Kommisjonsloven - kml.	
+15	1917-12-05	1	lov	28-APR-98	03-NOV-03	Lov om registrering og merking av fiskefartøyer	Lov om registrering av fiskefartøyer	
+16	1917-12-14	16	lov	28-APR-98	09-NOV-06	Lov om erverv av vannfall, bergverk og annen fast eiendom m.v.	Industrikonsesjonsloven	
+17	1917-12-14	17	lov	28-APR-98	09-NOV-06	Lov om vassdragsreguleringer	Vassdragsreguleringsloven	
+18	1918-05-31	4	lov	28-APR-98	19-SEP-14	Lov om avslutning av avtaler, om fuldmagt og om ugyldige viljeserklæringer	Avtaleloven - avtl.	
+19	1920-02-09	0	lov	28-APR-98	28-APR-98	Traktat mellem Norge, Amerikas Forente Stater, Danmark, Frankrike, Italia, Japan, Nederlandene, Storbritannia og Irland og de britiske oversjøiske besiddelser og Sverige angående Spitsbergen		
+20	1921-05-13	2	lov	18-MAY-12	18-MAY-12	Lov om Kongens myndighetsalder		
+21	1925-07-17	11	lov	28-APR-98	03-NOV-03	Lov om Svalbard	Svalbardloven	
+22	1925-08-07	0	lov	28-APR-98	03-NOV-03	Kongelig resolusjon. Bergverksordning for Spitsbergen (Svalbard)	Bergverksordningen for Svalbard	
+23	1925-08-07	3767	forskrift	03-MAR-11	03-MAR-11	Bergverksforordning for Spitsbergen (Svalbard)		
+24	1927-04-22	3	lov	28-APR-98	03-NOV-03	Lov om vergemål for umyndige	Vergemålsloven	
+25	1927-05-05	1	lov	28-APR-98	03-NOV-03	Lov om arbeidstvister	Arbeidstvistloven	
+26	1927-05-20	1	lov	28-APR-98	13-MAY-04	Lov om ektefellers formuesforhold		Opphevet ved lov-1991-07-04-47
+27	1927-07-04	11	lov	18-MAY-12	15-SEP-14	Lov om stamhuset Rosendal og om forandring i arverettsreglene for stamhuset Jarlsberg	Stamhusloven	
+28	1928-06-22	27	lov	05-AUG-98	13-MAY-04	Lov om landets kornforsyning	Kornforsyningsloven	Opphevet ved lov-1994-12-23-78
+29	1929-05-24	4	lov	03-NOV-03	03-NOV-03	Lov om tilsyn med elektriske anlegg og elektrisk utstyr	Lov om tilsyn med elektriske anlegg	
+30	1930-02-21	0	lov	28-APR-98	29-APR-98	Lov om skifte		
+31	1930-02-27	2	lov	28-APR-98	28-APR-98	Lov om Jan Mayen		
+32	1930-02-27	3	lov	28-APR-98	28-APR-98	Lov om Bouvet-øya, Peter I's øy og Dronning Maud Land m.m.		
+33	1932-02-05	1	lov	03-NOV-03	03-NOV-03	Lov om straff for handlinger som påtales ved riksrett	Ansvarlighetsloven	
+34	1932-02-26	1	lov	03-NOV-03	02-FEB-04	Lov om edruskapsvern	Edruskapsloven	Opphevet ved lov-1991-12-13-81
+35	1932-05-27	2	lov	28-APR-98	06-NOV-03	Lov om veksler	Vekselloven	
+36	1932-05-27	3	lov	28-APR-98	27-JAN-04	Lov om chekker	Sjekkloven	
+37	1932-06-17	2	lov	28-APR-98	28-APR-98	Lov om enkelte bestemmelser om fremmede konsulers rettsstilling		
+38	1933-05-19	3	lov	28-APR-98	17-JAN-06	Lov om tilsyn med næringsmidler m.v.	Næringsmiddelloven	Opphevet ved lov-2005-12-21-126
+39	1933-05-19	11	lov	28-JUN-00	28-JUN-00	Lov om særavgifter (før: lov om omsetningsavgift)	Særavgiftsloven	
+40	1934-06-22	5	lov	28-APR-98	28-APR-98	Lov om midlertidige innførselsforbud m.v.		
+41	1935-06-07	2	lov	07-FEB-14	07-FEB-14	Lov om tinglysing (Tinglysingsloven)		
+42	1936-06-19	9	lov	28-APR-98	13-MAY-04	Lov om innskrenkning i adgangen for den som ikke er helsepersonell til å ta syke i kur	Kvaksalverloven	Tidligere tittel: Lov om innskrenkning i adgangen for den som ikke er norsk læge eller tannlæge, til å ta syke i kur
+43	1936-07-16	2	lov	28-APR-98	06-NOV-03	Lov om pliktmessig avhold for personer i visse stillinger fra nytelse av alkohol eller annet berusende eller bedøvende middel	Avholdspliktloven	
+44	1937-04-16	0	lov	28-APR-98	28-APR-98	Lov om fullmakt for Kongen, eller den han gjev fullmakt, til å forby at norske skip blir nytta til å føra folk som eslar seg i krig, våpen, loty, fly eller partar derav til framandland		
+45	1938-06-18	1	lov	28-APR-98	27-MAR-12	Lov om bruk av røntgenstråler og radium m.v.		Opphevet ved lov-2000-05-12-36
+46	1939-02-17	2	lov	28-APR-98	28-APR-98	Lov om deponering i gjeldshøve		
+47	1939-03-17	1	lov	28-APR-98	28-APR-98	Lov om enkelte bestemmelser om fremmede statsskib m.v.		
+48	1939-06-16	7	lov	28-APR-98	28-APR-98	Lov om fangst av hval		
+49	1946-03-01	3	lov	28-APR-98	28-APR-98	Lov om Den Norske Stats Husbank		
+50	1946-07-05	2	lov	28-APR-98	28-APR-98	Lov om erverv og bortfraktning av skip m.v.		
+51	1946-10-24	2	lov	24-JUN-04	24-JUN-04	Lov om barnetrygd	Barnetrygdloven	Opphevet ved lov-2002-03-08-4
+52	1946-10-31	2	lov	28-APR-98	23-NOV-04	Lov om mål og vekt	Mål- og vektloven	
+53	1946-12-13	29	lov	28-APR-98	28-APR-98	Mellombels lov om innførsleforbod		
+54	1946-12-13	30	lov	28-APR-98	28-APR-98	Mellombels lov om utførsleforbod		
+55	1947-06-19	5	lov	28-APR-98	28-APR-98	Lov om immunitet og privilegier for internasjonale organisasjoner m.v.		
+56	1947-06-27	9	lov	28-APR-98	14-FEB-04	Lov om tiltak til å fremme sysselsetting	Sysselsettingsloven	
+57	1949-07-28	15	lov	28-APR-98	28-APR-98	Lov om adgang for Kongen til å inngå overenskomster med fremmede stater til forebyggelse av dobbeltbeskatning m.v.		
+58	1950-12-08	3	lov	28-APR-98	03-FEB-04	Lov om norsk riksborgarrett		
+59	1950-12-15	7	lov	28-APR-98	03-NOV-03	Lov om særlige rådgjerder under krig, krigsfare og liknende forhold	Beredskapsloven	
+60	1951-06-29	19	lov	28-APR-98	03-NOV-03	Lov om militære rekvisisjoner	Rekvisisjonsloven	
+61	1951-07-06	4	lov	28-APR-98	28-APR-98	Lov om Norges Krigsskaderåd		
+62	1951-12-03	2	lov	28-APR-98	03-NOV-03	Lov om pensjonstrygd for skogsarbeidere	Skogsarbeiderpensjonsloven	
+63	1951-12-14	3	lov	28-APR-98	03-NOV-03	Lov om omsetning av råfisk	Råfiskloven	
+64	1952-12-19	1	lov	28-APR-98	28-APR-98	Lov om vern mot overføring av smittsom sykdom fra utlandet m.v.		
+65	1952-12-19	2	lov	28-APR-98	28-APR-98	Lov om adgang til rekvisisjon m.v. under krig eller kriseforhold		
+66	1952-12-19	7	lov	28-APR-98	28-APR-98	Lov om lønnsnemnd i arbeidstvister		
+67	1953-06-26	8	lov	28-APR-98	20-OCT-03	Lov om oppfinnelser av betydning for rikets forsvar	Lov om forsvarsviktige oppfinnelser	
+68	1953-07-17	9	lov	28-APR-98	14-FEB-04	Lov om sivilforsvaret	Sivilforsvarsloven	
+69	1953-07-17	14	lov	28-APR-98	14-FEB-04	Lov om barnevern	Barnevernloven	Opphevet ved lov-1992-07-17-100
+70	1953-07-17	28	lov	28-APR-98	20-OCT-03	Lov om Heimevernet	Heimevernloven	
+71	1953-07-17	29	lov	28-APR-98	28-APR-98	Lov om verneplikt		
+72	1954-11-12	1	lov	28-APR-98	14-FEB-04	Lov om styret i herreds- og bykommunene	Kommunestyreloven	opphevet ved lov-1992-09-25-107
+73	1954-11-26	2	lov	28-APR-98	28-APR-98	Lov om vaksinasjon		
+74	1955-06-30	20	lov	28-APR-98	28-APR-98	Lov om når norsk tenestemakt kan halda brudvigjing i utlandet og utenlandsk tenestemakt i Noreg		
+75	1955-12-09	5	lov	28-APR-98	14-FEB-04	Lov om innkreving av underholdsbidrag m.v.	Bidragsinnkrevingsloven	
+76	1956-08-10	3410	forskrift	05-FEB-09	05-FEB-09	Forskrift om flyredningstjenesten		
+77	1956-12-07	1	lov	28-APR-98	22-FEB-18	Lov om tilsynet med finansforetak mv.	Finanstilsynsloven	
+78	1956-12-14	4	lov	28-APR-98	20-OCT-03	Lov om avgift på offentlig framføring av utøvende kunstneres prestasjoner m.v.	Lov om avgift til fond for utøvende kunstnere	
+79	1956-12-14	7	lov	28-APR-98	20-OCT-03	Lov om forsynings- og beredskapstiltak	Forsynings- og beredskapstiltaksloven	
+80	1957-04-26	4	lov	20-OCT-03	14-FEB-04	Lov om forskuttering av underhold til barn	Lov om bidragsforskudd	Opphevet ved lov-1989-02-17-2
+81	1957-06-28	16	lov	28-APR-98	29-MAY-08	Lov om friluftslivet	Friluftsloven	
+82	1958-07-18	1	lov	28-APR-98	14-FEB-04	Lov om utenrikstjenesten		Opphevet ved lov-2002-05-03-13
+83	1958-07-18	2	lov	28-APR-98	20-OCT-03	Lov om offentlige tjenestetvister	Tjenestetvistloven	
+84	1958-12-12	7	lov	28-APR-98	20-OCT-03	Lov om fengselsvesenet	Fengselsloven	Opphevet ved lov-2001-05-18-21
+85	1958-12-12	10	lov	28-APR-98	14-FEB-04	Lov om yrkesskadetrygd	Yrkesskadetrygdloven	
+86	1959-05-28	12	lov	28-APR-98	28-APR-98	Lov om kvalitetskontroll med fisk og fiskevarer o.a.		
+87	1960-06-17	1	lov	28-APR-98	15-MAY-12	Lov om rett til fotografi		Opphevet ved lov-1995-06-23-37
+88	1960-12-16	1	lov	28-APR-98	28-APR-98	Lov om luftfart		
+89	1961-02-03	0	lov	23-NOV-04	23-NOV-04	Lov om ansvar for skade som motorvogner gjer	Bilansvarsloven	
+90	1961-03-03	1	lov	28-APR-98	28-APR-98	Lov om utlevering av lovbrytere til Danmark, Finnland, Island og Sverige		
+91	1961-03-03	4	lov	28-APR-98	06-JUN-01	Lov om varemerker	Varemerkeloven	
+92	1961-03-03	5	lov	03-FEB-04	03-FEB-04	Lov om fellesmerker	Fellesmerkeloven	
+93	1961-03-23	1	lov	28-APR-98	28-APR-98	Lov om forsvunne personer m.v.		
+94	1961-04-28	2	lov	28-APR-98	20-OCT-03	Lov om psykisk helsevern		Opphevet ved lov-1999-07-02-62
+95	1961-05-12	2	lov	28-APR-98	28-APR-98	Lov om opphavsrett til åndsverk	Åndsverkloven	
+96	1961-05-24	1	lov	28-APR-98	08-JAN-01	Lov om sparebanker	Sparebankloven	
+97	1961-05-24	2	lov	28-APR-98	08-JAN-01	Lov om forretningsbanker		
+98	1961-06-09	1	lov	28-APR-98	28-APR-98	Lov om skytevåpen og ammunisjon m.v.		
+99	1961-06-16	1	lov	28-APR-98	20-OCT-03	Lov om fylkeskommuner		Opphevet ved lov-1992-09-25-107
+100	1961-06-16	15	lov	28-APR-98	28-APR-98	Lov om rettshøve mellom grannar		
+101	1962-06-08	4	lov	28-APR-98	19-SEP-14	Lov om tiltak mot dyresjukdommer	Husdyrloven	
+102	1962-06-22	8	lov	28-APR-98	25-FEB-05	Lov om Stortingets ombudsmann for forvaltningen	Sivilombudsmannsloven	
+103	1963-05-31	3	lov	28-APR-98	04-FEB-04	Lov om arbeidsvilkår for hushjelp	Hushjelploven	Opphevet ved lov-1995-01-06-2
+104	1963-06-21	12	lov	28-APR-98	19-SEP-14	Lov om vitenskapelig utforskning og undersøkelse etter og utnyttelse av andre undersjøiske naturforekomster enn petroleumsforekomster	Lov om undersjøiske naturforekomster	
+105	1963-06-21	17	lov	28-APR-98	14-MAR-05	Lov om drift av apotek m.v.	Apotekloven	Opphevet ved lov-1998-07-17-56
+106	1963-11-15	0	lov	28-APR-98	04-JUN-98	Lov om fullbyrding av nordiske dommer på straff m.v.		
+107	1964-03-14	1	lov	28-APR-98	19-SEP-14	Lov om tiltak mot plantesjukdommar og skadedyr på planter	Plantesjukdomslova	
+108	1964-03-14	2	lov	28-APR-98	19-SEP-14	Lov om revisjon og revisorer	Revisorloven	Opphevet ved lov-1998-07-17-56
+109	1964-04-03	1	lov	28-APR-98	19-SEP-14	Lov om mellomfolkeleg-privatrettslege reglar for lausøyrekjøp	Kjøpslovvalgsloven - intprkjl.	
+110	1964-05-29	1	lov	28-APR-98	04-FEB-04	Lov om personnamn	Namnelova	Opphevet ved lov-2002-06-07-19
+111	1964-06-19	14	lov	28-APR-98	19-SEP-14	Lov om avgift på arv og visse gaver	Arveavgiftsloven - aal.	
+112	1964-06-19	20	lov	28-APR-98	19-SEP-14	Lov om måling av fartøyer	Fartøymålingsloven	
+113	1964-06-20	5	lov	04-FEB-04	04-FEB-04	Lov om legemidler med videre	Legemiddelloven	Opphevet ved lov-1992-12-04-132
+114	1964-10-30	1	forskrift	29-AUG-00	29-AUG-00	Delegering etter lov om tiltak mot plantesjukdommar og skadedyr på planter (plantesjukdomslova)	Delegering etter plantesjukdomslova	
+115	1965-03-19	3	lov	28-APR-98	19-SEP-14	Lov om fritaking for militærtjeneste av overbevisningsgrunner	Militærnekterloven	
+116	1965-06-18	4	lov	28-APR-98	19-SEP-14	Vegtrafikklov	Vegtrafikkloven - vtrl.	
+117	1965-06-18	11	lov	28-APR-98	04-FEB-04	Lov om Distriktenes utbyggingsfond		Opphevet ved lov 1992-07-03-97
+118	1965-06-25	2	lov	28-APR-98	19-SEP-14	Lov om adgang til regulering av penge- og kredittforholdene	Kredittloven - pkrregll.	
+119	1966-06-17	2	lov	28-APR-98	19-SEP-14	Lov om luftputefartøyer	Luftputefartøyloven	
+120	1966-06-17	12	lov	24-JUN-04	24-JUN-04	Lov om folketrygd	Folketrygdloven	Opphevet ved lov-1997-02-28-19
+121	1966-06-17	19	lov	28-APR-98	19-SEP-14	Lov om Norges fiskerigrense og om forbud mot at utlendinger driver fiske m.v. innenfor fiskerigrensen	Fiskerigrenseloven	
+122	1966-12-16	9	lov	28-APR-98	19-SEP-14	Lov om anke til Trygderetten	Trygderettsloven - trrl.	
+123	1967-02-10	0	lov	28-APR-98	19-SEP-14	Lov om behandlingsmåten i forvaltningssaker	Forvaltningsloven - fvl.	
+124	1967-06-08	3	lov	28-APR-98	19-SEP-14	Lov om å setja i verk avtala 18 mars 1965 om løysing av tvistar mellom ein stat og borgarar i andre statar om investeringar	Lov om internasjonale investeringstvister	
+125	1967-06-16	3	lov	23-NOV-04	23-NOV-04	Lov om fullmakt til Kongen til å forby redere å gi opplysninger m.m. til utenlandske myndigheter		
+126	1967-12-15	9	lov	28-APR-98	06-JUN-01	Lov om patenter	Patentloven	
+127	1968-06-07	4	lov	28-APR-98	19-SEP-14	Lov til gjennomføring av bindende vedtak av De Forente Najoners Sikkerhetsråd	Lov om vedtak i FN's Sikkerhetsråd	
+128	1969-06-13	24	lov	20-OCT-03	20-OCT-03	Lov om grunnskolen	Gunnskolelova	Opphevd ved lov-1998-07-17-60
+129	1969-06-13	25	lov	17-MAR-00	17-MAR-00	Lov om trudomssamfunn og ymist anna		
+130	1969-06-13	26	lov	28-APR-98	19-SEP-14	Lov om skadeserstatning	Skadeserstatningsloven - skl.	
+131	1969-06-19	57	lov	28-APR-98	13-FEB-04	Lov om sykehus m.v.	Sykehusloven	Opphevet ved lov-1999-07-02-61
+132	1969-06-19	61	lov	24-JUN-04	24-JUN-04	Lov om særtillegg til ytelser fra folketrygden	Særtilleggsloven	Opphevet ved lov-1997-02-28-19
+133	1969-06-19	65	lov	28-APR-98	19-SEP-14	Lov om endringer i lov om ervervelse av vannfall, bergverk og annen fast eiendom av 14 desember 1917, lov om vassdragsreguleringer av 14 desember 1917, lov om ervervelse av kalkstensforekomster av 3 juli 1914 og lov om erverv av kvartsforekomster av 17 juni 1949 m.v. og til lov om bygging og drift av elektriske anlegg	Lov om bygging og drift av elektriske anlegg	
+134	1969-06-19	67	lov	28-APR-98	19-SEP-14	Lov om avgift på investeringer m.v.	Investeringsavgiftsloven	
+135	1970-04-17	21	lov	28-APR-98	19-SEP-14	Lov om retten til oppfinnelser som er gjort av arbeidstakere	Arbeidstakeroppfinnelsesloven	
+136	1970-05-29	33	lov	28-APR-98	13-FEB-04	Lov om mønster	Mønsterloven	Opphevet ved lov-2003-03-14-15
+137	1970-06-19	69	lov	28-APR-98	19-SEP-14	Lov om offentlighet i forvaltningen	Offentlighetsloven - offvl.	
+138	1970-12-04	82	lov	28-APR-98	05-FEB-04	Lov om såvarer	Såvareloven	Opphevet ved lov-2003-12-19-124
+139	1970-12-04	83	lov	28-APR-98	05-FEB-04	Lov om handel med gjødsel og jordforbedringsmidler m.v.		Opphevet ved lov-2003-12-19-124
+140	1971-06-11	52	lov	28-APR-98	19-SEP-14	Lov om strafferegistrering	Strafferegistreringsloven	
+141	1971-06-18	90	lov	20-MAY-98	20-MAY-98	Lov om mønstring av arbeidstakere på skip m.v.	Mønstringsloven	
+142	1972-03-03	5	lov	28-APR-98	20-MAY-98	Lov om arv m.m.	Arvelova - al.	
+143	1972-03-24	11	lov	28-APR-98	05-FEB-04	Lov om angrefrist ved visse avtaler om forbrukerkjøp m.m.	Angrefristloven - afrl.	Opphevet ved lov-2000-12-21-105
+144	1972-05-12	28	lov	28-APR-98	19-SEP-14	Lov om atomenergivirksomhet	Atomenergiloven - atomenl.	
+145	1972-10-02	4	forskrift	02-JUL-09	02-JUL-09	Forskrift om beregning av passasjerantall og om passasjerbekvemmeligheter m.v.	Forskrift om beregning av passasjerantall m.v.	
+146	1973-02-09	6	lov	20-MAY-98	20-MAY-98	Lov om transplantasjon, sykehusobduksjon og avgivelse av lik m.m.	Transplantasjonsloven - transpll.	
+147	1973-03-09	13	lov	28-APR-98	05-FEB-04	Lov om godkjenning m.v. av psykologer	Psykologloven	Opphevet ved lov-1999-07-02-64
+148	1973-03-09	14	lov	28-APR-98	02-JAN-02	Lov om vern mot tobakkskader	Tobakkskadeloven	
+149	1973-12-14	61	lov	28-APR-98	20-MAY-98	Lov om statsgaranti for lønnskrav ved konkurs m.v.		
+150	1974-02-22	9	lov	28-APR-98	04-JUN-98	Lov om europeiske straffedommer m.m.		Opphevet
+151	1974-05-31	19	lov	28-APR-98	06-FEB-04	Lov om konsesjon og om forkjøpsrett for det offentlige ved erverv av fast eiendom	Konsesjonsloven	Opphevet ved lov-2003-06-20-45
+152	1974-06-21	55	lov	28-APR-98	06-FEB-04	Lov om videregående opplæring		Opphevet ved lov-1993-06-11-90
+153	1974-12-20	73	lov	28-APR-98	19-SEP-14	Lov om dyrevern	Dyrevernloven - dyrevl.	
+154	1975-05-30	18	lov	28-APR-98	06-FEB-04	Sjømannslov	Sjømannsloven	
+155	1975-06-06	31	lov	12-MAR-12	12-MAR-12	Lov om utnytting av rettar og lunnende m.m. i statsallmenningane	Fjellova	
+156	1975-06-13	35	lov	28-APR-98	06-DEC-00	Lov om skattelegging av undersjøiske petroleumsforekomster m.v.	Petroleumsskatteloven	
+157	1975-06-13	39	lov	28-APR-98	19-MAY-98	Lov om utlevering av lovbrytere m.v.	Utleveringsloven - utlevl.	
+158	1975-06-13	50	lov	28-APR-98	19-SEP-14	Lov om svangerskapsavbrudd	Abortloven - abl.	
+159	1975-10-17	2	forskrift	06-JUL-09	06-JUL-09	Forskrift om arbeidsområdet for sjømann som innehar ledende stilling om bord	Forskrift om sjømann i ledende stilling	
+160	1975-12-01	5	forskrift	05-FEB-09	05-FEB-09	Forskrift om forebygging av sammenstøt på sjøen	Sjøveisreglene	
+161	1976-05-28	35	lov	28-APR-98	14-FEB-04	Lov om voksenopplæring	Voksenopplæringsloven	
+162	1976-06-04	39	lov	28-APR-98	19-SEP-14	Lov om pengelotteri	Pengelotteriloven	
+163	1976-06-11	79	lov	28-APR-98	19-SEP-14	Lov om kontroll med produkter og forbrukertjenester	Produktkontrolloven - prodktrl.	
+164	1976-12-17	15	forskrift	06-FEB-04	06-FEB-04	Forskrift om iverksettelse av Norges økonomiske sone. Delegering av fullmakt		
+165	1976-12-17	91	lov	28-APR-98	14-FEB-04	Lov om Norges økonomiske sone	Økonomiske soneloven	
+166	1976-12-17	99	lov	28-APR-98	06-FEB-04	Midl. lov om adgang til telefonkontroll ved etterforskning av overtredelser av narkotikalovgivningen		Opphevet ved lov-1990-12-21-76
+167	1976-12-17	100	lov	28-APR-98	19-MAY-98	Lov om renter ved forsinket betaling m.m.	Forsinkelsesrenteloven - rentel.	
+168	1977-02-15	2	forskrift	02-JUL-09	02-JUL-09	Forskrift om passasjerskip i spesiell fart		
+169	1977-04-29	7	forskrift	15-JAN-09	15-JAN-09	Forskrift om verneombud og arbeidsmiljøutvalg		
+170	1977-06-03	50	lov	28-APR-98	19-SEP-14	Lov om arbeidstiden på skip		
+171	1977-06-10	82	lov	15-FEB-11	15-FEB-11	Lov om motorferdsel i utmark og vassdrag		
+172	1978-01-17	4	forskrift	01-JUL-09	01-JUL-09	Forskrift om laste- og losseinnretninger på skip		
+173	1978-06-09	45	lov	28-APR-98	19-SEP-14	Lov om likestilling mellom kjønnene	Likestillingsloven - likestl.	
+174	1978-06-09	48	lov	28-APR-98	06-MAY-98	Lov om personregistre m.m.	Personregisterloven - pregl.	
+175	1978-06-09	50	lov	28-APR-98	08-SEP-20	Lov om kulturminner	Kulturminneloven	
+176	1978-06-23	70	lov	28-APR-98	19-SEP-14	Lov om kartlegging, deling og registrering av grunneiendom	Delingsloven - dell.	
+177	1979-05-18	18	lov	28-APR-98	19-SEP-14	Lov om foreldelse av fordringer	Foreldelsesloven - fl.	
+178	1980-02-08	2	lov	28-APR-98	19-SEP-14	Lov om pant	Panteloven - pantel.	
+179	1980-02-19	9862	forskrift	14-MAY-14	14-MAY-14	Instruks for Stortingets ombudsmann for forvaltningen		
+180	1980-04-11	5	lov	06-MAY-98	08-SEP-20	Lov om målbruk i offentleg teneste	Mållova	
+181	1980-05-23	13	lov	28-APR-98	21-JUN-04	Lov om fagopplæring i arbeidslivet	Fagopplæringsloven	Opphevet ved lov-1998-07-17-61
+182	1980-05-27	1	forskrift	05-FEB-09	05-FEB-09	Forskrift om faremeldinger, værtjeneste, nødmeldinger, livredningssignaler m.v.	Forskrift om faremeldinger m.v.	
+183	1980-06-13	35	lov	28-APR-98	19-SEP-14	Lov om fri rettshjelp	Rettshjelploven - rhjl.	
+184	1980-06-13	42	lov	22-FEB-01	21-JUN-04	Lov om leger	Legeloven	Opphevet ved lov-1999-07-02-64
+185	1980-06-13	43	lov	28-APR-98	19-SEP-14	Lov om tannleger	Tannlegeloven	Opphevet ved lov-1999-07-02-64
+186	1981-03-06	5	lov	28-APR-98	19-SEP-14	Lov om barneombud	Barneombudsloven	
+187	1981-03-13	6	lov	06-MAY-98	19-SEP-14	Lov om vern mot forurensninger og om avfall	Forurensningsloven - forurl.	
+188	1981-04-08	7	lov	28-APR-98	08-SEP-20	Lov om barn og foreldre	Barnelova	
+189	1981-05-22	25	lov	28-APR-98	19-SEP-14	Lov om rettergangsmåten i straffesaker	Straffeprosessloven - strpl.	
+190	1981-05-29	38	lov	28-APR-98	19-SEP-14	Lov om viltet	Viltloven - viltl.	
+191	1981-06-05	42	lov	06-MAY-98	19-SEP-14	Lov om sertifikatpliktige stillinger på norske skip, borefartøy og andre flyttbare innretninger i sjøen	Sertifiseringsloven	
+192	1981-06-12	64	lov	17-MAR-00	17-MAR-00	Lov om tilskott til livssynssamfunn		
+193	1981-11-04	3793	forskrift	06-FEB-09	06-FEB-09	Forskrift om fartsområder		
+194	1981-12-18	90	lov	28-APR-98	06-MAY-98	Lov om merking av forbruksvarer m.v.		
+195	1982-11-19	66	lov	28-APR-98	19-SEP-14	Lov om helsetjenesten i kommunene	Kommunehelsetjenesteloven - khl.	
+196	1982-12-17	84	lov	28-APR-98	19-SEP-14	Lov om sikre containere	Containerloven	
+197	1983-03-04	3	lov	28-APR-98	05-MAY-98	Lov om statens tjenestemenn m.m.	Tjenestemannsloven - tjml.	
+198	1983-03-04	7	lov	28-APR-98	22-JUN-04	Lov om eierseksjoner	Eierseksjonsloven	Opphevet ved lov-1997-05-23-31
+199	1983-06-03	40	lov	28-APR-98	05-MAY-98	Lov om saltvannsfiske m.v.	Saltvannsfiskeloven - saltvfl.	
+200	1983-06-03	54	lov	28-APR-98	19-SEP-14	Lov om tannhelsetjenesten	Tannhelsetjenesteloven - tannhl.	
+201	1983-06-16	1122	forskrift	06-FEB-09	06-FEB-09	Forskrift om hindring av forurensning fra skip	MARPOL-forskriften	
+202	1983-10-20	1580	forskrift	01-JUL-09	01-JUL-09	Forskrift om sikringstiltak for gassfyrte anlegg m.m. som bruker propan eller andre lette kullvannstoffer anvendt ombord på fartøy	Forskrift om sikring av gassfyrte anlegg	
+203	1984-03-30	15	lov	08-SEP-06	06-JAN-16	Lov om statlig tilsyn med helse- og omsorgstjenesten m.m.	Helsetilsynsloven	
+204	1984-04-02	827	forskrift	10-FEB-09	10-FEB-09	Forskrift om prøving, kontroll, godkjenning og vedlikehold m.v. av containere	Forskrift om prøving m.v. av containere	
+205	1984-04-10	940	forskrift	25-NOV-04	01-JUL-09	Forskrift om kontroll av dykkesystem m.m. på norske skip i sjøen	Forskrift om kontroll av dykkesystem	
+206	1984-06-08	51	lov	28-APR-98	05-MAY-98	Lov om havner og farvann m.v.	Havne- og farvannsloven - havnl.	
+207	1984-06-08	58	lov	28-APR-98	19-SEP-14	Lov om gjeldsforhandling og konkurs	Konkursloven - kkl.	
+208	1984-06-08	59	lov	28-APR-98	19-SEP-14	Lov om fordringshavernes dekningsrett	Dekningsloven - deknl.	
+209	1984-06-08	61	lov	28-APR-98	22-JUN-04	Lov om fast granskingskommisjon ved dykkerulykker		Opphevet ved lov-1995-12-22-78
+210	1984-06-29	1319	forskrift	03-FEB-09	03-FEB-09	Forskrift om kontroll med skip som fører passasjerer i farvann ved Svalbard	Forskrift om passasjerskip ved Svalbard	
+211	1985-03-22	11	lov	05-MAY-98	19-SEP-14	Lov om petroleumsvirksomhet	Petroleumsloven - petrl.	Opphevet ved lov-1996-11-29-72
+212	1985-05-24	28	lov	28-APR-98	19-SEP-14	Lov om Norges Bank og pengevesenet	Sentralbankloven	
+213	1985-06-14	62	lov	28-APR-98	22-JUN-04	Lov om Verdipapirsentral	Verdipapirsentralloven	Opphevet ved lov-2002-07-05-64
+214	1985-06-14	68	lov	30-MAY-03	30-MAY-03	Lov om oppdrett av fisk, skalldyhr m.v.		
+215	1985-06-14	77	lov	28-APR-98	13-AUG-08	Plan- og bygningslov	Plan- og bygningsloven	
+216	1985-06-14	1157	forskrift	15-JAN-09	15-JAN-09	Forskrift om arbeid med ioniserende stråling		
+217	1985-06-21	78	lov	27-MAY-05	27-MAY-05	Lov om registrering av foretak	Foretaksregisterloven	
+218	1985-06-21	82	lov	28-APR-98	05-MAY-98	Lov om kredittkjøp m.m.	Kredittkjøploven - krkjl.	
+219	1985-06-21	83	lov	05-MAY-98	19-SEP-14	Lov om ansvarlige selskaper og kommandittselskaper	Selskapsloven - sel.	
+220	1985-12-20	108	lov	05-MAY-98	03-APR-20	Lov om folkebibliotek	Folkebibliotekloven	
+221	1986-01-13	32	forskrift	25-NOV-04	25-NOV-04	Forskrift for bruk av radioaktive kilder om bord på flyttbare innretninger	Forskrift om radioaktivitet på flyttbare innretninger	
+222	1986-01-31	222	forskrift	06-JUL-09	06-JUL-09	Forskrift om sjømannslovens virkeområde		
+223	1986-02-03	230	forskrift	06-JUL-09	06-JUL-09	Forskrift om ansettelsesavtale og hyreoppgjørsskjema	Forskrift om ansettelse og hyreoppgjør	
+224	1986-02-03	241	forskrift	06-JUL-09	06-JUL-09	Forskrift om erstatning for tapte eiendeler		
+225	1986-02-03	243	forskrift	06-JUL-09	06-JUL-09	Forskrift om norsk utenriksstasjons lån til sjømenn		
+226	1986-02-28	8	lov	28-APR-98	05-DEC-00	Lov om adopsjon	Adopsjonsloven	
+227	1986-03-21	747	forskrift	04-SEP-00	04-SEP-00	Forskrift om kjørende og gående trafikk	Trafikkregler	
+228	1986-12-17	2317	forskrift	25-NOV-04	25-NOV-04	Forskrift om sveiseutstyr m.v. for sveisegassene acetylen og oxygen på flyttbare innretninger		
+229	1986-12-17	2318	forskrift	25-NOV-04	25-NOV-04	Forskrift om konstruksjon og utrustning av boligkvarteret på flyttbare innretninger		
+230	1986-12-17	2319	forskrift	25-NOV-04	25-NOV-04	Forskrift for forflytning og sleping av flyttbare innretninger samt slepearrangement og fortøyning av forsyningsskip på slike innretninger		
+231	1987-03-17	175	forskrift	25-NOV-04	01-JUL-09	Forskrift om bemanning av norske skip		
+232	1987-05-15	21	lov	02-DEC-04	02-DEC-04	Lov om film og videogram	Film- og videogramlova	
+233	1987-05-21	406	forskrift	01-JUL-09	01-JUL-09	Forskrift om transport på skip av spesielle eller farlige laster i bulk eller som pakket gods	Forskrift om skipstransport av farlig last	
+234	1987-05-29	23	lov	04-MAY-98	19-SEP-14	Lov om bibliotekvederlag	Bibliotekvederlagsloven	
+235	1987-06-12	48	lov	05-MAY-98	19-SEP-14	Lov om norsk internasjonalt skipsregister	NIS-loven - NISl	
+236	1987-06-12	56	lov	28-APR-98	02-DEC-04	Lov om Sametinget og andre samiske rettsforhold	Sameloven	
+237	1987-06-12	68	lov	28-APR-98	19-SEP-14	Lov om kunstig befruktning		Opphevet ved lov-1994-08-05-56
+238	1987-06-15	507	forskrift	01-JUL-09	01-JUL-09	Forskrift om sikkerhetstiltak m.m. på passasjer-, lasteskip og lektere	Forskrift om sikkerhetstiltak m.m. på skip	
+239	1987-06-30	579	forskrift	06-FEB-09	06-FEB-09	Forskrift om særskilt fartsområdet for fartøyer og flyttbare innretninger i petroleumsvirksomhet registrert i Norsk internasjonalt skipsregister	Forskrift om særskilt fartsområde NIS	
+240	1987-09-04	855	forskrift	25-NOV-04	25-NOV-04	Forskrift om anmeldelse av nybygg, besiktelse og sertifisering m.v. av flyttbare innretninger	Forskrift om sertifisering av flyttbare innretninger	
+241	1987-09-04	857	forskrift	25-NOV-04	25-NOV-04	Forskrift om ankring-/posisjoneringssystemer på flyttbare innretninger		
+242	1987-09-04	859	forskrift	25-NOV-04	15-SEP-14	Forskrift om verne-, miljø- og sikkerhetstiltak på flyttbare innretninger	Forskrift om arbeidsmiljø, flyttb. innretn.	
+243	1987-12-18	93	lov	28-APR-98	09-JAN-06	Lov om kontroll med eksport av strategiske varer, tjenester og teknologi m.v.	Eksportkontrolloven	
+244	1987-12-18	984	forskrift	27-MAY-05	27-MAY-05	Forskrift for registrering av foretak		
+245	1988-03-25	250	forskrift	15-JAN-09	15-JAN-09	Forskrift om sikkerhet for undersøkelse og leteboring etter petroleumsforekomster på Svalbard		
+246	1988-04-29	21	lov	28-APR-98	08-SEP-20	Lov om ferie	Ferieloven	
+247	1988-05-06	22	lov	08-SEP-20	08-SEP-20	Lov om lønnsplikt under permittering	Permitteringslønnsloven	
+248	1988-05-13	26	lov	09-NOV-06	09-NOV-06	Lov om inkassovirksomhet og annen  inndriving av forfalte penger	Inkassoloven	
+249	1988-05-13	27	lov	28-APR-98	19-SEP-14	Lov om kjøp	Kjøpsloven - kjl.	
+250	1988-06-10	39	lov	29-MAY-02	29-MAY-02	Lov om forsikringsvirksomhet	Forsikringsvirksomhetsloven	
+251	1988-06-24	64	lov	28-APR-98	06-SEP-00	Lov om utlendingers adgang til riket og deres opphold her	Utlendingsloven	
+252	1988-07-08	72	lov	20-OCT-08	20-OCT-08	Lov om anerkjennelse og fullbyrdelse av utenlandske avgjørelser om foreldreansvar m.v. og om tilbakelevering av barn	Barnebortføringsloven	
+253	1988-11-25	940	forskrift	06-JUL-09	06-JUL-09	Forskrift om kontroll av maritim tjeneste		
+254	1988-12-23	104	lov	28-APR-98	19-SEP-14	Lov om produktansvar	Produktansvarsloven - prodansvl.	
+255	1989-01-10	51	forskrift	21-DEC-06	21-DEC-06	Forskrift til gjennomføring av utførselsreguleringen for strategiske varer, tjenester og teknologi	Forskrift om utførselsregulering for strategiske varer	
+256	1989-03-10	157	forskrift	04-SEP-00	04-SEP-00	Forskrift for utførsel av tungtvann		
+257	1989-06-02	27	lov	28-APR-98	02-JUL-07	Lov om omsetning av alkoholholdig drikk m.v.	Alkoholloven	
+258	1989-06-09	32	lov	27-MAY-05	27-MAY-05	Lov om avleveringsplikt for allment tilgjengelege dokument	Pliktavleveringslova	
+259	1989-06-16	53	lov	28-APR-98	14-JUN-05	Lov om eiendomsmegling	Eiendomsmeglingsloven	
+260	1989-06-16	54	lov	28-APR-98	19-SEP-14	Lov om offisiell statistikk og Statistisk Sentralbyrå	Statistikkloven	
+261	1989-06-16	59	lov	28-APR-98	05-MAY-98	Lov om lostjenesten m.v.	Losloven - losl.	
+262	1989-06-16	65	lov	28-APR-98	15-SEP-14	Lov om yrkesskadeforsikring	Yrkesskadeforsikringsloven - yforsl.	
+263	1989-06-16	69	lov	05-MAY-98	29-MAY-02	Lov om forsikringsavtaler	Forsikringsavtaleloven	
+264	1989-06-16	70	lov	10-MAR-08	10-MAR-08	Lov om naturskadeforsikring	Naturskadeforsikringsloven	
+265	1989-07-14	562	forskrift	09-NOV-06	09-NOV-06	Forskrift til inkassoloven m.m.	Inkassoforskriften	
+266	1989-08-11	802	forskrift	10-FEB-09	10-FEB-09	Forskrift om utvidet fartsområdet for lasteskip registrert i Norsk internasjonalt skipsregister	Forskrift om fartsområdet for lasteskip i NIS	
+267	1989-08-16	818	forskrift	06-FEB-09	06-FEB-09	Forskrift til gjennomføring av forskrift om utvidet fartsområde for lasteskip i Norsk internasjonalt skipsregister	Forskrift om fartsområde for NIS-registrert skip	
+268	1990-02-13	105	forskrift	19-APR-02	23-JUN-04	Forskrift om gjennomføring og utfylling av lov om offisiell statistikk og Statistisk sentralbyrå (statistikkloven)	Forskrift om statistikkloven	
+269	1990-04-27	9	lov	04-MAY-98	19-SEP-14	Lov om regulering av eksporten av fisk og fiskevarer	Fiskeeksportloven - fiskeekspl.	
+270	1990-05-25	427	forskrift	27-JUL-05	27-JUL-05	Forskrift om avleveringsplikt for allment tilgjengelege dokument	Forskrift om allment tilgjengelege dokument	
+271	1990-06-01	435	forskrift	14-JUN-05	14-JUN-05	Forskrift om beregning av ansvarlig kapital for finansinstitusjoner, oppgjørssentraler og verdipapirforetak	Forskrift om beregning av ansvarlig kapital	
+272	1990-06-15	27	lov	28-APR-98	19-SEP-14	Lov om vern av kretsmønstre for integrerte kretser	Kretsmønsterloven - kretsml.	
+273	1990-06-29	50	lov	18-DEC-98	09-NOV-06	Lov om produksjon, omforming, overføring,m omsetning og fordeling og bruk av energi m.m.	Energiloven	
+274	1990-10-22	875	forskrift	14-JUN-05	14-JUN-05	Forskrift om minstekrav til kapitaldekning i finansinstitusjoner og verdipapirforetak	Forskrift om kapitaldekning, finansinstitusjoner	
+275	1990-12-21	72	lov	04-MAY-98	19-SEP-14	Lov om avgift på utslipp av CO2 i petroleumsvirksomhet på kontinentalsokkelen	Lov om avgift på utslipp av CO2	
+276	1990-12-21	1028	forskrift	04-SEP-00	04-SEP-00	Forskrift om utlendingers adgang til riket og deres opphold her	Utlendingsforskriften	
+277	1991-03-15	2	lov	05-MAY-98	19-SEP-14	Lov om Statens Banksikringsfond		
+278	1991-03-15	3	lov	12-AUG-99	28-JAN-05	Lov om megling i konfliktråd	Konfliktrådloven	
+279	1991-05-10	301	forskrift	22-NOV-04	22-NOV-04	Forskrift om forsikringstekniske avsetninger og risikostatistikk i skadeforsikring		
+280	1991-06-20	381	forskrift	27-APR-06	27-APR-06	Forskrift om avgiftsfri innførsel og midlertidig bruk av utenlandsregistrert motorvogn i Norge		
+281	1991-07-04	45	lov	28-APR-98	19-SEP-14	Lov om rett til felles bolig og innbo når husstandsfellesskap opphører	Husstandsfellesskapsloven - husfskl.	
+282	1991-07-04	47	lov	04-APR-00	08-SEP-20	Lov om ekteskap	Ekteskapsloven	
+283	1991-08-30	71	lov	28-APR-98	19-SEP-14	Lov om statsforetak	Statsforetaksloven - statssel.	
+284	1991-10-16	853	forskrift	02-JUL-09	02-JUL-09	Forskrift om beredskapsfartøy		
+285	1991-10-18	671	forskrift	22-NOV-04	22-NOV-04	Forskrift om turisme og annen reisevirksomhet på Svalbard		
+286	1991-11-08	76	lov	28-APR-98	19-SEP-14	Lov om kommunale og fylkeskommunale eldreråd	Eldrerådsloven	
+287	1991-11-11	731	forskrift	02-JUL-09	02-JUL-09	Forskrift om radiokommunikasjon for passasjerskip		
+288	1991-11-29	78	lov	18-JAN-99	18-JAN-99	Lov om Statens Bankinvesteringsfond		
+289	1991-12-13	81	lov	28-APR-98	04-MAY-98	Lov om sosiale tjenester m.v.	Sosialtjenesteloven - sotjl.	
+290	1992-05-15	47	lov	28-APR-98	04-MAY-98	Lov om laksefisk og innlandsfisk m.v.	Lakse- og innlandsfiskloven - laksfl.	
+291	1992-06-19	56	lov	28-APR-98	15-SEP-14	Lov om handelsagenter og handelsreisende	Agenturloven - agl.	
+292	1992-06-19	59	lov	12-MAR-12	12-MAR-12	Lov om bygdeallmenninger	Bygdeallmenningsloven	
+293	1992-06-19	60	lov	12-MAR-12	12-MAR-12	Lov om skogsdrift m.v. i statsallmenningene	Statsallmenningsloven	
+294	1992-06-26	87	lov	16-FEB-04	16-FEB-04	Lov om forsøk i offentlig forvaltning		
+295	1992-07-09	1269	forskrift	06-FEB-09	06-FEB-09	Forskrift of varsling av akutt forurensning eller fare for akutt forurensning		
+296	1992-07-17	99	lov	28-APR-98	19-SEP-14	Lov om frivillig og tvungen gjeldsordning for privatpersoner	Gjeldsordningsloven - gol.	
+297	1992-07-17	100	lov	05-MAY-98	30-APR-01	Lov om barneverntjenester	Barnevernloven	
+298	1992-07-30	592	forskrift	05-FEB-09	05-FEB-09	Forskrift om registrering av skip i Norsk internasjonalt skipsregister (NIS)	Forskrift of registrering av skip i NIS	
+299	1992-09-15	693	forskrift	10-FEB-09	10-FEB-09	Forskrift om innretning og føring av dagbøker på skip og flyttbare innretninger	Forskrift om føring av dagbøker på skip mv.	
+300	1992-09-15	700	forskrift	02-JUL-09	02-JUL-09	Forskrift om redningsredskaper m.m. på passasjerskip	Forskrift om redningsredskaper på passasjerskip	
+301	1992-09-15	701	forskrift	10-FEB-09	10-FEB-09	Forskrift om navigasjonshjelpemidler og bro-, styrehus- og radioarrangementer for skip	Forskrift om navigasjonshjelpemidler mm for skip	
+302	1992-09-15	704	forskrift	01-JUL-09	01-JUL-09	Forskrift om driftsordninger på norske skip		
+303	1992-09-25	107	lov	28-APR-98	16-FEB-04	Lov om kommuner og fylkeskommuner	Kommuneloven	
+304	1992-11-27	111	lov	29-MAY-02	29-MAY-02	Lov on lovvalg i forsikring	Forsikringslovvalgsloven	
+305	1992-11-27	117	lov	04-APR-00	04-APR-00	Lov om offentlig støtte	Lov om offentlig støtte	
+306	1992-12-04	126	lov	14-AUG-08	14-AUG-08	Lov om arkiv	Arkivlova	
+307	1992-12-04	127	lov	05-MAY-98	04-SEP-06	Lov om kringkasting	Kringkastingsloven	
+308	1992-12-16	1243	forskrift	24-MAR-11	24-MAR-11	Forskrift om fylkesmannens adgang til å ilegge kommuner og fylkeskommuner mulkt ved oversittelse av fristene i barnevernloven § 6-9		
+309	1992-12-21	1246	forskrift	02-JAN-02	02-JAN-02	Forskrift om barnverntjenestens adgang til å kreve egenbetaling fra barnet til dekning av oppholdsutgifter		
+310	1993-03-12	32	lov	28-APR-98	19-SEP-14	Lov om planteforedlerrett	Planteforedlerloven - plfl.	
+311	1993-04-02	38	lov	28-APR-98	19-SEP-14	Lov om framstilling og bruk av genmodifiserte organismer	Genteknologiloven - gentl.	
+312	1993-04-30	40	lov	28-APR-98	23-JUN-04	Lov om registrert partnerskap	Partnerskapsloven	
+313	1993-06-04	58	lov	28-APR-98	10-NOV-10	Lov av 4. juni 1993 nr 58 om allmenngjøring av tariffavtaler		
+314	1993-06-11	66	lov	28-APR-98	20-FEB-01	Lov om pristiltak	Pristiltaksloven	
+315	1993-06-11	100	lov	17-MAR-99	24-SEP-03	Lov om anlegg og drift av jernbane, herunder sporvei, tunnelbane og forstadsbane m.m.	Jernbaneloven	
+316	1993-06-11	101	lov	01-OCT-01	01-OCT-01	Lov om luftfart	Luftfartsloven	
+317	1993-07-09	596	forskrift	06-FEB-09	19-SEP-14	Forskrift om begrensning av fartsområde for passasjerskip registrert i Norsk internasjonalt skipsregister (NIS)	Forskrift om begrensning av fartsområde, NIS	
+318	1993-12-22	1430	forskrift	02-JAN-02	02-JAN-02	Forskrift om barnets talsperson i saker som skal  behandles i fylkesnemnda		
+319	1993-12-28	1257	forskrift	14-JUN-05	23-FEB-18	Forskrift om tilsyn med finansforetak og forvaltningsselskap som har hovedsete i annen EØS-stat og som driver virksomhet i Norge mv.	Forskrift om finanstilsyn i EØS	
+320	1994-03-25	7	lov	16-MAR-99	02-APR-07	Lov om sikring mot og erstatning for naturskader	Naturskadeloven	
+321	1994-05-02	326	forskrift	03-SEP-09	03-SEP-09	Forskrift om filial av banker og andre kredittinstitusjoner med hovedsete i annen stat innen Det europeiske økonomiske samarbeidsområde, m.m.	Forskrift om filial av banker mv innen EØS	
+322	1994-05-06	10	lov	28-APR-98	19-SEP-14	Lov om gjennomføring av Konvensjonen om forbod mot utvikling, produksjon, lagring og bruk av kjemiske våpen samt øydelegging av dei	Lov om konvensjon om kjemiske våpen	
+323	1994-06-24	38	lov	28-APR-98	19-SEP-14	Lov om gjennomføring i norsk rett av De forente nasjoners sikkerhetsråd vedtak om å opprette internasjonale domstoler for forbrytelser i det tidligere Jugoslavia og Rwanda	Lov om krigsforbryterdomstol, Jugoslavia m.m.	
+324	1994-06-24	39	lov	28-APR-98	19-SEP-14	Lov om sjøfarten	Sjøloven - sjøl.	
+325	1994-07-26	749	forskrift	05-FEB-09	05-FEB-09	Forskrift om måling av fartøyer		
+326	1994-08-05	55	lov	28-APR-98	19-SEP-14	Lov om vern mot smittsomme sykdommer	Smittevernloven	
+327	1994-08-05	56	lov	17-MAR-99	19-SEP-14	Lov om medisinsk bruk av bioteknologi	Medisinsk bioteknologiloven	
+328	1994-11-25	1026	forskrift	16-OCT-00	16-OCT-00	Forskrift om fastsetting og innkreving av avgift til Norsk Naturskadepool etter lov 16. juni 1989 nr 70 om naturskadeforsikring § 4 a	Forskrift om avgift, Norsk Naturskadepool	
+329	1995-02-03	7	lov	17-MAR-99	19-SEP-14	Lov om kontroll med etterretnings-, overvåkings- og sikkerhetstjeneste	Lov om kontroll med hemmelige tjenester	
+330	1995-02-14	382	forskrift	06-JUL-09	06-JUL-09	Forskrift om permisjon ved svangerskap, fødsel, adopsjon mv.	Forskrift om permisjon ved svangerskap mv.	
+331	1995-02-24	11	lov	21-FEB-02	21-FEB-02	Lov om lotterier m.v.	Lotteriloven	
+332	1995-05-05	408	forskrift	16-AUG-06	16-AUG-06	Forskrift om vern av miljøet i Antarktis		
+333	1995-05-12	23	lov	04-MAY-98	19-SEP-14	Lov om jord	Jordlova - jl.	
+334	1995-08-04	53	lov	28-APR-98	19-SEP-14	Lov om politiet	Politiloven	
+335	1995-08-25	768	forskrift	15-JAN-09	15-JAN-09	Forskrift om forplantningsskader og arbeidsmiljø		
+336	1995-09-01	772	forskrift	02-JAN-02	02-JAN-02	Forskrift om lov om barneverntjenesters anvendelse på Svalbard		
+337	1995-09-22	827	forskrift	04-SEP-09	19-SEP-14	Forskrift om forsikringstjenesteytelser og etablering av filial av forsikringsselskap og pensjonsforetak med hovedsete i annen stat i Det europeiske økonomiske samarbeidsområde m.m.		
+338	1995-12-15	74	lov	08-JUL-08	08-JUL-08	Lov om forbud mot kjønnslemlestelse	Kjønnslemlestelsesloven	
+339	1996-01-16	24	forskrift	23-JUN-04	23-JUN-04	Forskrift om nemnd for prøving av A/S Vinmonopolets beslutninger om innkjøp m.v.		
+340	1996-02-02	115	forskrift	10-FEB-09	10-FEB-09	Forskrift om oppkreving av gebyr til statskassen for besiktelser, sertifikatutstedelse mv. som foretas i henhold til skipssikkerhetsloven mv.	Sjøforsvarets gebyrforskrift	
+341	1996-02-29	223	forskrift	12-JAN-04	19-SEP-14	Forskrift om produksjonsregulerende tiltak for oppdrett av laks og ørret	Forskrift om tiltak for oppdrett av laks m.m.	
+342	1996-11-29	72	lov	22-JAN-01	22-JAN-01	Lov om petroleumsvirksomhet	Petroleumsloven	
+343	1996-11-29	73	lov	05-MAY-98	19-SEP-14	Lov om formidling av landsdekkende postsendinger	Postloven	
+344	1996-12-06	75	lov	04-MAY-98	14-JUN-05	Lov om sikringsordninger for banker og offentlig administrasjon m.v. av finansinstitusjoner	Banksikringsloven	
+345	1996-12-06	1127	forskrift	30-MAY-03	30-MAY-03	Forskrift om systematisk helse-, miljø- og sikkerhetsarbeid i virksomheter	Internkontrollforskriften	
+346	1996-12-20	1161	forskrift	19-SEP-01	19-SEP-01	Forskrift til domstolloven kapitel 11	Advokatforskriften	
+347	1997-01-22	33	forskrift	28-SEP-04	28-SEP-04	Forskrift om krav til byggverk og produkter til byggverk (TEK)		
+348	1997-02-28	153	forskrift	02-JAN-02	04-SEP-06	Forskrift om kringkasting		
+349	1997-06-06	32	lov	05-MAY-98	19-SEP-14	Lov om innførsle- og utførsleregulering	Innførsle- og utførslereguleringslova	
+350	1997-06-13	44	lov	27-APR-99	05-SEP-00	Lov om aksjeselskaper	Aksjeloven	
+351	1997-06-13	45	lov	27-APR-99	19-SEP-06	Lov om allmennaksjeselskaper	Allmennaksjeloven	
+352	1997-06-13	53	lov	05-MAY-98	21-MAR-06	Lov om tilsyn med erverv i dagspresse og kringkasting	Medieerskapsloven	
+353	1997-06-13	54	lov	17-MAR-99	19-SEP-14	Lov om tiltak mot sykdom hos fisk og andra akvatiske dyr	Fiskesykdomsloven	Opphevet ved lov-2003-12-19-124
+354	1997-06-19	82	lov	04-MAY-98	19-SEP-14	Lov om pass	Passloven	
+355	1997-06-27	652	forskrift	15-JAN-09	15-JAN-09	Forskrift om refusjon av utgifter for tilsybn med sikkerhet, arbeidsmiljø og ressursforvaltning i petroleumsvirksomheten		
+356	1998-01-22	93	forskrift	22-FEB-07	22-FEB-07	Forskrift om deklarering og merking av mikrobiologiske produkter med et bruksområde som medfører tilføring til det ytre miljø		
+357	1998-03-20	10	lov	17-MAR-00	19-SEP-14	Lov om forebyggende sikkerhetstjeneste	Sikkerhetsloven	
+358	1998-03-20	11	lov	20-JAN-03	20-JAN-03	Lov om etterretningstjenesten	Etterretningstjenesteloven	
+359	1998-06-26	41	lov	17-MAR-00	19-SEP-14	Lov om kontantstøtte til småbarnsforeldre	Kontantstøtteloven	
+360	1998-07-17	54	lov	17-MAR-00	19-SEP-14	Lov om gjennomføring av Konvensjonen om forbud mot bruk, lagring, produksjon og overføring av antipersonellminer og om ødeleggelse av slike miner	Lov om Konvensjonen mot antipersonellminer	
+361	1998-07-17	56	lov	06-APR-99	05-JUL-05	Lov om årsregnskap m.v.	Regnskapsloven	
+362	1998-07-17	61	lov	17-MAR-99	08-SEP-20	Lov om grunnskolen og den vidaregåande opplæringa	Opplæringslova	
+363	1998-11-30	1102	forskrift	14-JUN-05	14-JUN-05	Forskrift om utveksling av opplysninger med tilsynsmyndigheter fra land i og utenfor EØS-området	Forskrift om utveksling av opplysninger med EØS	
+364	1998-12-18	1409	forskrift	30-MAY-03	30-MAY-03	Forskrift om etablering, drift og sykdomsforebyggende tiltak ved oppdrettsanlegg	Drifts- og sykdomsforskriften	
+365	1998-12-29	1455	forskrift	10-FEB-09	10-FEB-09	Forskrift om skipsutstyr	Skipsutstyrsforskriften	
+366	1999-01-15	2	lov	25-JUN-04	25-JUN-04	Lov om revisjon og revisorer	Revisorloven	
+367	1999-01-27	149	forskrift	10-FEB-09	10-FEB-09	Forskrift om radioanlegg og radiotjeneste på passasjer- og lasteskip som omfattes av den internasjonale sjøsikkerhetskonvensjonen, SOLAS 1974	Forskrift om radioanlegg og -tjeneste på skip	
+368	1999-03-26	15	lov	14-AUG-08	14-AUG-08	Lov om retten til å delta i fiske og fangst	Deltakerloven	
+369	1999-03-26	17	lov	06-DEC-01	06-DEC-01	Lov om husleieavtaler	Husleieloven	
+370	1999-04-27	537	forskrift	01-JUL-09	01-JUL-09	Forskrift om vakthold på passasjer- og lasteskip		
+371	1999-05-21	30	lov	17-MAR-00	19-SEP-14	Lov om styrking av menneskerettighetenes stilling i norsk rett	Menneskerettsloven	
+372	1999-06-11	664	forskrift	04-FEB-11	04-FEB-11	Forskrift om etablering, drift og bruk av jordstasjon for satelitt		
+373	1999-06-25	46	lov	17-OCT-00	17-OCT-00	Lov om finansavtaler og finansoppdrag	Finansavtaleloven	
+374	1999-06-25	712	forskrift	14-JUN-05	14-JUN-05	Forskrift om revisjon og revisorer		
+375	1999-07-02	62	lov	05-FEB-08	05-FEB-08	Lov om etablering og gjennomføring av psykisk helsevern	Psykisk helsevernloven	
+376	1999-07-02	63	lov	02-JAN-02	16-SEP-14	Lov om pasientrettigheter	Pasientrettighetsloven	
+377	1999-07-02	64	lov	02-JAN-02	02-JAN-02	Lov om helsepersonell m.v.	Helsepersonelloven	
+378	1999-09-06	1047	forskrift	02-JUL-09	02-JUL-09	Forskrift om opptelling og registrering av ombordværende på passasjerskip	Forskrift om passasjerregistrering på skip	
+379	1999-10-15	1090	forskrift	02-JAN-02	02-JAN-02	Forskrift om politiattest i henhold til barnevernloven		
+380	1999-11-05	1167	forskrift	02-JUL-09	02-JUL-09	Forskrift of risikoanalyse for roro passasjerskip i innenriks fart	Forskrift om risikoanalyse, roro passasjerskip	
+381	1999-11-30	1195	forskrift	02-JAN-02	02-JAN-02	Forskrift om krav til organisasjon som formidler barn fra fremmed stat med sikte på adopsjon		
+382	1999-12-17	95	lov	01-OCT-01	01-OCT-01	Lov om betalingssystemer m.v.	Betalingssystemloven	
+383	2000-03-28	305	forskrift	02-JUL-09	02-JUL-09	Forskrift om besiktelse, bygging og utrustning av passasjerskip i innenriks fart	Forskrift om innenriks passasjerskip	
+384	2000-04-14	31	lov	04-JAN-01	29-JUL-02	Lov om behandling av personopplysninger	personopplysningsloven	
+385	2000-04-14	328	forskrift	02-JAN-02	02-JAN-02	Forskrift om fastlegeordning i kommunene		
+386	2000-05-12	36	lov	05-DEC-00	05-DEC-00	Lov om strålevern og bruk av stråling	Strålevernloven	
+387	2000-06-23	56	lov	11-APR-06	11-APR-06	Lov om helsemessig og sosial beredskap		
+388	2000-11-24	82	lov	09-NOV-06	09-NOV-06	Lov om vassdrag og grunnvann	Vannressursloven	
+389	2000-11-28	1194	forskrift	06-FEB-09	06-FEB-09	Forskrift om miljødeklarasjon i forbindelse med miljødifferensiering for skip og flyttbare innretninger		
+390	2000-12-01	1208	forskrift	06-OCT-04	06-OCT-04	Forskrift om prioritering av helsetjenester, rett til nødvendig helsehjelp fra  spesialisthelsetjenesten, rett til behandling i utlandet og om dispensasjons- og klagenemnd	Forskrift om prioritering av helsetjenester mv.	
+391	2000-12-15	1265	forskrift	26-MAY-04	26-MAY-04	Forskrift om behandling av personopplysninger	Personopplysningsforskriften	
+392	2000-12-20	1397	forskrift	30-MAY-03	30-MAY-03	Forskrift om tildeling, etablering, drift- og sykdomsforebyggende tiltak ved settefiskanlegg for laksefisk og annen ferskvannsfisk	Settefiskeforskriften	
+393	2000-12-21	118	lov	30-MAY-03	30-MAY-03	Lov om havbeite		
+394	2000-12-21	1385	forskrift	06-OCT-04	06-OCT-04	Forskrift om pasientjournal		
+395	2000-12-22	1574	forskrift	02-JUL-09	02-JUL-09	Forskrift om tilleggskrav for manøvrering, styringsdyktighet, utrustning og operasjon av hurtiggående passasjerfartøy under 24 meter i innenriks fart	Forskrift om manøvrering mv av innenriksfartøy	
+396	2001-01-05	1	lov	08-FEB-05	08-FEB-05	Lov om vaktvirksomhet	Vaktvirksomhetsloven	
+397	2001-02-02	144	forskrift	04-AUG-04	04-AUG-04	Forskrift om kommunale og fylkeskommunale garantier		
+398	2001-02-16	158	forskrift	30-MAY-03	30-MAY-03	Forskrift om kontroll med eiermessige endringer i selskap mv. som innehar tillatelse til oppdrett av matfisk av laks og ørret i sjø		
+399	2001-03-09	439	forskrift	06-JUL-09	06-JUL-09	Forskrift of skipsmedisin		
+400	2001-03-19	268	forskrift	10-NOV-11	05-DEC-13	Forskrift om engangsavgift på motorvogner		
+401	2001-03-20	373	forskrift	05-FEB-09	05-FEB-09	Forskrift om kontroll med roroferger, hurtiggående passasjerfartøyer uansett flagg i rutetrafikk	Forskrift om vertsstatskontroll	
+402	2001-04-02	364	forskrift	14-JUN-05	14-JUN-05	Forskrift om kontrollkomité for børser		
+403	2001-04-20	13	lov	26-MAR-02	26-MAR-02	Lov om erstatning fra staten for personskade voldt ved straffbar handling m.m.	Voldsoffererstatningsloven	
+404	2001-05-18	21	lov	06-JAN-16	08-SEP-20	Lov om gjennomføring av straff mv.	Straffegjennomføringsloven	
+405	2001-05-18	24	lov	30-OCT-01	06-JAN-16	Lov om helseregistre og behandling av helseopplysninger	Helseregisterloven	Loven er opphevet
+406	2001-06-15	59	lov	11-JUN-20	11-JUN-20	Lov om stiftelser	Stiftelsesloven	
+407	2001-06-15	70	lov	16-FEB-04	16-FEB-04	Lov om fastsetjing og endring av kommune- og fylkesgrenser	Inndelingslova	
+408	2001-06-15	75	lov	24-JUN-04	24-JUN-04	Lov om veterinærer og annet dyrehelsepersonell	Veterinærloven	
+409	2001-06-15	79	lov	11-SEP-02	15-OCT-03	Lov om miljøvern på Svalbard	Svalbardmiljøloven	
+410	2001-06-15	93	lov	16-JAN-14	04-SEP-15	Lov om helseforetak m.m.	Helseforetaksloven	
+411	2001-09-10	1102	forskrift	30-APR-02	30-APR-02	Forskrift om forbud mot bruk av CCA-impregnert trevirke		
+412	2001-10-04	1179	forskrift	16-AUG-02	15-JAN-09	Forskrift om tilbakelevering av stjålne og ulovlig utførte kulturgjenstander		
+413	2001-10-08	1180	forskrift	30-APR-02	30-APR-02	Forskrift om nonylfenol og oktylfenol og deres etoksilater		
+414	2001-10-19	1309	forskrift	06-JUL-09	06-JUL-09	Forskrift om helseundersøkelse av arbeidstakere på skip	Forskrift om helseundersøkelse på skip	
+415	2001-12-04	1372	forskrift	06-JUL-09	06-JUL-09	Forskrift om vannforsyning og drikkevann	Drikkevannsforskriften	
+416	2001-12-04	1450	forskrift	18-NOV-13	18-NOV-13	Forskrift om maritime elektriske anlegg		
+417	2001-12-14	1420	forskrift	16-AUG-02	16-AUG-02	Forskrift om forbud mot utførsel av kulturminner		
+418	2001-12-21	1477	forskrift	03-OCT-03	03-OCT-03	Forskrift om innsamling og behandling av helseopplysninger i Kreftregisteret	Kreftregisterforskriften	
+419	2002-02-21	254	forskrift	29-JUL-02	29-JUL-02	Forskrift om regulering av fisket med fartøyer som fører grønlandsk flagg i Norges økonomiske sone i 2002		
+420	2002-02-22	183	forskrift	06-JAN-16	06-JAN-16	Forskrift om straffegjennomføring		
+421	2002-04-25	422	forskrift	01-JUL-09	01-JUL-09	Forskrift om sveising, sveiseutstyr, varmt arbeid og oppbevaring av gassflasker på skip	Forskrift om sveising, gassflasker m.m. på skip	
+422	2002-04-25	423	forskrift	06-JUL-09	06-JUL-09	Forskrift om arbeid og utplassering av ungdom på norske skip	Forskrift om arbeid av ungdom på norske skip	
+423	2002-04-25	424	forskrift	06-JUL-09	06-JUL-09	Forskrift om tvistebehandling på norske skip		
+424	2002-04-26	12	lov	10-FEB-09	10-FEB-09	Lov om notarius publicus		
+425	2002-06-14	20	lov	14-SEP-05	14-SEP-05	Lov om vern mot brann, eksplosjon og ulykker med farlig stoff og om brannvesenets redningsoppgaver	Brann- og eksplosjonsvernloven	
+426	2002-06-17	644	forskrift	06-JUL-09	06-JUL-09	Forskrift for lasteskip hvor forbrenningsmotorer drives med naturgass	Forskrift for lasteskip med naturgassmotorer	
+427	2002-06-21	34	lov	10-JAN-18	08-SEP-20	Lov om forbrukerkjøp	Forbrukerkjøpsloven	
+428	2002-06-21	45	lov	14-JAN-16	14-JAN-16	Lov om yrkestransport med motorvogn og fartøy	Yrkestransportlova	
+429	2002-06-24	724	forskrift	13-JAN-16	13-JAN-16	Forskrift om miljøgifter, avfall og gebyrer for avløp og avfall på Svalbard.	Forskrift om miljøgifter på Svalbard	
+430	2002-06-27	731	forskrift	13-JAN-16	13-JAN-16	Forskrift om leiropphold på Svalbard	Forskrift om leiropphold på Svalbard	
+431	2002-06-27	754	forskrift	05-FEB-09	05-FEB-09	Forskrift om skips navn, kjennesignal og hjemsted mv.		
+432	2002-06-28	57	lov	16-FEB-04	08-SEP-20	Lov om valg til Stortinget, fylkesting og kommunestyrer	Valgloven	
+433	2002-06-28	650	forskrift	14-JAN-16	14-JAN-16	Forskrift om konsekvensutredninger og avgrensing av planområdene på Svalbard	Forskrift om planområdene på Svalbard mv.	
+434	2002-06-28	651	forskrift	13-JAN-16	13-JAN-16	Forskrift om båndtvang for hund på Svalbard	Forskrift om båndtvang for hund på Svalbard	
+435	2002-07-08	799	forskrift	04-SEP-09	04-SEP-09	Forskrift om markedsføring av utenlandske verdipapirfond		
+436	2002-11-12	1314	forskrift	01-JUL-09	01-JUL-09	Forskrift om vilkår for periodisk vedlikehold av fri-flyt nødradiopeilesender	Forskrift om vedlikehold av nødradiopeilesender	
+437	2002-12-06	72	lov	08-SEP-20	08-SEP-20	Lov om folkehøyskoler	Folkehøyskoleloven	
+438	2002-12-13	74	lov	03-SEP-09	03-SEP-09	Lov om e-pengeforetak	E-pengeforetaksloven	
+439	2002-12-20	1818	forskrift	30-MAY-03	30-MAY-03	Forskrift of ozonreduserende stoffer		
+440	2002-12-20	1823	forskrift	08-OCT-03	08-OCT-03	Forskrift om begrensninger i bruk m.m. av enkelte farlige kjemikalier		
+441	2003-02-05	135	forskrift	14-JAN-16	14-JAN-16	Forskrift om fordeling av jernbaneinfrastrukturkapasitet og innkreving av avgifter for bruk av det nasjonale jernbanenettet (fordelingsforskriften)	Fordelingsforskriften for jernbanen	
+442	2003-02-20	254	forskrift	06-JUL-09	15-SEP-14	Forskrift om fremskyndet innføring av krav om dobbeltskrogsdesign eller tilsvarende design for oljetankskip med enkeltskrog	Forskrift om dobbeltskrogede oljetankskip	
+443	2003-02-21	12	lov	24-JUN-04	24-JUN-04	Lov om biobanker	Biobankloven	
+444	2003-03-14	15	lov	28-FEB-11	28-FEB-11	Lov om beskyttelse av design	Designloven	
+445	2003-04-04	418	forskrift	27-OCT-04	28-FEB-11	Forskrift til designloven	Designforskriften	
+446	2003-05-09	31	lov	08-MAR-05	08-MAR-05	Lov om rett til miljøinformasjon og deltakelse i offentlige beslutningsprosesser av betydning for miljøet	Miljøinformasjonsloven	
+447	2003-05-09	687	forskrift	06-JUL-09	06-JUL-09	Forskrift om kvalifikasjonskrav og sertifikatrettigheter for personell på norske skip, fiske- og fangstfartøy og flyttbare innretninger	Forskrift om kvalifikasjonskrav på norske skip	
+448	2003-05-21	630	forskrift	14-JUN-05	23-FEB-18	Forskrift om bruk av informasjons- og kommunikasjonsteknologi (IKT)	Forskrift om IKT-systemer i banker mv	
+449	2003-05-23	35	lov	24-SEP-03	24-SEP-03	Lov om visse sider av elektronisk handel og andre informasjonssamfunnstjenester	ehandelloven	
+450	2003-06-06	39	lov	13-AUG-08	13-AUG-08	Lov om burettslag	Burettslagslova	
+451	2003-06-20	41	lov	14-JUN-05	14-JUN-05	Lov om tiltak mot hvitvasking av utbytte fra straffbare handlinger mv.	Hvitvaskingsloven	
+452	2003-06-20	56	lov	19-JAN-16	19-JAN-16	Lov om fagskoleutdanning	Fagskoleloven - fgskol.	
+453	2003-06-27	57	lov	25-MAY-16	25-MAY-16	Lov om Norges territorialfarvann og tilstøtende sone	Territorialfarvannsloven	
+454	2003-06-27	64	lov	02-DEC-04	02-DEC-04	Lov om alternativ behandling av sykdom mv.		
+455	2003-07-01	969	forskrift	03-FEB-09	03-FEB-09	Forskrift om kontroll med fremmede skip og flyttbare innretninger i norske havner mv.	Havnestatskontrollforskriften	
+456	2003-07-04	80	lov	10-APR-06	10-APR-06	Lov om introduksjonsordning og norskopplæring for nyankomne innvandrere	Introduksjonsloven	
+457	2003-07-04	83	lov	08-SEP-20	08-SEP-20	Lov om elektronisk kommunikasjon	Ekomloven	
+458	2003-07-04	84	lov	08-SEP-20	08-SEP-20	Lov om frittståande skolar	Friskolelova	
+459	2003-08-01	990	forskrift	04-FEB-11	04-FEB-11	Forskrift om domenenavn under norske landkodetoppdomener	Domeneforskriften	
+460	2003-08-29	1114	forskrift	06-JUL-09	06-JUL-09	Forskrift om sikker lasting og lossing av bulkskip	Forskrift om lasting og lossing av bulkskip	
+461	2003-11-20	1388	forskrift	06-FEB-09	06-FEB-09	Forskrift om forbud mot organiske tinnforbindelser på skip		
+462	2003-12-05	100	lov	02-DEC-04	02-DEC-04	Lov om humanmedisinsk bruk av  bioteknologi m.m.	Bioteknologiloven	
+463	2003-12-10	1487	forskrift	14-JUN-05	14-JUN-05	Forskrift om tiltak mot hvitvasking av utbytte fra straffbare handlinger mv.	Hvitvaskingsforskriften	
+464	2003-12-16	1551	forskrift	27-MAY-05	27-MAY-05	Forskrift om gebyr for tjenester fra Brønnøysundregistrene		
+465	2003-12-18	1638	forskrift	04-SEP-09	04-SEP-09	Forskrift om forvalterregistrering i verdipapirfonds andelseierregister		
+466	2003-12-18	1639	forskrift	03-SEP-09	03-SEP-09	Forskrift om eierkontroll i finansinstitusjoner		
+467	2003-12-19	124	lov	08-JUL-08	08-JUL-08	Lov om matproduksjon og mattrygghet mv.	Matloven	
+468	2003-12-19	1595	forskrift	15-JAN-09	15-JAN-09	Midlertidig forskrift om sikkerhet og arbeidsmiljø for enkelte petroleumsanlegg på land og tilknyttede rørledningssystemer		
+469	2004-01-13	252	forskrift	10-FEB-09	10-FEB-09	Forskrift om gebyr for tjenester som utføres av Sjøfartsdirektoratet	Sjøfartsdirektoratets gebyrtariff	
+470	2004-02-16	401	forskrift	04-FEB-11	04-FEB-11	Forskrift om elektronisk kommunikasjonsnett og elektronisk kommunikasjonstjeneste	Ekomforskriftern	
+471	2004-02-16	426	forskrift	04-FEB-11	04-FEB-11	Forskrift om nummerressurser for elektroniske kommunikasjonsnett og -tjenester	Nummerforskriften	
+472	2004-02-26	511	forskrift	18-APR-07	18-APR-07	Forskrift om overføring av biobankmateriale til utlandet	Forskrift om biobankmateriale til utlandet	
+473	2004-03-05	11	lov	24-JUN-04	24-JUN-04	Lov om gjennomføring og kontroll av EØS-avtalens konkurranseregler m.v.	EØS-konkurranseloven	
+474	2004-03-05	12	lov	08-APR-15	08-APR-15	Lov om konkurranse mellom foretak og kontroll med foretakssammenslutninger	Konkurranseloven	
+475	2004-05-14	25	lov	06-FEB-07	08-SEP-20	Lov om voldgift	Voldgiftsloven	
+476	2004-05-28	29	lov	28-JAN-05	08-FEB-05	Lov om register over opplysninger om valutaveksling og overføring av betalingsmidler inn og ut av Norge	Valutaregisterloven	
+477	2004-06-01	922	forskrift	14-JAN-16	14-JAN-16	Forskrift om begrensning i bruk av helse- og miljøfarlige kjemikalier og andre produkter	Produktforskriften	
+478	2004-06-01	930	forskrift	14-JAN-16	14-JAN-16	Forskrift om gjenvinning og behandling av avfall	Avfallsforskriften	
+479	2004-06-01	931	forskrift	06-FEB-09	06-FEB-09	Forskrift om begrensning av forurensning	Forurensningsforskriften	
+480	2004-06-22	972	forskrift	01-JUL-09	01-JUL-09	Forskrift om sikkerhet og terrorberedskap ombord på skip og flyttbare boreinnretninger		
+481	2004-07-02	64	lov	10-APR-06	10-APR-06	Midlertidig lov om prøveordning med lokaler for injeksjon av narkotika	Sprøyteromsloven	
+482	2004-10-11	1341	forskrift	02-JUL-09	02-JUL-09	Forskrift om redningsredskaper på passasjerskip		
+483	2004-11-19	73	lov	05-JUL-05	05-JUL-05	Lov om bokføring	Bokføringsloven	
+484	2004-12-01	1558	forskrift	14-DEC-07	14-DEC-07	Forskrift om bokføring	Bokføringsforskriften	
+485	2004-12-17	99	lov	20-JAN-05	20-JAN-05	Lov om kvoteplikt og handel med kvoter for utslipp av klimagasser	Klimakvoteloven	
+486	2004-12-17	1855	forskrift	02-JUL-09	02-JUL-09	Forskrift om redningsredskaper på lasteskip		
+487	2004-12-17	1856	forskrift	06-JUL-09	06-JUL-09	Forskrift om radiokommunikasjon for lasteskip		
+488	2005-01-01	8	forskrift	06-JUL-09	06-JUL-09	Forskrift om arbeidsmiljø, sikkerhet og helse for arbeidstakere på skip	Forskrift om arbeidsmiljø mv. på skip	
+489	2005-02-18	145	forskrift	06-JUL-09	06-JUL-09	Forskrift om garanti for trygderettigheter for arbeidstakere på norske skip	Forskrift om trygderettigheter på norske skip	
+490	2005-02-18	146	forskrift	06-JUL-09	06-JUL-09	Forskrift om garanti for arbeidsvederlag og hjemreise for arbeidstakere på skip registrert i Norsk internasjonalt skipsregister	Forskrift om lønnsgaranti mv. på skip i NIS	
+491	2005-02-21	168	forskrift	04-FEB-11	04-FEB-11	Forskrift til Post- og teletilsynet	Forskrift om gebyr til PT	
+492	2005-03-01	235	forskrift	06-JUL-09	06-JUL-09	Forskrift om skipsførerens og rederiets plikter i tilfelle straffbare handlinger av alvorlig art begås om bord og melding om savnede personer	Forskrift om skipsførerens og rederiets plikter	
+493	2005-03-04	200	forskrift	04-FEB-11	04-FEB-11	Forskrift om autorisasjon for installatør av elektronisk kommunikasjonsnett og radioutstyr	Autorisasjonsforskriften	
+494	2005-04-01	15	lov	18-NOV-08	08-SEP-20	Lov om universiteter og høyskoler	Universitets- og høyskoleloven	
+495	2005-05-20	28	lov	15-FEB-18	15-FEB-18	Lov om straff	Straffeloven	
+496	2005-05-27	31	lov	11-APR-06	11-APR-06	Lov om skogbruk	Skogbruksloven	
+497	2005-06-03	33	lov	10-APR-06	04-SEP-06	Lov om forbud mot diskriminering på grunn av etnisitet, religion mv.	Diskrimineringsloven	
+498	2005-06-03	34	lov	14-JAN-16	14-JAN-16	Lov om varsling, rapportering og undersøkelse av jernbaneulykker og jernbanehendelser m.m.	Jernbaneundersøkelsesloven	
+499	2005-06-03	37	lov	08-SEP-20	08-SEP-20	Lov om utdanningsstøtte	Utdanningsstøtteloven	
+500	2005-06-08	538	forskrift	02-JUL-07	02-JUL-07	Forskrift om omsetning av alkolholdig drikk m.v.		
+501	2005-06-10	40	lov	04-SEP-06	09-MAY-08	Lov om Likestillings- og diskrimineringsombudet og Likestillings- og diskrimineringsnemnda	Diskrimineringsombudsloven	
+502	2005-06-10	41	lov	11-MAY-06	11-MAY-06	Lov om forsikringsformidling		
+503	2005-06-10	51	lov	10-APR-06	10-APR-06	Lov om norsk statsborgerskap	Statsborgerloven	
+504	2005-06-17	62	lov	02-JUN-06	08-SEP-20	Lov om arbeidsmiljø, arbeidstid og stillingsvern mv.	Arbeidsmiljøloven	
+505	2005-06-17	64	lov	11-APR-06	08-SEP-20	Lov om barnehager	Barnehageloven	
+506	2005-06-17	79	lov	17-FEB-10	17-FEB-10	Lov om akvakultur	Akvakulturloven	
+507	2005-06-17	85	lov	02-SEP-05	08-SEP-20	Lov om rettsforhold og forvaltning av grunn og naturressurser i Finnmark	Finnmarksloven	
+508	2005-06-17	90	lov	06-MAY-09	06-MAY-09	Lov om mekling og rettergang i sivile tvister	Tvisteloven	
+509	2005-06-17	101	lov	02-SEP-15	02-SEP-15	Lov om eigedomsregistrering	Matrikkellova	
+510	2005-06-17	102	lov	30-APR-07	30-APR-07	Lov om visse forhold vedrørende de politiske partiene	Partiloven	
+511	2005-09-02	1009	forskrift	15-FEB-06	15-FEB-06	Forskrift om merking, transport, import og eksport av genmodifiserte organismer		
+512	2005-09-09	1218	forskrift	02-JUL-09	02-JUL-09	Forskrift om bygging og drift av passasjerskip drevet med gass	Forskrift om gassdrevet passasjerskip	
+513	2005-09-27	1094	forskrift	04-FEB-11	04-FEB-11	Forskrift om elsikkerhet i elektronisk kommunikasjonsnett		
+514	2005-12-01	1392	forskrift	14-MAR-13	14-MAR-13	Forskrift om krav til mastergrad		
+515	2005-12-09	1421	forskrift	11-MAY-06	11-MAY-06	Forskrift om forsikringsformidling		
+516	2005-12-16	1495	forskrift	04-SEP-06	04-SEP-06	Forskrift om konsekvensutredning etter genteknologiloven		
+517	2005-12-16	1524	forskrift	09-MAY-08	09-MAY-08	Forskrift om organisasjon og virksomhet for Likestillings- og diskrimineringsombudet og Likestillings- og diskrimineringsnemnda		
+518	2005-12-16	1566	forskrift	28-DEC-10	28-DEC-10	Forskrift om utsendte arbeidstakere		
+519	2005-12-21	123	lov	21-FEB-11	21-FEB-11	Lov om Statens pensjonsfond		
+520	2005-12-21	126	lov	05-FEB-08	05-FEB-08	Lov om kosmetikk og kroppspleieprodukt m.m.	Kosmetikklova	
+521	2006-01-31	102	forskrift	20-JAN-16	20-JAN-16	Forskrift om ansettelsesvilkår for stillinger som postdoktor, stipendiat, vitenskapelig assistent og spesialistkandidat	Forskrift om ansettelsesvilkår, vit. stillinger	
+522	2006-02-09	129	forskrift	14-JAN-16	14-JAN-16	Forskrift om ansettelse og opprykk i undervisnings- og forskerstillinger	Forskrift om ansettelse og opprykk	
+523	2006-03-16	321	forskrift	30-APR-07	30-APR-07	Forskrift om visse forhold vedrørende de politiske partiene	Partilovforskriften	
+524	2006-03-31	378	forskrift	14-JAN-16	14-JAN-16	Forskrift om offentlige undersøkelser av jernbaneulykker og alvorlige jernbanehendelser m.m.	Jernbaneundersøkelsesforskriften	
+525	2006-03-31	379	forskrift	14-JAN-16	14-JAN-16	Forskrift om varslings- og rapporteringsplikt i forbindelse med jernbaneulykker og jernbanehendelser	Varslings- og rapporteringsforskriften	
+526	2006-04-28	458	forskrift	18-NOV-13	18-NOV-13	Forskrift om sikkerhet ved arbeid i og drift av elektriske anlegg		
+527	2006-05-19	16	lov	23-FEB-10	23-FEB-10	Lov om rett til innsyn i dokument i offentleg verksemd	Offentleglova	
+528	2006-06-29	785	forskrift	06-JUL-09	06-JUL-09	Forskrift om frakt av last på lasteskip og lektere	Forskrift om last på lasteskip og lektere	
+529	2006-06-29	786	forskrift	02-JUL-09	02-JUL-09	Forskrift om frakt av farlig last på lasteskip og lektere	Forskrift om farlig last på lasteskip	
+530	2006-06-30	56	lov	08-MAR-07	08-MAR-07	Lov om behandling av etikk og rederlighet i forskning	Forskningsetikkloven	
+531	2006-06-30	859	forskrift	14-JAN-16	14-JAN-16	Forskrift om skikkethetsvurdering i høyere utdanning	Forskrift om skikkethetsvurdering	
+532	2006-10-16	1160	forskrift	14-JAN-16	14-JAN-16	Forskrift om fråhaldsplikt for personell som utfører oppgåver som gjeld tryggleiken ved jernbane, medrekna sporveg, tunnelbane og forstadsbane mv.	Fråhaldspliktforskrifta	
+533	2006-12-22	99	lov	27-MAR-08	27-MAR-08	Lov om endringar i pasientrettslova og biobanklova (helsehjelp og forsking - personar utan samtykkekompetanse)		
+534	2006-12-22	1532	forskrift	13-JAN-16	13-JAN-16	Forskrift om miljøavgift for tilreisende til Svalbard	Forskrift om miljøavgift for Svalbardturister	
+535	2007-01-22	80	forskrift	16-MAY-12	16-MAY-12	Forskrift om forsøksordning med rettsmekling for jordskifterettene		
+536	2007-01-31	173	forskrift	14-DEC-12	14-DEC-12	Forskrift om opptak til høyere utdanning		
+537	2007-02-16	9	lov	02-FEB-09	02-FEB-09	Lov om skipssikkerhet	Skipssikkerhetslov	
+538	2007-04-30	599	forskrift	13-JAN-16	13-JAN-16	Forskrift om tilskudd fra Svalbards miljøvernfond	Forskrift om bruk av Svalbards miljøvernfond	
+539	2007-06-15	40	lov	14-AUG-08	14-AUG-08	Lov om reindrift	Reindriftsloven	
+540	2007-06-26	705	forskrift	06-JUL-09	06-JUL-09	Forskrift om arbeids- og hviletid på norske passasjer- og lasteskip mv.	Forskrift om arbeidsordninger på skip	
+541	2007-06-29	74	lov	04-SEP-09	04-SEP-09	Lov om regulerte markeder	Børsloven	
+542	2007-06-29	75	lov	13-FEB-08	13-FEB-08	Lov om verdipapirhandel	Verdipapirhandelloven	
+543	2007-06-29	81	lov	05-MAR-12	05-MAR-12	Lov om samvirkeforetak	Samvirkelova	
+544	2007-06-29	875	forskrift	04-SEP-09	04-SEP-09	Forskrift om regulerte markeder	Børsforskriften	
+545	2007-06-29	876	forskrift	04-SEP-09	04-SEP-09	Forskrift til verdipapirhandelloven	Verdipapirforskriften	
+546	2007-07-02	850	forskrift	03-FEB-09	03-FEB-09	Forskrift om undersøkelse, stansing og bording av utenlandsk skip ved mistanke om miljøovertredelse	Forskrift om kontroll av miljømistanke	
+547	2007-07-02	852	forskrift	10-FEB-09	10-FEB-09	Forskrift om fastsettelse og gjennomføring av overtredelsesgebyr etter lov 16. februar 2007 nr. 9 om skipssikkerhet (skipssikkerhetsloven) § 55 og § 56	Forskrift om overtredelsesgebyr	
+548	2007-10-26	1181	forskrift	04-JUN-13	04-JUN-13	Forskrift om kontinentalsokkelflyging - ervervsmessig luftfart til og fra helikopterdekk på innretninger og fartøy til havs		
+549	2007-11-23	1319	forskrift	10-FEB-09	10-FEB-09	Forskrift om gebyr for utstedelse av sertifikater og påtegninger til maritimt personell	Forskrift om gebyr for sertifikatutstedelse	
+550	2007-11-30	1336	forskrift	20-JUL-10	20-JUL-10	Forskrift om unntak fra aksjeloven § 8-10 og allmennaksjeloven  § 8-10		
+551	2007-12-14	1417	forskrift	30-SEP-10	30-SEP-10	Forskrift til patentloven	Patentforskriften	
+552	2007-12-21	119	lov	29-SEP-11	29-SEP-11	Lov om toll og vareførsel	Tolloven	
+553	2008-05-15	35	lov	07-JUL-11	08-SEP-20	Lov om utlendingers adgang til riket og deres opphold her	Utlendingsloven	
+554	2008-06-06	37	lov	24-SEP-09	24-SEP-09	Lov om forvaltning av viltlevande marine ressursar	Havressurslova	
+555	2008-06-20	42	lov	17-APR-09	17-APR-09	Lov om forbud mot diskriminering på grunn av nedsatt funksjonsevne	Diskriminerings- og tilgjengelighetsloven	
+556	2008-06-20	44	lov	06-JUL-09	06-JUL-09	Lov om medisinsk og helsefaglig forskning	Helseforskningsloven	
+557	2008-06-27	71	lov	02-JUN-10	02-JUN-10	Lov om planlegging og byggesaksbehandling (plandelen)	Plan- og bygningsloven 2008 (plandelen)	
+558	2008-09-22	1080	forskrift	23-FEB-18	23-FEB-18	Forskrift om risikostyring og internkontroll	Forskrift om risikostyring og internkontroll	
+559	2008-10-12	1102	forskrift	03-SEP-09	03-SEP-09	Forskrift om offentlig administrasjon av filial av bank med hovedsete i fremmed stat	Forskrift om off. administrasjon av bankfilial	
+560	2008-12-17	1502	forskrift	05-DEC-13	05-DEC-13	Forskrift til lov om toll og vareførsel	Tollforskriften	
+561	2009-01-09	2	lov	20-AUG-09	20-AUG-09	Lov om kontroll med markedsføring og avtalevilkår mv.	Markedsføringsloven	
+562	2009-02-13	205	forskrift	22-DEC-14	22-DEC-14	Forskrift om tuberkulosekontroll		
+563	2009-03-06	11	lov	23-FEB-18	23-FEB-18	Lov om tiltak mot hvitvasking og terrorfinansiering mv.	Hvitvaskingsloven	
+564	2009-03-13	302	forskrift	03-SEP-09	23-FEB-18	Forskrift om tiltak mot hvitvasking og terrorfinansiering mv.	Hvitvaskingsforskriften	
+565	2009-03-13	303	forskrift	03-SEP-09	03-SEP-09	Forskrift om kontrollutvalget for tiltak mot hvitvasking		
+566	2009-05-08	495	forskrift	13-JAN-16	13-JAN-16	Forskrift om Statens finansfond	Forskrift om Statens finansfond	
+567	2009-06-02	580	forskrift	04-FEB-11	04-FEB-11	Forskrift om generelle tillatelser til bruk av frekvenser		
+568	2009-06-19	58	lov	25-JUN-10	25-JUN-10	Lov om merverdiavgift	Merverdiavgiftsloven	
+569	2009-06-19	97	lov	02-JAN-14	02-JAN-14	Lov om dyrevelferd	Dyrevelferdsloven	
+570	2009-06-19	100	lov	18-NOV-09	18-NOV-09	Lov om forvaltning av naturens mangfold	Naturmangfoldloven	
+571	2009-06-19	101	lov	28-MAY-10	28-MAY-10	Lov om erverv og utvinning av mineralressurser	Mineralloven	
+572	2009-06-26	856	forskrift	11-FEB-10	11-FEB-10	Forskrift om rapportering og avstemming av pengestrømmer fra petroleumsvirksomheten		
+573	2009-08-03	1028	forskrift	18-APR-18	18-APR-18	Forskrift om sikkerhet, helse og arbeidsmiljø på bygge- eller anleggsplasser	Byggherreforskriften	
+574	2009-09-07	1168	forskrift	01-SEP-10	01-SEP-10	Forskrift til tilskudd til audiovisuelle produkter		
+575	2009-10-15	1286	forskrift	07-JUL-11	07-JUL-11	Forskrift om utlendingers adgang til riket og deres opphold her	Utlendingsforskriften	
+576	2009-12-23	1842	forskrift	28-MAY-10	18-FEB-11	Forskrift til mineralloven		
+577	2010-03-01	295	forskrift	20-JAN-16	20-JAN-16	Forskrift om rammeplan for grunnskolelærerutdanningene for 1.-7. trinn og 5.-10. trinn	Forskrift om plan for grunnskolelærerutdanning	
+578	2010-03-26	8	lov	30-SEP-10	30-SEP-10	Lov om beskyttelse av varemerker	Varemerkeloven	
+579	2010-05-28	16	lov	08-SEP-20	08-SEP-20	Lov om behandling av opplysninger i politiet og påtalemyndigheten	Politiregisterloven	
+580	2010-06-25	937	forskrift	30-SEP-10	28-FEB-11	Forskrift til varemerkeloven	Varemerkeforskriften	
+581	2010-09-03	56	lov	02-SEP-15	02-SEP-15	Lov om infrastruktur for geografisk informasjon	Geodataloven	
+582	2010-12-20	1784	forskrift	21-FEB-11	21-FEB-11	Forskrift om kart over underjords- og dagbruddsanlegg	Forskrift om gruvekart	
+583	2011-06-24	29	lov	29-SEP-11	29-SEP-11	Lov om folkehelsearbeid	Folkehelseloven	
+584	2011-06-24	30	lov	16-JAN-14	16-JAN-14	Lov om kommunale helse- og omsorgstjenester m.m. (helse- og omsorgstjenesteloven)		
+585	2011-06-24	39	lov	07-FEB-14	07-FEB-14	Lov om elsertifikater	Elsertifikatloven	
+586	2011-11-25	44	lov	30-JUN-15	30-JUN-15	Lov om verdipapirfond	Verdipapirfondloven	
+587	2011-12-06	1355	forskrift	28-JUN-18	28-JUN-18	Forskrift om organisering, ledelse og medvirkning	Forskrift om organisering, ledelse og medvirkning	
+588	2011-12-06	1356	forskrift	28-JUN-18	28-JUN-18	Forskrift om utforming og innretning av arbeidsplasser og arbeidslokaler	Arbeidsplassforskriften	
+589	2011-12-06	1357	forskrift	28-JUN-18	28-JUN-18	Forskrift om utførelse av arbeid, bruk av arbeidsutstyr og tilhørende tekniske krav	Forskrift om utførelse av arbeid	
+590	2011-12-06	1359	forskrift	28-JUN-18	28-JUN-18	Forskrift om konstruksjon, utforming og fremstilling av arbeidsutstyr og kjemikalier	Produsentforskriften	
+591	2011-12-06	1360	forskrift	28-JUN-18	28-JUN-18	Forskrift om administrative ordninger på arbeidsmiljølovens område	Forskrift om administrative ordninger	
+592	2011-12-16	65	lov	13-DEC-17	13-DEC-17	Lov om næringsberedskap	Næringsberedskapsloven	
+593	2011-12-16	1398	forskrift	07-FEB-14	07-FEB-14	Forskrift om elsertifikater		
+594	2012-01-20	4	lov	08-SEP-20	08-SEP-20	Lov om pågriping og overlevering til og frå Noreg for straffbare forhold på grunnlag av ein arrestordre	Arrestordreloven	
+595	2012-03-01	295	forskrift	18-JAN-16	18-JAN-16	Forskrift om rammeplan for grunnskolelærerutdanningene for 1.-7. trinn og 5.-10. trinn	Forskrift om plan for grunnskolelærerutdanning	
+596	2012-04-27	0	lov	17-AUG-12	17-AUG-12	Lov om eksportkreditt	Eksportkredittloven	Prop. 102 L (2011-2012)
+597	2013-01-25	58	forskrift	10-JUL-13	10-JUL-13	Forskrift om gebyrtariff for Norges utenriksstasjoner	Forskrift om gebyrtariff for utenriksstasjoner	
+598	2013-06-21	58	lov	28-NOV-13	28-NOV-13	Lov om forbud mot diskriminering på grunn av seksuell orientering, kjønnsidentitet og kjønnsuttrykk	Diskrimineringsloven om seksuell orientering	
+599	2013-06-21	59	lov	28-NOV-13	28-NOV-13	Lov om likestilling mellom kjønnene	Likestillingsloven	
+600	2013-06-21	60	lov	28-NOV-13	28-NOV-13	Lov om forbud mot diskriminering på grunn av etnisitet, religion og livssyn	Diskrimineringsloven om etnisitet	
+601	2013-06-21	61	lov	28-NOV-13	28-NOV-13	Lov om forbud mot diskriminering på grunn av nedsatt funksjonsevne	Diskriminerings- og tilgjengelighetsloven	
+602	2013-06-21	100	lov	18-DEC-19	18-DEC-19	Lov om fastsetjing og endring av eigedoms- og rettshøve på fast eigedom m.m. (jordskiftelova)	Jordskiftelova	
+603	2013-06-21	102	lov	13-DEC-13	13-DEC-13	Lov om stillingsvern mv. for arbeidstakere på skip	Skipsarbeidsloven	
+604	2013-06-21	732	forskrift	13-JAN-16	13-JAN-16	Forskrift om universell utforming av informasjons- og kommunikasjonsteknologiske (IKT)-løsninger	Forskrift om universell utforming av IKT-løsninger	
+605	2014-04-04	377	forskrift	13-JAN-16	13-JAN-16	Forskrift om større naturvernområder og fuglereservater på Svalbard videreført fra 1973	Forskrift om større naturvernområder på Svalbard	
+606	2014-06-20	27	lov	13-DEC-17	03-MAR-20	Lov om opplysningsplikt og angrerett ved fjernsalg og salg utenom faste forretningslokaler	Angrerettloven	
+607	2014-06-20	49	lov	03-MAR-20	03-MAR-20	Lov om konfliktrådsbehandling	Konfliktrådsloven	
+608	2014-06-20	780	forskrift	22-JUL-14	22-JUL-14	Forskrift om gebyr ved Norges utentiksstasjoner		
+609	2014-08-15	59	lov	13-DEC-17	08-SEP-20	Lov om erstatning for naturskader	Naturskadeerstatningsloven	
+610	2015-01-30	72	forskrift	13-JAN-16	13-JAN-16	Forskrift om adopsjon av barn fra utlandet	Forskrift om adopsjon av barn fra utlandet	
+611	2015-02-13	9	lov	15-FEB-18	09-MAR-20	Lov om utenrikstjenesten	Utenrikstjenesteloven	
+612	2015-04-10	17	lov	22-FEB-18	09-MAR-20	Lov om finansforetak og finanskonsern	Finansforetaksloven	
+613	2015-05-22	33	lov	28-JAN-16	09-MAR-20	Lov om Norges nasjonale institusjon for menneskerettigheter	NIM-loven	
+614	2015-06-19	58	lov	08-SEP-20	08-SEP-20	Lov om krav til kassasystem	Kassasystemlova	
+615	2015-06-22	747	forskrift	08-JAN-16	08-JAN-16	Forskrift om anvendelse av helselover og -forskrifter for Svalbard og Jan Mayen	Forskrift om helselovgivning for Svalbard og Jan Mayen	
+616	2015-12-18	1616	forskrift	18-APR-18	18-APR-18	Forskrift om krav til kassasystem	Kassasystemforskrifta	
+617	2016-06-17	29	lov	06-DEC-17	09-MAR-20	Lov om godkjenning av klageorganer for forbrukersaker	Lov om godkjenning av klageorganer for forbrukersaker	
+618	2016-07-07	904	forskrift	18-APR-18	18-APR-18	Forskrift om dokumentasjon, saksbehandling og erstatning etter naturskader	Naturskadeerstatningsforskriften	
+619	2016-11-25	1367	forskrift	18-APR-18	18-APR-18	Forskrift om beskyttelse av tradisjonell kunnskap knyttet til genetisk materiale	Forskrift om beskyttelse av kunnskap om genetisk materiale	
+620	2017-06-16	48	lov	09-MAR-20	09-MAR-20	Lov om adopsjon	Adopsjonsloven	
+621	2017-06-16	50	lov	10-JAN-18	09-MAR-20	Lov om Likestillings- og diskrimineringsombudet og Diskrimineringsnemnda	Diskrimineringsombudsloven	
+622	2017-06-16	51	lov	10-JAN-18	09-MAR-20	Lov om likestilling og forbud mot diskriminering	Likestillings- og diskrimineringsloven	
+623	2017-06-16	60	lov	09-MAR-20	09-MAR-20	Lov om klimamål	Klimaloven	
+624	2017-06-16	69	lov	09-MAR-20	09-MAR-20	Lov om godkjenning av yrkeskvalifikasjoner	Yrkeskvalifikasjonsloven	
+625	2018-06-08	28	lov	09-MAR-20	09-MAR-20	Lov om høyere yrkesfaglig utdanning	Fagskoleloven	
+626	2018-06-15	32	lov	18-DEC-19	09-MAR-20	Lov om pakkereiser og reisegaranti mv.	Pakkereiseloven	
