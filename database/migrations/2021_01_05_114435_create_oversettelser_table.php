@@ -16,7 +16,7 @@ class CreateOversettelserTable extends Migration
         Schema::create('oversettelser', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-
+            $table->integer('lov_id')->unsigned();
             $table->date('dato');
             $table->string('sprak');
             $table->string('tittel');
