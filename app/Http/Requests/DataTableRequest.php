@@ -48,7 +48,7 @@ class DataTableRequest extends SearchRequest
 
         foreach ($this->get('order', []) as $order) {
             $idx = $order['column'];
-            if (!isset($requestedFields[(int)$idx])) {
+            if (!isset($requestedFields[(int) $idx])) {
                 throw new \RuntimeException('Invalid order by requested: ' . $idx);
             }
             if (!in_array($order['dir'], ['asc', 'desc'])) {

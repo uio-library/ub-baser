@@ -8,192 +8,192 @@ use App\Schema\Schema as BaseSchema;
 class Schema extends BaseSchema
 {
     protected $schema = [
-        "id" => "opes",
-        "fields" => [
+        'id' => 'opes',
+        'fields' => [
             // ID
             [
-                "key" => "id",
-                "type" => "incrementing",
-                "showInRecordView" => true,
+                'key' => 'id',
+                'type' => 'incrementing',
+                'showInRecordView' => true,
             ],
             // inventary number
             [
-                "key" => "inv_no",
-                "type" => "simple",
+                'key' => 'inv_no',
+                'type' => 'simple',
             ],
             // Søk i alle felt
             [
-                "key" => "q",
-                "type" => "search_only",
+                'key' => 'q',
+                'type' => 'search_only',
 
-                "search" => [
-                    "widget" => "simple",
-                    "type" => "ts",
-                    "ts_index" => "any_field_ts",
-                    "operators" => [
+                'search' => [
+                    'widget' => 'simple',
+                    'type' => 'ts',
+                    'ts_index' => 'any_field_ts',
+                    'operators' => [
                         Operators::CONTAINS,
-                        Operators::NOT_CONTAINS
+                        Operators::NOT_CONTAINS,
                     ],
                 ],
             ],
             // Opprettet
             [
-                "key" => "created_at",
-                "type" => "simple",
-                "edit" => false,
-                "search" => false,
-                "columnClassName" => "dt-body-nowrap",
+                'key' => 'created_at',
+                'type' => 'simple',
+                'edit' => false,
+                'search' => false,
+                'columnClassName' => 'dt-body-nowrap',
             ],
             // Sist endret
             [
-                "key" => "updated_at",
-                "type" => "simple",
-                "edit" => false,
-                "search" => false,
-                "columnClassName" => "dt-body-nowrap",
+                'key' => 'updated_at',
+                'type' => 'simple',
+                'edit' => false,
+                'search' => false,
+                'columnClassName' => 'dt-body-nowrap',
             ],
         ],
-        "groups" => [
+        'groups' => [
             [
-                "key" => "background_and_physical",
-                "fields" => [
+                'key' => 'background_and_physical',
+                'fields' => [
                     // Material
                     [
-                        "key" => "material_long",
-                        "type" => "select",
+                        'key' => 'material_long',
+                        'type' => 'select',
                     ],
                     // Connections
                     [
-                        "key" => "connections",
-                        "type" => "simple",
-                        "search" => [
-                            "advanced" => true,
+                        'key' => 'connections',
+                        'type' => 'simple',
+                        'search' => [
+                            'advanced' => true,
                         ],
                     ],
                     // Size
                     [
-                        "key" => "size",
-                        "type" => "simple",
-                        "search" => [
-                            "advanced" => true,
+                        'key' => 'size',
+                        'type' => 'simple',
+                        'search' => [
+                            'advanced' => true,
                         ],
                     ],
                     // Lines
                     [
-                        "key" => "lines",
-                        "type" => "simple",
-                        "search" => [
-                            "advanced" => true,
+                        'key' => 'lines',
+                        'type' => 'simple',
+                        'search' => [
+                            'advanced' => true,
                         ],
                     ],
                     // Publication side
                     [
-                        "key" => "publ_side",
-                        "type" => "select",
+                        'key' => 'publ_side',
+                        'type' => 'select',
                     ],
                     // Palaeogrfic description
                     [
-                        "key" => "palaeographic_description",
-                        "type" => "simple",
+                        'key' => 'palaeographic_description',
+                        'type' => 'simple',
                     ],
                 ],
             ],
             [
-                "key" => "contents",
-                "fields" => [
+                'key' => 'contents',
+                'fields' => [
                     // Date
                     [
-                        "key" => "date",
-                        "type" => "simple",
+                        'key' => 'date',
+                        'type' => 'simple',
                     ],
                     // Origin
                     [
-                        "key" => "origin",
-                        "type" => "autocomplete",
+                        'key' => 'origin',
+                        'type' => 'autocomplete',
                     ],
                     // Language
                     [
-                        "key" =>  "language",
-                        "type" =>  "simple",
+                        'key' =>  'language',
+                        'type' =>  'simple',
                     ],
                     // Genre
                     [
-                        "key" =>  "genre",
-                        "type" =>  "autocomplete",
+                        'key' =>  'genre',
+                        'type' =>  'autocomplete',
                     ],
                     // Author
                     [
-                        "key" =>  "author",
-                        "type" =>  "autocomplete",
+                        'key' =>  'author',
+                        'type' =>  'autocomplete',
                     ],
                     // Title or type of text
                     [
-                        "key" =>  "title_or_type",
-                        "type" =>  "autocomplete",
+                        'key' =>  'title_or_type',
+                        'type' =>  'autocomplete',
                     ],
                     // Content
                     [
-                        "key" =>  "content",
-                        "type" =>  "simple",
+                        'key' =>  'content',
+                        'type' =>  'simple',
                     ],
                     // Subject Headings
                     [
-                        "key" =>  "subj_headings",
-                        "type" =>  "select",
-                        "defaultValue" => [],
-                        "multiple" => true,
-                        "search" => [
-                            "widget" => "autocomplete",
-                            "type" => "array",
+                        'key' =>  'subj_headings',
+                        'type' =>  'select',
+                        'defaultValue' => [],
+                        'multiple' => true,
+                        'search' => [
+                            'widget' => 'autocomplete',
+                            'type' => 'array',
                         ],
-                        "edit" => [
-                            "preload" => true,
-                            "allow_new_values" => true,
+                        'edit' => [
+                            'preload' => true,
+                            'allow_new_values' => true,
                         ],
                     ],
                     // Persons
                     [
-                        "key" =>  "persons",
-                        "type" =>  "select",
-                        "defaultValue" => [],
-                        "multiple" => true,
-                        "search" => [
-                            "widget" => "autocomplete",
-                            "type" => "array",
+                        'key' =>  'persons',
+                        'type' =>  'select',
+                        'defaultValue' => [],
+                        'multiple' => true,
+                        'search' => [
+                            'widget' => 'autocomplete',
+                            'type' => 'array',
                         ],
-                        "edit" => [
-                            "preload" => true,
-                            "allow_new_values" => true,
+                        'edit' => [
+                            'preload' => true,
+                            'allow_new_values' => true,
                         ],
                     ],
                     // Geographica
                     [
-                        "key" =>  "geographica",
-                        "type" =>  "autocomplete",
+                        'key' =>  'geographica',
+                        'type' =>  'autocomplete',
                     ],
                     // Translation
                     [
-                        "key" =>  "translation",
-                        "type" =>  "simple",
+                        'key' =>  'translation',
+                        'type' =>  'simple',
                     ],
                     //Provenance
                     [
-                        "key" => "provenance",
-                        "type" => "autocomplete",
+                        'key' => 'provenance',
+                        'type' => 'autocomplete',
                     ],
                     //Acquisition
                     [
-                        "key" => "acquisition",
-                        "type" => "simple",
+                        'key' => 'acquisition',
+                        'type' => 'simple',
                     ],
 
                 ],
             ],
 
             [
-                "key" => "publication_info",
-                "search" => false,
-                "fields" => [
+                'key' => 'publication_info',
+                'search' => false,
+                'fields' => [
 
                     // WAIT with this:
                     //        [
@@ -247,28 +247,28 @@ class Schema extends BaseSchema
 
                     // republication
                     [
-                        "key" =>  "rep_ser_old",
-                        "type" =>  "simple",
+                        'key' =>  'rep_ser_old',
+                        'type' =>  'simple',
                     ],
                     // republication
                     [
-                        "key" =>  "rep_pg_no_old",
-                        "type" =>  "simple",
+                        'key' =>  'rep_pg_no_old',
+                        'type' =>  'simple',
                     ],
                     // Further republication
                     [
-                        "key" =>  "further_rep",
-                        "type" =>  "simple",
+                        'key' =>  'further_rep',
+                        'type' =>  'simple',
                     ],
                     // Further republication notes
                     [
-                        "key" =>  "further_replication_note",
-                        "type" =>  "simple",
+                        'key' =>  'further_replication_note',
+                        'type' =>  'simple',
                     ],
                     // Bibliography
                     [
-                        "key" =>  "bibliography",
-                        "type" =>  "simple",
+                        'key' =>  'bibliography',
+                        'type' =>  'simple',
                     ],
 
                 ],
@@ -278,23 +278,23 @@ class Schema extends BaseSchema
                 // we need to add a text line creating a link the imageserver
                 // if possible not the link but a text to click
                 // like Recto Verso. to be done later
-                "key" => "images",
-                "search" => false,
-                "fields" => [
+                'key' => 'images',
+                'search' => false,
+                'fields' => [
                     // Image Recto
                     [
                         // print "https://ub-media.uio.no/OPES/jpg/"
-                        "key" => "fullsizefront_r1",
-                        "type" => "simple",
-                        "columnClassName" => "p-1 align-middle text-center",
+                        'key' => 'fullsizefront_r1',
+                        'type' => 'simple',
+                        'columnClassName' => 'p-1 align-middle text-center',
                         // print ".jpg";
                     ],
                     // Image Verso
                     [
                         // print "https://ub-media.uio.no/OPES/jpg/"
-                        "key" => "fullsizeback_r1",
-                        "type" => "simple",
-                        "columnClassName" => "p-1 align-middle text-center",
+                        'key' => 'fullsizeback_r1',
+                        'type' => 'simple',
+                        'columnClassName' => 'p-1 align-middle text-center',
                         // print ".jpg";
                     ],
                 ],

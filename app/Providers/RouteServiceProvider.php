@@ -137,7 +137,6 @@ class RouteServiceProvider extends ServiceProvider
 
                         Route::middleware('web')
                             ->group(function () use ($base) {
-
                                 Route::get('/data', 'Controller@data');
 
                                 // Standard routes for this base

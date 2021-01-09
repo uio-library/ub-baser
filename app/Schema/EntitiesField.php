@@ -47,7 +47,7 @@ class EntitiesField extends SchemaField
     public function setPivotFields(array $values)
     {
         $values = array_map(
-            function($value) {
+            function ($value) {
                 $value['key'] = $this->key . ':' . $value['key'];
                 return self::make($value, $this->schemaPrefix, $this);
             },

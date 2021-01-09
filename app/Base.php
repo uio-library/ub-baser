@@ -246,7 +246,7 @@ class Base extends Model
     /**
      * Returns true if the base use soft deletes.
      *
-     * @return boolean
+     * @return bool
      */
     public function usesSoftDeletes()
     {

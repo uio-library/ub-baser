@@ -2,8 +2,6 @@
 
 use App\Traits\MigrationHelper;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class LitteraturkritikkAllowMultipleRoles extends Migration
 {
@@ -21,9 +19,9 @@ class LitteraturkritikkAllowMultipleRoles extends Migration
 
         \DB::update("update litteraturkritikk_record_person set person_role = concat('[\"', person_role, '\"]') ");
 
-        \DB::update("ALTER TABLE \"litteraturkritikk_record_person\" DROP CONSTRAINT IF EXISTS litteraturkritikk_record_person_record_id_person_id_person_role");
+        \DB::update('ALTER TABLE "litteraturkritikk_record_person" DROP CONSTRAINT IF EXISTS litteraturkritikk_record_person_record_id_person_id_person_role');
 
-        \DB::update("ALTER TABLE \"litteraturkritikk_record_person\" ALTER COLUMN \"person_role\" TYPE jsonb USING person_role::jsonb");
+        \DB::update('ALTER TABLE "litteraturkritikk_record_person" ALTER COLUMN "person_role" TYPE jsonb USING person_role::jsonb');
 
         foreach (['verk_spraak', 'verk_originalspraak', 'spraak'] as $field) {
             \DB::update("update litteraturkritikk_records set $field = concat('[\"', $field, '\"]') ");
@@ -46,8 +44,8 @@ class LitteraturkritikkAllowMultipleRoles extends Migration
         $this->dropMaterializedView('litteraturkritikk_records_search');
         $this->dropView('litteraturkritikk_personer_view');
 
-        \DB::update("ALTER TABLE \"litteraturkritikk_record_person\" ALTER COLUMN \"person_role\" TYPE text USING person_role::text");
-        \DB::update("update litteraturkritikk_record_person set person_role = substring(person_role from 3 for length(person_role) - 4 ) ");
+        \DB::update('ALTER TABLE "litteraturkritikk_record_person" ALTER COLUMN "person_role" TYPE text USING person_role::text');
+        \DB::update('update litteraturkritikk_record_person set person_role = substring(person_role from 3 for length(person_role) - 4 ) ');
 
         foreach (['verk_spraak', 'verk_originalspraak', 'spraak'] as $field) {
             \DB::update("ALTER TABLE \"litteraturkritikk_records\" ALTER COLUMN \"$field\" TYPE text USING \"$field\"::text");

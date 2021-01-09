@@ -2,10 +2,10 @@
 
 namespace App\Bases\Opes;
 
+use App\Base;
 use App\Http\Controllers\BaseController;
 use App\Http\Request;
 use App\Record as BaseRecord;
-use App\Base;
 use Illuminate\Http\RedirectResponse;
 
 class Controller extends BaseController

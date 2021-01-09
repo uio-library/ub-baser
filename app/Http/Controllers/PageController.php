@@ -101,8 +101,8 @@ class PageController extends Controller
      *
      * @param Request $request
      * @param Page $page
-     * @return Response
      * @throws AuthorizationException
+     * @return Response
      */
     public function unlock(Request $request, Page $page)
     {

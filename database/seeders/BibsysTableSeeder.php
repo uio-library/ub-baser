@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Bases\Bibsys\BibsysObjekt;
 use App\Bases\Bibsys\BibsysDokument;
+use App\Bases\Bibsys\BibsysObjekt;
 use App\Bases\Bibsys\BibsysView;
 use Illuminate\Database\Seeder;
 

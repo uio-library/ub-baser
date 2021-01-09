@@ -62,7 +62,7 @@ class LoginController extends Controller
         $data = $request->session()->get('saml_response');
 
         if (!$data || !$data['saml_id']) {
-            die('no saml data');
+            exit('no saml data');
         }
 
         $user = User::firstOrNew([
