@@ -37,6 +37,7 @@ before_install:
   - docker-compose --version
   - php --version
   - node --version
+  - npm cache verify
 
 install:
   - ./dev.sh up -d
