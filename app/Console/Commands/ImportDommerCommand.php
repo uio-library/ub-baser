@@ -51,6 +51,6 @@ class ImportDommerCommand extends ImportCommand
      * @var string[]
      */
     protected $views = [
-        'dommer_view'
+        'dommer_view',
     ];
 }

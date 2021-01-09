@@ -7,15 +7,15 @@ use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
 {
-    public $primaryId = "dokid";
+    public $primaryId = 'dokid';
 
     protected $schema = [
-        "id" => "bibsys",
-        "fields" => [
+        'id' => 'bibsys',
+        'fields' => [
             // Søk i alle felt
             [
-                "key" => "any_field_ts",
-                "type" => "search_only",
+                'key' => 'any_field_ts',
+                'type' => 'search_only',
 
                 // ------------------------------
                 /*
@@ -40,12 +40,12 @@ class Schema extends BaseSchema
                 // "search" => false,
                 // ------------------------------
 
-                "search" => [
-                    "widget" => "simple",
-                    "placeholder" => "Du kan søke etter objektid, dokid, knyttid, avdeling, samling, tekst i MARC-posten, osv.",
-                    "type" => "ts",
-                    "ts_index" => "any_field_ts",
-                    "operators" => [
+                'search' => [
+                    'widget' => 'simple',
+                    'placeholder' => 'Du kan søke etter objektid, dokid, knyttid, avdeling, samling, tekst i MARC-posten, osv.',
+                    'type' => 'ts',
+                    'ts_index' => 'any_field_ts',
+                    'operators' => [
                         Operators::CONTAINS,
                         Operators::NOT_CONTAINS,
                     ],
@@ -53,187 +53,187 @@ class Schema extends BaseSchema
             ],
         ],
 
-        "groups" => [
+        'groups' => [
             [
-                "key" => "objektpost",
-                "fields" => [
+                'key' => 'objektpost',
+                'fields' => [
 
                     [
-                        "key" => "objektid",
-                        "type" => "simple",
+                        'key' => 'objektid',
+                        'type' => 'simple',
 
-                        "search" => [
-                            "operators" => [
+                        'search' => [
+                            'operators' => [
                                 Operators::EQUALS,
                             ],
-                            "case" => "LOWER_CASE",
+                            'case' => 'LOWER_CASE',
                         ],
-                        "orderable" => false,
+                        'orderable' => false,
                     ],
 
                     [
-                        "key" => "title_statement",
-                        "type" => "simple",
-                        "orderable" => false,
-                        "search" => false,
+                        'key' => 'title_statement',
+                        'type' => 'simple',
+                        'orderable' => false,
+                        'search' => false,
                     ],
 
                     [
-                        "key" => "pub_date",
-                        "type" => "simple",
-                        "orderable" => false,
-                        "search" => false,
+                        'key' => 'pub_date',
+                        'type' => 'simple',
+                        'orderable' => false,
+                        'search' => false,
                     ],
 
                     [
-                        "key" => "marc_record",
-                        "type" => "simple",
-                        "orderable" => false,
-                        "search" => false,
+                        'key' => 'marc_record',
+                        'type' => 'simple',
+                        'orderable' => false,
+                        'search' => false,
                     ],
                 ],
             ],
             [
-                "key" => "dokumentpost",
-                "fields" => [
+                'key' => 'dokumentpost',
+                'fields' => [
 
                     // Dokid
                     [
-                        "key" => "dokid",
-                        "type" => "simple",
-                        "search" => [
-                            "operators" => [
+                        'key' => 'dokid',
+                        'type' => 'simple',
+                        'search' => [
+                            'operators' => [
                                 Operators::EQUALS,
                             ],
-                            "case" => "LOWER_CASE",
+                            'case' => 'LOWER_CASE',
                         ],
-                        "orderable" => false,
+                        'orderable' => false,
                     ],
 
                     // Strekkode
                     [
-                        "key" => "strekkode",
-                        "type" => "simple",
-                        "search" => [
-                            "operators" => [
+                        'key' => 'strekkode',
+                        'type' => 'simple',
+                        'search' => [
+                            'operators' => [
                                 Operators::EQUALS,
                             ],
-                            "case" => "LOWER_CASE",
+                            'case' => 'LOWER_CASE',
                         ],
-                        "orderable" => false,
+                        'orderable' => false,
                     ],
 
                     // Status
                     [
-                        "key" => "status",
-                        "type" => "simple",
-                        "orderable" => false,
-                        "search" => false,
+                        'key' => 'status',
+                        'type' => 'simple',
+                        'orderable' => false,
+                        'search' => false,
                     ],
 
                     // Avdeling
                     [
-                        "key" => "avdeling",
-                        "type" => "simple",
-                        "orderable" => false,
-                        "search" => [
-                            "operators" => [
+                        'key' => 'avdeling',
+                        'type' => 'simple',
+                        'orderable' => false,
+                        'search' => [
+                            'operators' => [
                                 Operators::EQUALS,
                                 Operators::BEGINS_WITH,
                             ],
-                            "placeholder" => "Du kan høyretrunkere med *",
-                            "index" => "lower(avdeling)",
-                            "case" => "LOWER_CASE",
+                            'placeholder' => 'Du kan høyretrunkere med *',
+                            'index' => 'lower(avdeling)',
+                            'case' => 'LOWER_CASE',
                         ],
                     ],
 
                     // Samling
                     [
-                        "key" => "samling",
-                        "type" => "simple",
-                        "orderable" => false,
-                        "search" => [
-                            "placeholder" => "Du kan høyretrunkere med *",
-                            "operators" => [
+                        'key' => 'samling',
+                        'type' => 'simple',
+                        'orderable' => false,
+                        'search' => [
+                            'placeholder' => 'Du kan høyretrunkere med *',
+                            'operators' => [
                                 Operators::EQUALS,
                                 Operators::BEGINS_WITH,
                             ],
-                            "index" => "lower(samling)",
-                            "case" => "LOWER_CASE",
+                            'index' => 'lower(samling)',
+                            'case' => 'LOWER_CASE',
                         ],
                     ],
 
                     // Hyllesignatur
                     [
-                        "key" => "hyllesignatur",
-                        "type" => "simple",
-                        "orderable" => false,
-                        "search" => [
-                            "placeholder" => "Du kan høyretrunkere med *",
-                            "operators" => [
+                        'key' => 'hyllesignatur',
+                        'type' => 'simple',
+                        'orderable' => false,
+                        'search' => [
+                            'placeholder' => 'Du kan høyretrunkere med *',
+                            'operators' => [
                                 Operators::EQUALS,
                                 Operators::BEGINS_WITH,
                             ],
-                            "index" => "lower(hyllesignatur)",
-                            "case" => "LOWER_CASE",
+                            'index' => 'lower(hyllesignatur)',
+                            'case' => 'LOWER_CASE',
                         ],
                     ],
 
                     // Deponert
                     [
-                        "key" => "deponert",
-                        "type" => "simple",
+                        'key' => 'deponert',
+                        'type' => 'simple',
 
-                        "search" => false,
-                        "orderable" => false,
+                        'search' => false,
+                        'orderable' => false,
                     ],
 
                     [
-                        "key" => "lokal_anmerkning",
-                        "type" => "simple",
+                        'key' => 'lokal_anmerkning',
+                        'type' => 'simple',
 
-                        "search" => false,
-                        "orderable" => false,
+                        'search' => false,
+                        'orderable' => false,
                     ],
 
                     [
-                        "key" => "beholdning",
-                        "type" => "simple",
+                        'key' => 'beholdning',
+                        'type' => 'simple',
 
-                        "search" => false,
-                        "orderable" => false,
+                        'search' => false,
+                        'orderable' => false,
                     ],
 
                     [
-                        "key" => "utlaanstype",
-                        "type" => "simple",
+                        'key' => 'utlaanstype',
+                        'type' => 'simple',
 
-                        "search" => false,
-                        "orderable" => false,
+                        'search' => false,
+                        'orderable' => false,
                     ],
 
                     [
-                        "key" => "lisensbetingelser",
-                        "type" => "simple",
+                        'key' => 'lisensbetingelser',
+                        'type' => 'simple',
 
-                        "search" => false,
-                        "orderable" => false,
+                        'search' => false,
+                        'orderable' => false,
                     ],
 
                     [
-                        "key" => "tilleggsplassering",
-                        "type" => "simple",
+                        'key' => 'tilleggsplassering',
+                        'type' => 'simple',
 
-                        "search" => false,
-                        "orderable" => false,
+                        'search' => false,
+                        'orderable' => false,
                     ],
 
                     [
-                        "key" => "intern_bemerkning_aapen",
-                        "type" => "simple",
+                        'key' => 'intern_bemerkning_aapen',
+                        'type' => 'simple',
 
-                        "search" => false,
-                        "orderable" => false,
+                        'search' => false,
+                        'orderable' => false,
                     ],
 
                     // [
@@ -244,39 +244,39 @@ class Schema extends BaseSchema
                     // ],
 
                     [
-                        "key" => "bestillingstype",
-                        "type" => "simple",
+                        'key' => 'bestillingstype',
+                        'type' => 'simple',
 
-                        "search" => false,
-                        "orderable" => false,
+                        'search' => false,
+                        'orderable' => false,
                     ],
 
                     [
-                        "key" => "statusdato",
-                        "type" => "simple",
+                        'key' => 'statusdato',
+                        'type' => 'simple',
 
-                        "search" => false,
-                        "orderable" => false,
+                        'search' => false,
+                        'orderable' => false,
                     ],
 
                     [
-                        "key" => "seriedokid",
-                        "type" => "simple",
-                        "search" => [
-                            "operators" => [
+                        'key' => 'seriedokid',
+                        'type' => 'simple',
+                        'search' => [
+                            'operators' => [
                                 Operators::EQUALS,
                             ],
-                            "case" => "LOWER_CASE",
+                            'case' => 'LOWER_CASE',
                         ],
-                        "orderable" => false,
+                        'orderable' => false,
                     ],
 
                     [
-                        "key" => "har_hefter",
-                        "type" => "simple",
+                        'key' => 'har_hefter',
+                        'type' => 'simple',
 
-                        "search" => false,
-                        "orderable" => false,
+                        'search' => false,
+                        'orderable' => false,
                     ],
 
                 ],

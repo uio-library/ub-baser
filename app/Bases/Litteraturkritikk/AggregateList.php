@@ -29,7 +29,8 @@ class AggregateList
         $orderBy = ($sort == 'value') ? 'value asc' : 'record_count desc, value asc';
 
         if ($this->type === 'array') {
-            return \DB::select('SELECT
+            return \DB::select(
+                'SELECT
                 value, count(t.*) as record_count
                 from litteraturkritikk_records_search t
                    , jsonb_array_elements_text(t.' . $this->sanitize($this->field) . ') value
@@ -38,7 +39,8 @@ class AggregateList
             );
         }
 
-        return \DB::select('SELECT
+        return \DB::select(
+            'SELECT
             t.' . $this->sanitize($this->field) . ' as value, count(t.*) as record_count
             from litteraturkritikk_records_search t
             group by value

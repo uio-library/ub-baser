@@ -4,8 +4,8 @@ namespace App\Schema;
 
 class Operators
 {
-    const CONTAINS = 'contains';  # Case insensitive
-    const NOT_CONTAINS = 'notcontains';  # Case insensitive
+    const CONTAINS = 'contains';  // Case insensitive
+    const NOT_CONTAINS = 'notcontains';  // Case insensitive
 
     const BEGINS_WITH = 'begins';
     const ENDS_WITH = 'ends';
@@ -19,5 +19,5 @@ class Operators
     const IS_NULL = 'isnull';
     const NOT_NULL = 'notnull';
 
-    const LIKE = 'like';  # Case sensitive
+    const LIKE = 'like';  // Case sensitive
 }

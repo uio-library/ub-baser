@@ -67,8 +67,8 @@ class NationalLibraryApi
 
     /**
      * @param string $url
-     * @return array
      * @throws HttpErrorResponse
+     * @return array
      */
     protected function getJson(string $url): array
     {

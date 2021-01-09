@@ -7,7 +7,6 @@ use App\Http\Request;
 use App\Schema\Schema;
 use App\Services\QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class SearchRequest extends Request

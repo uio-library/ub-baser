@@ -119,7 +119,7 @@ class BaseController extends Controller
             'results' => $autocompleter->complete(
                 $fields[$data['field']],
                 Arr::get($data, 'q')
-            )
+            ),
         ]);
     }
 

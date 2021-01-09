@@ -107,8 +107,7 @@ abstract class SchemaField implements JsonSerializable
         string $schemaPrefix,
         string $key,
         SchemaField $parent = null
-    ): self
-    {
+    ): self {
         if (!isset(static::$types[$fieldType])) {
             throw new \RuntimeException('Schema contains field of unrecognized type: ' . $fieldType);
         }

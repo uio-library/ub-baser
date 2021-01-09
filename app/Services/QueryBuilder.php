@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Base;
-use App\Http\Requests\DataTableRequest;
 use App\Http\Requests\SearchRequest;
 use App\Schema\Operators;
 use App\Schema\Schema;
@@ -228,6 +227,7 @@ class QueryBuilder
                     return;
             }
         }
+
         throw new \Error('Unsupported search operator');
     }
 

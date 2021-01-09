@@ -83,7 +83,7 @@ class Controller extends BaseController
         $entityModel = $field->entityType;
 
         $pivotFields = array_map(
-            function($field) {
+            function ($field) {
                 return $field->shortKey;
             },
             $field->pivotFields
@@ -137,7 +137,7 @@ class Controller extends BaseController
 
         // Delete relations that no longer exist
         foreach ($delete as $entity) {
-            $changes[] = "Fjernet: " . json_encode($entity, JSON_UNESCAPED_UNICODE);
+            $changes[] = 'Fjernet: ' . json_encode($entity, JSON_UNESCAPED_UNICODE);
             \DB::table($pivotTable)
                 ->where([
                     $relatedPivotKey => $entity[$relatedPivotKey],
@@ -148,7 +148,7 @@ class Controller extends BaseController
 
         // Insert new ones
         foreach ($insert as $entity) {
-            $changes[] = "La til: " . json_encode($entity, JSON_UNESCAPED_UNICODE);
+            $changes[] = 'La til: ' . json_encode($entity, JSON_UNESCAPED_UNICODE);
             foreach ($entity as $k => $v) {
                 if (is_array($v)) {
                     $entity[$k] = json_encode($v);

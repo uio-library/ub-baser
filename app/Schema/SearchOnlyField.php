@@ -2,8 +2,6 @@
 
 namespace App\Schema;
 
-use Illuminate\Support\Arr;
-
 class SearchOnlyField extends SchemaField
 {
     public const TYPE = 'search_only';

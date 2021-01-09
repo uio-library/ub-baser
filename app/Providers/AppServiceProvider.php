@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use App\Base;
 use App\Http\Request;
-use App\Http\Requests\SearchRequest;
 use App\Http\Requests\DataTableRequest;
+use App\Http\Requests\SearchRequest;
 use App\Schema\Schema;
 use App\Services\AutocompleteServiceInterface;
 use Illuminate\Support\ServiceProvider;

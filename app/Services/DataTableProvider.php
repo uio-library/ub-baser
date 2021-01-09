@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Base;
 use App\Http\Requests\DataTableRequest;
 use Illuminate\Database\Eloquent\Builder;
 

@@ -92,9 +92,15 @@ abstract class ImportCommand extends Command
     protected function processValue(string $column, string $value)
     {
         $value = trim($value);
-        if ($value === 'TRUE') return 1;
-        if ($value === 'FALSE') return 0;
-        if ($value === '') return null;
+        if ($value === 'TRUE') {
+            return 1;
+        }
+        if ($value === 'FALSE') {
+            return 0;
+        }
+        if ($value === '') {
+            return null;
+        }
 
         return $value;
     }
@@ -136,7 +142,7 @@ abstract class ImportCommand extends Command
             $buffer[] = $row;
             if (count($buffer) > 1000) {
                 \DB::table($table)->insert($buffer);
-                $this->comment("Imported 1000 rows");
+                $this->comment('Imported 1000 rows');
                 $buffer = [];
             }
         }

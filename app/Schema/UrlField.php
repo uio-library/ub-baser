@@ -11,7 +11,7 @@ class UrlField extends SimpleField
     public function formatValue($value, Base $base)
     {
         return implode('<br>', array_map(
-            function($url) {
+            function ($url) {
                 return "<a href=\"$url\">$url</a>";
             },
             explode(' ', $value)

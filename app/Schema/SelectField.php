@@ -41,7 +41,7 @@ class SelectField extends SchemaField
         $this->data['multiple'] = $value;
     }
 
-    public function formatBadge($value, Base $base, $badgeType='badge-primary')
+    public function formatBadge($value, Base $base, $badgeType = 'badge-primary')
     {
         $url = $base->action('index', [
             'f0' => $this->getColumn(),
@@ -49,7 +49,6 @@ class SelectField extends SchemaField
         ]);
         return "<a class=\"badge $badgeType\" href=\"$url\">$value</a>";
     }
-
 
     public function formatValue($value, Base $base)
     {
@@ -66,7 +65,7 @@ class SelectField extends SchemaField
         }
 
         $value = array_map(
-            function($val) use ($base) {
+            function ($val) use ($base) {
                 if (isset($this->data['values'])) {
                     foreach ($this->data['values'] as $option) {
                         if ($option['value'] == $val) {

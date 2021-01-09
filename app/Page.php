@@ -64,7 +64,7 @@ class Page extends Model
 
         $body = preg_replace_callback(
             '|<h([0-9])>(.*?)</h[0-9]>|',
-            function($matches) {
+            function ($matches) {
                 $level = $matches[1];
                 $title = $matches[2];
                 $id = preg_replace('/ /', '_', $title);

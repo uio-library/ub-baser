@@ -2,11 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Bases\Litteraturkritikk\Person;
-use App\Bases\Litteraturkritikk\Record;
-use Illuminate\Support\Arr;
-use Punic\Language;
-
 class ImportLitteraturkritikkCommand extends ImportCommand
 {
     /**

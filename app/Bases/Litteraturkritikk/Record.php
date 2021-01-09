@@ -5,8 +5,6 @@ namespace App\Bases\Litteraturkritikk;
 use App\Exceptions\HttpErrorResponse;
 use App\Exceptions\NationalLibraryRecordNotFound;
 use App\Services\NationalLibraryApi;
-use Http\Client\Exception\RequestException;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -84,7 +82,7 @@ class Record extends \App\Record
     public function forfattere()
     {
         return $this->persons()
-            ->whereJsonDoesntContain('person_role','kritiker');
+            ->whereJsonDoesntContain('person_role', 'kritiker');
     }
 
     /**
@@ -262,7 +260,6 @@ class Record extends \App\Record
 
     public function formatKritikk()
     {
-
         $repr = '';
 
         $kritikere = [];
@@ -426,5 +423,4 @@ class Record extends \App\Record
             'filters' => $filters,
         ];
     }
-
 }
