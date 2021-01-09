@@ -23,6 +23,7 @@ services:
   docker
 
 cache:
+  npm: false
   directories:
     - $HOME/.composer/cache
 
@@ -37,7 +38,6 @@ before_install:
   - docker-compose --version
   - php --version
   - node --version
-  - npm cache clean --force
 
 install:
   - ./dev.sh up -d
