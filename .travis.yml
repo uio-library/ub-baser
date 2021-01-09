@@ -23,7 +23,6 @@ services:
   docker
 
 cache:
-  npm: false
   directories:
     - $HOME/.composer/cache
 
