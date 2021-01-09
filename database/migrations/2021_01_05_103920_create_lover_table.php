@@ -19,15 +19,13 @@ class CreateLoverTable extends Migration
             $table->softDeletes();
             $table->date('dato');
             $table->integer('nummer')->unsigned();
-            $table->text('dok_type');
+            $table->enum('dok_type', ['lov', 'forskrift']);
             $table->text('tittel');
             $table->text('kort_tittel')->nullable();
             $table->text('note')->nullable();
 
             $table->unique(['dato', 'nummer', 'dok_type']);
         });
-
-        DB::statement("ALTER TABLE oversatte_lover ADD CONSTRAINT chk_dok_type CHECK (dok_type in ('lov','forskrift'));");
     }
 
     /**
