@@ -21,7 +21,7 @@ class DommerTableSeeder extends Seeder
             ->create()
             ->each(function ($kilde) {
                 $kilde->poster()->createMany(
-                    factory(Record::class, 8)->make()->toArray()
+                    Record::factory()->count(8)->make()->toArray()
                 );
             });
 

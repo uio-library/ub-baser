@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Bases\Dommer;
 
 use App\Bases\Dommer\DommerKilde;
 use Illuminate\Database\Eloquent\Factories\Factory;

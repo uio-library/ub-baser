@@ -1,11 +1,11 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Bases\Dommer;
 
 use App\Bases\Dommer\Record;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class DommerRecordFactory extends Factory
+class RecordFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

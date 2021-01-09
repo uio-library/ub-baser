@@ -1,18 +1,18 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Bases\Litteraturkritikk;
 
-use App\Bases\Litteraturkritikk\Person as LitteraturkritikkPerson;
+use App\Bases\Litteraturkritikk\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class LitteraturkritikkPersonFactory extends Factory
+class PersonFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = LitteraturkritikkPerson::class;
+    protected $model = Person::class;
 
     /**
      * Define the model's default state.

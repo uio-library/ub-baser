@@ -3,9 +3,10 @@
 namespace App\Bases\Litteraturkritikk;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Person extends \Eloquent
+class Person extends Model
 {
     use SoftDeletes;
     use HasFactory;
