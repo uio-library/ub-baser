@@ -16,7 +16,7 @@
 </template>
 <script>
 
-import CKEditorVue from '@ckeditor/ckeditor5-vue'
+import CKEditorVue from '@ckeditor/ckeditor5-vue2'
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold'
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough'
