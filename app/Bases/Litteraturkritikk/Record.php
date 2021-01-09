@@ -7,11 +7,13 @@ use App\Exceptions\NationalLibraryRecordNotFound;
 use App\Services\NationalLibraryApi;
 use Http\Client\Exception\RequestException;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Record extends \App\Record
 {
     use SoftDeletes;
+    use HasFactory;
 
     /**
      * The relations to eager load on every query.

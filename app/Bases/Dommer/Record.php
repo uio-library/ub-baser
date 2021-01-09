@@ -3,11 +3,13 @@
 namespace App\Bases\Dommer;
 
 use App\Record as BaseRecord;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Record extends BaseRecord
 {
     use SoftDeletes;
+    use HasFactory;
 
     /**
      * The table associated with the model.

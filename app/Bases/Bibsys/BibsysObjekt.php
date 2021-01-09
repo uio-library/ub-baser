@@ -3,9 +3,12 @@
 namespace App\Bases\Bibsys;
 
 use App\Record;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BibsysObjekt extends Record
 {
+    use HasFactory;
+
     /**
      * The primary key associated with the table.
      *

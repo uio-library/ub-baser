@@ -2,8 +2,12 @@
 
 namespace App\Bases\Dommer;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class DommerKilde extends \Eloquent
 {
+    use HasFactory;
+
     /**
      * The table associated with the model.
      *
