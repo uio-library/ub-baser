@@ -4,9 +4,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import 'core-js';
+import 'core-js'
 import Vue from './bootstrap'
-import Lang from 'laravel-vue-lang';
+import Lang from 'laravel-vue-lang'
 
 /**
  * The following block of code may be used to automatically register your

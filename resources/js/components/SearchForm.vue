@@ -36,14 +36,14 @@
 
         <div class="d-flex py-1">
             <div class="flex-grow-1">
-                <button type="submit" class="btn btn-primary"><em class="zmdi zmdi-search"></em> {{ $t('messages.search') }}</button>
-                <a :href="baseUrl" class="btn btn-secondary">{{ $t('messages.reset') }}</a>
+                <button type="submit" class="btn btn-primary"><em class="zmdi zmdi-search"></em> {{ __('messages.search') }}</button>
+                <a :href="baseUrl" class="btn btn-secondary">{{ __('messages.reset') }}</a>
             </div>
 
             <div class="flex-grow-0">
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" id="customSwitch1" name="advanced" v-model="advanced">
-                    <label class="custom-control-label" for="customSwitch1">{{ $t('messages.advanced_search') }}</label>
+                    <label class="custom-control-label" for="customSwitch1">{{ __('messages.advanced_search') }}</label>
                 </div>
             </div>
         </div>

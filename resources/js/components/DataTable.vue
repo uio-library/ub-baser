@@ -16,7 +16,7 @@
 
             <div ref="columnSelectorWrapper"  class="d-flex align-items-center">
                 <div class="flex-grow-0 pr-2">
-                    {{ $t('messages.show_columns') }}
+                    {{ __('messages.show_columns') }}
                 </div>
                 <select multiple
                         ref="columnSelector"
@@ -235,12 +235,12 @@ export default {
               label = label.charAt(0).toLowerCase() + label.substring(1)
               if (order.length && order[0][0] == currentIdx) {
                 if (order[0][1] === 'asc') {
-                  instance.content(this.$t('messages.asc_sort_help'))
+                  instance.content(this.__('messages.asc_sort_help'))
                 } else {
-                  instance.content(this.$t('messages.desc_sort_help'))
+                  instance.content(this.__('messages.desc_sort_help'))
                 }
               } else {
-               instance.content(this.$t('messages.sort_by_this_column'))
+               instance.content(this.__('messages.sort_by_this_column'))
               }
             }
           })
@@ -255,7 +255,7 @@ export default {
         buttons: [
           {
             text: '<em class="fa fa-arrows-alt"></em>',
-            titleAttr: this.$t('messages.toggle_fullscreen'),
+            titleAttr: this.__('messages.toggle_fullscreen'),
             className: 'btn btn-outline-primary dataTablesFullscreenBtn',
             action: ( e, dt, node, config ) => {
               this.toggleFullScreen(table)
@@ -264,23 +264,23 @@ export default {
         ],
 
         language: {
-          sEmptyTable: this.$t('messages.no_records_found'),
+          sEmptyTable: this.__('messages.no_records_found'),
           sInfo: '<span class="datatables-info-message">...</span>',
-          sInfoEmpty: this.$t('messages.no_records_found'),
+          sInfoEmpty: this.__('messages.no_records_found'),
           sInfoFiltered: '(filtrert fra _MAX_ totalt antall poster)',
           sInfoPostFix: '',
           sInfoThousands: ' ',
-          sLengthMenu: this.$t('messages.records_per_page_setting'),
-          sLoadingRecords: this.$t('messages.loading'),
+          sLengthMenu: this.__('messages.records_per_page_setting'),
+          sLoadingRecords: this.__('messages.loading'),
           sProcessing: '<div class="spinner"></div>',
-          sSearch: this.$t('messages.search'),
+          sSearch: this.__('messages.search'),
           sUrl: '',
-          sZeroRecords: this.$t('messages.nohits'),
+          sZeroRecords: this.__('messages.nohits'),
           oPaginate: {
-            sFirst: this.$t('messages.first'),
-            sPrevious: this.$t('messages.previous'),
-            sNext: this.$t('messages.next'),
-            sLast: this.$t('messages.last'),
+            sFirst: this.__('messages.first'),
+            sPrevious: this.__('messages.previous'),
+            sNext: this.__('messages.next'),
+            sLast: this.__('messages.last'),
           },
           oAria: {
             sSortAscending: ': aktiver for å sortere kolonnen stigende',
@@ -306,7 +306,7 @@ export default {
               msg = 'messages.records_shown_of_total'
               msgArgs.total = lastResponse.recordsTotal
             }
-            $('.datatables-info-message').text(this.$t(msg, msgArgs))
+            $('.datatables-info-message').text(this.__(msg, msgArgs))
           }
           this.updateGroupDividers(table)
         },

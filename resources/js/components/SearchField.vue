@@ -68,8 +68,8 @@
                     :value="boolean"
                     @input="$emit('boolean', $event.target.value)"
             >
-                <option value="and">{{ $t('messages.and') }}</option>
-                <option value="or">{{ $t('messages.or') }}</option>
+                <option value="and">{{ __('messages.and') }}</option>
+                <option value="or">{{ __('messages.or') }}</option>
             </select>
         </div>
     </div>
@@ -125,7 +125,7 @@ export default {
     },
     currentOperators () {
       return this.currentSchema.search.operators.map(op => ({
-        label: this.$t('messages.operators.' + op),
+        label: this.__('messages.operators.' + op),
         value: op,
       }))
     },

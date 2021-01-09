@@ -42,8 +42,8 @@
 
     <div class="form-group">
       <div class="col-sm-10">
-        <button type="submit" class="btn btn-primary" v-if="method == 'PUT'">{{ $t('messages.update') }}</button>
-        <button type="submit" class="btn btn-primary" v-else>{{ $t('messages.create') }}</button>
+        <button type="submit" class="btn btn-primary" v-if="method == 'PUT'">{{ __('messages.update') }}</button>
+        <button type="submit" class="btn btn-primary" v-else>{{ __('messages.create') }}</button>
       </div>
     </div>
 
