@@ -89,21 +89,22 @@ the `sites-available` folder:
 
 ## Running tests
 
-If you don't want to touch the current development database, you can use the `staging` environment:
+Tests will run in the `staging` environment by default,
+so that tests will run isolated from your development environment.
+To start containers for this environment:
 
 	APP_ENV=staging ./dev.sh up -d
 
-This will start up two new containers.
-
-To run tests:
+Run the WebdriverIO tests against http://localhost:8081:
 
 	npm run test
 
+To run tests against another host, you can specify `BASE_URL`.
 If you use Docker Machine:
 
 	BASE_URL="http://$(docker-machine ip):8081" npm run test
 
-To run a specific test:
+To run a single test:
 
     APP_ENV=staging npx wdio tests/wdio.conf.js --spec ./tests/selenium/specs/login.js
 
