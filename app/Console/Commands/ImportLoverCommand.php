@@ -31,8 +31,8 @@ class ImportLoverCommand extends ImportCommand
      * @var string[]
      */
     protected $tables = [
-        'oversatte_lover',
-        'oversettelser',
+        'oversatte_lover_lover',
+        'oversatte_lover_oversettelser',
     ];
 
     /**
@@ -41,7 +41,7 @@ class ImportLoverCommand extends ImportCommand
      * @var string[]
      */
     protected $sequences = [
-        'oversatte_lover.id',
-        'oversettelser.id',
+        'oversatte_lover_lover.id',
+        'oversatte_lover_oversettelser.id',
     ];
 }

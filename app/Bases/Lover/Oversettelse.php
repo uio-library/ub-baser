@@ -5,7 +5,7 @@ namespace App\Bases\Lover;
 use App\Record as BaseRecord;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Record extends BaseRecord
+class Oversettelse extends BaseRecord
 {
     use SoftDeletes;
 
@@ -14,7 +14,14 @@ class Record extends BaseRecord
      *
      * @var string
      */
-    protected $table = 'oversettelser';
+    protected $table = 'oversatte_lover_oversettelser';
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['string_representation'];
 
     /**
      * Get the act this record belongs to.
@@ -47,6 +54,21 @@ class Record extends BaseRecord
      */
     public function getTitle(): string
     {
-        return $this->kort_tittel ?: '#' . $this->id;
+        return $this->sprak . ': ' . ($this->kort_tittel ?: $this->tittel) ;
+    }
+
+    /**
+     * Simple string representation, for use in entity editor.
+     *
+     * @return string
+     */
+    public function getStringRepresentationAttribute()
+    {
+        return $this->getTitle();
+    }
+
+    public function __toString()
+    {
+        return $this->getStringRepresentationAttribute();
     }
 }
