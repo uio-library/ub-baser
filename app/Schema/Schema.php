@@ -12,6 +12,7 @@ abstract class Schema implements \JsonSerializable
     const DATATYPE_STRING = 'string';
     const DATATYPE_INT = 'int';
     const DATATYPE_BOOL = 'bool';
+    const DATATYPE_DATE = 'date';
 
     public $primaryId = 'id';
 

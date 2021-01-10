@@ -28,6 +28,7 @@ abstract class SchemaField implements JsonSerializable
     public static $types = [
         'autocomplete' => AutocompleteField::class,
         'boolean' => BooleanField::class,
+        'date' => DateField::class,
         'incrementing' => IncrementingField::class,
         'entities' => EntitiesField::class,
         'search_only' => SearchOnlyField::class,

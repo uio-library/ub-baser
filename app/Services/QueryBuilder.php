@@ -104,7 +104,7 @@ class QueryBuilder
                 $this->addTextSearchTerm($query, $field->search, $operator, $value);
                 return;
             case 'range':
-                $this->addRangeSearchTerm($query, $field->search, $operator, $value);
+                $this->addRangeSearchTerm($query, $field->datatype, $field->search, $operator, $value);
                 return;
             case 'array':
                 $this->addArraySearchTerm($query, $field->search, $operator, $value);
@@ -214,17 +214,27 @@ class QueryBuilder
         $query->whereRaw("{$searchConfig->index} {$sqlOperator} ?", [$value]);
     }
 
-    protected function addRangeSearchTerm(EloquentBuilder $query, SearchOptions $searchConfig, string $operator, ?string $value): void
+    protected function addRangeSearchTerm(
+        EloquentBuilder $query,
+        string $datatype,
+        SearchOptions $searchConfig,
+        string $operator,
+        ?string $value
+    ): void
     {
-        $value = explode('-', $value);
+        $value = explode('-', $value); // TODO: Endre til '/' for å kunne støtte datoer med MM, DD også?
         if (count($value) == 2) {
-            switch ($operator) {
-                case Operators::IN_RANGE:
-                    $query->whereBetween($searchConfig->index, [intval($value[0]),  intval($value[1])]);
-                    return;
-                case Operators::OUTSIDE_RANGE:
-                    $query->whereNotBetween($searchConfig->index, [intval($value[0]),  intval($value[1])]);
-                    return;
+            if ($datatype === Schema::DATATYPE_DATE) {
+                $range = [$this->toDate($value[0], false), $this->toDate($value[1], true)];
+            } else {
+                $range = [intval($value[0]),  intval($value[1])];
+            }
+            if ($operator === Operators::IN_RANGE) {
+                $query->whereBetween($searchConfig->index, $range);
+                return;
+            } elseif ($operator === Operators::OUTSIDE_RANGE) {
+                $query->whereNotBetween($searchConfig->index, $range);
+                return;
             }
         }
 
@@ -236,11 +246,11 @@ class QueryBuilder
         switch ($operator) {
             case Operators::EQUALS:
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-                $query->whereRaw($searchConfig->index . ' ~@ ?', [$value]);
+                $query->whereRaw($searchConfig->index . '::jsonb ~@ ?', [$value]);
                 break;
             case Operators::NOT_EQUALS:
                 // Note: The ~@ operator is defined in <2015_12_13_120034_add_extra_operators.php>
-                $query->whereRaw('NOT ' . $searchConfig->index . ' ~@ ?', [$value]);
+                $query->whereRaw('NOT ' . $searchConfig->index . '::jsonb ~@ ?', [$value]);
                 break;
             default:
                 throw new \Error('Unsupported search operator');
@@ -248,5 +258,23 @@ class QueryBuilder
         // TODO: Support wildcards in some way.
         // "Contains" could be done easily as column::text like '%value%'
         // Starts with is a bit worse :/
+    }
+
+    /**
+     * Converts input to YYYY-MM-DD
+     *
+     * @param string $value
+     * @param bool $inclusive
+     * @return string
+     */
+    protected function toDate(string $value, bool $inclusive = false): string
+    {
+        if (mb_strlen($value) === 4) {
+            if ($inclusive) {
+                return $value . '-12-31';
+            }
+            return $value . '-01-01';
+        }
+        throw new \RuntimeException('Unknown date format');
     }
 }
