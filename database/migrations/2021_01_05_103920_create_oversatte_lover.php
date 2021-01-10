@@ -28,6 +28,9 @@ class CreateOversatteLover extends Migration
             $table->text('kort_tittel')->nullable();
             $table->text('note')->nullable();
 
+            $table->index('tittel');
+            $table->index('kort_tittel');
+
             $table->unique(['dato', 'nummer', 'dok_type']);
         });
 
@@ -45,6 +48,9 @@ class CreateOversatteLover extends Migration
             $table->text('note')->nullable();
             $table->text('inote')->nullable();
             $table->text('utgave')->nullable();
+
+            $table->index('tittel');
+            $table->index('kort_tittel');
 
             $table->foreign('lov_id')
                 ->references('id')->on('oversatte_lover_lover');
