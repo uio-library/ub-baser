@@ -17,15 +17,15 @@ class OpesAddPublicColumn extends Migration
     public function up()
     {
         Schema::table('opes', function (Blueprint $table) {
-            $table->boolean('public')->default(0);
+            $table->boolean('public')->default(false);
         });
 
         \DB::table('opes')
-            ->update(['public' => 1]);
+            ->update(['public' => true]);
 
         \DB::table('opes')
             ->whereIn('id', [30, 31, 32])
-            ->update(['public' => 0]);
+            ->update(['public' => false]);
 
         $this->dropMaterializedView('opes_view');
         $this->createView('opes_view', 1);

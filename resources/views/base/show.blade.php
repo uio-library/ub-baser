@@ -2,14 +2,17 @@
 
 @section('content')
 
-    <div class="mb-1">
+    <div class="mb-3">
         <small class="text-muted">
             @section('record_header')
-                <a href="{{ $base->action('prev', $currentQuery) }}">« {{ __('messages.previous_record') }}</a>
-                |
-                <a href="{{ $base->action('index', $currentQuery) }}">{{ __('messages.back_to_search') }}</a>
-                |
-                <a href="{{ $base->action('next', $currentQuery) }}">{{ __('messages.next_record') }} »</a>
+                <div class="btn-group btn-group-sm">
+                    <a href="{{ $base->action('index', $currentQuery) }}" class="btn btn-light btn-sm link-color">↩ {{ __('messages.back_to_search') }}</a>
+                    <a href="{{ $base->action('prev', $currentQuery) }}" class="btn btn-light btn-sm link-color">← {{ __('messages.previous_record') }}</a>
+                    <a href="{{ $base->action('next', $currentQuery) }}" class="btn btn-light btn-sm link-color">{{ __('messages.next_record') }} →</a>
+                    @section('record_header_extra_buttons')
+                    @show
+                </div>
+                {{--
                 @if (count($order))
                     (sortert etter
                     @foreach ($order as $o)
@@ -20,12 +23,13 @@
                         @endif
                     @endforeach)
                 @endif
+                --}}
             @show
         </small>
     </div>
 
     <div>
-        <div class="pb-2 mt-2 mb-3">
+        <div class="pb-2 mt-2 mb-1">
             <div class="d-flex align-items-end">
                 <div>
                     <h2 class="mb-0 record-title">

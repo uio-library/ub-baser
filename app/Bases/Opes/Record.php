@@ -22,8 +22,10 @@ class Record extends BaseRecord
      * @var array
      */
     protected $casts = [
-        'persons' => 'array',
-        'subj_headings' => 'array',
+        'people' => 'array',
+        'places' => 'array',
+        'subjects' => 'array',
+        'bibliography' => 'array',
     ];
 
     /**
@@ -36,11 +38,12 @@ class Record extends BaseRecord
     ];
 
     /**
-     * Get the publications for this record.
+     * Get the editions for this record.
      */
-    public function publications()
+    public function editions()
     {
-        return $this->hasMany(Publication::class, 'opes_id');
+        return $this->hasMany(Edition::class, 'opes_id')
+            ->orderBy('edition_nr');
     }
 
     /**
@@ -50,7 +53,7 @@ class Record extends BaseRecord
      */
     public function getTitle(): string
     {
-        return $this->inv_no;
+        return $this->inv_no;  // TODO: standard_designation
         // return sprintf('%s (%s)', $this->tittel2, $this->utgivelsesaar2);
     }
 }

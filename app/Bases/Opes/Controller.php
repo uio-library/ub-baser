@@ -10,14 +10,20 @@ use Illuminate\Http\RedirectResponse;
 
 class Controller extends BaseController
 {
+    /**
+     * Use the RecordView clas, so we can display standard_designation (calculated field on the view)
+     */
+    protected $showModel = RecordView::class;
+
     protected $logGroup = 'opes';
 
     public static $defaultColumns = [
-        'inv_no',
-        'title_or_type',
-        'genre',
+        'standard_designation',
         'date',
-        'origin',
+        'provenance',
+        'genre',
+        'language',
+        'title_or_type',
         'fullsizefront_r1',
         'fullsizeback_r1',
     ];

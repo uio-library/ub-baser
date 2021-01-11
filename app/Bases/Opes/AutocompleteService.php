@@ -26,8 +26,9 @@ class AutocompleteService extends \App\Bases\AutocompleteService
      * @var array
      */
     protected $completers = [
-        'subj_headings' => 'jsonArrayCompleter',
-        'persons' => 'jsonArrayCompleter',
+        'people' => 'jsonArrayCompleter',
+        'places' => 'jsonArrayCompleter',
+        'subjects' => 'jsonArrayCompleter',
     ];
 
     /**
@@ -36,5 +37,8 @@ class AutocompleteService extends \App\Bases\AutocompleteService
      * @var array
      */
     protected $listers = [
+        'people' => 'jsonArrayLister',
+        'places' => 'jsonArrayLister',
+        'subjects' => 'jsonArrayLister',
     ];
 }

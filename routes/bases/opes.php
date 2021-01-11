@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Additional routes for the base "OPES"
@@ -17,11 +19,17 @@
 |     ./dev.sh artisan route:list
 */
 
-// Route::get('hello-world', 'Controller@helloWorld');
+Route::get('edition/{id}', 'EditionController@show');
 
 Route::middleware('can:opes')
     ->group(function () {
         // Place any routes that should only be available to authorized users here
         Route::post('record/{record}/publish', 'Controller@publish');
         Route::post('record/{record}/unpublish', 'Controller@unpublish');
+
+        Route::post('edition', 'EditionController@store');
+        Route::get('edition/{id}/edit', 'EditionController@edit');
+        Route::put('edition/{id}', 'EditionController@update');
+        Route::get('edition/{id}/delete', 'EditionController@delete');
+        Route::delete('edition/{id}', 'EditionController@destroy');
     });

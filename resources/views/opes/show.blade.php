@@ -1,5 +1,10 @@
 @extends('base.show')
 
+
+@section('record_header_extra_buttons')
+
+@endsection
+
 @section('actions')
     @if ($record->public)
         <form style="display: inline-block" action="{{ $base->action('unpublish', $record->{$schema->primaryId}) }}" method="post">
@@ -34,12 +39,21 @@
             </div>
         @endif
 
-        @if (count($record->publications) && $record->publications[0]->papyri_info_link)
-            <a class="btn btn-link" href="{{ $record->publications[0]->papyri_info_link}}">
-                <em class="fa fa-arrow-right"></em>
-                View record at papyri.info
-            </a>
-        @endif
+        <div class="mb-3">
+            @if ($record->papyri_dclp_url)
+                <a  href="{{ $record->papyri_dclp_url }}">
+                    <em class="fa fa-globe"></em>
+                    View record at papyri.info/DCLP
+                </a>
+            @endif
+            @if ($record->trismegistos_url)
+                <a  href="{{ $record->trismegistos_url }}">
+                    <em class="fa fa-globe"></em>
+                    View record at Trismegistos
+                </a>
+            @endif
+        </div>
+
 
         <div class="row record-view">
             <div class="col-sm-6">
@@ -90,7 +104,7 @@
 
 
                 @foreach ($schema->groups as $group)
-                    @if (!in_array($group->label, ['Images', 'Information on publication']))
+                    @if (!in_array($group->label, [__('opes.images'), __('opes.editions')]))
                         <h4>{{ $group->label }}</h4>
                         <dl class="row">
                             @foreach ($group->fields as $field)
@@ -103,7 +117,7 @@
                                             <span class="text-muted">–</span>
                                         @elseif (is_array($record->{$field->key}))
                                             @foreach($record->{$field->key} as $value)
-                                                <a href="{{ $base->action('index', ['f0' => $field->key, 'v0' => $value]) }}" class="badge badge-primary">{{ $value }}</a>
+                                                <a href="{{ $base->action('index', ['q' => $field->key . ' eq ' . $value]) }}" class="badge badge-primary">{{ $value }}</a>
                                             @endforeach
                                         @else
                                             {{ $record->{$field->key} }}
@@ -115,20 +129,21 @@
                     @endif
                 @endforeach
 
-                <h4>Publications</h4>
+                <h4>{{ __('opes.editions') }}</h4>
                 <ul class="list-group">
-                    @foreach ($record->publications as $publication)
+                    @foreach ($record->editions as $edition)
                         <li class="list-group-item">
-                            <dl class="row">
-                                @foreach (['preferred_citation', 'corrections'] as $key)
-                                    @if (isset($publication->{$key}))
-                                        <dt class="col-sm-3 text-sm-right">{{ __('opes.' . $key) }}:</dt>
-                                        <dd class="col-sm-9">
-                                            {{ $publication->{$key} }}
-                                        </dd>
-                                    @endif
-                                @endforeach
-                            </dl>
+                            {{ $edition }}
+                            @if (count($edition->corrections))
+                                <div>
+                                    ▾ {{ __('opes.corrections') }}:
+                                    <ul>
+                                    @foreach ($edition->corrections as $correction)
+                                        <li>{{ $correction }}</li>
+                                    @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                         </li>
                     @endforeach
                 </ul>
@@ -138,7 +153,11 @@
                 @if (empty($record->bibliography))
                     <span class="text-muted">–</span>
                 @else
-                    <ul><li>{{ $record->bibliography }}</li></ul>
+                    <ul class="list-group">
+                        @foreach($record->bibliography as $item)
+                            <li class="list-group-item">{{ $item }}</li>
+                        @endforeach
+                    </ul>
                 @endif
 
             </div>

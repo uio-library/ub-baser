@@ -2,6 +2,7 @@
 
 namespace App\Bases\Opes;
 
+use App\Schema\EntitiesField;
 use App\Schema\Operators;
 use App\Schema\Schema as BaseSchema;
 
@@ -10,17 +11,70 @@ class Schema extends BaseSchema
     protected $schema = [
         'id' => 'opes',
         'fields' => [
+
+            // ----
+
             // ID
             [
                 'key' => 'id',
                 'type' => 'incrementing',
                 'showInRecordView' => true,
             ],
+            // standard designation
+            [
+                'key' => 'standard_designation',
+                'type' => 'simple',
+                'edit' => false,
+            ],
             // inventary number
             [
                 'key' => 'inv_no',
                 'type' => 'simple',
             ],
+            // P.Oslo volume - part of standard_designation
+            [
+                'key' => 'p_oslo_vol',
+                'type' => 'simple',
+                'search' => false,
+                'showInTableView' => false,
+                'showInRecordView' => false,
+                'edit' => [
+                    'placeholder' => '',
+                    'help' => 'Volume number in the P.Oslo series, entered as a Roman numeral.',
+                ],
+
+            ],
+            // P.Oslo no. - part of standard_designation
+            [
+                'key' => 'p_oslo_nr',
+                'type' => 'simple',
+                'search' => false,
+                'showInTableView' => false,
+                'showInRecordView' => false,
+                'edit' => [
+                    'placeholder' => '',
+                    'help' => 'Page number in the P.Oslo series.',
+                ],
+            ],
+            // Trismegistos URL (Added Jan 2021)
+            [
+                'key' => 'trismegistos_url',
+                'type' => 'simple', // URL?
+                'search' => false,
+                'showInTableView' => false,
+                'showInRecordView' => false,
+            ],
+            // Papyri.info/DCLP-URL (Added Jan 2021)
+            [
+                'key' => 'papyri_dclp_url',
+                'type' => 'simple', // URL?
+                'search' => false,
+                'showInTableView' => false,
+                'showInRecordView' => false,
+            ],
+
+            // ----
+
             // Søk i alle felt
             [
                 'key' => 'q',
@@ -37,13 +91,13 @@ class Schema extends BaseSchema
                 ],
             ],
             // Opprettet
-            [
-                'key' => 'created_at',
-                'type' => 'simple',
-                'edit' => false,
-                'search' => false,
-                'columnClassName' => 'dt-body-nowrap',
-            ],
+//            [
+//                'key' => 'created_at',
+//                'type' => 'simple',
+//                'edit' => false,
+//                'search' => false,
+//                'columnClassName' => 'dt-body-nowrap',
+//            ],
             // Sist endret
             [
                 'key' => 'updated_at',
@@ -61,7 +115,21 @@ class Schema extends BaseSchema
                     [
                         'key' => 'material_long',
                         'type' => 'select',
+                        'multiple' => false,
+                        'defaultValue' => ['Papyrus'],
+                        'search' => [
+                            'type' => 'array',
+                            'widget' => 'autocomplete',
+                            'advanced' => true,
+                            'placeholder' => '',
+                        ],
+                        'edit' => [
+                            'preload' => true,
+                            'allow_new_values' => false,
+                            'placeholder' => '',
+                        ],
                     ],
+
                     // Connections
                     [
                         'key' => 'connections',
@@ -90,6 +158,19 @@ class Schema extends BaseSchema
                     [
                         'key' => 'publ_side',
                         'type' => 'select',
+                        'multiple' => false,
+                        'defaultValue' => [],
+                        'search' => [
+                            'type' => 'array',
+                            'widget' => 'autocomplete',
+                            'advanced' => true,
+                            'placeholder' => '',
+                        ],
+                        'edit' => [
+                            'preload' => true,
+                            'allow_new_values' => false,
+                            'placeholder' => '',
+                        ],
                     ],
                     // Palaeogrfic description
                     [
@@ -99,12 +180,40 @@ class Schema extends BaseSchema
                 ],
             ],
             [
-                'key' => 'contents',
+                'key' => 'content',
                 'fields' => [
                     // Date
                     [
                         'key' => 'date',
                         'type' => 'simple',
+                        'edit' => [
+                            'placeholder' => '',
+                            'help' => 'Date or estimated period of creation.',
+                        ],
+                    ],
+                    // Date1
+                    [
+                        'key' => 'date1',
+                        'type' => 'simple',
+                        'search' => false,
+                        'showInTableView' => false,
+                        'showInRecordView' => false,
+                        'edit' => [
+                            'placeholder' => '',
+                            'help' => 'Numerical year that marks the beginning of the date or estimated period of creation specified in the "Date field". Used for sorting and filtering. Example: "250" when the estimated period of creation is "IInd half of IIIrd century A.D."',
+                        ],
+                    ],
+                    // Date2
+                    [
+                        'key' => 'date2',
+                        'type' => 'simple',
+                        'search' => false,
+                        'showInTableView' => false,
+                        'showInRecordView' => false,
+                        'edit' => [
+                            'placeholder' => '',
+                            'help' => 'Numerical year that marks the end of the date or estimated period of creation specified in the "Date field". Used for sorting and filtering. Example: "299" when the estimated period of creation is "IInd half of IIIrd century A.D."',
+                        ],
                     ],
                     // Origin
                     [
@@ -113,13 +222,39 @@ class Schema extends BaseSchema
                     ],
                     // Language
                     [
-                        'key' =>  'language',
-                        'type' =>  'simple',
+                        'key' => 'language',
+                        'type' => 'select',
+                        'multiple' => false,
+                        'defaultValue' => [],
+                        'search' => [
+                            'type' => 'array',
+                            'widget' => 'autocomplete',
+                            'advanced' => true,
+                            'placeholder' => '',
+                        ],
+                        'edit' => [
+                            'preload' => true,
+                            'allow_new_values' => true,
+                            'placeholder' => '',
+                        ],
                     ],
                     // Genre
                     [
-                        'key' =>  'genre',
-                        'type' =>  'autocomplete',
+                        'key' => 'genre',
+                        'type' => 'select',
+                        'multiple' => false,
+                        'defaultValue' => [],
+                        'search' => [
+                            'type' => 'array',
+                            'widget' => 'autocomplete',
+                            'advanced' => true,
+                            'placeholder' => '',
+                        ],
+                        'edit' => [
+                            'preload' => true,
+                            'allow_new_values' => true,
+                            'placeholder' => '',
+                        ],
                     ],
                     // Author
                     [
@@ -138,7 +273,7 @@ class Schema extends BaseSchema
                     ],
                     // Subject Headings
                     [
-                        'key' =>  'subj_headings',
+                        'key' =>  'subjects',
                         'type' =>  'select',
                         'defaultValue' => [],
                         'multiple' => true,
@@ -151,9 +286,9 @@ class Schema extends BaseSchema
                             'allow_new_values' => true,
                         ],
                     ],
-                    // Persons
+                    // Named people
                     [
-                        'key' =>  'persons',
+                        'key' =>  'people',
                         'type' =>  'select',
                         'defaultValue' => [],
                         'multiple' => true,
@@ -166,10 +301,20 @@ class Schema extends BaseSchema
                             'allow_new_values' => true,
                         ],
                     ],
-                    // Geographica
+                    // Named places
                     [
-                        'key' =>  'geographica',
-                        'type' =>  'autocomplete',
+                        'key' =>  'places',
+                        'type' =>  'select',
+                        'defaultValue' => [],
+                        'multiple' => true,
+                        'search' => [
+                            'widget' => 'autocomplete',
+                            'type' => 'array',
+                        ],
+                        'edit' => [
+                            'preload' => true,
+                            'allow_new_values' => true,
+                        ],
                     ],
                     // Translation
                     [
@@ -186,89 +331,50 @@ class Schema extends BaseSchema
                         'key' => 'acquisition',
                         'type' => 'simple',
                     ],
+                    // Acquisition year (Added Jan 2021)
+                    [
+                        'key' => 'acquisition_year',
+                        'type' => 'simple', // TODO: int
+                    ],
+                    // Internal comments (Added Jan 2021)
+                    [
+                        'key' => 'internal_comments',
+                        'type' => 'simple',
+                    ],
+                    // Conservation notes (Added Jan 2021)
+                    [
+                        'key' => 'conservation_notes',
+                        'type' => 'simple',
+                    ],
 
+                    // Bibliography
+                    [
+                        'key' =>  'bibliography',
+                        'type' => 'select', // TODO: Ikke helt riktig, burde kanskje ha en egen 'list'-type?
+                        'defaultValue' => [],
+                        'multiple' => true,
+                        'showInRecordView' => false, // Vises i eget avsnitt
+                    ],
                 ],
             ],
 
             [
-                'key' => 'publication_info',
+                'key' => 'editions',
                 'search' => false,
                 'fields' => [
 
-                    // WAIT with this:
-                    //        [
-                    //            "key" =>  "Year",
-                    //            "type" => "simple",
-                    //        ],
-                    //       [
-                    //            "key" =>  "Pg_no",
-                    //            "type" => "simple",
-                    //        ],
-                    //       [
-                    //            "key" =>  "photo",
-                    //            "type" => "simple",
-                    //        ],
-                    //       [
-                    //            "key" =>  "sb",
-                    //            "type" => "simple",
-                    //        ],
-                    //       [
-                    //            "key" =>  "corrections",
-                    //            "type" => "simple",
-                    //        ],
-                    //       [
-                    //            "key" =>  "preferred_citation",
-                    //            "type" => "simple",
-                    //        ],
-                    //       [
-                    //            "key" =>  "ddbdp_pmichcitation",
-                    //            "type" => "simple",
-                    //        ],
-                    //       [
-                    //             "key" => "ddbdp_omichcitation",
-                    //            "type" => "simple",
-                    //        ],
-                    //       [
-                    //            "key" =>  "ddbdp_p_rep",
-                    //            "type" => "simple",
-                    //        ],
-                    //       [
-                    //            "key" =>  "ddbdp_o_rep",
-                    //            "type" => "simple",
-                    //        ],
-                    //      [
-                    //            "key" => "ser_vol",
-                    //            "type" => "simple",
-                    //        ],
-                    //      [
-                    //            "key" => "editor",
-                    //            "type" => "simple",
-                    //        ],
+                    // Editions
+                    [
+                        'key' => 'editions',
+                        'type' => 'entities',
+                        'entityType' => Edition::class,
+                        'entitySchema' => EditionSchema::class,
+                        'entityRelation' => EntitiesField::ONE_TO_MANY_RELATION,
+                        'modelAttribute' => 'editions',
+                        'pivotFields' => [],
 
-                    // republication
-                    [
-                        'key' =>  'rep_ser_old',
-                        'type' =>  'simple',
-                    ],
-                    // republication
-                    [
-                        'key' =>  'rep_pg_no_old',
-                        'type' =>  'simple',
-                    ],
-                    // Further republication
-                    [
-                        'key' =>  'further_rep',
-                        'type' =>  'simple',
-                    ],
-                    // Further republication notes
-                    [
-                        'key' =>  'further_replication_note',
-                        'type' =>  'simple',
-                    ],
-                    // Bibliography
-                    [
-                        'key' =>  'bibliography',
-                        'type' =>  'simple',
+                        'search' => false,
+                        'showInTableView' => false,
                     ],
 
                 ],
