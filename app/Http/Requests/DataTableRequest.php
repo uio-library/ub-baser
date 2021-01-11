@@ -19,13 +19,12 @@ class DataTableRequest extends SearchRequest
         $requestedFields = [];
         $keysSeen = [];
 
-        foreach ($this->get('columns', []) as $idx => $col) {
-            $key = $col['data'];
-            if (!isset($fields[$key])) {
-                throw new \RuntimeException('Invalid column name requested: ' . $key);
+        foreach ($this->get('columns', []) as $idx => $column) {
+            if (!isset($fields[$column])) {
+                throw new \RuntimeException('Invalid column name requested: ' . $column);
             }
-            $requestedFields[$idx] = $fields[$key];
-            $keysSeen[] = $key;
+            $requestedFields[$idx] = $fields[$column];
+            $keysSeen[] = $column;
         }
 
         // Always include the id column, even if not explicitly requested.

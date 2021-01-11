@@ -312,11 +312,18 @@ export default {
         },
         pageLength: this.getSessionValue('page-length', 50),
         lengthMenu: [10, 50, 100, 500, 1000],
-        ajax: {
-          url: `${this.baseUrl}/data`,
-          data: (input) => {
-            return Object.assign({}, input, this.query)
-          },
+        ajax: (input, cb) => {
+          const data = {
+            ...this.query,
+            draw: input.draw,
+            start: input.length,
+            length: input.length,
+            order: input.order,
+            columns: input.columns.map(column => column.data),
+          }
+          $.getJSON(`${this.baseUrl}/data`, data, function(res) {
+            cb(res)
+          })
         },
         columns: this.columns,
         order: this.getOrder(),
