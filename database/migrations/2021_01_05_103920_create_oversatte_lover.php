@@ -85,10 +85,10 @@ class CreateOversatteLover extends Migration
         $this->dropView('oversatte_lover_view');
 
         Schema::dropIfExists('oversatte_lover_oversettelser');
-        Schema::dropIfExists('oversatte_lover');
+        Schema::dropIfExists('oversatte_lover_lover');
 
         \DB::table('bases')
-            ->where(['id' => 'oversatte-lover'])
+            ->where(['id' => 'oversatte_lover'])
             ->delete();
     }
 }
