@@ -316,7 +316,7 @@ export default {
           const data = {
             ...this.query,
             draw: input.draw,
-            start: input.length,
+            start: input.start,
             length: input.length,
             order: input.order,
             columns: input.columns.map(column => column.data),
