@@ -19,6 +19,8 @@ abstract class SchemaField implements JsonSerializable
     public $operators = [
         Operators::CONTAINS,
         Operators::NOT_CONTAINS,
+        Operators::EQUALS,
+        Operators::NOT_EQUALS,
         Operators::BEGINS_WITH,
         Operators::ENDS_WITH,
         Operators::IS_NULL,
