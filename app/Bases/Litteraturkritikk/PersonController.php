@@ -12,7 +12,7 @@ use Illuminate\Http\Response;
 class PersonController extends BaseController
 {
     protected $logGroup = 'norsk-litteraturkritikk';
-    protected $editClass = 'Person';
+    protected $model = 'Person';
     protected $recordSchema = 'PersonSchema';
     protected $editView = 'persons.edit';
 

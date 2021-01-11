@@ -85,6 +85,10 @@ class Base extends Model
      */
     public function fqn(string $className = null)
     {
+        if (strpos($className, '\\') === 0) {
+            // Absolute path
+            return $className;
+        }
         $base = 'App\\Bases\\' . $this->namespace;
         if (is_null($className)) {
             return '\\' . $base;

@@ -20,9 +20,38 @@ use Illuminate\Validation\Rule;
 
 class BaseController extends Controller
 {
-    protected $recordClass = 'Record';
-    protected $recordSchema = 'Schema';
+    /**
+     * The class this controller edits. Defaults to the 'Record' class of the base.
+     * @var string
+     */
+    protected $model;
+
+    /**
+     * The class this controller displays. Defaults to $editClass, but can be set to e.g.
+     * a view that adds additional, calculcated columns.
+     * @var string
+     */
+    protected $showModel;
+
+    /**
+     * Blade view used for the 'show' action.
+     *
+     * @var string
+     */
+    protected $showView = 'show';
+
+    /**
+     * Blade view used for the 'edit' action.
+     *
+     * @var string
+     */
     protected $editView = 'edit';
+
+    /**
+     * Classname of the schema class.
+     * @var string
+     */
+    protected $recordSchema = 'Schema';
 
     public static $defaultColumns = [];
     public static $defaultSortOrder = [];
@@ -34,6 +63,15 @@ class BaseController extends Controller
     public function __construct(Base $base = null)
     {
         $this->middleware('auth', ['only' => ['create', 'edit', 'store', 'update', 'destroy']]);
+
+        if (!is_null($base)) {
+            if (is_null($this->model)) {
+                $this->model = $base->getClass('Record');
+            }
+            if (is_null($this->showModel)) {
+                $this->showModel = $this->model;
+            }
+        }
 
         \View::share('base', $base);
     }
@@ -151,7 +189,7 @@ class BaseController extends Controller
      */
     public function show(SearchRequest $request, Base $base, $id)
     {
-        $record = $base->getRecord($id, $base->usesSoftDeletes(), $this->recordClass);
+        $record = $base->getRecord($id, $base->usesSoftDeletes(), $this->showModel);
         if (is_null($record)) {
             abort(404, trans('base.error.recordnotfound'));
         }
@@ -164,7 +202,7 @@ class BaseController extends Controller
         $query['id'] = $id;
 
         return response()->view(
-            $base->getView('show'),
+            $base->getView($this->showView),
             [
                 'title' => $record->getTitle(),
                 'base' => $base,
@@ -189,7 +227,7 @@ class BaseController extends Controller
         // @TODO: Need to lazy load stuff?? Or can we just add it to the JSON serialization??
         // $record = Record::with('forfattere', 'kritikere')->findOrFail($id);
 
-        $record = $base->getRecord($id, true, $this->recordClass);
+        $record = $base->getRecord($id, true, $this->model);
 
         if (is_null($record)) {
             abort(404, trans('base.error.recordnotfound'));
@@ -236,7 +274,7 @@ class BaseController extends Controller
      */
     public function update(Request $request, Base $base, $id)
     {
-        $record = $base->getRecord($id, true, $this->recordClass) ?? abort(trans('base.error.recordnotfound'));
+        $record = $base->getRecord($id, true, $this->model) ?? abort(trans('base.error.recordnotfound'));
 
         $this->validate($request, $this->getValidationRules($record));
 
@@ -271,7 +309,7 @@ class BaseController extends Controller
      */
     public function destroy(Request $request, Base $base, $id)
     {
-        $record = $base->getRecord($id, true, $this->recordClass) ?? abort(trans('base.error.recordnotfound'));
+        $record = $base->getRecord($id, true, $this->model) ?? abort(trans('base.error.recordnotfound'));
 
         $record->delete();
 
@@ -293,7 +331,7 @@ class BaseController extends Controller
      */
     public function restore(Base $base, $id)
     {
-        $record = $base->getRecord($id, true, $this->recordClass) ?? abort(trans('base.error.recordnotfound'));
+        $record = $base->getRecord($id, true, $this->model) ?? abort(trans('base.error.recordnotfound'));
 
         $record->restore();
 
