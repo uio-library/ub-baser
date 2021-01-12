@@ -5,6 +5,8 @@ namespace App\Schema;
 class EntitiesField extends SchemaField
 {
     public const TYPE = 'entities';
+    public const ONE_TO_MANY_RELATION = 'one_to_many';
+    public const MANY_TO_MANY_RELATION = 'many_to_many';
 
     /**
      * Set default value.
@@ -12,6 +14,7 @@ class EntitiesField extends SchemaField
     public function setDefaults()
     {
         $this->data['relatedPivotKey'] = 'record_id';
+        $this->data['entityRelation'] = self::MANY_TO_MANY_RELATION;
     }
 
     public function setModelAttribute(string $value)
@@ -22,6 +25,14 @@ class EntitiesField extends SchemaField
     public function setEntityType(string $value)
     {
         $this->data['entityType'] = $value;
+    }
+
+    public function setEntityRelation(string $value)
+    {
+        if (!in_array($value, [self::ONE_TO_MANY_RELATION, self::MANY_TO_MANY_RELATION])) {
+            throw new \ValueError('Invalid entity relation: ' . $value);
+        }
+        $this->data['entityRelation'] = $value;
     }
 
     public function setEntitySchema(string $value)

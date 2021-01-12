@@ -66,7 +66,7 @@
 
     <!-- Knapp for å legge til entitet -->
     <div v-else>
-      <button type="button" class="btn btn-outline-primary btn-sm m-1" @click="addEntity()">Legg til</button>
+      <button type="button" class="btn btn-outline-primary btn-sm m-1" @click="addOrCreateEntity()">Legg til</button>
     </div>
 <!--
     <code style="display: block; width: 500px; overflow: scroll">
@@ -134,6 +134,15 @@ export default {
   methods: {
     removeEntity(idx) {
       this.entities.splice(idx, 1)
+    },
+    addOrCreateEntity () {
+      if (this.schema.entityRelation === 'many_to_many') {
+        this.addEntity()
+      } else if (this.schema.entityRelation === 'one_to_many') {
+        this.newEntityForm()
+      } else {
+        console.error('Unknown entity relation: ' + this.schema.entityRelation)
+      }
     },
     addEntity () {
       this.mode = 'addEntity'
