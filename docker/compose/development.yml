@@ -37,8 +37,8 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ../..:/app/:delegated
-      - storage:/app/storage:delegated
+      - ../..:/app/:ro
+      - storage:/app/storage
       #- ../../storage:/app/storage
     depends_on:
       - db
