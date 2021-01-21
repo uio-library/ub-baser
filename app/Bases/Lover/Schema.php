@@ -82,6 +82,26 @@ class Schema extends BaseSchema
                 ],
             ],
 
+            // Lov - Kort tittel
+            [
+                'key' => 'lov_kort_tittel',
+                'type' => 'simple',
+                'edit' => [
+                    'placeholder' => '',
+                    'help' => 'Hjelpetekst',
+                ],
+            ],
+
+            // Lov - Note
+            [
+                'key' => 'lov_note',
+                'type' => 'simple',
+                'edit' => [
+                    'placeholder' => '',
+                    'help' => 'Hjelpetekst',
+                ],
+            ],
+
             // Lov - Dato
             [
                 'key' => 'lov_dato',
