@@ -11,6 +11,7 @@ use App\Record;
 use App\Schema\EntitiesField;
 use App\Schema\Schema;
 use App\Services\NationalLibraryApi;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
 
 class Controller extends BaseController
@@ -36,16 +37,19 @@ class Controller extends BaseController
     /**
      * Store a newly created record, or update an existing one.
      *
-     * @param Record  $record
-     * @param Schema  $schema
+     * @param Base $base
+     * @param Model $record
      * @param Request $request
      * @return array
+     * @throws ValidationException
      */
-    protected function updateOrCreateRecord(Record $record, Schema $schema, Request $request): array
+    protected function updateOrCreateRecord(Base $base, Model $record, Request $request): array
     {
+        $schema = $base->getSchema($this->recordSchema);
+
         // Update the main record
         try {
-            $changes = parent::updateOrCreateRecord($record, $schema, $request);
+            $changes = parent::updateOrCreateRecord($base, $record, $request);
         } catch (NationalLibraryRecordNotFound $ex) {
             throw ValidationException::withMessages([
                 $ex->field => ['Klarte ikke å slå opp URL-en: ' . $ex->url],

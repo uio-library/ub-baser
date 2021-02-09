@@ -7,6 +7,7 @@ use App\Http\Request;
 use App\Http\Requests\DataTableRequest;
 use App\Http\Requests\SearchRequest;
 use App\Record;
+use App\Schema\EntitiesField;
 use App\Schema\Schema;
 use App\Schema\SchemaField;
 use App\Services\AutocompleteServiceInterface;
@@ -80,10 +81,10 @@ class BaseController extends Controller
      * Validation rules when creating or updating a record.
      * @see: https://laravel.com/docs/master/validation
      *
-     * @param Record $record
+     * @param Model $record
      * @return array
      */
-    protected function getValidationRules(Record $record): array
+    protected function getValidationRules(Model $record): array
     {
         return [];
     }
@@ -245,15 +246,15 @@ class BaseController extends Controller
      * @param Request $request
      * @param Base $base
      * @throws \Illuminate\Validation\ValidationException
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function store(Request $request, Base $base)
     {
-        $record = $base->newRecord();
+        $record = $base->newRecord($this->model);
 
         $this->validate($request, $this->getValidationRules($record));
 
-        $this->updateOrCreateRecord($record, $base->getSchema(), $request);
+        $this->updateOrCreateRecord($base, $record, $request);
 
         $url = $base->action('show', $record->id);
         $this->log(
@@ -261,6 +262,13 @@ class BaseController extends Controller
             $url,
             $record->id
         );
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status' => 'ok',
+                'record' => $record,
+            ]);
+        }
         return redirect($url)->with('status', trans('base.notification.recordcreated'));
     }
 
@@ -278,7 +286,7 @@ class BaseController extends Controller
 
         $this->validate($request, $this->getValidationRules($record));
 
-        $changes = $this->updateOrCreateRecord($record, $base->getSchema(), $request);
+        $changes = $this->updateOrCreateRecord($base, $record, $request);
 
         $url = $base->action('show', $record->id);
         if (count($changes)) {
@@ -399,13 +407,14 @@ class BaseController extends Controller
     /**
      * Store a newly created record, or update an existing one.
      *
-     * @param Record  $record
-     * @param Schema  $schema
+     * @param Base $base
+     * @param Model $record
      * @param Request $request
      * @return array
      */
-    protected function updateOrCreateRecord(Record $record, Schema $schema, Request $request): array
+    protected function updateOrCreateRecord(Base $base, Model $record, Request $request): array
     {
+        $schema = $base->getSchema($this->recordSchema);
         $changes = [];
 
         foreach ($schema->flat() as $field) {
@@ -443,12 +452,13 @@ class BaseController extends Controller
             }
         }
 
-        if ($record->id === null) {
-            $record->created_by = $request->user()->id;
-        }
-        if ($record->id === null or count($changes) > 0) {
-            $record->updated_by = $request->user()->id;
-        }
+        // @TODO: Insert into events table instead, since not all models have created_by / updated_by
+//        if ($record->id === null) {
+//            $record->created_by = $request->user()->id;
+//        }
+//        if ($record->id === null or count($changes) > 0) {
+//            $record->updated_by = $request->user()->id;
+//        }
 
         $record->save();
 

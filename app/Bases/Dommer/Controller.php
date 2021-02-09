@@ -3,6 +3,7 @@
 namespace App\Bases\Dommer;
 
 use App\Http\Controllers\BaseController as BaseController;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class Controller extends BaseController
@@ -24,10 +25,10 @@ class Controller extends BaseController
      * Validation rules when creating or updating a record.
      * @see: https://laravel.com/docs/master/validation
      *
-     * @param \App\Record $record
+     * @param Model $record
      * @return array
      */
-    protected function getValidationRules(\App\Record $record): array
+    protected function getValidationRules(Model $record): array
     {
         return [
             'navn'     => 'required|unique:dommer,navn' . ($record->id === null ? '' : ',' . $record->id) . '|max:255',

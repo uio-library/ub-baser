@@ -241,9 +241,9 @@ class Base extends Model
      *
      * @return Record
      */
-    public function newRecord()
+    public function newRecord($model = 'Record')
     {
-        $recordClass = $this->getClass('Record');
+        $recordClass = $this->getClass($model);
         return new $recordClass();
     }
 
