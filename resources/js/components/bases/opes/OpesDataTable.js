@@ -5,7 +5,7 @@ export default {
   extends: DataTable,
   methods: {
     renderCell (data, type, row, meta) {
-      if (data === null) {
+      if (!data) {
         return '–'
       }
       let columnKey = this.columns[meta.col].data
