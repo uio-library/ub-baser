@@ -15,7 +15,11 @@
                         :value="field.key"
                 >{{ field.label }}</option>
 
-                <optgroup v-for="fieldGroup in groups" :key="fieldGroup.label" :label="fieldGroup.label">
+                <optgroup
+                  v-for="fieldGroup in groups"
+                  :key="fieldGroup.label"
+                  :label="fieldGroup.label"
+                >
                     <option v-for="field in fieldGroup.fields"
                             :key="field.key"
                             :value="field.key"
@@ -133,7 +137,7 @@ export default {
       return this.schema.fields.filter(field => this.fieldIsVisible(field))
     },
     groups () {
-      return this.schema.groups.filter(group => group.searchable !== 'disabled').map(group => ({
+      return this.schema.groups.filter(group => group.searchable !== false).map(group => ({
         label: group.label,
         fields: group.fields.filter(field => this.fieldIsVisible(field)),
       }))
