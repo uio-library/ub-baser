@@ -3,10 +3,15 @@
 @section('content')
 
     <h2>
-        Rediger publikasjon #{{ $record->id }}
+        Edit publication
     </h2>
 
     @include('shared.errors')
+
+    <p>
+        Topic:
+        <a href="{{ $base->action('show', $record->record->id) }}">{{ $record->recordView }}</a>
+    </p>
 
     <edit-form
         method="PUT"

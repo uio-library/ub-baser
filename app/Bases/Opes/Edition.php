@@ -29,8 +29,8 @@ class Edition extends Model
      * @var array
      */
     protected $casts = [
-        'corrections' => 'array',
-        'bibliography' => 'array',
+        // 'corrections' => 'array',  // not ready yet
+        // 'bibliography' => 'array',
     ];
 
     /**
@@ -48,9 +48,15 @@ class Edition extends Model
         return $this->belongsTo(Record::class, 'opes_id');
     }
 
+    public function recordView()
+    {
+        return $this->belongsTo(RecordView::class, 'opes_id');
+    }
+
     public function getTitle()
     {
-        return "{$this->editor}, {$this->ser_vol}, {$this->year}, {$this->pg_no}, picture: {$this->photo}";
+        $picture = empty($this->photo) ? '' : ', picture: ' . $this->photo;
+        return "{$this->editor}, {$this->ser_vol}, {$this->year}, {$this->pg_no}{$picture}";
     }
 
     public function getStringRepresentationAttribute()
@@ -61,5 +67,10 @@ class Edition extends Model
     public function __toString()
     {
         return $this->getStringRepresentationAttribute();
+    }
+
+    public function correctionsArray()
+    {
+        return empty($this->corrections) ? [] : explode('; ', $this->corrections);
     }
 }

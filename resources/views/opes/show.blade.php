@@ -120,7 +120,7 @@
                                                 <a href="{{ $base->action('index', ['q' => $field->key . ' eq ' . $value]) }}" class="badge badge-primary">{{ $value }}</a>
                                             @endforeach
                                         @else
-                                            {{ $record->{$field->key} }}
+                                            {!! $record->getFormattedValue($field->key, $record->{$field->key}, $base) !!}
                                         @endif
                                     </dd>
                                 @endif
@@ -134,11 +134,11 @@
                     @foreach ($record->editions as $edition)
                         <li class="list-group-item">
                             {{ $edition }}
-                            @if (count($edition->corrections))
+                            @if (count($edition->correctionsArray()))
                                 <div>
-                                    ▾ {{ __('opes.corrections') }}:
+                                    ▾ {{ __('opes.edition.corrections') }}:
                                     <ul>
-                                    @foreach ($edition->corrections as $correction)
+                                    @foreach ($edition->correctionsArray() as $correction)
                                         <li>{{ $correction }}</li>
                                     @endforeach
                                     </ul>
@@ -150,11 +150,11 @@
 
                 <h4 class="mt-3">Bibliography</h4>
 
-                @if (empty($record->bibliography))
+                @if (empty($record->bibliographyArray()))
                     <span class="text-muted">–</span>
                 @else
                     <ul class="list-group">
-                        @foreach($record->bibliography as $item)
+                        @foreach($record->bibliographyArray() as $item)
                             <li class="list-group-item">{{ $item }}</li>
                         @endforeach
                     </ul>

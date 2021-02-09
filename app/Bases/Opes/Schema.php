@@ -176,6 +176,13 @@ class Schema extends BaseSchema
                     [
                         'key' => 'palaeographic_description',
                         'type' => 'simple',
+                        'multiline' => true,
+                    ],
+                    // Conservation status
+                    [
+                        'key' => 'conservation_status',
+                        'type' => 'simple',
+                        'multiline' => true,
                     ],
                 ],
             ],
@@ -200,7 +207,9 @@ class Schema extends BaseSchema
                         'showInRecordView' => false,
                         'edit' => [
                             'placeholder' => '',
-                            'help' => 'Numerical year that marks the beginning of the date or estimated period of creation specified in the "Date field". Used for sorting and filtering. Example: "250" when the estimated period of creation is "IInd half of IIIrd century A.D."',
+                            'help' => 'Numerical year that marks the beginning of the date or estimated period of' .
+                                ' creation specified in the "Date field". Used for sorting and filtering. Example:' .
+                                '"250" when the estimated period of creation is "IInd half of IIIrd century A.D."',
                         ],
                     ],
                     // Date2
@@ -212,7 +221,9 @@ class Schema extends BaseSchema
                         'showInRecordView' => false,
                         'edit' => [
                             'placeholder' => '',
-                            'help' => 'Numerical year that marks the end of the date or estimated period of creation specified in the "Date field". Used for sorting and filtering. Example: "299" when the estimated period of creation is "IInd half of IIIrd century A.D."',
+                            'help' => 'Numerical year that marks the end of the date or estimated period of' .
+                                ' creation specified in the "Date field". Used for sorting and filtering. Example:' .
+                                '"299" when the estimated period of creation is "IInd half of IIIrd century A.D."',
                         ],
                     ],
                     // Origin
@@ -270,6 +281,7 @@ class Schema extends BaseSchema
                     [
                         'key' =>  'content',
                         'type' =>  'simple',
+                        'multiline' => true,
                     ],
                     // Subject Headings
                     [
@@ -320,6 +332,7 @@ class Schema extends BaseSchema
                     [
                         'key' =>  'translation',
                         'type' =>  'simple',
+                        'multiline' => true,
                     ],
                     //Provenance
                     [
@@ -345,22 +358,26 @@ class Schema extends BaseSchema
                     [
                         'key' => 'conservation_notes',
                         'type' => 'simple',
+                        'multiline' => true,
                     ],
 
                     // Bibliography
                     [
                         'key' =>  'bibliography',
-                        'type' => 'select', // TODO: Ikke helt riktig, burde kanskje ha en egen 'list'-type?
-                        'defaultValue' => [],
-                        'multiple' => true,
+                        'type' => 'simple', // TODO: Ikke helt riktig, burde kanskje ha en egen 'list'-type?
+                        'multiline' => true,
                         'showInRecordView' => false, // Vises i eget avsnitt
+                        'edit' => [
+                            'placeholder' => '',
+                            'help' => 'Multiple corrections should be separated by semicolon followed by space.',
+                        ],
                     ],
                 ],
             ],
 
             [
                 'key' => 'editions',
-                'search' => false,
+                'searchable' => false,
                 'fields' => [
 
                     // Editions
@@ -371,8 +388,8 @@ class Schema extends BaseSchema
                         'entitySchema' => EditionSchema::class,
                         'entityRelation' => EntitiesField::ONE_TO_MANY_RELATION,
                         'modelAttribute' => 'editions',
+                        'relatedPivotKey' => 'opes_id',
                         'pivotFields' => [],
-
                         'search' => false,
                         'showInTableView' => false,
                     ],
@@ -385,7 +402,7 @@ class Schema extends BaseSchema
                 // if possible not the link but a text to click
                 // like Recto Verso. to be done later
                 'key' => 'images',
-                'search' => false,
+                'searchable' => false,
                 'fields' => [
                     // Image Recto
                     [

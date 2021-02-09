@@ -27,9 +27,9 @@ Route::middleware('can:opes')
         Route::post('record/{record}/publish', 'Controller@publish');
         Route::post('record/{record}/unpublish', 'Controller@unpublish');
 
-        Route::post('edition', 'EditionController@store');
-        Route::get('edition/{id}/edit', 'EditionController@edit');
-        Route::put('edition/{id}', 'EditionController@update');
-        Route::get('edition/{id}/delete', 'EditionController@delete');
-        Route::delete('edition/{id}', 'EditionController@destroy');
+        Route::post('pub', 'EditionController@store');
+        Route::get('pub/{id}/edit', 'EditionController@edit');
+        Route::put('pub/{id}', 'EditionController@update');
+        Route::get('pub/{id}/delete', 'EditionController@delete');
+        Route::delete('pub/{id}', 'EditionController@destroy');
     });

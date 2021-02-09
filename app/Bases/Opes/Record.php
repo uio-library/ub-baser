@@ -25,7 +25,7 @@ class Record extends BaseRecord
         'people' => 'array',
         'places' => 'array',
         'subjects' => 'array',
-        'bibliography' => 'array',
+        // 'bibliography' => 'array', // Vent
     ];
 
     /**
@@ -53,7 +53,28 @@ class Record extends BaseRecord
      */
     public function getTitle(): string
     {
-        return $this->inv_no;  // TODO: standard_designation
+        return $this->standard_designation;
         // return sprintf('%s (%s)', $this->tittel2, $this->utgivelsesaar2);
     }
+
+    public function bibliographyArray()
+    {
+        return empty($this->bibliography) ? [] : explode('; ', $this->bibliography);
+    }
+
+    public function getFormattedValue($key, $value, $base)
+    {
+        $value = strip_tags($value);
+        return preg_replace_callback('/\[\[([^\]]+)\]\]/', function ($matches) use ($key, $value, $base) {
+            return sprintf(
+                '<a href="%s">%s</a>',
+                $base->action('index', ['q' => $key . ' contains ' . $matches[1]]),
+                $matches[1]
+            );
+        }, $value);
+    }
+
+    /**
+     * Se RecordView for string representation.
+     */
 }

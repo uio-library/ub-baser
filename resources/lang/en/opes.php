@@ -7,7 +7,7 @@ return [
 
     'background_and_physical' => 'Background and Physical Properties',
     'content' => 'Content',
-    'editions' => 'Editions',
+    'editions' => 'Publications',
     'images' => 'Images',
 
     'title_or_type' => 'Title / Type of text',
@@ -64,6 +64,8 @@ return [
         'preferred_citation' => 'Preferred citation (deprecated)',
 
         'corrections' => 'Corrections',
+        'edition_nr' => 'Publication no. (for sorting)',
+        'sb' => 'SB',
     ],
     'created_at' => 'Created',
     'updated_at' => 'Last modified',
@@ -76,5 +78,4 @@ return [
     'acquisition_year' => 'Acquisition year',
     'trismegistos_url' => 'Trismegistos URL',
     'papyri_dclp_url' => 'Papyri/DCLP URL',
-    'edition_nr' => 'Edition no.',
 ];

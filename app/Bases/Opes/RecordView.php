@@ -39,4 +39,14 @@ class RecordView extends Record
             return $this->standard_designation . ' (inv. ' . $this->inv_no . ')';
         }
     }
+
+    public function getStringRepresentationAttribute()
+    {
+        return $this->getTitle();
+    }
+
+    public function __toString()
+    {
+        return $this->getStringRepresentationAttribute();
+    }
 }

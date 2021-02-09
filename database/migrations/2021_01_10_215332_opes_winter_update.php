@@ -51,14 +51,22 @@ class OpesWinterUpdate extends Migration
         });
 
         // Change columns to JSON arrays
-        $this->changeColumnToJsonArray('opes', 'bibliography');
+
+        // Wait with this since we don't have a UI element yet
+        // $this->changeColumnToJsonArray('opes', 'bibliography');
+
         // 4.10
         $this->changeColumnToJsonArray('opes', 'places');
-        $this->changeColumnToJsonArray('opes_publications', 'corrections');
+
+        // Fix empty arrays for people: [""] -> []
+        \DB::statement("UPDATE opes SET people = jsonb_build_array() WHERE people = jsonb_build_array('')");
+
+        // Venter litt med denne. Mangler UI-komponent
+        // $this->changeColumnToJsonArray('opes_publications', 'corrections');
 
         Schema::table('opes_publications', function (Blueprint $table) {
             // 2.2
-            $table->smallInteger('edition_nr')->unsigned()->nullable();
+            $table->smallInteger('edition_nr')->unsigned()->default(1);
 
             $table->dateTime('deleted_at')->nullable();
         });
@@ -93,35 +101,39 @@ class OpesWinterUpdate extends Migration
             $record->saveQuietly();
         });
 
-//        Schema::table('opes', function (Blueprint $table) {
-//            // 1.9
-//            $table->dropColumn('notes_on_preservation');
-//
-//            // 1.10
-//            $table->dropColumn('further_rep');
-//
-//            // 1.11
-//            $table->dropColumn('further_replication_note');
-//
-//            // 1.13
-//            $table->dropColumn('rep_ser_old');
-//            $table->dropColumn('rep_pg_no_old');
-//            $table->dropColumn('mounted');
-//            $table->dropColumn('extent');
-//            $table->dropColumn('institution');
-//            $table->dropColumn('status');
-//            $table->dropColumn('quote');
-//            $table->dropColumn('processing_number');
-//        });
-//
-//        Schema::table('opes_publications', function (Blueprint $table) {
-//            // 2.3
-//            $table->dropColumn('ddbdp_pmichcitation');
-//            $table->dropColumn('ddbdp_omichcitation');
-//            $table->dropColumn('ddbdp_p_rep');
-//            $table->dropColumn('ddbdp_o_rep');
-//
-//        });
+        Schema::table('opes', function (Blueprint $table) {
+            // 1.9
+            $table->dropColumn('notes_on_preservation');
+
+            // 1.10
+            $table->dropColumn('further_rep');
+
+            // 1.11
+            $table->dropColumn('further_replication_note');
+
+            // 1.13
+            $table->dropColumn('rep_ser_old');
+            $table->dropColumn('rep_pg_no_old');
+            $table->dropColumn('mounted');
+            $table->dropColumn('extent');
+            $table->dropColumn('institution');
+            $table->dropColumn('status');
+            $table->dropColumn('quote');
+            $table->dropColumn('processing_number');
+        });
+
+        Schema::table('opes_publications', function (Blueprint $table) {
+            // Make opes_id nullable, since we sometimes need to create new publications before the main record
+            // has been created If editing is cancelled, we can get leftover publications with opes_id=NULL.
+            // These can be safely deleted.
+            $table->integer('opes_id')->unsigned()->nullable()->change();
+
+            // 2.3
+            $table->dropColumn('ddbdp_pmichcitation');
+            $table->dropColumn('ddbdp_omichcitation');
+            $table->dropColumn('ddbdp_p_rep');
+            $table->dropColumn('ddbdp_o_rep');
+        });
 
         $this->createView('opes_view', 2);
     }
@@ -135,9 +147,13 @@ class OpesWinterUpdate extends Migration
     {
         $this->dropMaterializedView('opes_view');
 
-        $this->revertChangeColumnToJsonArray('opes', 'bibliography');
+        // Wait with this since we don't have a UI element yet
+        // $this->revertChangeColumnToJsonArray('opes', 'bibliography');
+
         $this->revertChangeColumnToJsonArray('opes', 'places');
-        $this->revertChangeColumnToJsonArray('opes_publications', 'corrections');
+
+        // Wait with this since we don't have a UI element yet
+        // $this->revertChangeColumnToJsonArray('opes_publications', 'corrections');
 
         Schema::table('opes', function (Blueprint $table) {
             $table->dropColumn('p_oslo_vol');
@@ -157,28 +173,28 @@ class OpesWinterUpdate extends Migration
             // 4.9
             $table->renameColumn('places', 'geographica');
 
-//            $table->text('notes_on_preservation')->nullable();
-//            $table->text('further_rep')->nullable();
-//            $table->text('further_replication_note')->nullable();
-//
-//            $table->text('rep_ser_old')->nullable();
-//            $table->text('rep_pg_no_old')->nullable();
-//            $table->text('mounted')->nullable();
-//            $table->text('extent')->nullable();
-//            $table->text('institution')->nullable();
-//            $table->text('status')->nullable();
-//            $table->integer('quote')->unsigned()->nullable();
-//            $table->text('processing_number')->nullable();
+            $table->text('notes_on_preservation')->nullable();
+            $table->text('further_rep')->nullable();
+            $table->text('further_replication_note')->nullable();
+
+            $table->text('rep_ser_old')->nullable();
+            $table->text('rep_pg_no_old')->nullable();
+            $table->text('mounted')->nullable();
+            $table->text('extent')->nullable();
+            $table->text('institution')->nullable();
+            $table->text('status')->nullable();
+            $table->integer('quote')->unsigned()->nullable();
+            $table->text('processing_number')->nullable();
         });
 
         Schema::table('opes_publications', function (Blueprint $table) {
             $table->dropColumn('edition_nr');
             $table->dropColumn('deleted_at');
 
-//            $table->text('ddbdp_pmichcitation')->nullable();
-//            $table->text('ddbdp_omichcitation')->nullable();
-//            $table->text('ddbdp_p_rep')->nullable();
-//            $table->text('ddbdp_o_rep')->nullable();
+            $table->text('ddbdp_pmichcitation')->nullable();
+            $table->text('ddbdp_omichcitation')->nullable();
+            $table->text('ddbdp_p_rep')->nullable();
+            $table->text('ddbdp_o_rep')->nullable();
         });
 
         $this->createView('opes_view', 1);
@@ -191,7 +207,7 @@ class OpesWinterUpdate extends Migration
             ALTER COLUMN {$field} TYPE jsonb
             USING
             CASE WHEN {$field} IS NULL OR {$field} = '' THEN json_build_array()
-              ELSE json_build_array({$field})
+              ELSE array_to_json(regexp_split_to_array({$field}, E'; ?'))
             END
         ");
     }

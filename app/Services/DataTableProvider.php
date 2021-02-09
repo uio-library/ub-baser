@@ -25,6 +25,7 @@ class DataTableProvider
                     if (is_array($v)) {
                         $v = implode(', ', $v);
                     }
+                    $v = preg_replace('/\[\[([^\]]+)\]\]/', '$1', $v); // remove wikilink syntax
                     if (isset($colMap[$k])) {
                         $out[$colMap[$k]] = $v;
                     }
