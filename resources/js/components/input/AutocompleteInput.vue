@@ -44,6 +44,7 @@ export default {
     settings: Object,
     value: String,
     placeholder: String,
+    context: String,
     inputClass: {
       type: String,
       default: 'form-control',

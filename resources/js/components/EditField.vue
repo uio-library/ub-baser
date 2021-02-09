@@ -17,6 +17,7 @@
         :placeholder="placeholder"
         :schema="schema"
         :settings="settings"
+        context="edit"
         ref="component"
         @value="onValue($event)"
       ></component>

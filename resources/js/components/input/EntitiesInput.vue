@@ -68,7 +68,8 @@
     <div v-else>
       <button type="button" class="btn btn-outline-primary btn-sm m-1" @click="addOrCreateEntity()">Legg til</button>
     </div>
-<!--
+
+    <!--
     <code style="display: block; width: 500px; overflow: scroll">
       {{jsonSerialized}}
     </code>-->
@@ -98,6 +99,7 @@ export default {
     schema: Object,
     settings: Object,
     value: Array,
+    context: String,
   },
   data () {
     return {
@@ -165,7 +167,11 @@ export default {
       this.schema.pivotFields.forEach(pivotField => {
         entity.pivot[pivotField.shortKey] = get(pivotField, 'defaultValue', '')
       })
-      entity.pivot.posisjon = this.getNextPosition()
+      if (this.schema.entityRelation === 'many_to_many') {
+        entity.pivot.posisjon = this.getNextPosition()
+      } else {
+        // ?
+      }
       this.entities.push(entity)
       this.clearInput()
     },
@@ -183,9 +189,9 @@ export default {
       this.newEntity[firstKey] = this.searchValue
 
       this.mode = 'createEntity'
-      this.$nextTick(() => {
+      setTimeout(() => {
         this.$refs.newEntityInputs[0].focus()
-      })
+      }, 100)  // nextTick wasn't enough here
     },
     storeNewEntity() {
       this.busy = true

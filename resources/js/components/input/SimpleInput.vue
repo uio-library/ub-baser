@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div v-if="schema.multiline">
+      <div v-if="schema.multiline && context === 'edit'">
         <textarea
            class="form-control"
            ref="input"
@@ -34,6 +34,7 @@ export default {
     settings: Object,
     value: String,
     placeholder: String,
+    context: String,
   },
   methods: {
     onInput (newValue) {

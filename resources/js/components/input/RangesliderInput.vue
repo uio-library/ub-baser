@@ -38,6 +38,7 @@ export default {
     schema: Object,
     settings: Object,
     value: String,
+    context: String,
   },
 
   computed: {

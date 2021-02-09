@@ -41,6 +41,7 @@ export default {
     settings: Object,
     value: String | Array,
     placeholder: String,
+    context: String,
   },
   computed: {
     multiple () {

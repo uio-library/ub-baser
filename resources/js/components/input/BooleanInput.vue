@@ -21,6 +21,7 @@ export default {
     schema: Object,
     settings: Object,
     value: Boolean,
+    context: String,
   },
   computed: {
     label () {

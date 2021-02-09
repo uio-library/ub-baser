@@ -52,6 +52,7 @@
                 :placeholder="placeholder"
                 :schema="currentSchema"
                 :settings="settings"
+                context="search"
                 @value="$emit('value', $event)"
             ></component>
         </div>
