@@ -452,6 +452,8 @@ class BaseController extends Controller
 
         $record->save();
 
+        $changes = $this->syncEntities($schema, $request, $changes, $record);
+
         return $changes;
     }
 
@@ -498,5 +500,166 @@ class BaseController extends Controller
         $query['id'] = $model->{$idField};
 
         return redirect($base->action('show', $query));
+    }
+
+    /**
+     * @param Schema $schema
+     * @param Request $request
+     * @param array $changes
+     * @param Model $record
+     * @return array
+     */
+    protected function syncEntities(Schema $schema, Request $request, array $changes, Model $record): array
+    {
+        foreach ($schema->flat() as $field) {
+            $newValue = $request->get($field->key, $field->defaultValue);
+
+            if ($field->type == 'entities') {
+                $values = json_decode($newValue, true);
+                if ($field->entityRelation == EntitiesField::MANY_TO_MANY_RELATION) {
+                    $changes = array_merge($changes, $this->syncManyToManyRelation($record, $field, $values));
+                } else {
+                    $changes = array_merge($changes, $this->syncOneToManyRelation($record, $field, $values));
+                }
+            }
+        }
+        return $changes;
+    }
+
+    /**
+     * Sync many-to-many-relation for a field.
+     *
+     * @param Model $record
+     * @param EntitiesField $field
+     * @param array $input
+     *
+     * @return array
+     */
+    protected function syncOneToManyRelation(Model $record, EntitiesField $field, array $input): array
+    {
+        $attribute = $field->modelAttribute;
+        $entityModel = $field->entityType;
+        $relatedPivotKey = $field->relatedPivotKey;
+        $changes = [];
+        $encountered = [];
+
+        // Add
+        $entities = [];
+        foreach ($input as $inputValue) {
+            $entityId = (int) $inputValue['id'];
+            $entity = $entityModel::findOrFail($entityId);
+            $encountered[] = $entityId;
+            if ($entity->{$relatedPivotKey} != $record->id) {
+                $changes[] = 'La til: ' . json_encode($entity, JSON_UNESCAPED_UNICODE);
+                $entity->{$relatedPivotKey} = $record->id;
+                $entity->save();
+            }
+        }
+
+        // Remove
+        foreach ($record->{$attribute} as $entity) {
+            $changes[] = 'Fjernet: ' . json_encode($entity, JSON_UNESCAPED_UNICODE);
+            if (!in_array($entity->id, $encountered)) {
+                $entity->delete();
+            }
+        }
+
+        return $changes;
+    }
+
+    /**
+     * Sync many-to-many-relation for a field.
+     *
+     * @param Model $record
+     * @param EntitiesField $field
+     * @param array $input
+     *
+     * @return array
+     */
+    protected function syncManyToManyRelation(Model $record, EntitiesField $field, array $input): array
+    {
+        $attribute = $field->modelAttribute;
+        $pivotTable = $field->pivotTable;
+        $pivotTableKey = $field->pivotTableKey;
+        $relatedPivotKey = $field->relatedPivotKey;
+        $entityModel = $field->entityType;
+
+        $pivotFields = array_map(
+            function ($field) {
+                return $field->shortKey;
+            },
+            $field->pivotFields
+        );
+
+        // Initially, the plan was to use the Eloquent sync() method here, but it doesn't
+        // support attaching the same model multiple times with different pivot data, so
+        // it can't be used to attach the same author multiple times with different roles.
+        // Therefore we have to get our hands a bit dirty here.
+
+        $changes = [];
+        $names = [];
+
+        // Make a list of current entities
+        $currentEntities = [];
+        foreach ($record->{$attribute} as $entity) {
+            $names[$entity->id] = (string) $entity;
+            $value = [
+                $relatedPivotKey => $record->id,
+                $pivotTableKey => $entity->id,
+            ];
+            foreach ($pivotFields as $pf) {
+                $value[$pf] = $entity->pivot->{$pf};
+            }
+            $currentEntities[] = $value;
+        }
+
+        // Make a list of new entities
+        $entities = [];
+        foreach ($input as $inputValue) {
+            $entity = $entityModel::findOrFail($inputValue['id']);
+            $names[$entity->id] = (string) $entity;
+            $value = [
+                $relatedPivotKey => $record->id,
+                $pivotTableKey => $entity->id,
+            ];
+            foreach ($pivotFields as $pf) {
+                $value[$pf] = ($inputValue['pivot'][$pf] === '') ? null : $inputValue['pivot'][$pf];
+            }
+            $entities[] = $value;
+        }
+
+        // Compare the two to figure out which updates we need to do on
+        // the record-entity pivot table.
+        $delete = array_udiff($currentEntities, $entities, function ($a, $b) {
+            return strcmp(json_encode($a), json_encode($b));
+        });
+        $insert = array_udiff($entities, $currentEntities, function ($a, $b) {
+            return strcmp(json_encode($a), json_encode($b));
+        });
+
+        // Delete relations that no longer exist
+        foreach ($delete as $entity) {
+            $changes[] = 'Fjernet: ' . json_encode($entity, JSON_UNESCAPED_UNICODE);
+            \DB::table($pivotTable)
+                ->where([
+                    $relatedPivotKey => $entity[$relatedPivotKey],
+                    $pivotTableKey => $entity[$pivotTableKey],
+                ])
+                ->delete();
+        }
+
+        // Insert new ones
+        foreach ($insert as $entity) {
+            $changes[] = 'La til: ' . json_encode($entity, JSON_UNESCAPED_UNICODE);
+            foreach ($entity as $k => $v) {
+                if (is_array($v)) {
+                    $entity[$k] = json_encode($v);
+                }
+            }
+            \DB::table($pivotTable)
+                ->insert($entity);
+        }
+
+        return $changes;
     }
 }
