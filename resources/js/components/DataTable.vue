@@ -105,7 +105,7 @@ export default {
           label: group.label,
           fields: group.fields.filter(field => field.showInTableView !== false),
         }
-      ))
+      )).filter(group => group.fields.length > 0)
     },
 
     columns () {
