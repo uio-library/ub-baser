@@ -5,7 +5,7 @@
     <!-- eslint-disable-next-line vue/require-v-for-key -->
     <div v-for="(entity, entityIdx) in entities" class="d-flex pb-1 align-items-end">
       <div class="px-1" style="min-width: 250px;">
-        <a :href="baseUrl + '/' + entity.id" target="_blank" class="pivot-entity" >
+        <a :href="baseUrl + '/' + entity.id + '/edit'" target="_blank" class="pivot-entity" >
           {{ entity.string_representation }}
         </a>
       </div>
