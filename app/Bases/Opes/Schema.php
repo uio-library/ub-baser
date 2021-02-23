@@ -353,12 +353,20 @@ class Schema extends BaseSchema
                     [
                         'key' => 'internal_comments',
                         'type' => 'simple',
+                        // Midlertidig løsning. Ønsker egentlig at de skal vises bare for innloggede
+                        'search' => false,
+                        'showInTableView' => false,
+                        'showInRecordView' => false,
                     ],
                     // Conservation notes (Added Jan 2021)
                     [
                         'key' => 'conservation_notes',
                         'type' => 'simple',
                         'multiline' => true,
+                        // Midlertidig løsning. Ønsker egentlig at de skal vises bare for innloggede
+                        'search' => false,
+                        'showInTableView' => false,
+                        'showInRecordView' => false,
                     ],
 
                     // Bibliography
