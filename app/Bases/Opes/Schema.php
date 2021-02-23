@@ -25,6 +25,9 @@ class Schema extends BaseSchema
                 'key' => 'standard_designation',
                 'type' => 'simple',
                 'edit' => false,
+                'search' => [
+                    'sort_index' => 'standard_designation_sort',
+                ],
             ],
             // inventary number
             [

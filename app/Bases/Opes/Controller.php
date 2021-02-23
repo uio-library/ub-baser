@@ -30,7 +30,7 @@ class Controller extends BaseController
     ];
 
     public static $defaultSortOrder = [
-        ['key' => 'inv_no', 'direction' => 'asc'],
+        ['key' => 'standard_designation', 'direction' => 'asc'],
     ];
 
     /**
