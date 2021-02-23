@@ -14,7 +14,7 @@ class Edition extends Model
      *
      * @var string
      */
-    protected $table = 'opes_publications';
+    protected $table = 'opes_editions';
 
     /**
      * Indicates if the model should be timestamped.

@@ -7,7 +7,7 @@ return [
 
     'background_and_physical' => 'Background and Physical Properties',
     'content' => 'Content',
-    'editions' => 'Publications',
+    'editions' => 'Editions',
     'images' => 'Images',
 
     'title_or_type' => 'Title / Type of text',
@@ -64,7 +64,7 @@ return [
         'preferred_citation' => 'Preferred citation (deprecated)',
 
         'corrections' => 'Corrections',
-        'edition_nr' => 'Publication no. (for sorting)',
+        'edition_nr' => 'Edition no. (for sorting)',
         'sb' => 'SB',
     ],
     'created_at' => 'Created',
