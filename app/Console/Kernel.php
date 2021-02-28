@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImportNordskriftCommand::class,
         \App\Console\Commands\ImportBibsysCommand::class,
         \App\Console\Commands\ImportOpesCommand::class,
+        \App\Console\Commands\ImportSakbibCommand::class,
         \App\Console\Commands\PurgeLogs::class,
         \App\Console\Commands\Deployed::class,
         \App\Console\Commands\PurgeLocks::class,
