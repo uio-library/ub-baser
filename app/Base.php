@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Bases\Config;
+use App\Record;
 use App\Http\Controllers\PageController;
 use App\Schema\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -50,7 +51,7 @@ class Base extends Model
      */
     public $incrementing = false;
     private $_config;
-    private $_schema;
+    private $_schemas = [];
 
     /**
      * Get the title in the default language.
@@ -128,14 +129,17 @@ class Base extends Model
     /**
      * Generate the URL to a controller action using the controller for this base.
      *
-     * @param string $action
+     * @param string|array $action
      * @param string|array $parameters
      * @param bool $absolute
      * @return string
      */
     public function action($action = 'show', $parameters = [], bool $absolute = true)
     {
-        if (strpos($action, '@') !== false) {
+        if (is_array($action)) {
+            $controllerClass = $action[0];
+            $action = $action[1];
+        } elseif (strpos($action, '@') !== false) {
             list($controllerClass, $action) = explode('@', $action);
         } else {
             $controllerClass = 'Controller';
@@ -172,15 +176,21 @@ class Base extends Model
     /**
      * Returns the schema object for this base.
      *
-     * @param string $schema
+     * @param Record|null $record
      * @return Schema
      */
-    public function getSchema($schema = 'Schema')
+    public function getSchema(Record $record = null): Schema
     {
-        if (is_null($this->_schema)) {
-            $this->_schema = $this->make($schema);
+        if (!is_null($record) && isset($record::$schema)) {
+            $schemaClass = $record::$schema;
+        } else {
+            $recordClass = $this->getClass('Record');
+            $schemaClass = $recordClass::$schema;
         }
-        return $this->_schema;
+        if (!isset($this->_schemas[$schemaClass])) {
+            $this->_schemas[$schemaClass] = $this->make($schemaClass);
+        }
+        return $this->_schemas[$schemaClass];
     }
 
     /**

@@ -2,12 +2,14 @@
 
 namespace App\Bases\Opes;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Record as BaseRecord;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Edition extends Model
+class Edition extends BaseRecord
 {
     use SoftDeletes;
+
+    public static $schema = EditionSchema::class;
 
     /**
      * The table associated with the model.
@@ -53,7 +55,7 @@ class Edition extends Model
         return $this->belongsTo(RecordView::class, 'opes_id');
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         $picture = empty($this->photo) ? '' : ', picture: ' . $this->photo;
         return "{$this->editor}, {$this->ser_vol}, {$this->year}, {$this->pg_no}{$picture}";

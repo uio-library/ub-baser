@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class Record extends Model
 {
+    public static $schema = 'Schema';
+
     /**
      * Get a title for this record that can be used in the <title> element etc.
      *
@@ -22,5 +24,10 @@ abstract class Record extends Model
         }
 
         return empty($value);
+    }
+
+    public function getSchema()
+    {
+        return app(Base::class)->getSchema($this);
     }
 }

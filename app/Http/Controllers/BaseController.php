@@ -12,7 +12,6 @@ use App\Schema\Schema;
 use App\Schema\SchemaField;
 use App\Services\AutocompleteServiceInterface;
 use App\Services\DataTableProvider;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -48,12 +47,6 @@ class BaseController extends Controller
      */
     protected $editView = 'edit';
 
-    /**
-     * Classname of the schema class.
-     * @var string
-     */
-    protected $recordSchema = 'Schema';
-
     public static $defaultColumns = [];
     public static $defaultSortOrder = [];
 
@@ -81,10 +74,10 @@ class BaseController extends Controller
      * Validation rules when creating or updating a record.
      * @see: https://laravel.com/docs/master/validation
      *
-     * @param Model $record
+     * @param Record $record
      * @return array
      */
-    protected function getValidationRules(Model $record): array
+    protected function getValidationRules(Record $record): array
     {
         return [];
     }
@@ -198,7 +191,6 @@ class BaseController extends Controller
             abort(404, trans('base.error.recordtrashed'));
         }
 
-        $schema = $base->getSchema();
         $query = $request->query();
         $query['id'] = $id;
 
@@ -207,8 +199,8 @@ class BaseController extends Controller
             [
                 'title' => $record->getTitle(),
                 'base' => $base,
-                'schema' => $base->getSchema(),
                 'record'  => $record,
+                'schema' => $base->getSchema($record),
                 'currentQuery' => $query,
                 'order' => $request->getSortOrder(static::$defaultSortOrder),
             ]
@@ -256,7 +248,7 @@ class BaseController extends Controller
 
         $this->updateOrCreateRecord($base, $record, $request);
 
-        $url = $base->action('show', $record->id);
+        $url = $base->action([get_class($this), 'show'], $record->id);
         $this->log(
             'Opprettet <a href="%s">post #%s</a>.',
             $url,
@@ -288,7 +280,7 @@ class BaseController extends Controller
 
         $changes = $this->updateOrCreateRecord($base, $record, $request);
 
-        $url = $base->action('show', $record->id);
+        $url = $base->action([get_class($this), 'show'], $record->id);
         if (count($changes)) {
             $changeList = implode("\n", array_map(
                 function ($change) {
@@ -376,13 +368,13 @@ class BaseController extends Controller
     /**
      * Construct form arguments according to some schema.
      *
-     * @param Model $record
+     * @param Record $record
      * @param Base $base
      * @return array
      */
-    protected function formArguments(Model $record, Base $base): array
+    protected function formArguments(Record $record, Base $base): array
     {
-        $schema = $base->getSchema($this->recordSchema);
+        $schema = $base->getSchema($record);
         $values = [];
         foreach ($schema->keyed() as $key => $field) {
             if ($field->has('column')) {
@@ -408,13 +400,13 @@ class BaseController extends Controller
      * Store a newly created record, or update an existing one.
      *
      * @param Base $base
-     * @param Model $record
+     * @param Record $record
      * @param Request $request
      * @return array
      */
-    protected function updateOrCreateRecord(Base $base, Model $record, Request $request): array
+    protected function updateOrCreateRecord(Base $base, Record $record, Request $request): array
     {
-        $schema = $base->getSchema($this->recordSchema);
+        $schema = $base->getSchema($record);
         $changes = [];
 
         foreach ($schema->flat() as $field) {
@@ -476,7 +468,7 @@ class BaseController extends Controller
 
     public function redirectToRecord(Base $base, $numeric)
     {
-        return redirect($base->action('show', $numeric));
+        return redirect($base->action([get_class($this), 'show'], $numeric));
     }
 
     public function redirectToHome(Base $base)
@@ -516,10 +508,10 @@ class BaseController extends Controller
      * @param Schema $schema
      * @param Request $request
      * @param array $changes
-     * @param Model $record
+     * @param Record $record
      * @return array
      */
-    protected function syncEntities(Schema $schema, Request $request, array $changes, Model $record): array
+    protected function syncEntities(Schema $schema, Request $request, array $changes, Record $record): array
     {
         foreach ($schema->flat() as $field) {
             $newValue = $request->get($field->key, $field->defaultValue);
@@ -539,13 +531,13 @@ class BaseController extends Controller
     /**
      * Sync many-to-many-relation for a field.
      *
-     * @param Model $record
+     * @param Record $record
      * @param EntitiesField $field
      * @param array $input
      *
      * @return array
      */
-    protected function syncOneToManyRelation(Model $record, EntitiesField $field, array $input): array
+    protected function syncOneToManyRelation(Record $record, EntitiesField $field, array $input): array
     {
         $attribute = $field->modelAttribute;
         $entityModel = $field->entityType;
@@ -580,13 +572,13 @@ class BaseController extends Controller
     /**
      * Sync many-to-many-relation for a field.
      *
-     * @param Model $record
+     * @param Record $record
      * @param EntitiesField $field
      * @param array $input
      *
      * @return array
      */
-    protected function syncManyToManyRelation(Model $record, EntitiesField $field, array $input): array
+    protected function syncManyToManyRelation(Record $record, EntitiesField $field, array $input): array
     {
         $attribute = $field->modelAttribute;
         $pivotTable = $field->pivotTable;

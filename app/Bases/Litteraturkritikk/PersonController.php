@@ -13,7 +13,6 @@ class PersonController extends BaseController
 {
     protected $logGroup = 'norsk-litteraturkritikk';
     protected $model = 'Person';
-    protected $recordSchema = 'PersonSchema';
     protected $editView = 'persons.edit';
 
     /**

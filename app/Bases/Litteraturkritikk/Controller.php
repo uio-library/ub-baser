@@ -43,9 +43,9 @@ class Controller extends BaseController
      * @return array
      * @throws ValidationException
      */
-    protected function updateOrCreateRecord(Base $base, Model $record, Request $request): array
+    protected function updateOrCreateRecord(Base $base, Record $record, Request $request): array
     {
-        $schema = $base->getSchema($this->recordSchema);
+        $schema = $base->getSchema($record);
 
         // Update the main record
         try {

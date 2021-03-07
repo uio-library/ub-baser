@@ -2,14 +2,16 @@
 
 namespace App\Bases\Litteraturkritikk;
 
+use App\Record as BaseRecord;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Person extends Model
+class Person extends BaseRecord
 {
     use SoftDeletes;
     use HasFactory;
+
+    public static $schema = PersonSchema::class;
 
     /**
      * The table associated with the model.
@@ -91,5 +93,10 @@ class Person extends Model
     public function __toString()
     {
         return $this->normalizedName();
+    }
+
+    public function getTitle(): string
+    {
+        return $this->getStringRepresentationAttribute();
     }
 }
