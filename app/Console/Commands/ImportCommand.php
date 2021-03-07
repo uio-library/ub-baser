@@ -101,6 +101,9 @@ abstract class ImportCommand extends Command
         if ($value === '') {
             return null;
         }
+        if ($value === 'NULL') {
+            return null;
+        }
 
         return $value;
     }
