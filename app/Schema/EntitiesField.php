@@ -15,6 +15,7 @@ class EntitiesField extends SchemaField
     {
         $this->data['relatedPivotKey'] = 'record_id';
         $this->data['entityRelation'] = self::MANY_TO_MANY_RELATION;
+        $this->data['pivotFields'] = [];
     }
 
     public function setModelAttribute(string $value)
@@ -37,7 +38,9 @@ class EntitiesField extends SchemaField
 
     public function setEntitySchema(string $value)
     {
-        $this->data['entitySchema'] = new $value();
+        if (is_null($this->parent)) {
+            $this->data['entitySchema'] = new $value($this);
+        }
     }
 
     public function setPivotTable(string $value)
