@@ -33,6 +33,7 @@ abstract class SchemaField implements JsonSerializable
         'date' => DateField::class,
         'incrementing' => IncrementingField::class,
         'entities' => EntitiesField::class,
+        'entity' => EntityField::class,
         'search_only' => SearchOnlyField::class,
         'select' => SelectField::class,
         'simple' => SimpleField::class,
