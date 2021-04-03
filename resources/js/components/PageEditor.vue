@@ -139,6 +139,9 @@ export default {
       lock: null,
       exists: this.existed,
       editorConfig: {
+        language: {
+          ui: 'nb'
+        },
         plugins: [
           Bold,
           Code,
