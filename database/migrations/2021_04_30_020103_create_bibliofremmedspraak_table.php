@@ -62,9 +62,6 @@ class CreateBibliofremmedspraakTable extends Migration
                     'en' => 'Bibliography on foreign language',
                     'nb' => 'Bibliografi over fremmedspråk',
                 ]),
-                'class_bindings' => json_encode([
-                    'RecordView' => 'Record',
-                ], JSON_FORCE_OBJECT),
             ],
         ]);
     }
