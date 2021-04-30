@@ -1,6 +1,7 @@
 <?php
 
 use App\Traits\MigrationHelper;
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,31 +18,31 @@ class CreateBibliofremmedspraakTable extends Migration
     public function up()
     {
         Schema::create('bibliofremmedspraak', function (Blueprint $table) {
-            $this->addCommonFields($table);$table->string('forfatter')->nullable();
-            $table->string('forfatter')->nullable();
-            $table->string('tittel')->nullable();
-            $table->string('tidsskrift')->nullable();
-            $table->string('antologi')->nullable();
-            $table->string('angitti')->nullable();
-            $table->string('utgivelsessted')->nullable();
-            $table->string('utgivelsesår')->nullable();
-            $table->string('forlag')->nullable();
-            $table->string('emne')->nullable();
-            $table->string('type')->nullable();
-            $table->string('dato')->nullable();
-            $table->string('utgiver')->nullable();
-            $table->string('ansvarsangivelse')->nullable();
-            $table->string('eissn')->nullable();
-            $table->string('issn')->nullable();
-            $table->string('isbn')->nullable();
-            $table->string('eisbn')->nullable();
-            $table->string('eissn')->nullable();
-            $table->string('boktittel')->nullable();
-            $table->string('nettsted')->nullable();
-            $table->string('spraak')->nullable();
-            $table->string('url')->nullable();
-            $table->string('sidetall')->nullable();
-            $table->string('digitalisering')->nullable();
+            $this->addCommonFields($table);
+            $table->text('forfatter')->nullable();
+            $table->text('tittel')->nullable();
+            $table->text('tidsskrift')->nullable();
+            $table->text('antologi')->nullable();
+            $table->text('angitti')->nullable();
+            $table->text('utgivelsessted')->nullable();
+            $table->text('nummer')->nullable();
+            $table->text('utgivelsesaar')->nullable();
+            $table->text('forlag')->nullable();
+            $table->text('emne')->nullable();
+            $table->text('type')->nullable();
+            $table->text('dato')->nullable();
+            $table->text('utgiver')->nullable();
+            $table->text('ansvarsangivelse')->nullable();
+            $table->text('eissn')->nullable();
+            $table->text('issn')->nullable();
+            $table->text('isbn')->nullable();
+            $table->text('eisbn')->nullable();
+            $table->text('boktittel')->nullable();
+            $table->text('nettsted')->nullable();
+            $table->text('spraak')->nullable();
+            $table->text('url')->nullable();
+            $table->text('sidetall')->nullable();
+            $table->text('digitalisering')->nullable();
 
             $table->index('forfatter');
             $table->index('tittel');
