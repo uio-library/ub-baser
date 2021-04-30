@@ -1,4 +1,4 @@
-@extends('dummy.layout')
+@extends('bibliofremmedspraak.layout')
 
 @section('content')
 
