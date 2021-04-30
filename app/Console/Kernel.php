@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImportDommerCommand::class,
         \App\Console\Commands\ImportLetrasCommand::class,
         \App\Console\Commands\ImportBibliomanuelCommand::class,
+        \App\Console\Commands\ImportBibliofremmedspraakCommand::class,
         \App\Console\Commands\ImportBibsysCommand::class,
         \App\Console\Commands\ImportOpesCommand::class,
         \App\Console\Commands\PurgeLogs::class,

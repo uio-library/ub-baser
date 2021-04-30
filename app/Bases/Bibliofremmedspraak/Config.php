@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bases\Bibliofremmedsprak;
+namespace App\Bases\Bibliofremmedspraak;
 
 use App\Bases\AutocompleteService;
 use App\Bases\Config as BaseConfig;

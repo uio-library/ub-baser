@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Bases\Bibliofremmedsprak;
+namespace App\Bases\Bibliofremmedspraak;
 
 use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
 {
     protected $schema = [
-        "id" => "bibliofremmedsprak",
+        "id" => "bibliofremmedspraak",
         "fields" => [
 
             // ID
             [
                 "key" => "id",
                 "type" => "incrementing",
-                "displayable" => true,
+                'showInRecordView' => true,
             ],
 
             // Sist endret

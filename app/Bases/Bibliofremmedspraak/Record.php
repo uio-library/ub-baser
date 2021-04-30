@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bases\Bibliofremmedsprak;
+namespace App\Bases\Bibliofremmedspraak;
 
 use App\Record as BaseRecord;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +14,7 @@ class Record extends BaseRecord
      *
      * @var string
      */
-    protected $table = 'bibliofremmedsprak';
+    protected $table = 'bibliofremmedspraak';
 
     /**
      * The attributes that are mass assignable. This should include all the standard

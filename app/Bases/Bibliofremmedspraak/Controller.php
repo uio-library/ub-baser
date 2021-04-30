@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Bases\Bibliofremmedsprak;
+namespace App\Bases\Bibliofremmedspraak;
 
 use App\Http\Controllers\BaseController;
 
 class Controller extends BaseController
 {
-    protected $logGroup = 'bibliofremmedsprak';
+    protected $logGroup = 'bibliofremmedspraak';
 
     public static $defaultColumns = [
         // Verket
