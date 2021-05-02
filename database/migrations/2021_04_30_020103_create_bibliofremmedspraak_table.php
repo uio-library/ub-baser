@@ -55,13 +55,6 @@ class CreateBibliofremmedspraakTable extends Migration
                 'updated_at' => Carbon::now(),
                 'basepath' => 'bibliofremmedspraak',
                 'namespace' => 'Bibliofremmedspraak',
-                'languages' => json_encode(['nb', 'es', 'en']),
-                'default_language' => 'es',
-                'name' => json_encode([
-                    'es' => 'Bibliografía espaniol',
-                    'en' => 'Bibliography on foreign language',
-                    'nb' => 'Bibliografi over fremmedspråk',
-                ]),
             ],
         ]);
     }
