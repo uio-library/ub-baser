@@ -134,6 +134,11 @@
                     @foreach ($record->editions as $edition)
                         <li class="list-group-item">
                             {{ $edition }}
+                            @if ($edition->sb)
+                            <div>
+                                SB: {{ $edition->sb }}
+                            </div>
+                            @endif
                             @if (count($edition->correctionsArray()))
                                 <div>
                                     ▾ {{ __('opes.edition.corrections') }}:

@@ -58,8 +58,7 @@ class Edition extends BaseRecord
     public function getTitle(): string
     {
         $picture = empty($this->photo) ? '' : ', picture: ' . $this->photo;
-        $sb = empty($this->sb) ? '' : ', SB ' . $this->sb;
-        return "{$this->editor}, {$this->ser_vol}, {$this->year}, {$this->pg_no}{$picture}{$sb}";
+        return "{$this->editor}, {$this->ser_vol}, {$this->year}, {$this->pg_no}{$picture}";
     }
 
     public function getStringRepresentationAttribute()
