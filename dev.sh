@@ -80,6 +80,7 @@ docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" $CMD
 
 if [[ $CMD == "up -d"* ]]; then
 
+    echo
     echo "============================================================================================================"
     echo "[dev.sh] Waiting for app to be ready"
     echo "============================================================================================================"
@@ -91,8 +92,16 @@ if [[ $CMD == "up -d"* ]]; then
     SECONDS=0
     until $(curl --output /dev/null --silent --head --fail $APP_HOST); do
         if [[ $SECONDS -gt 30 ]]; then
+            echo ----------------------------------------------------------------------------
+            echo "[dev.sh] ERROR: App still not ready after $SECONDS seconds. Reponse from $APP_HOST:"
+            echo
+            curl --silent $APP_HOST
+            echo
+            echo Docker logs:
+            docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" ps
+            docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" logs
+            echo
             docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" exec -T app sh -c 'tail -n 200 storage/logs/*.log || echo "No log files yet"'
-            echo "[dev.sh] App still not ready after $SECONDS seconds"
         fi
         printf .
         sleep 5
