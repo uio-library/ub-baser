@@ -146,7 +146,7 @@ class Schema extends BaseSchema
                         ],
                         'edit' => [
                             'preload' => true,
-                            'allow_new_values' => false,
+                            'allow_new_values' => true,
                             'placeholder' => '',
                         ],
                     ],
@@ -189,7 +189,7 @@ class Schema extends BaseSchema
                         ],
                         'edit' => [
                             'preload' => true,
-                            'allow_new_values' => false,
+                            'allow_new_values' => true,
                             'placeholder' => '',
                         ],
                     ],
