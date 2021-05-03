@@ -73,6 +73,6 @@ class Edition extends BaseRecord
 
     public function correctionsArray()
     {
-        return empty($this->corrections) ? [] : explode('; ', $this->corrections);
+        return empty($this->corrections) ? [] : explode(';', $this->corrections);
     }
 }
