@@ -42,7 +42,7 @@ before_install:
   - node --version
 
 install:
-  - ./dev.sh up -d
+  - ./dev.sh up
 
 before_script:
   - ./dev.sh ps
