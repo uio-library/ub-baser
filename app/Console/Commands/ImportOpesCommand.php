@@ -32,7 +32,7 @@ class ImportOpesCommand extends ImportCommand
      */
     protected $tables = [
         'opes',
-        'opes_publications',
+        'opes_editions',
     ];
 
     /**
@@ -42,7 +42,7 @@ class ImportOpesCommand extends ImportCommand
      */
     protected $sequences = [
         'opes.id',
-        'opes_publications.id',
+        'opes_editions.id',
     ];
 
     /**
