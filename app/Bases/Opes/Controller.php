@@ -37,10 +37,10 @@ class Controller extends BaseController
      * Validation rules when creating or updating a record.
      * @see: https://laravel.com/docs/master/validation
      *
-     * @param Model $record
+     * @param BaseRecord $record
      * @return array
      */
-    protected function getValidationRules(Model $record): array
+    protected function getValidationRules(BaseRecord $record): array
     {
         return [
             'inv_no' => 'required',
