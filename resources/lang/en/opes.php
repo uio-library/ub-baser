@@ -37,6 +37,7 @@ return [
     'translation' => 'English translation',
     'status' => 'Status',
     'bibliography' => 'Bibliography',
+    'bibliography_section' => 'Bibliography',
     'negative_in_copenhagen' => 'Negative keept in Copenhagen',
     'date_cataloged' => 'Date cataloged',
     'processing_number' => 'Processing number',

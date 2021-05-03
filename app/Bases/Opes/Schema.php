@@ -390,17 +390,6 @@ class Schema extends BaseSchema
                         'showInRecordView' => false,
                     ],
 
-                    // Bibliography
-                    [
-                        'key' =>  'bibliography',
-                        'type' => 'simple', // TODO: Ikke helt riktig, burde kanskje ha en egen 'list'-type?
-                        'multiline' => true,
-                        'showInRecordView' => false, // Vises i eget avsnitt
-                        'edit' => [
-                            'placeholder' => '',
-                            'help' => 'Multiple corrections should be separated by semicolon followed by space.',
-                        ],
-                    ],
                 ],
             ],
 
@@ -423,6 +412,25 @@ class Schema extends BaseSchema
                         'showInTableView' => false,
                     ],
 
+                ],
+            ],
+
+            [
+                'key' => 'bibliography_section',
+                'searchable' => false,
+                'fields' => [
+
+                    // Bibliography
+                    [
+                        'key' =>  'bibliography',
+                        'type' => 'simple', // TODO: Ikke helt riktig, burde kanskje ha en egen 'list'-type?
+                        'multiline' => true,
+                        'showInRecordView' => false, // Vises i eget avsnitt
+                        'edit' => [
+                            'placeholder' => '',
+                            'help' => 'Multiple corrections should be separated by semicolon followed by space.',
+                        ],
+                    ],
                 ],
             ],
 
