@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bases\bibliofremmedspraak;
+namespace App\Bases\Bibliofremmedspraak;
 
 class RecordObserver
 {

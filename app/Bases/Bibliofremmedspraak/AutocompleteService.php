@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bases\Bibliofremmedsprak;
+namespace App\Bases\Bibliofremmedspraak;
 
 class AutocompleteService extends \App\Services\AutocompleteService
 {
