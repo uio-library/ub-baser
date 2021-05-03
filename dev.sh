@@ -95,7 +95,7 @@ if [[ $CMD == "up -d"* ]]; then
             echo ----------------------------------------------------------------------------
             echo "[dev.sh] ERROR: App still not ready after $SECONDS seconds. Reponse from $APP_HOST:"
             echo
-            curl --silent $APP_HOST
+            curl -v -L $APP_HOST
             echo
             echo Docker logs:
             docker-compose -f "docker/compose/${APP_ENV}.yml" -p "${PROJECT_NAME}" ps
