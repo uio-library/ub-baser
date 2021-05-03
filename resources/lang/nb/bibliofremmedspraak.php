@@ -19,7 +19,7 @@ return [
     'emne' => 'Emne',
     'type' => 'Type',
     'dato' => 'Dato',
-    'utgiver' => 'Utgiver',
+    'utgiver' => 'Redaktør',
     'ansvarsangivelse' => 'Ansvarsangivelse',
     'eissn' => 'E-ISSN',
     'issn' => 'ISBN',

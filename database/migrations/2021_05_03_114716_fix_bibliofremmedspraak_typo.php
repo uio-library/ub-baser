@@ -17,7 +17,7 @@ class FixBibliofremmedspraakTypo extends Migration
             ->where(['id' => 'bibliofremmedspraak'])
             ->update([
                 'name' => json_encode([
-                    'en' => 'Foreign Language and Foreign Language Teaching in Norway. French, Spanish and German',
+                    'en' => 'Foreign Language and Foreign Languages Teaching in Norway. French, Spanish and German',
                     'nb' => 'Fremmedspråk og fremmedspråkundervisning i Norge. Fransk, spansk og tysk',
                 ]),
             ]);
