@@ -77,6 +77,8 @@ return [
         'notnull' => 'is not missing',
         'in' => 'is in the range',
         'outside' => 'is outside the range',
+        'gte' => 'is greater than or equal',
+        'lte' => 'is less than or equal',
     ],
     'and' => 'and',
     'or' => 'or',

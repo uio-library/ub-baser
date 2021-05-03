@@ -162,6 +162,10 @@
 
             </div>
         </div>
+        <hr>
+        <p>
+            Record last modified {{ $record->updated_at }}
+        </p>
     @endif
 @endsection
 

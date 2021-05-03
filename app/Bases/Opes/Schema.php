@@ -94,19 +94,37 @@ class Schema extends BaseSchema
                 ],
             ],
             // Opprettet
-//            [
-//                'key' => 'created_at',
-//                'type' => 'simple',
-//                'edit' => false,
-//                'search' => false,
-//                'columnClassName' => 'dt-body-nowrap',
-//            ],
+            [
+                'key' => 'created_at',
+                'datatype' => 'date',
+                'type' => 'simple',
+                'search' => [
+                    'advanced' => true,
+                    'placeholder' => 'YYYY-MM-DD',
+                    'operators' => [
+                        Operators::EQUALS,
+                        Operators::GTE,
+                        Operators::LTE,
+                    ],
+                ],
+                'edit' => false,
+                'columnClassName' => 'dt-body-nowrap',
+            ],
             // Sist endret
             [
                 'key' => 'updated_at',
+                'datatype' => 'date',
                 'type' => 'simple',
+                'search' => [
+                    'advanced' => true,
+                    'placeholder' => 'YYYY-MM-DD',
+                    'operators' => [
+                        Operators::EQUALS,
+                        Operators::GTE,
+                        Operators::LTE,
+                    ],
+                ],
                 'edit' => false,
-                'search' => false,
                 'columnClassName' => 'dt-body-nowrap',
             ],
         ],

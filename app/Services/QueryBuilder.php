@@ -110,7 +110,7 @@ class QueryBuilder
                 $this->addArraySearchTerm($query, $field->search, $operator, $value);
                 return;
             default:
-                $this->addSimpleTerm($query, $field->search, $operator, $value);
+                $this->addSimpleTerm($query, $field->search, $field->datatype, $operator, $value);
                 return;
         }
     }
@@ -140,7 +140,7 @@ class QueryBuilder
         }
     }
 
-    protected function addSimpleTerm(EloquentBuilder $query, SearchOptions $searchConfig, string $operator, ?string $value): void
+    protected function addSimpleTerm(EloquentBuilder $query, SearchOptions $searchConfig, string $datatype, string $operator, ?string $value): void
     {
         switch ($operator) {
             case Operators::CONTAINS:
@@ -204,6 +204,8 @@ class QueryBuilder
             Operators::NOT_CONTAINS => 'NOT ILIKE',
             Operators::BEGINS_WITH => 'ILIKE',
             Operators::ENDS_WITH => 'ILIKE',
+            Operators::GTE => '>=',
+            Operators::LTE => '<=',
         ];
 
         if (!isset($operatorMap[$operator])) {
@@ -211,6 +213,17 @@ class QueryBuilder
         }
 
         $sqlOperator = $operatorMap[$operator];
+
+        if ($datatype === Schema::DATATYPE_DATE) {
+            if ($operator == Operators::EQUALS) {
+                // Date granularity, ignore time
+                $query->whereRaw("to_char({$searchConfig->index},'YYYY-MM-DD') {$sqlOperator} ?", [$value]);
+
+                return;
+            } else {
+                $value = $this->toDate($value, false);
+            }
+        }
         $query->whereRaw("{$searchConfig->index} {$sqlOperator} ?", [$value]);
     }
 

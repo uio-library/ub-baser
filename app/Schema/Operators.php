@@ -20,4 +20,7 @@ class Operators
     const NOT_NULL = 'notnull';
 
     const LIKE = 'like';  // Case sensitive
+
+    const GTE = 'gte';
+    const LTE = 'lte';
 }
