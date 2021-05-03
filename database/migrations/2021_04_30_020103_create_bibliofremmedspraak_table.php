@@ -23,7 +23,7 @@ class CreateBibliofremmedspraakTable extends Migration
             $table->text('tittel')->nullable();
             $table->text('tidsskrift')->nullable();
             $table->text('antologi')->nullable();
-            $table->text('angitti')->nullable();
+            $table->text('utgitti')->nullable();
             $table->text('utgivelsessted')->nullable();
             $table->text('nummer')->nullable();
             $table->text('utgivelsesaar')->nullable();
@@ -59,7 +59,7 @@ class CreateBibliofremmedspraakTable extends Migration
                 'default_language' => 'nb',
                 'name' => json_encode([
                     'nb' => 'Fremmedspråk og Fremmedspråkundervisnig. Fransk, spansk og tysk',
-                    'en' => 'Bibliography on foreign language',
+                    'en' => 'Foreign Language and Foreign Language Teaching. French, Spanish and German',
                 ]),
             ],
         ]);

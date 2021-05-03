@@ -59,9 +59,9 @@ class Schema extends BaseSchema
                 'type' => 'simple',
             ],
 
-            // Angitt i
+            // Utgitt i
             [
-                'key' => 'angitti',
+                'key' => 'utgitti',
                 'type' => 'simple',
             ],
 

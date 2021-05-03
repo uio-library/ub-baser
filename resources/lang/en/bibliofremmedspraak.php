@@ -11,7 +11,7 @@ return [
     'tittel' => 'Title',
     'tidsskrift' => 'Journal',
     'antologi' => 'Antology',
-    'angitti' => '?',
+    'utgitti' => 'Published in',
     'utgivelsessted' => 'Place of publication',
     'nummer' => 'Number',
     'utgivelsesaar' => 'Year of publication',
