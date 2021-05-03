@@ -1,11 +1,26 @@
 <?xml version="1.0"?>
-<ruleset name="PSR2Tweaked">
-    <description>PSR2 without namespace requirement.</description>
-    <rule ref="PSR2"></rule>
+<ruleset name="UB-baser">
+    <description>Based on PSR2.</description>
+
+    <rule ref="PSR2"/>
+
     <rule ref="PSR1.Classes.ClassDeclaration">
         <exclude-pattern>*/database/*</exclude-pattern>
     </rule>
+
     <rule ref="Generic.Files.LineLength">
         <exclude-pattern>*/tests/*</exclude-pattern>
+        <properties>
+            <property name="lineLimit" value="500"/>
+            <property name="absoluteLineLimit" value="1000"/>
+        </properties>
     </rule>
+
+    <!-- Specify directory that composer.json is placed. Usually it would be
+     project root directory. -->
+    <arg name="basepath" value="."/>
+
+    <!-- PSR-4 checks -->
+    <rule ref="vendor/suin/phpcs-psr4-sniff/src/Suin"/>
+
 </ruleset>
