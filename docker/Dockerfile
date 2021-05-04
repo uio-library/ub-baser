@@ -4,7 +4,7 @@
 #
 
 # ---------------------------------------------------------------------------
-FROM php:7.4-apache
+FROM php:7.4.16-apache
 
 LABEL maintainer="d.m.heggo@ub.uio.no"
 
