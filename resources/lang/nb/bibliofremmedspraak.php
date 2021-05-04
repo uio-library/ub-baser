@@ -22,7 +22,7 @@ return [
     'utgiver' => 'Redaktør',
     'ansvarsangivelse' => 'Ansvarsangivelse',
     'eissn' => 'E-ISSN',
-    'issn' => 'ISBN',
+    'issn' => 'ISSN',
     'isbn' => 'ISBN',
     'eisbn' => 'E-ISBN',
     'boktittel' => 'Boktittel',
