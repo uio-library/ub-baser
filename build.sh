@@ -14,7 +14,7 @@ rm -f composer.lock
 php composer.phar install --no-interaction --no-dev --no-autoloader
 php composer.phar dump-autoload --optimize
 
-npm install
+npm ci
 npm run production
 
 chmod -R a+rX .
