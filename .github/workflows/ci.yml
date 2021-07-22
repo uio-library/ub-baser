@@ -1,95 +1,19 @@
-name: Build & test
+name: Build Docker image
 
 on:
   push:
+    branches:
+      - 'main'
   repository_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     env:
       APP_ENV: staging
-
     steps:
-
-    - uses: actions/checkout@v2
-
-    - name: Setup PHP, with composer and extensions
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '7.4'
-        extensions: pdo, pdo_pgsql, gd
-
-    - uses: actions/setup-node@v2-beta
-      with:
-        node-version: '12'
-
-    - name: Inspect environment
-      run: |
-        docker -v
-        docker-compose -v
-        php -v
-        node -v
-
-    # ---
-
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-    - name: Cache composer dependencies
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: ${{ runner.os }}-composer-
-
-    - name: Install composer dependencies
-      run: composer install --prefer-dist
-      env:
-        COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    # ---
-
-    - name: Get node.js cache directory
-      id: node-cache-dir
-      run: echo "::set-output name=dir::$(npm config get cache)"
-
-    - name: Cache node.js dependencies
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.node-cache-dir.outputs.dir }}
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: ${{ runner.os }}-node-
-
-    - name: Install node.js dependencies
-      run: npm install
-
-    - name: Build node.js files
-      run: npm run production
-
-    # ---
-
-    - name: Lint PHP files
-      run: ./vendor/bin/phplint ./ --exclude=vendor --exclude=node_modules
-
-    - name: Start dev server
-      run: ./dev.sh up -d
-
-    # ---
-
-    - uses: saucelabs/sauce-connect-action@v1.0.0
-      with:
-        username: ${{ secrets.SAUCE_USERNAME }}
-        accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
-        tunnelIdentifier: ${{ github.sha }}-${{ github.job }}
-
-    - name: Run tests at Sauce
-      run: npm run test@sauce
-      env:
-        SAUCE_TUNNEL: ${{ github.sha }}-${{ github.job }}
-        SAUCE_BUILD: ${{ github.sha }}
-        SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-        SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2.6.1
+        with:
+          push: true
+          tags: scriptotek/ub-baser:latest
