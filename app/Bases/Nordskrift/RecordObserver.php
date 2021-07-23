@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Bases\Nordskrifbiblio;
+namespace App\Bases\Nordskrift;
 
 class RecordObserver
 {
     protected function refreshView()
     {
         // Refresh view
-        \DB::unprepared('REFRESH MATERIALIZED VIEW CONCURRENTLY nordskrifbiblio_view');
+        \DB::unprepared('REFRESH MATERIALIZED VIEW CONCURRENTLY nordskrift_view');
     }
 
     /**
-     * Handle the app bases nordskrifbiblio record "created" event.
+     * Handle the app bases nordskrift record "created" event.
      *
      * @param Record $record
      * @return void
@@ -22,7 +22,7 @@ class RecordObserver
     }
 
     /**
-     * Handle the app bases nordskrifbiblio record "updated" event.
+     * Handle the app bases nordskrift record "updated" event.
      *
      * @param Record $record
      * @return void
@@ -33,7 +33,7 @@ class RecordObserver
     }
 
     /**
-     * Handle the app bases nordskrifbiblio record "deleted" event.
+     * Handle the app bases nordskrift record "deleted" event.
      *
      * @param Record $record
      * @return void
@@ -44,7 +44,7 @@ class RecordObserver
     }
 
     /**
-     * Handle the app bases nordskrifbiblio record "restored" event.
+     * Handle the app bases nordskrift record "restored" event.
      *
      * @param Record $record
      * @return void
@@ -55,7 +55,7 @@ class RecordObserver
     }
 
     /**
-     * Handle the app bases nordskrifbiblio record "force deleted" event.
+     * Handle the app bases nordskrift record "force deleted" event.
      *
      * @param Record $record
      * @return void

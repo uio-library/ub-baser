@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bases\Nordskrifbiblio;
+namespace App\Bases\Nordskrift;
 
 use App\Record as BaseRecord;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +14,7 @@ class Record extends BaseRecord
      *
      * @var string
      */
-    protected $table = 'nordskrifbiblio';
+    protected $table = 'nordskrift';
 
     /**
      * The attributes that are mass assignable. This should include all the standard

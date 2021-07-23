@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Bases\Nordskrifbiblio;
+namespace App\Bases\Nordskrift;
 
 use App\Http\Controllers\BaseController;
 
 class Controller extends BaseController
 {
-    protected $logGroup = 'nordskrifbiblio';
+    protected $logGroup = 'nordskrift';
 
     public static $defaultColumns = [
         // Verket

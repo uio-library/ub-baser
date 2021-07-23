@@ -2,21 +2,21 @@
 
 namespace App\Console\Commands;
 
-class ImportNordskrifbiblioCommand extends ImportCommand
+class ImportNordskriftCommand extends ImportCommand
 {
     /**
      * The name of the console command.
      *
      * @var string
      */
-    protected $name = 'import:nordskrifbiblio';
+    protected $name = 'import:nordskrift';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import data for "Nordisk Skrift Bibliografi"';
+    protected $description = 'Import data for "Nordisk skriftkultur bibliografi" (NSB)';
 
     /**
      * Import file format.
@@ -31,7 +31,7 @@ class ImportNordskrifbiblioCommand extends ImportCommand
      * @var string[]
      */
     protected $tables = [
-        'nordskrifbiblio',
+        'nordskrift',
     ];
 
     /**
@@ -40,6 +40,6 @@ class ImportNordskrifbiblioCommand extends ImportCommand
      * @var string[]
      */
     protected $sequences = [
-        'nordskrifbiblio.id',
+        'nordskrift.id',
     ];
 }

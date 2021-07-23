@@ -1,16 +1,16 @@
-@extends('nordskrifbiblio.layout')
+@extends('nordskrift.layout')
 
 @section('content')
 
 <h2>
-    Opprett ny post
+    Rediger post #{{ $record->id }}
 </h2>
 
 @include('shared.errors')
 
 <edit-form
-    method="POST"
-    action="{{ $base->action('store') }}"
+    method="PUT"
+    action="{{ $base->action('update', $record->id) }}"
     csrf-token="{{ csrf_token() }}"
     :schema="{{ json_encode($schema) }}"
     :settings="{{ json_encode($settings) }}"

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class NordskrifbiblioTableSeeder extends Seeder
+class NordskriftTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

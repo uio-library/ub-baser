@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bases\Nordskrifbiblio;
+namespace App\Bases\Nordskrift;
 
 use App\Bases\AutocompleteService;
 use App\Bases\Config as BaseConfig;
