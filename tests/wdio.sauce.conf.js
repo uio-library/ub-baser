@@ -1,13 +1,13 @@
 const { runMigrations, rollbackMigrations, isDockerRunning } = require('./util')
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:8081'
+const TEST_BASE_URL = process.env.TEST_BASE_URL || 'http://localhost:80'
 
 const sauceOptions = {
   'sauce:options': {
     tunnelIdentifier: process.env.SAUCE_TUNNEL,
     build: process.env.SAUCE_BUILD,
     // trustAllSSLCertificates: true,
-  }
+  },
 }
 
 exports.config = {
@@ -48,7 +48,7 @@ exports.config = {
   // bail (default is 0 - don't bail, run all tests).
   bail: 0,
 
-  baseUrl: BASE_URL,
+  baseUrl: TEST_BASE_URL,
   waitforTimeout: 10000,
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,

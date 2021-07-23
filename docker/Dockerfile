@@ -15,8 +15,13 @@ COPY resources/ ./resources/
 #COPY resources/sass ./resources/sass
 RUN npm ci && npm run production
 
-# ---------------------------------------------------------------------------
-
+# ------------------------------------------------------------------------------------
+# Notes:
+# - We need to include Node and NPM to run tests.
+# - Tests need to be able to run composer migrate, so it cannot be a separate image.
+# It would be possible to create a smaller production image, but I'm not sure if the
+# maintenance overhead is worth it.
+# ------------------------------------------------------------------------------------
 FROM php:7.4-apache
 
 LABEL maintainer="d.m.heggo@ub.uio.no"
@@ -24,6 +29,8 @@ LABEL maintainer="d.m.heggo@ub.uio.no"
 ARG GITHUB_TOKEN
 
 WORKDIR /app
+
+ENV NVM_DIR /usr/local/nvm
 
 RUN apt-get update \
     && apt-get install -y \
@@ -33,14 +40,21 @@ RUN apt-get update \
         libpng-dev \
         zlib1g-dev \
         libzip-dev \
+        curl \
     && docker-php-ext-configure gd --with-jpeg \
-    && docker-php-ext-install -j$(nproc) pdo pdo_pgsql gd zip
+    && docker-php-ext-install -j$(nproc) pdo pdo_pgsql gd zip \
+    && mkdir -p $NVM_DIR \
+    && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash \
+    && . $NVM_DIR/nvm.sh \
+    && nvm install lts/erbium \
+    && nvm alias default lts/erbium \
+    && nvm use default
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY composer.json .
 ENV COMPOSER_ALLOW_SUPERUSER 1
-RUN composer install --no-interaction --no-dev --no-autoloader
+RUN composer install --no-interaction --no-autoloader
 
 RUN a2enmod rewrite ssl headers
 RUN a2dissite 000-default
@@ -68,6 +82,7 @@ COPY --from=frontend /app/node_modules/ ./node_modules/
 COPY --from=frontend /app/public/js/ ./public/js/
 COPY --from=frontend /app/public/css/ ./public/css/
 COPY --from=frontend /app/public/mix-manifest.json ./public/mix-manifest.json
+COPY tests/ ./tests/
 
 RUN composer dump-autoload --optimize
 

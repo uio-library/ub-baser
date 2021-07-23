@@ -1,41 +1,91 @@
-name: Build Docker image
+name: Build and test Docker image
 
 on:
   push:
+  pull_request:
   repository_dispatch:
 
 jobs:
 
-  build:
+  build-postgres:
+    name: Build Postgres image with Norwegian locale
     runs-on: ubuntu-latest
-    env:
-      APP_ENV: staging
     steps:
-      -
-        name: Extract metadata for Docker
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          # list of Docker images to use as base name for tags
-          images: |
-            ghcr.io/uio-library/ub-baser
-          # generate Docker tags based on the following events/attributes
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha
-      -
-        name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: Build and push Docker images
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2.6.1
+        with:
+          push: true
+          context: ./docker/postgres
+          tags: |
+            ghcr.io/uio-library/postgres:12-nb_NO
+
+  build-app:
+    name: Build main Docker image
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: staging
+    steps:
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker (app)
+        id: app_meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ghcr.io/uio-library/ub-baser
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,format=long,prefix=
+
+      - name: Build and push Docker images
         uses: docker/build-push-action@v2.6.1
         with:
           push: true
           file: docker/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.app_meta.outputs.tags }}
+          labels: ${{ steps.app_meta.outputs.labels }}
+
+  test:
+    name: Run test suite
+    runs-on: ubuntu-latest
+    needs: [build-postgres, build-app]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start Sauce Connect Proxy
+        uses: saucelabs/sauce-connect-action@v1
+        with:
+          username: ${{ secrets.SAUCE_USERNAME }}
+          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+          tunnelIdentifier: gh-job-${{ github.run_id }}
+          scVersion: 4.6.4
+
+      - name: Run tests
+        run: docker-compose run test
+        env:
+          COMPOSE_FILE: docker/compose/staging.yml
+          APP_IMAGE: ghcr.io/uio-library/ub-baser:${{ github.sha }}
+          POSTGRES_IMAGE: ghcr.io/uio-library/postgres:12-nb_NO
+          GITHUB_SHA: ${{ github.sha }}
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+          SAUCE_TUNNEL: gh-job-${{ github.run_id }}
+          SAUCE_BUILD: ${{ github.sha }}

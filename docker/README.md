@@ -95,14 +95,14 @@ To start containers for this environment:
 
 	APP_ENV=staging ./dev.sh up -d
 
-Run the WebdriverIO tests against http://localhost:8081:
+Run the WebdriverIO tests against http://localhost:8080:
 
 	npm run test
 
-To run tests against another host, you can specify `BASE_URL`.
+To run tests against another host, you can specify `TEST_BASE_URL`.
 If you use Docker Machine:
 
-	BASE_URL="http://$(docker-machine ip):8081" npm run test
+	TEST_BASE_URL="http://$(docker-machine ip):8081" npm run test
 
 To run a single test:
 

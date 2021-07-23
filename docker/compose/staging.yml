@@ -1,31 +1,18 @@
 version: '3'
 
-volumes:
-  storage:
-  pgdata_staging:
-
 services:
 
   db:
-    build: ../postgres
-    volumes:
-      - pgdata_staging:/var/lib/postgresql/data
-    container_name: ub-baser-db-staging
+    image: ${POSTGRES_IMAGE}
     environment:
       - POSTGRES_USER=ub-baser-staging
       - POSTGRES_PASSWORD=ub-baser-staging
       - POSTGRES_INITDB_ARGS=--no-locale --encoding=UTF8
 
   app:
-    image: ub-baser:latest
-    build:
-      context: ../..
-      dockerfile: docker/Dockerfile
-      args:
-        - GITHUB_TOKEN
-    container_name: ub-baser-app-staging
+    image: ${APP_IMAGE}
     environment:
-      - APP_ENV=staging
+      - APP_ENV=local
       - APP_DEBUG=true
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
@@ -34,10 +21,30 @@ services:
       - POSTGRES_PASSWORD=ub-baser-staging
       - APP_KEY=DoesNotNeedToBeRandomInDevEnviro
     ports:
-      - 8081:80
-    volumes:
-      - ../..:/app/
-      - storage:/app/storage
-      #- ../../storage:/app/storage
+      - 8080:80
     depends_on:
       - db
+
+  test:
+    image: ${APP_IMAGE}
+    command: npm run test@sauce
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=ub-baser-staging
+      - POSTGRES_USER=ub-baser-staging
+      - POSTGRES_PASSWORD=ub-baser-staging
+      - APP_KEY=DoesNotNeedToBeRandomInDevEnviro
+      # Test stuff
+      - TEST_BASE_URL=http://localhost:8080  # URL reachable from the sauce connect proxy, not from this container
+      - SAUCE_BUILD
+      - SAUCE_TUNNEL
+      - SAUCE_USERNAME
+      - SAUCE_ACCESS_KEY
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+      - app
