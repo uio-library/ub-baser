@@ -34,6 +34,9 @@ services:
       - POSTGRES_USER=ub-baser-dev
       - POSTGRES_PASSWORD=ub-baser-dev
       - APP_KEY=DoesNotNeedToBeRandomInDevEnviro
+      - SAUCE_USERNAME
+      - SAUCE_ACCESS_KEY
+      - TEST_BASE_URL=http://localhost:8080
     ports:
       - 8080:80
     volumes:

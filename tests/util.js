@@ -1,7 +1,7 @@
 const { exec } = require('child_process')
 const log = console.log
 const chalk = require('chalk')  // eslint-disable-line
-const DOCKER_APP_CONTAINER_NAME = process.env.DOCKER_APP_CONTAINER_NAME || 'ub-baser-app-staging'
+const DOCKER_APP_CONTAINER_NAME = process.env.DOCKER_APP_CONTAINER_NAME
 
 function execPromise (command) {
   return new Promise(function (resolve, reject) {
@@ -20,19 +20,23 @@ function execPromise (command) {
 }
 
 function artisan (args) {
-  return execPromise(`docker exec ${DOCKER_APP_CONTAINER_NAME} php artisan ${args}`)
+  if (DOCKER_APP_CONTAINER_NAME) {
+    log(`Running in Docker container ${DOCKER_APP_CONTAINER_NAME}: php artisan ${args}`)
+    return execPromise(`docker exec ${DOCKER_APP_CONTAINER_NAME} php artisan ${args}`)
+  } else {
+    log(`Running: php artisan ${args}`)
+    return execPromise(`php artisan ${args}`)
+  }
 }
 
 function createAdminUser () {
-  log(`Create admin user in Docker container "${DOCKER_APP_CONTAINER_NAME}"`)
   return artisan('create:admin -y')
 }
 
 function runMigrations () {
-  log(`Running migrations in Docker container "${DOCKER_APP_CONTAINER_NAME}"`)
   return artisan('migrate:fresh --seed')
     .then(function (out) {
-      return createAdminUser();
+      return createAdminUser()
     })
     .catch(function (error) {
       throw new Error(error)
@@ -40,7 +44,6 @@ function runMigrations () {
 }
 
 function rollbackMigrations () {
-  log(`Rolling back migrations in Docker container "${DOCKER_APP_CONTAINER_NAME}"`)
   return artisan('migrate:rollback')
     .then(function (out) {
       // log(chalk.gray(out))
