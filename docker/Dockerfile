@@ -1,31 +1,46 @@
+# ---------------------------------------------------------------------------
 # Usage:
 #
 # docker build --build-arg GITHUB_TOKEN=$GITHUB_TOKEN --tag ub-baser:latest .
 #
+# ---------------------------------------------------------------------------
+
+FROM node:12 AS frontend
+WORKDIR /app
+COPY artisan package.json package-lock.json webpack.mix.js ./
+#RUN npm install -g --upgrade npm
+RUN npm install
+COPY resources/ ./resources/
+#COPY resources/js ./resources/js
+#COPY resources/sass ./resources/sass
+RUN npm ci && npm run production
 
 # ---------------------------------------------------------------------------
-FROM php:7.4.16-apache
+
+FROM php:7.4-apache
 
 LABEL maintainer="d.m.heggo@ub.uio.no"
 
 ARG GITHUB_TOKEN
 
-WORKDIR /app/
+WORKDIR /app
 
 RUN apt-get update \
-    && apt-get install -y libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql
-
-# RUN apt-get update \
-#     && apt-get install -y libvips-dev \
-#     && pecl install vips \
-#     && docker-php-ext-enable vips
-
-RUN apt-get update && apt-get install -y \
+    && apt-get install -y \
+        git \
+        libpq-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
+        zlib1g-dev \
+        libzip-dev \
     && docker-php-ext-configure gd --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd
+    && docker-php-ext-install -j$(nproc) pdo pdo_pgsql gd zip
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+COPY composer.json .
+ENV COMPOSER_ALLOW_SUPERUSER 1
+RUN composer install --no-interaction --no-dev --no-autoloader
 
 RUN a2enmod rewrite ssl headers
 RUN a2dissite 000-default
@@ -46,7 +61,18 @@ RUN mkdir -p \
 
 COPY docker/include $APACHE_CONFDIR/include
 COPY docker/sites-available $APACHE_CONFDIR/sites-available
+
 COPY . .
+COPY --from=frontend /app/package-lock.json ./
+COPY --from=frontend /app/node_modules/ ./node_modules/
+COPY --from=frontend /app/public/js/ ./public/js/
+COPY --from=frontend /app/public/css/ ./public/css/
+COPY --from=frontend /app/public/mix-manifest.json ./public/mix-manifest.json
+
+RUN composer dump-autoload --optimize
+
+#RUN php artisan config:cache
+#RUN php artisan route:cache
 
 # Validate Apache config
 # RUN /docker-entrypoint.sh -t -D DUMP_VHOSTS

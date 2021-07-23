@@ -12,8 +12,18 @@ jobs:
     env:
       APP_ENV: staging
     steps:
-      - name: Build and push Docker images
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Build and push Docker images
         uses: docker/build-push-action@v2.6.1
         with:
           push: true
-          tags: scriptotek/ub-baser:latest
+          tags: ghcr.io/scriptotek/ub-baser:latest
+          file: docker/Dockerfile
+          buildkitd-flags: --debug

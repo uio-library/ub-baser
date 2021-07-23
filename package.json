@@ -61,7 +61,7 @@
     "laravel-vue-lang": "3.1.0",
     "lodash": "^4.17.20",
     "material-design-iconic-font": "~2.2.0",
-    "npm": "^6.14.11",
+    "npm": "^6.14.13",
     "openseadragon": "^2.4.2",
     "popper.js": "^1.16.1",
     "raw-loader": "^4.0.2",

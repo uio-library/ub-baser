@@ -4,11 +4,6 @@
     "keywords": [],
     "license": "MIT",
     "type": "project",
-    "repositories":[
-    {
-        "type": "vcs",
-        "url": "git@github.com:danmichaelo/psr-18-guzzle-adapter.git"
-    }],
     "require": {
         "php": ">=7.3.0",
         "ext-gd": "*",
@@ -17,7 +12,7 @@
         "ext-pdo_pgsql": "*",
         "aacotroneo/laravel-saml2": "~2.1",
         "barryvdh/laravel-debugbar": "~3.0",
-        "divineomega/psr-18-guzzle-adapter": "dev-patch-1",
+        "divineomega/psr-18-guzzle-adapter": "~1.2.0",
         "doctrine/dbal": "~2.9",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
