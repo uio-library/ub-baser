@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNordskrifbiblioTable extends Migration
+class CreateNordskriftTable extends Migration
 {
     use MigrationHelper;
 
@@ -18,7 +18,7 @@ class CreateNordskrifbiblioTable extends Migration
 
     public function up()
     {
-        Schema::create('nordskrifbiblio', function (Blueprint $table) {
+        Schema::create('nordskrift', function (Blueprint $table) {
             $this->addCommonFields($table);
             $table->text('forfatter')->nullable();
             $table->text('tittel')->nullable();
@@ -38,11 +38,11 @@ class CreateNordskrifbiblioTable extends Migration
         });
         \DB::table('bases')->insert([
             [
-                'id' => 'nordskrifbiblio',
+                'id' => 'nordskrift',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'basepath' => 'nordskrifbiblio',
-                'namespace' => 'Nordskrifbiblio',
+                'basepath' => 'nordskrift',
+                'namespace' => 'Nordskrift',
                 'languages' => json_encode(['nb']),
                 'default_language' => 'nb',
                 'name' => json_encode([
@@ -60,9 +60,9 @@ class CreateNordskrifbiblioTable extends Migration
     public function down()
     {
         \DB::table('bases')
-            ->where(['id' => 'nordskrifbiblio'])
+            ->where(['id' => 'nordskrift'])
             ->delete();
 
-        Schema::drop('nordskrifbiblio');
+        Schema::drop('nordskrift');
     }
 }

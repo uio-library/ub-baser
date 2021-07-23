@@ -19,7 +19,7 @@
 
 // Route::get('hello-world', 'Controller@helloWorld');
 
-Route::middleware('can:nordskrifbiblio')
+Route::middleware('can:nordskrift')
     ->group(function () {
         // Place any routes that should only be available to authorized users here
     });

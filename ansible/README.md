@@ -8,10 +8,10 @@ Create a SSH key pair:
 
 Please protect it with a strong passphrase.
 
-Copy the public key (`~/.ssh/id_rsa.ub-baser-deploy.pub`),
-login to the server and append the public key to `/home/deploy/.ssh/authorized_keys`.
+Copy the contents of the public key file (`~/.ssh/id_rsa.ub-baser-deploy.pub`),
+login to the server and append the contents to a new line in `/home/deploy/.ssh/authorized_keys`.
 
-Then check if you can login using `ssh deploy@ub-baser`.
+Then check if you can login using `ssh -i ~/.ssh/id_rsa.ub-baser-deploy deploy@ub-baser.uio.no`.
 
 If that succeeds, you can proceed to test if you can run `ansible` (from this directory):
 

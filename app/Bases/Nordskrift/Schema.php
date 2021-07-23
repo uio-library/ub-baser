@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Bases\Nordskrifbiblio;
+namespace App\Bases\Nordskrift;
 
 use App\Schema\Schema as BaseSchema;
 
 class Schema extends BaseSchema
 {
     protected $schema = [
-        "id" => "nordskrifbiblio",
+        "id" => "nordskrift",
         "fields" => [
 
             // ID

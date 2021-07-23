@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bases\Nordskrifbiblio;
+namespace App\Bases\Nordskrift;
 
 class AutocompleteService extends \App\Services\AutocompleteService
 {
