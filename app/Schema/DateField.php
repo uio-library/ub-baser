@@ -2,8 +2,6 @@
 
 namespace App\Schema;
 
-use App\Base;
-
 class DateField extends SchemaField
 {
     public const TYPE = 'date';

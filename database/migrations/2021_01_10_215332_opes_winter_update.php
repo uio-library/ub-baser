@@ -72,7 +72,6 @@ class OpesWinterUpdate extends Migration
         });
 
         Record::with('editions')->get()->each(function (Record $record) {
-
             $record->inv_no = str_replace('P.Oslo inv. ', '', $record->inv_no);
 
             foreach ($record->editions as $pub) {

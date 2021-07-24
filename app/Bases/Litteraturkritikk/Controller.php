@@ -8,8 +8,6 @@ use App\Exceptions\NationalLibraryRecordNotFound;
 use App\Http\Controllers\BaseController;
 use App\Http\Request;
 use App\Record;
-use App\Schema\EntitiesField;
-use App\Schema\Schema;
 use App\Services\NationalLibraryApi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
@@ -40,8 +38,8 @@ class Controller extends BaseController
      * @param Base $base
      * @param Model $record
      * @param Request $request
-     * @return array
      * @throws ValidationException
+     * @return array
      */
     protected function updateOrCreateRecord(Base $base, Record $record, Request $request): array
     {

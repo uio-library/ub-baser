@@ -60,7 +60,7 @@ class MakeBaseCommand extends GeneratorCommand
      */
     protected function getNamedStub(string $filename, string $classname = null, string $basename = null)
     {
-        $filename = __DIR__ . '/stubs/' . $filename. '.php.stub';
+        $filename = __DIR__ . '/stubs/' . $filename . '.php.stub';
         $stub = $this->files->get($filename);
         if (!is_null($classname)) {
             $stub = $this->replaceNamespace($stub, $classname)->replaceClass($stub, $classname);
@@ -81,7 +81,7 @@ class MakeBaseCommand extends GeneratorCommand
      */
     protected function getMigrationPath($name, $path)
     {
-        return $path.'/'.$this->getDatePrefix().'_'.$name.'.php';
+        return $path . '/' . $this->getDatePrefix() . '_' . $name . '.php';
     }
 
     /**
