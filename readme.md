@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/scriptotek/ub-baser.svg?style=flat-square)](https://travis-ci.org/scriptotek/ub-baser)
+[![Build Status](https://github.com/uio-library/ub-baser/actions/workflows/test-on-push.yml/badge.svg)](https://github.com/uio-library/ub-baser/actions/workflows/test-on-push.yml)
 [![StyleCI](https://styleci.io/repos/44453446/shield)](https://styleci.io/repos/44453446)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/scriptotek/ub-baser.svg?style=flat-square)](https://scrutinizer-ci.com/g/scriptotek/ub-baser/?branch=master)
 [![Code Climate](https://img.shields.io/codeclimate/maintainability/scriptotek/ub-baser)](https://codeclimate.com/github/scriptotek/ub-baser)
