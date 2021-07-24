@@ -6,7 +6,6 @@ use App\Base;
 use App\Http\Controllers\BaseController;
 use App\Http\Request;
 use App\Record as BaseRecord;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 
 class Controller extends BaseController

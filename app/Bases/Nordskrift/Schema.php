@@ -7,34 +7,34 @@ use App\Schema\Schema as BaseSchema;
 class Schema extends BaseSchema
 {
     protected $schema = [
-        "id" => "nordskrift",
-        "fields" => [
+        'id' => 'nordskrift',
+        'fields' => [
 
             // ID
             [
-                "key" => "id",
-                "type" => "incrementing",
-                "showInRecordView" => true,
+                'key' => 'id',
+                'type' => 'incrementing',
+                'showInRecordView' => true,
             ],
 
             // Sist endret
             [
-                "key" => "created_at",
-                "type" => "simple",
-                "edit" => false,
-                "search" => false,
-                "columnClassName" => "dt-body-nowrap",
+                'key' => 'created_at',
+                'type' => 'simple',
+                'edit' => false,
+                'search' => false,
+                'columnClassName' => 'dt-body-nowrap',
             ],
 
             // Sist endret
             [
-                "key" => "updated_at",
-                "type" => "simple",
-                "edit" => false,
-                "search" => false,
-                "columnClassName" => "dt-body-nowrap",
+                'key' => 'updated_at',
+                'type' => 'simple',
+                'edit' => false,
+                'search' => false,
+                'columnClassName' => 'dt-body-nowrap',
             ],
-             // Forfatter
+            // Forfatter
             [
                 'key' => 'forfatter',
                 'type' => 'autocomplete',

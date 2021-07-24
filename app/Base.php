@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Bases\Config;
-use App\Record;
 use App\Http\Controllers\PageController;
 use App\Schema\Schema;
 use Illuminate\Database\Eloquent\Model;

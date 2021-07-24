@@ -233,8 +233,7 @@ class QueryBuilder
         SearchOptions $searchConfig,
         string $operator,
         ?string $value
-    ): void
-    {
+    ): void {
         $value = explode('-', $value); // TODO: Endre til '/' for å kunne støtte datoer med MM, DD også?
         if (count($value) == 2) {
             if ($datatype === Schema::DATATYPE_DATE) {
@@ -288,6 +287,7 @@ class QueryBuilder
             }
             return $value . '-01-01';
         }
+
         throw new \RuntimeException('Unknown date format');
     }
 }

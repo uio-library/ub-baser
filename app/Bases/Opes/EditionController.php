@@ -4,7 +4,6 @@ namespace App\Bases\Opes;
 
 use App\Http\Controllers\BaseController;
 use App\Record;
-use Illuminate\Database\Eloquent\Model;
 
 class EditionController extends BaseController
 {

@@ -7,35 +7,35 @@ use App\Schema\Schema as BaseSchema;
 class Schema extends BaseSchema
 {
     protected $schema = [
-        "id" => "bibliofremmedspraak",
-        "fields" => [
+        'id' => 'bibliofremmedspraak',
+        'fields' => [
 
             // ID
             [
-                "key" => "id",
-                "type" => "incrementing",
+                'key' => 'id',
+                'type' => 'incrementing',
                 'showInRecordView' => true,
             ],
 
             // Sist endret
             [
-                "key" => "created_at",
-                "type" => "simple",
-                "edit" => false,
-                "search" => false,
-                "columnClassName" => "dt-body-nowrap",
+                'key' => 'created_at',
+                'type' => 'simple',
+                'edit' => false,
+                'search' => false,
+                'columnClassName' => 'dt-body-nowrap',
             ],
 
             // Sist endret
             [
-                "key" => "updated_at",
-                "type" => "simple",
-                "edit" => false,
-                "search" => false,
-                "columnClassName" => "dt-body-nowrap",
-	    ],
+                'key' => 'updated_at',
+                'type' => 'simple',
+                'edit' => false,
+                'search' => false,
+                'columnClassName' => 'dt-body-nowrap',
+            ],
 
-	     // Forfatter
+            // Forfatter
             [
                 'key' => 'forfatter',
                 'type' => 'autocomplete',
@@ -110,7 +110,6 @@ class Schema extends BaseSchema
                     'advanced' => true,
                 ],
             ],
-
 
             // Utgiver
             [

@@ -15,7 +15,6 @@ class CreateNordskriftTable extends Migration
      *
      * @return void
      */
-
     public function up()
     {
         Schema::create('nordskrift', function (Blueprint $table) {
