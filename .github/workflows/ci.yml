@@ -1,4 +1,4 @@
-name: Build and test Docker image
+name: Build, test and deploy
 
 on:
   push:
@@ -88,3 +88,27 @@ jobs:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
           SAUCE_TUNNEL: gh-job-${{ github.run_id }}
           SAUCE_BUILD: ${{ github.sha }}
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - name: Update Docker service
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          fingerprint: SHA256:m+YXwc6++9kY6Cz4/qyLym6SowqVcngm8egweAaivUI
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          passphrase: ${{ secrets.DEPLOY_KEY_PASSPHRASE }}
+
+          # ssh-keygen -l -f /etc/ssh/ssh_host_ecdsa_key.pub | cut -d ' ' -f2
+          proxy_fingerprint: SHA256:YziXxHBVfBFlpjPtzkjIdYufGo32DaQkXO/4ccrTmfs
+          proxy_host: ${{ secrets.DEPLOY_PROXY_HOST }}
+          proxy_username: ${{ secrets.DEPLOY_PROXY_USERNAME }}
+          proxy_key: ${{ secrets.DEPLOY_PROXY_KEY }}
+          proxy_passphrase: ${{ secrets.DEPLOY_PROXY_KEY_PASSPHRASE }}
+
+          script: |
+            docker service update --image ghcr.io/uio-library/ub-baser:${{ github.sha }} ub-baser_app
