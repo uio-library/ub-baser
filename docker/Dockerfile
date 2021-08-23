@@ -81,6 +81,7 @@ COPY --from=frontend /app/package-lock.json ./
 COPY --from=frontend /app/node_modules/ ./node_modules/
 COPY --from=frontend /app/public/js/ ./public/js/
 COPY --from=frontend /app/public/css/ ./public/css/
+COPY --from=frontend /app/public/fonts/ ./public/fonts/
 COPY --from=frontend /app/public/mix-manifest.json ./public/mix-manifest.json
 COPY tests/ ./tests/
 
