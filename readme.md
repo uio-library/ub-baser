@@ -34,4 +34,9 @@ Hvis du jobber med noe som ikke er helt produksjonsklart, bør du opprette en eg
 
     git checkout -b min-nye-base
 
+Når ny base er klar til å prodsettes bør developer grenen merges med main branch
+      
+    git checkout main      
+    git merge min-nye-base
+    
 Når du dytter denne til GitHub, blir appen fremdeles bygget og testet, men ikke distribuert.
