@@ -13,7 +13,6 @@ Felles webgrensesnitt for mindre Postgres-baser driftet av Universitetsbibliotek
 - `./dev.sh up` for å starte en utviklingsserver med Docker Compose.
 - `npm run watch` for å bygge frontend (SASS og JS og sånt).
 - Se [./docker/README.md](./docker/README.md) for flere detaljer.
-- Se [./ansible/README.md](./ansible/README.md) for info om deployering.
 
 #### Tips og triks
 
@@ -27,3 +26,12 @@ Felles webgrensesnitt for mindre Postgres-baser driftet av Universitetsbibliotek
 	php artisan ide-helper:models --dir=app -N
 	php artisan optimize
 	```
+
+### GitHub Actions
+
+Ved push til main-grenen, blir appen automatisk bygget og distribuert hvis de automatiske testene ikke feiler.
+Hvis du jobber med noe som ikke er helt produksjonsklart, bør du opprette en egen gren:
+
+    git checkout -b min-nye-base
+
+Når du dytter denne til GitHub, blir appen fremdeles bygget og testet, men ikke distribuert.

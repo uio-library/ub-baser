@@ -40,11 +40,6 @@
           - rh-php72-php-pgsql
           - rh-nodejs10
 
-    - name: Enable RedHat Software Collections packages
-      copy:
-        src: ~/enable_scl_packages.sh
-        dest: /etc/profile.d/enable_scl_packages.sh
-
     - name: Installing Docker
       yum:
         name: "{{ packages }}"

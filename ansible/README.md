@@ -1,4 +1,4 @@
-## Deploying with Ansible
+## Server setup with Ansible
 
 ### Setup SSH connection as the deploy user
 
@@ -24,17 +24,14 @@ It should say "deploy".
 
 In case of connections problems, check that the filename of your key matches the one in `hosts.yml`.
 
-### Deploying
+### Bootstrap a new server
 
-To deploy:
+The `setup-server.yml` playbook should ideally install everything needed on a new server:
 
-1. Start by pushing the code to GitHub (`git push`)
-2. Wait for Travis tests to complete: https://travis-ci.org/scriptotek/ub-baser/builds
-3. Ideally a deploy would automatically happen at this point, but it doesn't. So you need to manually run the following:
+    $ ansible-playbook setup-server.yml
 
-        $ ansible-playbook deploy.yml
-
-In case of problems, add `-vvvv` to the above command get very verbose output.
+Note: It needs to be updated to include all the steps in
+<https://github.com/uio-library/ub-baser/tree/main/docker#production-setup>
 
 ## Troubleshooting: If the app fails to start
 

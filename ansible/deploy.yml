@@ -1,5 +1,0 @@
----
-- name: Deploy app
-  hosts: prod
-  roles:
-    - ub-baser
