@@ -65,7 +65,7 @@ class Record extends BaseRecord
     public function getFormattedValue($key, $value, $base)
     {
         $value = strip_tags($value);
-        return preg_replace_callback('/\[\[([^\]]+)\]\]/', function ($matches) use ($key , $base) {
+        return preg_replace_callback('/\[\[([^\]]+)\]\]/', function ($matches) use ($key, $base) {
             return sprintf(
                 '<a href="%s">%s</a>',
                 $base->action('index', ['q' => $key . ' contains ' . $matches[1]]),
