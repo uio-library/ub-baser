@@ -1,0 +1,35 @@
+name: Test SSH connectivity
+
+on:
+  push:
+  repository_dispatch:
+
+jobs:
+
+  test-ssh:
+    name: Test SSH connectivity
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Test SSH connectivity
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          # ssh-keygen -l -f /etc/ssh/ssh_host_ecdsa_key.pub | cut -d ' ' -f2
+          # fingerprint: SHA256:m+YXwc6++9kY6Cz4/qyLym6SowqVcngm8egweAaivUI
+          # ssh-keygen -l -f /etc/ssh/ssh_host_ed25519_key.pub | cut -d ' ' -f2
+          fingerprint: SHA256:kQvSFuDu6CrYiSpwYGSVz5emjAkY28oXjEmO1x0heH4
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          passphrase: ${{ secrets.DEPLOY_KEY_PASSPHRASE }}
+
+          # ssh-keygen -l -f /etc/ssh/ssh_host_ecdsa_key.pub | cut -d ' ' -f2
+          proxy_fingerprint: SHA256:YziXxHBVfBFlpjPtzkjIdYufGo32DaQkXO/4ccrTmfs
+          proxy_host: ${{ secrets.DEPLOY_PROXY_HOST }}
+          proxy_username: ${{ secrets.DEPLOY_PROXY_USERNAME }}
+          proxy_key: ${{ secrets.DEPLOY_PROXY_KEY }}
+          proxy_passphrase: ${{ secrets.DEPLOY_PROXY_KEY_PASSPHRASE }}
+
+          script: |
+            whoami
