@@ -3,19 +3,21 @@
 @section('content')
 
     <h2>
-        Edit publication
+        Edit edition
     </h2>
 
     @include('shared.errors')
 
-    <p>
-        Topic:
+    @if ($record->record)
+        <p>
+        Belongs to record:
         <a href="{{ $base->action('show', $record->record->id) }}">{{ $record->recordView }}</a>
-    </p>
+        </p>
+    @endif
 
     <edit-form
         method="PUT"
-        action="{{ $base->action('update', $record->id) }}"
+        action="{{ $base->action('EditionController@update', $record->id) }}"
         csrf-token="{{ csrf_token() }}"
         :schema="{{ json_encode($schema) }}"
         :settings="{{ json_encode($settings) }}"
