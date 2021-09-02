@@ -28,7 +28,7 @@ return [
     'extent' => 'Extent',
     'institution' => 'Institution',
     'origin' => 'Origin',
-    'conservation_status' => 'Conservation status',
+    'state_of_preservation' => 'State of preservation',
     'items' => 'Items',
     'publ_side' => 'Publication side',
     'genre' => 'Genre',

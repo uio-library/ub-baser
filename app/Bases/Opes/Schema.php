@@ -201,7 +201,7 @@ class Schema extends BaseSchema
                     ],
                     // Conservation status
                     [
-                        'key' => 'conservation_status',
+                        'key' => 'state_of_preservation',
                         'type' => 'simple',
                         'multiline' => true,
                     ],
