@@ -15,15 +15,15 @@ jobs:
       - name: Test SSH connectivity
         uses: appleboy/ssh-action@v0.1.4
         with:
-          # ub-baser uses ECDSA key as of 2021-08-27
-          # ssh-keygen -l -f /etc/ssh/ssh_host_ecdsa_key.pub | cut -d ' ' -f2
-          fingerprint: SHA256:m+YXwc6++9kY6Cz4/qyLym6SowqVcngm8egweAaivUI
+          # ub-baser uses RSA key as of 2021-09-02
+          # ssh-keygen -l -f /etc/ssh/ssh_host_rsa_key.pub | cut -d ' ' -f2
+          fingerprint: SHA256:FodC+d75yjynzZlCTLw6xGFmLfDJ/NUogzRSlmDK054
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           passphrase: ${{ secrets.DEPLOY_KEY_PASSPHRASE }}
 
-          # login.uio.no uses RSA key as of 2021-08-27
+          # login.uio.no uses RSA key as of 2021-09-02
           # ssh-keygen -l -f /etc/ssh/ssh_host_rsa_key.pub | cut -d ' ' -f2
           proxy_fingerprint: SHA256:j+wXLffQHfeQuqO6tUdB2520w2R9Bi9zakAB6tyHtqo
           proxy_host: ${{ secrets.DEPLOY_PROXY_HOST }}
