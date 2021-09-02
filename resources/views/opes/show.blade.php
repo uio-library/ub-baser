@@ -104,7 +104,7 @@
 
 
                 @foreach ($schema->groups as $group)
-                    @if (!in_array($group->label, [__('opes.images'), __('opes.editions')]))
+                    @if (!in_array($group->label, [__('opes.images'), __('opes.editions'), __('opes.bibliography_section')]))
                         <h4>{{ $group->label }}</h4>
                         <dl class="row">
                             @foreach ($group->fields as $field)
