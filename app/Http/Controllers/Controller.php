@@ -14,19 +14,27 @@ class Controller extends BaseController
     use ValidatesRequests;
     protected $logGroup = null;
 
-    protected function log(...$args)
+    private function addBaseContext(array $context)
     {
-        $context = [
-            'group' => $this->logGroup,
-        ];
+        $context['group'] = $this->logGroup;
         $user = \Auth::user();
         if ($user !== null) {
             $context['userId'] = $user->id;
             $context['user'] = $user->name;
         }
+        return $context;
+    }
+
+    protected function structLog(string $message, array $context = [])
+    {
+        \Log::info($message, $this->addBaseContext($context));
+    }
+
+    protected function log(...$args)
+    {
         \Log::info(call_user_func_array(
             'sprintf',
             $args
-        ), $context);
+        ), $this->addBaseContext([]));
     }
 }

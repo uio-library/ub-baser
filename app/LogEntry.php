@@ -39,8 +39,8 @@ class LogEntry extends Model
         'time',
     ];
 
-    public function getLinesAttribute()
+    public function format()
     {
-        return explode(PHP_EOL, $this->message);
+        return $this->message;
     }
 }

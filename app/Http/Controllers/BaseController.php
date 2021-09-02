@@ -249,11 +249,7 @@ class BaseController extends Controller
         $this->updateOrCreateRecord($base, $record, $request);
 
         $url = $base->action([get_class($this), 'show'], $record->id);
-        $this->log(
-            'Opprettet <a href="%s">post #%s</a>.',
-            $url,
-            $record->id
-        );
+        $this->structLog("Opprettet post #{$record->id}", ['url' => $url]);
 
         if ($request->expectsJson()) {
             return response()->json([
@@ -289,12 +285,10 @@ class BaseController extends Controller
                 $changes
             ));
 
-            $this->log(
-                "Oppdaterte post #%s\n<a href=\"%s\">[Lenke]</a><ul>%s</ul>",
-                $record->id,
-                $url,
-                $changeList
-            );
+            $this->structLog("Oppdaterte post #{$record->id}", [
+                'url' => $url,
+                'changes' => $changes,
+            ]);
         }
         return redirect($url)->with('status', trans('base.notification.recordupdated'));
     }
@@ -314,11 +308,9 @@ class BaseController extends Controller
         $record->delete();
 
         $url = $base->action('show', $record->id);
-        $this->log(
-            'Slettet <a href="%s">post #%s</a>.',
-            $url,
-            $record->id
-        );
+        $this->structLog("Slettet post #{$record->id}", [
+            'url' => $url,
+        ]);
         return redirect($url)->with('status', trans('base.notification.recordtrashed'));
     }
 
@@ -336,11 +328,9 @@ class BaseController extends Controller
         $record->restore();
 
         $url = $base->action('show', $record->id);
-        $this->log(
-            'Gjenopprettet <a href="%s">post #%s</a>.',
-            $url,
-            $record->id
-        );
+        $this->structLog("Gjenopprettet post #{$record->id}", [
+            'url' => $url,
+        ]);
         return redirect($url)->with('status', trans('base.notification.recordrecovered'));
     }
 

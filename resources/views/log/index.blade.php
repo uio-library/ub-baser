@@ -1,7 +1,6 @@
 @extends('layout')
 
 @section('content')
-
     <div v-pre><!--
 
         NOTE: v-pre skips Vue compilation for this element and all its children!
@@ -41,15 +40,19 @@
                             <span class="badge badge-{{ strtolower($entry->level_name) != 'error' ? strtolower($entry->level_name) : 'danger' }}">{{ $entry->level_name }}</span>
                         </td>
                         <td>
-                            @if (count($entry->lines) == 1)
-                                {!! $entry->lines[0] !!}
-                            @else
-                                <div>
-                                    <a href="#" onclick="$(this).parent().next('.message-collapsed').toggle(); return false;">{{ $entry->lines[0] }}</a>
-                                </div>
-                                <div class="message-collapsed" style="display: none;">
-                                    {!! implode('<br>', array_slice($entry->lines, 1)) !!}
-                                </div>
+                            {{ $entry->message }}
+                            @if (\Illuminate\Support\Arr::has($entry->context, 'url'))
+                                <a href="{{ $entry->context['url'] }}">[Vis post]</a>
+                            @endif
+                            @if (\Illuminate\Support\Arr::has($entry->context, 'changes'))
+                                <span>
+                                    <a href="#" onclick="$(this).parent().next('.message-collapsed').toggle(); return false;">[Vis endringer]</a>
+                                </span>
+                                <ul class="message-collapsed" style="display: none;">
+                                    @foreach($entry->context['changes'] as $change)
+                                        <li>{{ $change }}</li>
+                                    @endforeach
+                                </ul>
                             @endif
                         </td>
                         <td style="white-space:nowrap; text-align: right; padding-right: 20px;">
