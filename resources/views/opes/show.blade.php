@@ -155,16 +155,11 @@
 
                 <h4 class="mt-3">Further Literature</h4>
 
-                @if (empty($record->bibliographyArray()))
+                @if (empty($record->bibliography))
                     <span class="text-muted">–</span>
                 @else
-                    <ul class="list-group">
-                        @foreach($record->bibliographyArray() as $item)
-                            <li class="list-group-item">{{ $item }}</li>
-                        @endforeach
-                    </ul>
+                    {!! $record->bibliographyHtml() !!}
                 @endif
-
             </div>
         </div>
         <hr>

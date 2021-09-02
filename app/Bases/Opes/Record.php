@@ -4,6 +4,7 @@ namespace App\Bases\Opes;
 
 use App\Record as BaseRecord;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use League\CommonMark\CommonMarkConverter;
 
 class Record extends BaseRecord
 {
@@ -57,9 +58,16 @@ class Record extends BaseRecord
         // return sprintf('%s (%s)', $this->tittel2, $this->utgivelsesaar2);
     }
 
-    public function bibliographyArray()
+    public function bibliographyHtml()
     {
-        return empty($this->bibliography) ? [] : explode('; ', $this->bibliography);
+        if (empty($this->bibliography)) {
+            return '';
+        }
+        $converter = new CommonMarkConverter([
+            'html_input' => 'strip',
+            'allow_unsafe_links' => false,
+        ]);
+        return $converter->convertToHtml($this->bibliography);
     }
 
     public function getFormattedValue($key, $value, $base)
