@@ -153,7 +153,7 @@
                     @endforeach
                 </ul>
 
-                <h4 class="mt-3">Bibliography</h4>
+                <h4 class="mt-3">Further Literature</h4>
 
                 @if (empty($record->bibliographyArray()))
                     <span class="text-muted">–</span>
