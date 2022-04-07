@@ -3,7 +3,8 @@ name: Build, test and deploy
 on:
   push:
   repository_dispatch:
-
+  schedule:
+    - cron:  '0 18 1 * *'    # Every month
 jobs:
 
   build-postgres:
