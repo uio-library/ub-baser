@@ -5,7 +5,7 @@
 #
 # ---------------------------------------------------------------------------
 
-FROM node:12 AS frontend
+FROM node:14 AS frontend
 WORKDIR /app
 COPY artisan package.json package-lock.json webpack.mix.js ./
 #RUN npm install -g --upgrade npm
