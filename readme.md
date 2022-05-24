@@ -14,6 +14,13 @@ Felles webgrensesnitt for mindre Postgres-baser driftet av Universitetsbibliotek
 - `npm run watch` for å bygge frontend (SASS og JS og sånt).
 - Se [./docker/README.md](./docker/README.md) for flere detaljer.
 
+### Oppdatere lokal versjon på et senere tidspunkt
+
+- `git pull` for å hente siste versjon av koden fra GitHub
+- `compose update` kan være lurt etterpå for å hente evt. oppdaterte PHP-avhengigheter
+- `./dev.sh up -d` for å starte prosjektet
+- Hvis containeren ikke starter, se "Troubleshooting" i [./docker/README.md](./docker/README.md).
+
 #### Tips og triks
 
 * `php-cs-fixer fix` for å tilpasse koden til gjeldende kodestandard ved hjelp av [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Lurt å kjøre før commit.
@@ -35,8 +42,8 @@ Hvis du jobber med noe som ikke er helt produksjonsklart, bør du opprette en eg
     git checkout -b min-nye-base
 
 Når ny base er klar til å prodsettes bør developer grenen merges med main branch
-      
-    git checkout main      
+
+    git checkout main
     git merge min-nye-base
-    
+
 Når du dytter denne til GitHub, blir appen fremdeles bygget og testet, men ikke distribuert.

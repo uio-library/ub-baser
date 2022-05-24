@@ -38,6 +38,18 @@ And if you want to start a shell in the app container, you can run:
 
 	./dev.sh exec app bash
 
+### Troubleshooting
+
+If the app container fails to start, try rebuilding the image:
+
+    ./dev.sh build
+
+To clean up and start from scratch:
+
+    ./dev.sh down
+    docker system prune
+    docker volume prune   # OBS: Sletter den lokale databasen
+
 ### Creating an admin user
 
 In a development environment, you can run the `create:admin` artisan command to create an admin user with a default password.
@@ -55,7 +67,7 @@ and add additional rights at http://localhost:8080/admin/users/1/edit
 Data can be imported from the `initial-import` folder using the import commands.
 For instance you can import data from `initial-import/dommer` to the `dommer` database like so:
 
-    $ ./dev.sh run --rm -v "$(pwd)"/initial-import:/initial-import app php artisan import:dommer /initial-import/dommer
+    $ ./dev.sh run --rm -v "$(pwd)"/initial-import:/initial-import app php artisan import:litteraturkritikk /initial-import/litteraturkritikk
 
 This uses the import command defined at `app/Console/Commands/ImportDommerCommand.php`.
 
