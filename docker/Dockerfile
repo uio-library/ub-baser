@@ -22,7 +22,7 @@ RUN npm ci && npm run production
 # It would be possible to create a smaller production image, but I'm not sure if the
 # maintenance overhead is worth it.
 # ------------------------------------------------------------------------------------
-FROM php:7.4-apache
+FROM php:8.0-apache
 
 LABEL maintainer="d.m.heggo@ub.uio.no"
 
