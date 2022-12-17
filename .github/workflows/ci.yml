@@ -1,5 +1,9 @@
 name: Build and publish Docker image
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: false
+
 on:
   push:
   repository_dispatch:
