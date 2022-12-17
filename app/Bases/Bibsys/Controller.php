@@ -2,7 +2,7 @@
 
 namespace App\Bases\Bibsys;
 
-use App\Http\Controllers\BaseController as BaseController;
+use App\Http\Controllers\BaseController;
 
 class Controller extends BaseController
 {
