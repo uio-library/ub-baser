@@ -5,7 +5,7 @@
 #
 # ---------------------------------------------------------------------------
 
-FROM node:14 AS frontend
+FROM node:16 AS frontend
 WORKDIR /app
 COPY artisan package.json package-lock.json webpack.mix.js ./
 #RUN npm install -g --upgrade npm
@@ -83,7 +83,7 @@ COPY --from=frontend /app/public/js/ ./public/js/
 COPY --from=frontend /app/public/css/ ./public/css/
 COPY --from=frontend /app/public/fonts/ ./public/fonts/
 COPY --from=frontend /app/public/images/ ./public/images/
-COPY --from=frontend /app/public/vendors~js/ ./public/vendors~js/
+# COPY --from=frontend /app/public/vendors~js/ ./public/vendors~js/
 COPY --from=frontend /app/public/mix-manifest.json ./public/mix-manifest.json
 COPY tests/ ./tests/
 
