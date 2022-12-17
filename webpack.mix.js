@@ -4,7 +4,7 @@ const mix = require('laravel-mix')
 require('laravel-vue-lang/mix')
 // require('laravel-mix-imagemin')
 
-const imageminMozjpeg = require('imagemin-mozjpeg')
+// const imageminMozjpeg = require('imagemin-mozjpeg')
 
 /*
  |--------------------------------------------------------------------------
@@ -14,7 +14,7 @@ const imageminMozjpeg = require('imagemin-mozjpeg')
 
 mix.lang()
 
-mix.js('resources/js/app.js', 'public/js').vue()
+mix.js('resources/js/app.js', 'public/js').vue({ version: 2 })
   .sourceMaps(true, 'inline-source-map')
   .version()
 
@@ -80,7 +80,6 @@ mix.copy('node_modules/datatables.net-plugins/i18n/no-NB.json', 'public/misc/dat
 
 mix.copy('node_modules/openseadragon/build/openseadragon/images/*', 'public/images')
 
-
 /*
  |--------------------------------------------------------------------------
  | And then some horrible CKEditor mess
@@ -88,50 +87,50 @@ mix.copy('node_modules/openseadragon/build/openseadragon/images/*', 'public/imag
  |--------------------------------------------------------------------------
  */
 
-const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
-const {styles} = require('@ckeditor/ckeditor5-dev-utils');
+const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin')
+const { styles } = require('@ckeditor/ckeditor5-dev-utils')
 
 // make sure you copy these two regexes from the CKEdidtor docs:
 // https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/alternative-setups/integrating-from-source.html#webpack-configuration
 const CKERegex = {
   svg: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
   css: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-};
+}
 
 Mix.listen('configReady', webpackConfig => {
-  const rules = webpackConfig.module.rules;
+  const rules = webpackConfig.module.rules
 
   // these change often! Make sure you copy the correct regexes for your Webpack version!
-  const targetSVG = /(\.(png|jpe?g|gif|webp|avif)$|^((?!font).)*\.svg$)/;
-  const targetFont = /(\.(woff2?|ttf|eot|otf)$|font.*\.svg$)/;
-  const targetCSS = /\.p?css$/;
+  const targetSVG = /(\.(png|jpe?g|gif|webp|avif)$|^((?!font).)*\.svg$)/
+  const targetFont = /(\.(woff2?|ttf|eot|otf)$|font.*\.svg$)/
+  const targetCSS = /\.p?css$/
 
   // exclude CKE regex from mix's default rules
-  for (let rule of rules) {
+  for (const rule of rules) {
     // console.log(rule.test) // uncomment to check the CURRENT rules
 
     if (rule.test.toString() === targetSVG.toString()) {
-      rule.exclude = CKERegex.svg;
+      rule.exclude = CKERegex.svg
     } else if (rule.test.toString() === targetFont.toString()) {
-      rule.exclude = CKERegex.svg;
+      rule.exclude = CKERegex.svg
     } else if (rule.test.toString() === targetCSS.toString()) {
-      rule.exclude = CKERegex.css;
+      rule.exclude = CKERegex.css
     }
   }
-});
+})
 
 mix.webpackConfig({
   plugins: [
     new CKEditorWebpackPlugin({
       language: 'nb',
-      addMainLanguageTranslationsToAllAssets: true
-    })
+      addMainLanguageTranslationsToAllAssets: true,
+    }),
   ],
   module: {
     rules: [
       {
         test: CKERegex.svg,
-        use: ['raw-loader']
+        use: ['raw-loader'],
       },
       {
         test: CKERegex.css,
@@ -141,9 +140,9 @@ mix.webpackConfig({
             options: {
               injectType: 'singletonStyleTag',
               attributes: {
-                'data-cke': true
-              }
-            }
+                'data-cke': true,
+              },
+            },
           },
           'css-loader', // ADDED
           {
@@ -151,14 +150,14 @@ mix.webpackConfig({
             options: {
               postcssOptions: styles.getPostCssConfig({ // moved into option `postcssOptions`
                 themeImporter: {
-                  themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
+                  themePath: require.resolve('@ckeditor/ckeditor5-theme-lark'),
                 },
-                minify: true
-              })
-            }
-          }
-        ]
-      }
-    ]
-  }
-});
+                minify: true,
+              }),
+            },
+          },
+        ],
+      },
+    ],
+  },
+})
