@@ -10,8 +10,8 @@ Felles webgrensesnitt for mindre Postgres-baser driftet av Universitetsbibliotek
 ### Oppsett og utvikling
 
 - Du trenger: PHP, NodeJS og Docker.
+- `npm install && npm run watch` for å bygge frontend (SASS og JS og sånt), må kjøres utenfor containeren.
 - `./dev.sh up` for å starte en utviklingsserver med Docker Compose.
-- `npm run watch` for å bygge frontend (SASS og JS og sånt).
 - Se [./docker/README.md](./docker/README.md) for flere detaljer.
 
 ### Oppdatere lokal versjon på et senere tidspunkt
