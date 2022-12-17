@@ -41,7 +41,7 @@
     "acorn": "^8.8.1",
     "autocomplete.js": "^0.38.1",
     "axios": "^1.2",
-    "bootstrap": "^5.2.3",
+    "bootstrap": "^4.6.2",
     "bootstrap-select": "^1.13.18",
     "core-js": "^3.26.1",
     "cross-env": "^7.0.3",
