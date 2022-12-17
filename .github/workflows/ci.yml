@@ -26,9 +26,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build and push Docker images
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v3
         with:
-          directory: ./docker/postgres
+          context: ./docker/postgres
           tags: |
             ghcr.io/uio-library/postgres:12-nb_NO
 
@@ -57,9 +57,9 @@ jobs:
             type=sha,format=long,prefix=
 
       - name: Build and push Docker images
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v3
         with:
-          dockerfile: docker/Dockerfile
+          file: docker/Dockerfile
           tags: ${{ steps.app_meta.outputs.tags }}
           labels: ${{ steps.app_meta.outputs.labels }}
 
