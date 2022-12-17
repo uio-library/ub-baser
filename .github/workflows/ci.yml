@@ -28,6 +28,7 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v3
         with:
+          push: true
           context: ./docker/postgres
           tags: |
             ghcr.io/uio-library/postgres:12-nb_no
@@ -61,10 +62,10 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v3
         with:
+          push: true
           file: docker/Dockerfile
           tags: ${{ steps.app_meta.outputs.tags }}
           labels: ${{ steps.app_meta.outputs.labels }}
-
   test:
     name: Run test suite
     runs-on: ubuntu-latest
