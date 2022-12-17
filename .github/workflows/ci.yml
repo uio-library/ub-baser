@@ -30,7 +30,9 @@ jobs:
         with:
           context: ./docker/postgres
           tags: |
-            ghcr.io/uio-library/postgres:12-nb_NO
+            ghcr.io/uio-library/postgres:12-nb_no
+
+
 
   build-app:
     name: Build main Docker image
@@ -84,7 +86,7 @@ jobs:
         env:
           COMPOSE_FILE: docker/compose/staging.yml
           APP_IMAGE: ghcr.io/uio-library/ub-baser:${{ github.sha }}
-          POSTGRES_IMAGE: ghcr.io/uio-library/postgres:12-nb_NO
+          POSTGRES_IMAGE: ghcr.io/uio-library/postgres:12-nb_no
           GITHUB_SHA: ${{ github.sha }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
