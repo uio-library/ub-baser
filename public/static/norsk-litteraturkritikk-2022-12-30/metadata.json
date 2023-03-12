@@ -1,0 +1,56 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "Dataset",
+  "name": "Norsk litteraturkritikk",
+  "description": "Bibliografi over litteraturkritikk publisert i norske medier. Den inneholder også enkelte omtaler av norsk litteratur publisert i utenlandske medier. Bibliografien har over 20 000 innførsler, men er ikke fullstendig, og redigeres og utbygges kontinuerlig av Universitetsbiblioteket i Oslo og Institutt for lingvistiske og nordiske studier.",
+  "url": "https://ub-baser.uio.no/norsk-litteraturkritikk",
+  "identifier": ["https://doi.org/TODO"],
+  "keywords": ["Literary criticism", "Norwegian literature"],
+  "license": "http://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "isAccessibleForFree": true,
+  "hasPart": [
+    {
+      "@type": "Dataset",
+      "name": "Sub dataset 01",
+      "description": "Informative description of the first subdataset...",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creator": { "@type": "Organization", "name": "Sub dataset 01 creator" }
+    },
+    {
+      "@type": "Dataset",
+      "name": "Sub dataset 02",
+      "description": "Informative description of the second subdataset...",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creator": { "@type": "Organization", "name": "Sub dataset 02 creator" }
+    }
+  ],
+  "creator": {
+    "@type": "Organization",
+    "url": "https://www.ncei.noaa.gov/",
+    "name": "OC/NOAA/NESDIS/NCEI > National Centers for Environmental Information, NESDIS, NOAA, U.S. Department of Commerce",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "telephone": "+1-828-271-4800",
+      "email": "ncei.orders@noaa.gov"
+    }
+  },
+  "funder": {
+    "@type": "Organization",
+    "sameAs": "https://ror.org/00tgqzw13",
+    "name": "National Weather Service"
+  },
+  "includedInDataCatalog": { "@type": "DataCatalog", "name": "data.gov" },
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "CSV",
+      "contentUrl": "https://www.ncdc.noaa.gov/stormevents/ftp.jsp"
+    }
+  ],
+  "temporalCoverage": "1789-01-01/2014-12-18",
+  "spatialCoverage": {
+    "@type": "Place",
+    "geo": { "@type": "GeoShape", "box": "18.0 -65.0 72.0 172.0" }
+  }
+}
