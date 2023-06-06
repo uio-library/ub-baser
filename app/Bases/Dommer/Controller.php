@@ -2,7 +2,7 @@
 
 namespace App\Bases\Dommer;
 
-use App\Http\Controllers\BaseController as BaseController;
+use App\Http\Controllers\BaseController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 

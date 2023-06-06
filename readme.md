@@ -1,6 +1,5 @@
-[![Build Status](https://github.com/uio-library/ub-baser/actions/workflows/test-on-push.yml/badge.svg)](https://github.com/uio-library/ub-baser/actions/workflows/test-on-push.yml)
+[![Build Status](https://github.com/uio-library/ub-baser/actions/workflows/ci.yml/badge.svg)](https://github.com/uio-library/ub-baser/actions/workflows/ci.yml)
 [![StyleCI](https://styleci.io/repos/44453446/shield)](https://styleci.io/repos/44453446)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/uio-library/ub-baser/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/uio-library/ub-baser/?branch=main)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=scriptotek_ub-baser&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=scriptotek_ub-baser)
 
 ## UB-baser

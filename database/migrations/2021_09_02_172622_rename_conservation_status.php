@@ -1,5 +1,5 @@
 <?php
-use App\Bases\Opes\Record;
+
 use App\Traits\MigrationHelper;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

@@ -28,9 +28,12 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v3
         with:
+          push: true
           context: ./docker/postgres
           tags: |
-            ghcr.io/uio-library/postgres:12-nb_NO
+            ghcr.io/uio-library/postgres:12-nb_no
+
+
 
   build-app:
     name: Build main Docker image
@@ -59,10 +62,10 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v3
         with:
+          push: true
           file: docker/Dockerfile
           tags: ${{ steps.app_meta.outputs.tags }}
           labels: ${{ steps.app_meta.outputs.labels }}
-
   test:
     name: Run test suite
     runs-on: ubuntu-latest
@@ -84,7 +87,7 @@ jobs:
         env:
           COMPOSE_FILE: docker/compose/staging.yml
           APP_IMAGE: ghcr.io/uio-library/ub-baser:${{ github.sha }}
-          POSTGRES_IMAGE: ghcr.io/uio-library/postgres:12-nb_NO
+          POSTGRES_IMAGE: ghcr.io/uio-library/postgres:12-nb_no
           GITHUB_SHA: ${{ github.sha }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
