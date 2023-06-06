@@ -47,3 +47,4 @@ Når ny base er klar til å prodsettes bør developer grenen merges med main bra
     git merge min-nye-base
 
 Når du dytter denne til GitHub, blir appen fremdeles bygget og testet, men ikke distribuert.
+SSL sertifikat endres en gang i året
