@@ -52,9 +52,10 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        $uioWebloginTenant = Tenant::where('key', 'uio-weblogin')->first();
-        $uioWebloginTenantUuid = $uioWebloginTenant ? $uioWebloginTenant->uuid : null;
-        return view('auth.login', ['uioWebloginTenantUuid'=> $uioWebloginTenantUuid]);
+        $defaultSaml2TenantKey = env('SAML2_DEFAULT_TENANT', 'uio-weblogin');
+        $defaultSaml2Tenant = $defaultSaml2TenantKey ? Tenant::where('key', $defaultSaml2TenantKey)->first() : null;
+        $defaultSaml2TenantUuid = $defaultSaml2Tenant ? $defaultSaml2Tenant->uuid : null;
+        return view('auth.login', ['defaultSaml2TenantUuid'=> $defaultSaml2TenantUuid]);
     }
 
     public function samlError()
