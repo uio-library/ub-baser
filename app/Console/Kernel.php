@@ -25,7 +25,6 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImportBibsysCommand::class,
         \App\Console\Commands\ImportOpesCommand::class,
         \App\Console\Commands\PurgeLogs::class,
-        \App\Console\Commands\Deployed::class,
         \App\Console\Commands\PurgeLocks::class,
         \App\Console\Commands\MakeBaseCommand::class,
     ];
