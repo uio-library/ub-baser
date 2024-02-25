@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\LogEntry;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Monolog\Logger;
+use Monolog\Level;
 
 class LogEntryController extends Controller
 {
@@ -18,7 +18,7 @@ class LogEntryController extends Controller
      */
     public function index(Request $request)
     {
-        $query = LogEntry::where('level', '>=', Logger::INFO)
+        $query = LogEntry::where('level', '>=', Level::Info)
             ->orderBy('id', 'desc')
             ->limit(200);
 

@@ -25,7 +25,7 @@ class Person extends BaseRecord
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     /**
      * The attributes that are mass assignable.
