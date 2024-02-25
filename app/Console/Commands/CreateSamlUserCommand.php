@@ -4,18 +4,16 @@ namespace App\Console\Commands;
 
 use App\User;
 use Illuminate\Console\Command;
-use Illuminate\Mail\Message;
 
-class CreateUserCommand extends Command
+class CreateSamlUserCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'create:user
+    protected $signature = 'ub-baser:create-saml-user
                             {email       : Email of the user}
-                            {name        : Name of the user}
                             {--admin     : Set flag to give user admin rights}';
 
     /**
@@ -41,14 +39,11 @@ class CreateUserCommand extends Command
             return;
         }
 
-        $user->name = $this->argument('name');
+        $user->name = $this->argument('email');
+        $user->saml_id = $this->argument('email');
         $user->rights = $this->option('admin') ? ['admin'] : [];
         $user->save();
 
-        \Password::sendResetLink($credentials, function (Message $message) {
-            $message->subject('Velkommen til ub-baser');
-        });
-
-        $this->info('User created, email sent to ' . $user->email . '.');
+        $this->info('SAML user ' . $user->email . ' created.');
     }
 }

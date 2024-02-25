@@ -13,8 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\CreateUserCommand::class,
-        \App\Console\Commands\CreateAdminCommand::class,
+        \App\Console\Commands\CreateSamlUserCommand::class,
+        \App\Console\Commands\CreateLocalAdminCommand::class,
         \App\Console\Commands\DatabaseDumpCommand::class,
         \App\Console\Commands\ImportLitteraturkritikkCommand::class,
         \App\Console\Commands\ImportDommerCommand::class,

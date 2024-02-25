@@ -27,6 +27,10 @@ Felles webgrensesnitt for mindre Postgres-baser driftet av Universitetsbibliotek
   - [5. Run database migrations](#5-run-database-migrations)
   - [6. Setup SSO (SAML)](#6-setup-sso-saml)
   - [7. Configure Apache](#7-configure-apache)
+- [Production notes](#production-notes)
+  - [Securing the app](#securing-the-app)
+  - [Optimizing for production](#optimizing-for-production)
+  - [User management in production](#user-management-in-production)
 
 ## Local development
 
@@ -58,20 +62,23 @@ To stop the server, press Ctrl-C.
 
 #### Creating the first admin user
 
-The `create:admin` artisan command is provided to create the initial admin user with a default
-password, which can then be used to create additional users.
+The `ub-baser:create-local-user` artisan command is used to create a local admin user in development,
+where SAML is not configured. Please don't use this in production!
 
 Without Docker: (requires local Postgres)
 
-    php artisan create:admin
+    php artisan ub-baser:create-local-admin
 
 With Docker:
 
-    docker-compose run --rm app php artisan create:admin
+    docker-compose run --rm app php artisan ub-baser:create-local-admin
 
 The source for this command is `app/Console/Commands/CreateAdminCommand.php`
 
-Now you should be able to login at <http://localhost:8080/login>
+A random password will be shown. There is no way to retrieve it if you loose it,
+so please make a note of it in a secure storage (password manager or similar).
+
+You should now be able to login at <http://localhost:8080/login>
 and add additional rights at <http://localhost:8080/admin/users/1/edit>
 
 #### Importing data
@@ -329,3 +336,39 @@ Add vhosts to `/etc/apache2/sites-available/ub-baser.conf`:
         RewriteEngine On
         RewriteRule (.*) https://ub-baser.uio.no/opes [R,L]
     </VirtualHost>
+
+## Production notes
+
+### Securing the app
+
+- In `.env`, make sure that the following settings are set:
+  - `APP_ENV=production`
+  - `APP_DEBUG=false`
+  - `APP_KEY` is not empty (run `php artisan key:generate` to generate a key if none exists)
+
+- The webserver should only have write access to the `storage` directory:
+
+    chown -R www-data:www-data storage
+
+- Only use SAML, not local users, in production.
+
+### Optimizing for production
+
+In production, it's a good idea to create caches manually:
+
+    php artisan config:cache  # stored in bootstrap/cache/config.php
+    php artisan route:cache  # stored in bootstrap/cache/routes.php
+    php artisan view:cache  # stored in storage/framework/views
+
+This way, we don't need to give the webserver write access to `bootstrap/cache`.
+
+### User management in production
+
+When a new user logs in using SSO, a user with no rights is automatically added to the `users` table.
+An admin can then assign rights to the user.
+
+To create the *first* admin user, use the `ub-baser:create-saml-user` command:
+
+    php artisan ub-baser:create-saml-user username@uio.no --admin
+
+The user is stored in the `users` table with `admin` rights and can now login using SSO.
