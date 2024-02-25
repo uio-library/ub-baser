@@ -20,12 +20,12 @@
         "jenssegers/agent": "^2.6",
         "laravel/framework": "^10.0",
         "laravel/ui": "^4.0",
-        "laravelcollective/html": "~6.0",
         "league/commonmark": "^2.0",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
         "punic/punic": "^3.5",
         "spatie/laravel-csp": "^2.7",
+        "spatie/laravel-html": "*",
         "symfony/http-client": "^6.0",
         "symfony/mailgun-mailer": "^6.0"
     },
