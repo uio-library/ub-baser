@@ -200,11 +200,8 @@ Clone the app and install Composer and NPM dependencies:
 
 ### 4. Add configuration to `.env`
 
-Create a `.env` file from the template file:
-
-    cp .env.prod.example .env
-
-and add your database settings to it.
+- Add your database settings to the `.env` file.
+- In production, make sure to set `APP_DEBUG=false` to avoid leaking secrets.
 
 ### 5. Run database migrations
 
