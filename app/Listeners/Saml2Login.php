@@ -2,10 +2,11 @@
 
 namespace App\Listeners;
 
-use Aacotroneo\Saml2\Events\Saml2LoginEvent;
+use Slides\Saml2\Events\SignedIn;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Saml2Login
 {
@@ -19,12 +20,12 @@ class Saml2Login
     /**
      * Handle the event.
      *
-     * @param Saml2LoginEvent $event
+     * @param SignedIn        $event
      * @param Request         $request
      *
      * @return void
      */
-    public function handle(Saml2LoginEvent $event)
+    public function handle(SignedIn $event)
     {
         $data = $event->getSaml2User();
         $attrs = $data->getAttributes();
@@ -36,7 +37,7 @@ class Saml2Login
             $user->last_login_at = Carbon::now();
             $user->save();
 
-            return \Auth::login($user);
+            return Auth::login($user);
         }
 
         $this->request->session()->put('saml_response', [

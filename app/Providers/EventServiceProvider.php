@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Aacotroneo\Saml2\Events\Saml2LoginEvent;
-use Aacotroneo\Saml2\Events\Saml2LogoutEvent;
+use Slides\Saml2\Events\SignedIn;
+use Slides\Saml2\Events\SignedOut;
 use App\Listeners\Saml2Login;
 use App\Listeners\Saml2Logout;
 use Illuminate\Auth\Events\Registered;
@@ -21,10 +21,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        Saml2LoginEvent::class => [
+        SignedIn::class => [
             Saml2Login::class,
         ],
-        Saml2LogoutEvent::class => [
+        SignedOut::class => [
             Saml2Logout::class,
         ],
     ];

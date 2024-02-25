@@ -10,7 +10,7 @@
         "ext-json": "*",
         "ext-pdo": "*",
         "ext-pdo_pgsql": "*",
-        "aacotroneo/laravel-saml2": "~2.1",
+        "24slides/laravel-saml2": "^2.3",
         "divineomega/psr-18-guzzle-adapter": "~1.2.0",
         "doctrine/dbal": "~3.0",
         "guzzlehttp/guzzle": "^7.0.1",
