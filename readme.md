@@ -209,6 +209,7 @@ Clone the app and install Composer and NPM dependencies:
     cd ub-baser
     composer install
     npm install
+    npm run production
 
 ### 4. Add configuration to `.env`
 
