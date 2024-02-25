@@ -16,12 +16,6 @@ RUN apt-get update \
     && docker-php-ext-configure gd --with-jpeg \
     && docker-php-ext-install -j$(nproc) pdo pdo_pgsql gd zip
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-COPY composer.json .
-ENV COMPOSER_ALLOW_SUPERUSER 1
-RUN composer install --no-interaction --no-autoloader
-
 RUN a2enmod rewrite ssl headers
 RUN a2dissite 000-default
 
