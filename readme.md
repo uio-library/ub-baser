@@ -8,6 +8,24 @@ Felles webgrensesnitt for mindre Postgres-baser driftet av Universitetsbibliotek
 (norske oversettelser av spansk og spanskamerikansk litteratur), Norsk Litteraturkrtikk
 (Beyer-basen)og Dommers populærnavn.
 
+**Innhold:**
+
+- [Local development](#local-development)
+  - [Getting started](#getting-started)
+    - [Creating the first admin user](#creating-the-first-admin-user)
+    - [Importing data](#importing-data)
+  - [Troubleshooting local development](#troubleshooting-local-development)
+  - [Resetting the database](#resetting-the-database)
+  - [Making changes to the Docker image and Apache/PHP config](#making-changes-to-the-docker-image-and-apachephp-config)
+  - [Running tests](#running-tests)
+  - [Making changes to stylesheets or JavaScript](#making-changes-to-stylesheets-or-javascript)
+- [Deployment instructions](#deployment-instructions)
+  - [1. Install Apache, PHP and NodeJS](#1-install-apache-php-and-nodejs)
+  - [2. Configure SSL certificate](#2-configure-ssl-certificate)
+  - [3. Clone the app and install dependencies](#3-clone-the-app-and-install-dependencies)
+  - [4. Add configuration to `.env`](#4-add-configuration-to-env)
+  - [5. Run database migrations](#5-run-database-migrations)
+
 ## Local development
 
 Requirements:
@@ -85,204 +103,112 @@ To clean up and start from scratch:
 
 If you need to delete the database and start over again, use the `migrate:fresh` artisan command:
 
- docker-compose run --rm app php artisan migrate:fresh
+    docker-compose run --rm app php artisan migrate:fresh
 
-## Making changes to the Docker image and Apache/PHP config
+### Making changes to the Docker image and Apache/PHP config
 
 If you need to rebuild the Docker image, e.g. after having made changes to the Dockerfile, run:
 
- docker-compose up --build
+    docker-compose up --build
 
 You don't need to rebuild the image after changes to the application itself, since the
 current directory is mounted into the Docker container when using the development configuration
-(see docker/compose.dev.yml).
+(see docker-compose.yml).
 
 When testing changes to the Apache config, it can be useful to also mount the config file/folder,
 to avoid having to rebuild the image for every change. Here's an example where we mount
 the `sites-available` folder:
 
- docker-compose run --rm -v "$(pwd)"/docker/sites-available:/etc/apache2/sites-available/ app
+    docker-compose run --rm -v "$(pwd)"/docker/sites-available:/etc/apache2/sites-available/ app
 
-## Running tests
+### Running tests
 
 Tests will run in the `staging` environment by default,
 so that tests will run isolated from your development environment.
 To start containers for this environment:
 
- APP_ENV=staging docker-compose up -d
+    APP_ENV=staging docker-compose up -d
 
 Run the WebdriverIO tests against <http://localhost:8080>:
 
- npm run test
+    npm run test
 
 To run tests against another host, you can specify `TEST_BASE_URL`.
 If you use Docker Machine:
 
- TEST_BASE_URL="http://$(docker-machine ip):8081" npm run test
+    TEST_BASE_URL="http://$(docker-machine ip):8081" npm run test
 
 To run a single test:
 
     APP_ENV=staging npx wdio tests/wdio.conf.js --spec ./tests/selenium/specs/login.js
 
-## Making changes to stylesheets or JavaScripts
+### Making changes to stylesheets or JavaScript
 
 Run `npm run watch` to build these resources as you make changes to the source files in the `resources` folder.
 
-# Production setup
+## Deployment instructions
 
-Note: Day-to-day deployments are done using Ansible. See ../ansible/README.md
+### 1. Install Apache, PHP and NodeJS
 
-## 1. [Install Docker for Centos](https://docs.docker.com/install/linux/docker-ce/centos/)
+Install Apache and PHP 8.1:
 
-* [ ] Install Docker:
+    dnf install httpd
+    dnf module install php:8.1/common
 
- ```sh
- sudo yum install -y yum-utils device-mapper-persistent-data lvm2
- sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
- sudo yum install docker-ce docker-ce-cli containerd.io
- sudo systemctl start docker
- ```
+Follow the steps in *[Product Documentation for Red Hat Enterprise Linux 9. Chapter 6. Using the PHP scripting language](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/installing_and_using_dynamic_programming_languages/assembly_using-the-php-scripting-language_installing-and-using-dynamic-programming-languages)* to make Apache start at boot.
 
-* [ ] Make Docker start at boot:
+Install packages needed by PHP and NPM dependencies:
 
- ```sh
- sudo systemctl enable docker
- ```
+    dnf install autoconf automake libtool make cmake gettext zlib-devel
 
-* [x] Storage engine: We stick with the default, overlay2, for now.
+Install the Postgres client library and PHP module:
 
-* [ ] Logging engine: Rather than using file-based logging, we want to use the [journald logging driver](https://docs.docker.com/config/containers/logging/journald/). Edit `/etc/docker/daemon.json` (create it if it doesn't exist)
-with the following content:
+    dnf install postgresql php-pdo php-pgsql
 
- ```
- {
-   "log-driver": "journald",
-   "log-opts": {
-     "tag": "{{.ImageName}}:{{.ID}}"
-   }
- }
- ```
+Install the GD and Zip PHP modules and their dependencies:
 
- This enables us to retrieve logs both with the `docker logs` command and with journalctl:
+    dnf install gd gd-devel php-gd php-zip
 
- ```sh
- sudo journalctl CONTAINER_NAME=app
- ```
+Git is needed to clone the app:
 
-* [ ] Time to restart Docker
+    dnf install git
 
- ```sh
- sudo systemctl restart docker
- ```
+[Node 18](https://nodejs.org/en/download/package-manager#centos-fedora-and-red-hat-enterprise-linux) is needed to build frontend components, but is not a *runtime* dependency:
 
-* [ ] And init Swarm
+    dnf module install nodejs:18/common
 
- ```sh
- sudo docker swarm init
- ```
+[Composer](https://getcomposer.org/download/) is needed for installing PHP dependencies:
 
-## 3. Create a deploy user
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    php composer-setup.php
+    rm composer-setup.php
+    mv composer.phar /usr/local/bin/composer
 
-* [ ] Create a deploy user:
+### 2. Configure SSL certificate
 
- ```sh
- sudo useradd --system --shell /bin/bash --create-home deploy --comment "Deploy user"
- ```
+Follow the steps *[Kokebok for bestilling og utstedelse av SSL-sertifikater](https://www.uio.no/tjenester/it/sikkerhet/sertifikater/kokebok.html)* to order a certificate and install it with Apache.
 
-* [ ] Create an SSH key for it:
+### 3. Clone the app and install dependencies
 
- ```sh
- sudo -u deploy bash
- mkdir -p /home/deploy/.ssh
- touch /home/deploy/.ssh/authorized_keys
- ssh-keygen -t rsa -b 4096 -f /home/deploy/.ssh/id_rsa.github -C "ub-baser deploy key for github"
+Clone the app and install Composer and NPM dependencies:
 
- cat <<EOF > /home/deploy/.ssh/config
- Host github.com
-   IdentityFile ~/.ssh/id_rsa.github
- EOF
+    cd /srv
+    git clone https://github.com/uio-library/ub-baser
+    cd ub-baser
+    composer install
+    npm install
 
- restorecon -Rv /home/deploy
- ```
+### 4. Add configuration to `.env`
 
-* [ ] Add the SSH key to the GitHub repo as a [deploy key](https://developer.github.com/v3/guides/managing-deploy-keys/). (And remove any keys no longer in use)
+Create a `.env` file from the template file:
 
-* [ ] Add the deploy user to the Docker group:
+    cp .env.prod.example .env
 
- ```sh
- sudo usermod -aG docker deploy
- ```
+and add your database settings to it.
 
-## 4. Add configuration to `.env`
+### 5. Run database migrations
 
- Copy the template file:
+This will both test that we can connect to the database
+and add/update any missing tables:
 
- ```sh
- cp .env.prod.example .env
- ```
-
- and add database settings and a ssl certificate.
-
-## 5. Deploy the app
-
-* [ ] As the deploy user, clone the repo:
-
- ```sh
- sudo mkdir /data
- sudo chown -R deploy:deploy /data
-
- sudo -u deploy bash
- git clone git@github.com:scriptotek/ub-baser.git
- cd ub-baser
- ```
-
-* [ ] Build the Docker image:
-
- ```
- ./build.sh
- ```
-
-* [ ] Define a handy alias, for instance in .bashrc:
-
- ```
- alias RUN="docker run --rm -it --env-file .env -v ub-baser_storage:/app/storage -v "$(pwd)"/initial-import:/initial-import ub-baser:latest"
- ```
-
-* [ ] Run database migrations and add seed data:
-
- ```
- RUN php artisan migrate --seed
- ```
-
-* [ ] Data import:
-
-    ```
-    RUN php artisan import /initial-import
-    ```
-
-* [ ] Deploy:
-
- ```
- $ docker stack deploy --compose-file docker/compose/production.yml ub-baser
- Creating network ub-baser_default
- Creating service ub-baser_app
- ```
-
- Ignorer advarselen "image ub-baser:latest could not be accessed on a registry". Vent et par sekunder og sjekk:
-
- ```
- docker stack ps ub-baser
- ```
-
-
-Oppdatering:
-
-```
-docker service update --force ub-baser_app
-```
-
-Feilsøking? Inspisere containeren:
-
-```sh
-RUN bash
-```
+    php artisan migrate
