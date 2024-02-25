@@ -26,6 +26,7 @@ Felles webgrensesnitt for mindre Postgres-baser driftet av Universitetsbibliotek
   - [4. Add configuration to `.env`](#4-add-configuration-to-env)
   - [5. Run database migrations](#5-run-database-migrations)
   - [6. Setup SSO (SAML)](#6-setup-sso-saml)
+  - [7. Configure Apache](#7-configure-apache)
 
 ## Local development
 
@@ -189,6 +190,9 @@ Git is needed to clone the app:
 
 Follow the steps *[Kokebok for bestilling og utstedelse av SSL-sertifikater](https://www.uio.no/tjenester/it/sikkerhet/sertifikater/kokebok.html)* to order a certificate and install it with Apache.
 
+Store certificate in `/etc/apache2/site.crt`, private key in `/etc/apache2/site.key` and
+CA certificate in `/etc/apache2/ca.crt`
+
 ### 3. Clone the app and install dependencies
 
 Clone the app and install Composer and NPM dependencies:
@@ -240,3 +244,88 @@ To use UiO's test environment instead, create a new tenant using metadata from <
         --x509cert="MIIFHTCCBAWgAwIBAgICA0UwDQYJKoZIhvcNAQEEBQAwga0xCzAJBgNVBAYTAk5PMQ0wCwYDVQQHEwRPc2xvMRswGQYDVQQKExJVbml2ZXJzaXR5IG9mIE9zbG8xOjA4BgNVBAsTMUNlbnRlciBmb3IgSW5mb3JtYXRpb24gVGVjaG5vbG9neSBTZXJ2aWNlcyAoVVNJVCkxEDAOBgNVBAMTB1VTSVQgQ0ExJDAiBgkqhkiG9w0BCQEWFXdlYm1hc3RlckB1c2l0LnVpby5ubzAeFw0xMzEwMjgxMjUxMzlaFw0yMzEwMjYxMjUxMzlaMIGrMQswCQYDVQQGEwJOTzEbMBkGA1UEChMSVW5pdmVyc2l0eSBvZiBPc2xvMTowOAYDVQQLEzFDZW50ZXIgZm9yIEluZm9ybWF0aW9uIFRlY2hub2xvZ3kgU2VydmljZXMgKFVTSVQpMR0wGwYDVQQDExR3ZWJsb2dpbi10ZXN0LnVpby5ubzEkMCIGCSqGSIb3DQEJARYVd2VibWFzdGVyQHVzaXQudWlvLm5vMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArditxDo2pV0pKddtUo1yH7Znjwkf+PSYMMiI+W1EaSAQ3zyayNnF/xGCK0FmPIs0eZACs/0mODn9flhyINjWb224GS45Ry592u6Ta9HTyWrnPvAgYw0TMs/evc76B+XATiQcw4xNFFhqG1hPGYaNHwZaWmngG2F+B5xY5twN/lMwwuD+Q3sJ/B39pfHy+Y6jy0bEDpM2RrqF5tARKnU1iikwViHI0bWlFEAF2piuj/M4Cha5seIxEZhZtLLMfFX7Q7JTwprisL3pwtALNPSm9sZRLCcpFIFRNUzpgf3HNFvsYdyDw/1gXj/2RBzLBImDG1QQxg67tT/OQpL9gqO2CwIDAQABo4IBRTCCAUEwCQYDVR0TBAIwADA4BglghkgBhvhCAQ0EKxYpVzNDQS1zaWduZWQgT3BlblNTTCBHZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFNrZ2Qv6rFnLBBtjKZ9sm8eiWzc8MIHaBgNVHSMEgdIwgc+AFC9SOGQmVepyVHRb5nI8z/GwjeYHoYGzpIGwMIGtMQswCQYDVQQGEwJOTzENMAsGA1UEBxMET3NsbzEbMBkGA1UEChMSVW5pdmVyc2l0eSBvZiBPc2xvMTowOAYDVQQLEzFDZW50ZXIgZm9yIEluZm9ybWF0aW9uIFRlY2hub2xvZ3kgU2VydmljZXMgKFVTSVQpMRAwDgYDVQQDEwdVU0lUIENBMSQwIgYJKoZIhvcNAQkBFhV3ZWJtYXN0ZXJAdXNpdC51aW8ubm+CAQAwDQYJKoZIhvcNAQEEBQADggEBAFfb5ednPCcwA/U6/v4JIHEOREQlXcpcKsQHT9dNjKWSiXUxF1N3KlKRCrdOSe4DVS1BkmgnAUY1GSnT1acxvsBmW1m0qu6cFlr4K8qgkDio2nPQtIv608+e51Iop6JN1B9m1UX14DXxDjozH3bLO95mChhJ00jKdIFtAXOpjZJS8LC/ii/GjKrPUl8Yz9gcmxykkryr+HdZtBUpcLDCnPhkv5Qqkr0SZQBlsr2XzCydll4ZkYUYYLRG/wxlKop9PY3dKMXLf+jlNiVH9YbiRoa1NdxDsFKTpfhnzVNbGbNp4Gkrn4lut007fhMfcq1ZbATR39NzU84WkMjbhGaisNA="
 
 and set `SAML2_DEFAULT_TENANT=uio-weblogin-test` in the `.env` file.
+
+### 7. Configure Apache
+
+Add vhosts to `/etc/apache2/sites-available/ub-baser.conf`:
+
+    <VirtualHost *:80>
+        # This first-listed virtual host is also the default for *:80
+        RewriteEngine On
+        RewriteCond %{HTTPS} off
+        RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+    </VirtualHost>
+
+    <VirtualHost *:443>
+        SSLEngine On
+
+        SSLCertificateFile /etc/apache2/site.crt
+        SSLCertificateKeyFile /etc/apache2/site.key
+        SSLCertificateChainFile /etc/apache2/ca.crt
+
+        SSLCipherSuite ALL:+HIGH:!ADH:!EXP:!SSLv2:!SSLv3:!MEDIUM:!LOW:!NULL:!aNULL
+        SSLProtocol all -TLSv1.1 -TLSv1 -SSLv2 -SSLv3
+
+        SSLHonorCipherOrder     on
+
+        Header always set Strict-Transport-Security "max-age=63072000; includeSubdomains;"
+
+        DocumentRoot    /app/public
+        DirectoryIndex  index.php
+
+        RewriteEngine   On
+
+        <Directory /app/public>
+            Options FollowSymLinks
+            AllowOverride None
+            Require all granted
+
+            # Redirect Trailing Slashes If Not A Folder...
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+            # Handle Front Controller...
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteRule ^ /index.php [L]
+        </Directory>
+    </VirtualHost>
+
+    <VirtualHost *:80>
+        ServerName www.norsklitteraturkritikk.no
+        RewriteEngine On
+        RewriteRule (.*) https://ub-baser.uio.no/norsk-litteraturkritikk [R,L]
+    </VirtualHost>
+
+    <VirtualHost *:80>
+        ServerName norsklitteraturkritikk.no
+        RewriteEngine On
+        RewriteRule (.*) https://ub-baser.uio.no/norsk-litteraturkritikk [R,L]
+    </VirtualHost>
+
+    <VirtualHost *:80>
+        ServerName opes.uio.no
+        RewriteEngine On
+        RewriteRule (.*) https://ub-baser.uio.no/opes [R,L]
+    </VirtualHost>
+
+    <VirtualHost *:443>
+        ServerName www.norsklitteraturkritikk.no
+        Include /etc/apache2/include/ssl.conf
+        RewriteEngine On
+        RewriteRule (.*) https://ub-baser.uio.no/norsk-litteraturkritikk [R,L]
+    </VirtualHost>
+
+    <VirtualHost *:443>
+        ServerName norsklitteraturkritikk.no
+        Include /etc/apache2/include/ssl.conf
+        RewriteEngine On
+        RewriteRule (.*) https://ub-baser.uio.no/norsk-litteraturkritikk [R,L]
+    </VirtualHost>
+
+    <VirtualHost *:443>
+        ServerName opes.uio.no
+        Include /etc/apache2/include/ssl.conf
+        RewriteEngine On
+        RewriteRule (.*) https://ub-baser.uio.no/opes [R,L]
+    </VirtualHost>

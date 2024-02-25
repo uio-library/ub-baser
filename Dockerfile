@@ -16,7 +16,7 @@ RUN apt-get update \
     && docker-php-ext-configure gd --with-jpeg \
     && docker-php-ext-install -j$(nproc) pdo pdo_pgsql gd zip
 
-RUN a2enmod rewrite ssl headers
+RUN a2enmod rewrite headers
 RUN a2dissite 000-default
 
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
@@ -33,8 +33,7 @@ RUN mkdir -p \
     ./storage/logs \
   && chown -R www-data:www-data ./storage
 
-COPY docker/include $APACHE_CONFDIR/include
-COPY docker/sites-available $APACHE_CONFDIR/sites-available
+COPY docker/apache-dev-site.conf $APACHE_CONFDIR/sites-available/ub-baser-dev.conf
 
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
 CMD ["/app/docker/start.sh"]
