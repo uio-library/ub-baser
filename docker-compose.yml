@@ -33,10 +33,13 @@ services:
       - 8080:80
     volumes:
       - .:/app/:ro
+      # Writable directories
       - app_storage:/app/storage
+      - app_bootstrap_cache:/app/bootstrap/cache
     depends_on:
       - db
 
 volumes:
   app_storage:
+  app_bootstrap_cache:
   db_storage:
