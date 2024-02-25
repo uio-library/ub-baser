@@ -36,8 +36,6 @@
     "@ckeditor/ckeditor5-upload": "^35.4.0",
     "@ckeditor/ckeditor5-vue2": "^3.0.1",
     "@openfonts/pt-sans_all": "^1.44.2",
-    "@sentry/browser": "^7.27.0",
-    "@sentry/integrations": "^7.27.0",
     "acorn": "^8.8.1",
     "autocomplete.js": "^0.38.1",
     "axios": "^1.2",
