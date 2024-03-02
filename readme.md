@@ -211,12 +211,14 @@ Clone the app and install Composer and NPM dependencies:
 
 ### 4. Update SELinux security context
 
-For Apache to get access to `/srv/ub-baser/`, we must assign the `httpd_sys_content_t` SELinux security context:
+For Apache to get access to `/srv/ub-baser/`, we must assign the `httpd_sys_content_t` SELinux security context.
+And `httpd_sys_rw_content_t` to the folder that should be writable.
 
     semanage fcontext -a -t httpd_sys_content_t /srv/ub-baser/
+    semanage fcontext -a -t httpd_sys_rw_content_t /srv/ub-baser/storage
     restorecon -R -v /srv/ub-baser/
 
-Ref: [Using SELinux](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/using_selinux/index)
+Ref: [Setting up the Apache HTTP web server](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/deploying_web_servers_and_reverse_proxies/setting-apache-http-server_deploying-web-servers-and-reverse-proxies) and [httpd_selinux](https://linux.die.net/man/8/httpd_selinux)
 
 ### 5. Add configuration to `.env`
 
