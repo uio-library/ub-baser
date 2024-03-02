@@ -20,10 +20,11 @@ Felles webgrensesnitt for mindre Postgres-baser driftet av Universitetsbibliotek
   - [1. Install Apache, PHP and NodeJS](#1-install-apache-php-and-nodejs)
   - [2. Configure SSL certificate](#2-configure-ssl-certificate)
   - [3. Clone the app and install dependencies](#3-clone-the-app-and-install-dependencies)
-  - [4. Add configuration to `.env`](#4-add-configuration-to-env)
-  - [5. Run database migrations](#5-run-database-migrations)
-  - [6. Setup SSO (SAML)](#6-setup-sso-saml)
-  - [7. Configure Apache](#7-configure-apache)
+  - [4. Update SELinux security context](#4-update-selinux-security-context)
+  - [5. Add configuration to `.env`](#5-add-configuration-to-env)
+  - [6. Run database migrations](#6-run-database-migrations)
+  - [7. Setup SSO (SAML)](#7-setup-sso-saml)
+  - [8. Configure Apache](#8-configure-apache)
 - [Production notes](#production-notes)
   - [Securing the app](#securing-the-app)
   - [Optimizing for production](#optimizing-for-production)
@@ -189,8 +190,13 @@ Git is needed to clone the app:
 
 Follow the steps *[Kokebok for bestilling og utstedelse av SSL-sertifikater](https://www.uio.no/tjenester/it/sikkerhet/sertifikater/kokebok.html)* to order a certificate and install it with Apache.
 
-Store certificate in `/etc/httpd/uio-ssl/2024/ub-baser_uio_no.crt`, private key in `/etc/httpd/uio-ssl/2024/ub-baser.uio.no.key` and
-CA certificate in `/etc/httpd/uio-ssl/2024/intermediate.crt`
+Store the certificate in `/etc/httpd/uio-ssl/2024/ub-baser_uio_no.crt`,
+the private key in `/etc/httpd/uio-ssl/2024/ub-baser.uio.no.key` and
+the CA certificate in `/etc/httpd/uio-ssl/2024/intermediate.crt`.
+The files should be owned by root.
+
+Run `restorecon -r /etc/httpd/` after copying the files to restore SELinux security contexts,
+ensuring that Apache has read access to the files.
 
 ### 3. Clone the app and install dependencies
 
@@ -203,19 +209,28 @@ Clone the app and install Composer and NPM dependencies:
     npm install
     npm run production
 
-### 4. Add configuration to `.env`
+### 4. Update SELinux security context
 
-- Add your database settings to the `.env` file.
+For Apache to get access to `/srv/ub-baser/`, we must assign the `httpd_sys_content_t` SELinux security context:
+
+    semanage fcontext -a -t httpd_sys_content_t /srv/ub-baser/
+    restorecon -R -v /srv/ub-baser/
+
+Ref: [Using SELinux](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/using_selinux/index)
+
+### 5. Add configuration to `.env`
+
+- Add your database settings to the `/srv/ub-baser/.env` file.
 - In production, make sure to set `APP_DEBUG=false` to avoid leaking secrets.
 
-### 5. Run database migrations
+### 6. Run database migrations
 
 This will both test that we can connect to the database
 and add/update any missing tables:
 
     php artisan migrate
 
-### 6. Setup SSO (SAML)
+### 7. Setup SSO (SAML)
 
 Create a SAML tenant `uio-weblogin` for the UiO Weblogin IdP (the name "uio-weblogin" should match
 the value for `SAML2_DEFAULT_TENANT` in the `.env` file), using metadata from
@@ -245,7 +260,7 @@ To use UiO's test environment instead, create a new tenant using metadata from <
 
 and set `SAML2_DEFAULT_TENANT=uio-weblogin-test` in the `.env` file.
 
-### 7. Configure Apache
+### 8. Configure Apache
 
 Add vhosts to `/etc/apache2/sites-available/ub-baser.conf`:
 
@@ -341,7 +356,8 @@ Add vhosts to `/etc/apache2/sites-available/ub-baser.conf`:
 
 - The webserver should only have write access to the `storage` directory:
 
-    chown -R www-data:www-data storage
+    chown -R apache:ub-utv /srv/ub-baser/storage
+    chmod -R u+rwX,g+rwX /srv/ub-baser/storage
 
 - Only use SAML, not local users, in production.
 
