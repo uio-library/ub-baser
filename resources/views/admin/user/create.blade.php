@@ -38,7 +38,7 @@
                 @foreach ($rights as $right => $label)
                 <div>
                     <label>
-                        {!! Form::checkbox('right-' . $right) !!}
+                        {!! html()->checkbox('right-' . $right) !!}
                         {{ $label }}
                     </label>
                 </div>

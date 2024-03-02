@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
-use Intervention\Image\ImageManager;
+use Intervention\Image\Encoders\JpegEncoder;
+use Intervention\Image\Laravel\Facades\Image;
 
 class PageController extends Controller
 {
@@ -158,20 +159,16 @@ class PageController extends Controller
      * Generate and store a thumbnail.
      *
      * @param FilesystemManager $fm
-     * @param ImageManager $im
      * @param File|UploadedFile  $file
      * @param int $maxWidth
      * @param int $maxHeight
      * @param string $filename
      */
-    private function storeThumb(FilesystemManager $fm, ImageManager $im, $file, $maxWidth, $maxHeight, $filename)
+    private function storeThumb(FilesystemManager $fm, $file, $maxWidth, $maxHeight, $filename)
     {
-        $blob = $im->make($file->path())
-            ->resize($maxWidth, $maxHeight, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            })
-            ->encode(null, 85);
+        $blob = Image::read($file->path())
+            ->scaleDown($maxWidth, $maxHeight)
+            ->encode(new JpegEncoder(85));
 
         $fm->disk('public')->put($filename, $blob);
     }
@@ -183,7 +180,7 @@ class PageController extends Controller
      * @param FilesystemManager $fm
      * @return JsonResponse
      */
-    public function uploadImage(Request $request, FilesystemManager $fm, ImageManager $im)
+    public function uploadImage(Request $request, FilesystemManager $fm)
     {
         $user = \Auth::user();
         if (!count($user->rights)) {
@@ -211,13 +208,12 @@ class PageController extends Controller
 
         $thumbSizes = ['1200', '600', '300'];
 
-        $this->storeThumb($fm, $im, $file, 1920, null, $filename);
+        $this->storeThumb($fm, $file, 1920, null, $filename);
         $urls = [
             'default' => asset($publicPath . $filename),
         ];
         foreach ($thumbSizes as $width) {
-            $thumb_filename = $basename . '_' . $width . $ext;
-            $this->storeThumb($fm, $im, $file, $width, null, "{$basename}_{$width}{$ext}");
+            $this->storeThumb($fm, $file, $width, null, "{$basename}_{$width}{$ext}");
             $urls[$width] = asset("{$publicPath}{$basename}_{$width}{$ext}");
         }
 

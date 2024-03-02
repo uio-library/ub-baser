@@ -4,20 +4,7 @@ import 'regenerator-runtime/runtime'
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import VTooltip from 'v-tooltip'
-import * as Sentry from '@sentry/browser'
-import * as Integrations from '@sentry/integrations'
-
-if (process.env.MIX_SENTRY_DSN) {
-  Sentry.init({
-    dsn: process.env.MIX_SENTRY_DSN,
-    integrations: [new Integrations.Vue({
-      Vue,
-      attachProps: true,
-      logErrors: true,
-    })],
-  })
-}
+import VTooltip from "v-tooltip";
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -69,9 +56,9 @@ if (csrfToken) {
 const http = axios.create({
   timeout: 10000,
   headers: {
-    'X-Requested-With': 'XMLHttpRequest',
-    'X-CSRF-TOKEN': csrfToken,
-  }
+    "X-Requested-With": "XMLHttpRequest",
+    "X-CSRF-TOKEN": csrfToken,
+  },
 });
 
 Vue.use(VueAxios, http)

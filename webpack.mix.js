@@ -87,7 +87,7 @@ mix.copy('node_modules/openseadragon/build/openseadragon/images/*', 'public/imag
  |--------------------------------------------------------------------------
  */
 
-const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin')
+const { CKEditorTranslationsPlugin } = require("@ckeditor/ckeditor5-dev-translations");
 const { styles } = require('@ckeditor/ckeditor5-dev-utils')
 
 // make sure you copy these two regexes from the CKEdidtor docs:
@@ -121,8 +121,8 @@ Mix.listen('configReady', webpackConfig => {
 
 mix.webpackConfig({
   plugins: [
-    new CKEditorWebpackPlugin({
-      language: 'nb',
+    new CKEditorTranslationsPlugin({
+      language: "nb",
       addMainLanguageTranslationsToAllAssets: true,
     }),
   ],
@@ -130,27 +130,28 @@ mix.webpackConfig({
     rules: [
       {
         test: CKERegex.svg,
-        use: ['raw-loader'],
+        use: ["raw-loader"],
       },
       {
         test: CKERegex.css,
         use: [
           {
-            loader: 'style-loader',
+            loader: "style-loader",
             options: {
-              injectType: 'singletonStyleTag',
+              injectType: "singletonStyleTag",
               attributes: {
-                'data-cke': true,
+                "data-cke": true,
               },
             },
           },
-          'css-loader', // ADDED
+          "css-loader", // ADDED
           {
-            loader: 'postcss-loader',
+            loader: "postcss-loader",
             options: {
-              postcssOptions: styles.getPostCssConfig({ // moved into option `postcssOptions`
+              postcssOptions: styles.getPostCssConfig({
+                // moved into option `postcssOptions`
                 themeImporter: {
-                  themePath: require.resolve('@ckeditor/ckeditor5-theme-lark'),
+                  themePath: require.resolve("@ckeditor/ckeditor5-theme-lark"),
                 },
                 minify: true,
               }),
@@ -160,4 +161,4 @@ mix.webpackConfig({
       },
     ],
   },
-})
+});

@@ -8,7 +8,6 @@ use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Mail\Message;
 
 class UserController extends Controller
 {
@@ -102,12 +101,8 @@ class UserController extends Controller
             $user->email
         );
 
-        \Password::sendResetLink(['email' => $user->email], function (Message $message) {
-            $message->subject('Velkommen til ub-baser');
-        });
-
         return redirect()->action('Admin\UserController@index')
-            ->with('status', 'En epost er sendt til brukeren med instruksjoner for å sette passord.');
+            ->with('status', 'Brukeren er lagt til.');
     }
 
     /**

@@ -51,7 +51,7 @@
                         @foreach ($rights as $right => $label)
                         <div>
                             <label>
-                                {!! Form::checkbox('right-' . $right, 'on', old('right-' . $right) ?: $user->can($right)) !!}
+                                {!! html()->checkbox('right-' . $right, old('right-' . $right) ?: $user->can($right), 'on') !!}
                                 {{ $label }}
                             </label>
                         </div>

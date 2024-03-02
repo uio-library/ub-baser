@@ -22,10 +22,14 @@
                 <div class="card-header"><a href="#" onclick="showCard(1); return false;">{{ __('UiO-innlogging') }}</a></div>
                 <div class="card-body collapse show" id="collapse1">
 
-                    <a class="btn btn-primary" href="{{ route('saml2_login', 'uio') }}">
-                        <em class="fa fa-arrow-right"></em>
-                        Logg inn sikkert med Weblogin
-                    </a>
+                    @if ($defaultSaml2TenantUuid)
+                        <a class="btn btn-primary" href="{{ action([Slides\Saml2\Http\Controllers\Saml2Controller::class, 'login'], ['uuid'=>$defaultSaml2TenantUuid]) }}">
+                            <em class="fa fa-arrow-right"></em>
+                            Logg inn sikkert med SSO
+                        </a>
+                    @else
+                        <em>Innlogging med SSO er ikke satt opp</em>
+                    @endif
 
                 </div>
             </div>

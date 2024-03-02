@@ -2,18 +2,18 @@
 
 namespace App\Listeners;
 
-use Aacotroneo\Saml2\Events\Saml2LogoutEvent;
+use Slides\Saml2\Events\SignedOut;
 
 class Saml2Logout
 {
     /**
      * Handle the event.
      *
-     * @param Saml2LogoutEvent $event
+     * @param SignedOut $event
      *
      * @return void
      */
-    public function handle(Saml2LogoutEvent $event)
+    public function handle(SignedOut $event)
     {
         $redirectTo = session('url.intended');
         $user = auth()->user();

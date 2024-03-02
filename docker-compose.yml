@@ -1,32 +1,24 @@
 version: '3'
 
-volumes:
-  storage:
-  pgdata_dev:
-
 services:
 
   db:
-    build: ../postgres
+    build:
+      context: ./docker/postgres
     volumes:
-      - pgdata_dev:/var/lib/postgresql/data
+      - db_storage:/var/lib/postgresql/data
     ports:
-      - 5999:5432
-    container_name: ub-baser-db
+      - 5432:5432
     environment:
       - POSTGRES_USER=ub-baser-dev
       - POSTGRES_PASSWORD=ub-baser-dev
       - POSTGRES_INITDB_ARGS=--no-locale --encoding=UTF8
 
   app:
-    image: ub-baser:latest
     build:
-      context: ../..
-      dockerfile: docker/Dockerfile
-      args:
-        - GITHUB_TOKEN
+      context: .
     environment:
-      - APP_ENV=dev
+      - APP_ENV=local
       - APP_DEBUG=true
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
@@ -34,15 +26,18 @@ services:
       - POSTGRES_USER=ub-baser-dev
       - POSTGRES_PASSWORD=ub-baser-dev
       - APP_KEY=DoesNotNeedToBeRandomInDevEnviro
-      - SAUCE_USERNAME
-      - SAUCE_ACCESS_KEY
       - TEST_BASE_URL=http://localhost:8080
     ports:
       - 8080:80
     volumes:
-      - ../..:/app/:ro
-      - storage:/app/storage
-      #- ../../storage:/app/storage
+      - .:/app/:ro
+      # Writable directories
+      - app_storage:/app/storage
+      - app_bootstrap_cache:/app/bootstrap/cache
     depends_on:
       - db
-    container_name: ub-baser-app
+
+volumes:
+  app_storage:
+  app_bootstrap_cache:
+  db_storage:

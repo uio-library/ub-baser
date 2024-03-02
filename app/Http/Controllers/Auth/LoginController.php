@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Slides\Saml2\Models\Tenant;
 
 class LoginController extends Controller
 {
@@ -41,6 +43,19 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showLoginForm()
+    {
+        $defaultSaml2TenantKey = env('SAML2_DEFAULT_TENANT', 'uio-weblogin');
+        $defaultSaml2Tenant = $defaultSaml2TenantKey ? Tenant::where('key', $defaultSaml2TenantKey)->first() : null;
+        $defaultSaml2TenantUuid = $defaultSaml2Tenant ? $defaultSaml2Tenant->uuid : null;
+        return view('auth.login', ['defaultSaml2TenantUuid'=> $defaultSaml2TenantUuid]);
     }
 
     public function samlError()
@@ -83,7 +98,7 @@ class LoginController extends Controller
             $user->email
         );
 
-        \Auth::login($user);
+        Auth::login($user);
 
         $request->session()->forget('saml_response');
 
@@ -99,7 +114,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         if ($user->saml_session !== null) {
             $request->session()->put('url.intended', url()->previous());
