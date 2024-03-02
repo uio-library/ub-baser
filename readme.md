@@ -158,7 +158,7 @@ Run `npm run watch` to build these resources as you make changes to the source f
 
 Install Apache and PHP 8.1:
 
-    dnf install httpd
+    dnf install httpd mod_ssl
     dnf module install php:8.1/common
 
 Follow the steps in *[Product Documentation for Red Hat Enterprise Linux 9. Chapter 6. Using the PHP scripting language](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/installing_and_using_dynamic_programming_languages/assembly_using-the-php-scripting-language_installing-and-using-dynamic-programming-languages)* to make Apache start at boot.
@@ -181,21 +181,16 @@ Git is needed to clone the app:
 
 [Node 18](https://nodejs.org/en/download/package-manager#centos-fedora-and-red-hat-enterprise-linux) is needed to build frontend components, but is not a *runtime* dependency:
 
-    dnf module install nodejs:18/common
+    dnf module install nodejs:18/common composer
 
 [Composer](https://getcomposer.org/download/) is needed for installing PHP dependencies:
-
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    php composer-setup.php
-    rm composer-setup.php
-    mv composer.phar /usr/local/bin/composer
 
 ### 2. Configure SSL certificate
 
 Follow the steps *[Kokebok for bestilling og utstedelse av SSL-sertifikater](https://www.uio.no/tjenester/it/sikkerhet/sertifikater/kokebok.html)* to order a certificate and install it with Apache.
 
-Store certificate in `/etc/apache2/site.crt`, private key in `/etc/apache2/site.key` and
-CA certificate in `/etc/apache2/ca.crt`
+Store certificate in `/etc/httpd/uio-ssl/2024/ub-baser_uio_no.crt`, private key in `/etc/httpd/uio-ssl/2024/ub-baser.uio.no.key` and
+CA certificate in `/etc/httpd/uio-ssl/2024/intermediate.crt`
 
 ### 3. Clone the app and install dependencies
 
@@ -264,9 +259,9 @@ Add vhosts to `/etc/apache2/sites-available/ub-baser.conf`:
     <VirtualHost *:443>
         SSLEngine On
 
-        SSLCertificateFile /etc/apache2/site.crt
-        SSLCertificateKeyFile /etc/apache2/site.key
-        SSLCertificateChainFile /etc/apache2/ca.crt
+        SSLCertificateFile /etc/httpd/uio-ssl/2024/ub-baser_uio_no.crt
+        SSLCertificateKeyFile /etc/httpd/uio-ssl/2024/ub-baser.uio.no.key
+        SSLCertificateChainFile /etc/httpd/uio-ssl/2024/intermediate.crt
 
         SSLCipherSuite ALL:+HIGH:!ADH:!EXP:!SSLv2:!SSLv3:!MEDIUM:!LOW:!NULL:!aNULL
         SSLProtocol all -TLSv1.1 -TLSv1 -SSLv2 -SSLv3
@@ -275,12 +270,12 @@ Add vhosts to `/etc/apache2/sites-available/ub-baser.conf`:
 
         Header always set Strict-Transport-Security "max-age=63072000; includeSubdomains;"
 
-        DocumentRoot    /app/public
+        DocumentRoot    /srv/ub-baser/public
         DirectoryIndex  index.php
 
         RewriteEngine   On
 
-        <Directory /app/public>
+        <Directory /srv/ub-baser/public>
             Options FollowSymLinks
             AllowOverride None
             Require all granted
